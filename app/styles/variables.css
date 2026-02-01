@@ -1,0 +1,167 @@
+:root {
+  /* ===========================================
+     Base Theme Colors (shadcn/ui)
+     =========================================== */
+  --background: oklch(0.9824 0.006 43.3365);
+  --foreground: oklch(0.396 0.0075 351.1515);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.396 0.0075 351.1515);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.396 0.0075 351.1515);
+  --primary: oklch(0.7116 0.1812 22.8389);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.8803 0.1348 86.0616);
+  --secondary-foreground: oklch(0.396 0.0075 351.1515);
+  --muted: oklch(0.9487 0.0137 34.2988);
+  --muted-foreground: oklch(0.601 0.0233 359.1522);
+  --accent: oklch(0.9283 0.0399 47.4626);
+  --accent-foreground: oklch(0.6126 0.1377 18.6372);
+  --destructive: oklch(0.6137 0.2039 25.5645);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.903 0.0262 29.4262);
+  --input: oklch(0.903 0.0262 29.4262);
+  --ring: oklch(0.7116 0.1812 22.8389);
+
+  /* Chart Colors */
+  --chart-1: oklch(0.7116 0.1812 22.8389);
+  --chart-2: oklch(0.8803 0.1348 86.0616);
+  --chart-3: oklch(0.7775 0.1595 166.5719);
+  --chart-4: oklch(0.5923 0.112 227.9733);
+  --chart-5: oklch(0.6476 0.2042 11.0701);
+
+  /* Sidebar Colors */
+  --sidebar: oklch(0.9824 0.006 43.3365);
+  --sidebar-foreground: oklch(0.396 0.0075 351.1515);
+  --sidebar-primary: oklch(0.7116 0.1812 22.8389);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.9283 0.0399 47.4626);
+  --sidebar-accent-foreground: oklch(0.6126 0.1377 18.6372);
+  --sidebar-border: oklch(0.903 0.0262 29.4262);
+  --sidebar-ring: oklch(0.7116 0.1812 22.8389);
+
+  /* ===========================================
+     StoryChain Color Palette
+     =========================================== */
+
+  /* Hero Gradient Colors */
+  --hero-gradient-from: #8da5f3;
+  --hero-gradient-via1: #b597e6;
+  --hero-gradient-via2: #e8a5c9;
+  --hero-gradient-via3: #f3b8a2;
+  --hero-gradient-to: #fff8e7;
+  --hero-overlay-white10: rgba(255, 255, 255, 0.1);
+  --hero-overlay-purple5: rgba(168, 85, 247, 0.05);
+
+  /* Background Colors */
+  --bg-cream: #fff6ea;
+  --bg-cream-light: #fff7eb;
+  --bg-cream-blend: #fff5e6;
+  --bg-dark: #0b0b10;
+
+  /* Text Colors */
+  --text-primary: #23255f;
+  --text-secondary: #2a2d66;
+  --text-tertiary: #1b1d4e;
+  --text-light: #f5f5f7;
+  --text-dark-accent: #f6c36a;
+  --text-secondary-75: rgba(42, 45, 102, 0.75);
+  --text-secondary-70: rgba(42, 45, 102, 0.7);
+  --text-secondary-65: rgba(42, 45, 102, 0.65);
+
+  /* Brand Colors */
+  --brand-pink-400: #f472b6;
+  --brand-pink-500: #ec4899;
+  --brand-pink-600: #db2777;
+  --brand-pink-shadow25: rgba(236, 72, 153, 0.25);
+  --brand-pink-shadow35: rgba(236, 72, 153, 0.35);
+  --brand-pink-ring30: rgba(236, 72, 153, 0.3);
+  --brand-blue: #6b7cff;
+  --brand-blue-alt: #5a6cff;
+  --brand-orange: #ff9f68;
+
+  /* Cream Opacity Variants */
+  --cream-95: rgba(255, 246, 234, 0.95);
+  --cream-90: rgba(255, 246, 234, 0.9);
+  --cream-85: rgba(255, 246, 234, 0.85);
+  --cream-80: rgba(255, 246, 234, 0.8);
+  --cream-75: rgba(255, 246, 234, 0.75);
+  --cream-70: rgba(255, 246, 234, 0.7);
+  --cream-60: rgba(255, 246, 234, 0.6);
+  --cream-50: rgba(255, 246, 234, 0.5);
+  --cream-40: rgba(255, 246, 234, 0.4);
+  --cream-30: rgba(255, 246, 234, 0.3);
+  --cream-20: rgba(255, 246, 234, 0.2);
+  --cream-blend-60: rgba(255, 245, 230, 0.6);
+  --cream-blend-50: rgba(255, 245, 230, 0.5);
+
+  /* Dark Opacity Variants */
+  --dark-95: rgba(11, 11, 16, 0.95);
+  --dark-90: rgba(11, 11, 16, 0.9);
+  --dark-75: rgba(11, 11, 16, 0.75);
+  --dark-70: rgba(11, 11, 16, 0.7);
+  --dark-60: rgba(11, 11, 16, 0.6);
+  --dark-50: rgba(11, 11, 16, 0.5);
+  --dark-40: rgba(11, 11, 16, 0.4);
+
+  /* White Opacity Variants */
+  --white-95: rgba(255, 255, 255, 0.95);
+  --white-75: rgba(255, 255, 255, 0.75);
+  --white-60: rgba(255, 255, 255, 0.6);
+  --white-50: rgba(255, 255, 255, 0.5);
+  --white-40: rgba(255, 255, 255, 0.4);
+  --white-5: rgba(255, 255, 255, 0.05);
+  --white-4: rgba(255, 255, 255, 0.04);
+
+  /* ===========================================
+     Typography
+     =========================================== */
+  --font-sans: Inter, var(--font-geist-sans), sans-serif;
+  --font-serif: Lora, serif;
+  --font-mono: Fira Code, var(--font-geist-mono), monospace;
+
+  /* ===========================================
+     Layout & Spacing
+     =========================================== */
+  --radius: 0.75rem;
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+
+  /* ===========================================
+     Shadows
+     =========================================== */
+  --shadow-x: 0px;
+  --shadow-y: 8px;
+  --shadow-blur: 24px;
+  --shadow-spread: -8px;
+  --shadow-opacity: 0.08;
+  --shadow-color: #d6baba;
+  --shadow-2xs: 0px 8px 24px -8px hsl(0 25.4545% 78.4314% / 0.04);
+  --shadow-xs: 0px 8px 24px -8px hsl(0 25.4545% 78.4314% / 0.04);
+  --shadow-sm:
+    0px 8px 24px -8px hsl(0 25.4545% 78.4314% / 0.08),
+    0px 1px 2px -9px hsl(0 25.4545% 78.4314% / 0.08);
+  --shadow:
+    0px 8px 24px -8px hsl(0 25.4545% 78.4314% / 0.08),
+    0px 1px 2px -9px hsl(0 25.4545% 78.4314% / 0.08);
+  --shadow-md:
+    0px 8px 24px -8px hsl(0 25.4545% 78.4314% / 0.08),
+    0px 2px 4px -9px hsl(0 25.4545% 78.4314% / 0.08);
+  --shadow-lg:
+    0px 8px 24px -8px hsl(0 25.4545% 78.4314% / 0.08),
+    0px 4px 6px -9px hsl(0 25.4545% 78.4314% / 0.08);
+  --shadow-xl:
+    0px 8px 24px -8px hsl(0 25.4545% 78.4314% / 0.08),
+    0px 8px 10px -9px hsl(0 25.4545% 78.4314% / 0.08);
+  --shadow-2xl: 0px 8px 24px -8px hsl(0 25.4545% 78.4314% / 0.2);
+}
+
+.dark {
+  --sidebar: hsl(240 5.9% 10%);
+  --sidebar-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-primary: hsl(224.3 76.3% 48%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(240 3.7% 15.9%);
+  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-border: hsl(240 3.7% 15.9%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+}

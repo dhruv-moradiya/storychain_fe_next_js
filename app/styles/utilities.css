@@ -1,0 +1,25 @@
+/* ===========================================
+   Custom Utilities
+   =========================================== */
+@utility scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--brand-blue) var(--bg-cream);
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: var(--bg-cream);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--brand-blue);
+    border-radius: 100px;
+
+    &:hover {
+      background-color: var(--brand-blue-alt);
+    }
+  }
+}

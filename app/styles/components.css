@@ -1,0 +1,50 @@
+/* ===========================================
+   Component Styles
+   =========================================== */
+
+/* Notion-style Toolbar */
+.notion-toolbar {
+  @apply bg-background/70 flex items-center gap-1 rounded-xl border px-2 py-1 shadow-sm backdrop-blur supports-[backdrop-filter]:backdrop-blur-md;
+}
+
+.notion-btn {
+  @apply hover:bg-muted/40 text-muted-foreground flex h-8 w-8 items-center justify-center rounded-md transition;
+}
+
+.notion-btn-active {
+  @apply bg-muted text-foreground;
+}
+
+.notion-trigger {
+  @apply bg-background hover:bg-muted/20 flex h-8 items-center gap-1 rounded-md border px-2 text-sm;
+}
+
+.notion-bubble {
+  @apply bg-background/95 flex items-center gap-1 rounded-xl border px-2 py-1 shadow-md backdrop-blur-md;
+}
+
+/* Toast Styles */
+.error-toast {
+  @apply rounded-md bg-gradient-to-r from-red-100 to-red-600 p-4 text-white shadow-md;
+}
+
+/* React Flow */
+.react-flow__controls-button {
+  background-color: var(--background) !important;
+  border: none !important;
+}
+
+.edge-label-renderer__custom-edge {
+  position: absolute;
+  background-color: #ffcc00;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ProseMirror Editor */
+.ProseMirror:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
