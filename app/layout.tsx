@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter, Lora, Fira_Code } from 'next/font/google';
+import { ClerkProvider } from '@clerk/nextjs';
 import { QueryProvider } from '@/components/providers/query-provider';
+import { NavigationProgress } from '@/components/common/loader/navigation-progress';
 import './globals.css';
 
 const inter = Inter({
@@ -29,10 +31,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${lora.variable} ${firaCode.variable} antialiased`}>
-        <QueryProvider>{children}</QueryProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${inter.variable} ${lora.variable} ${firaCode.variable} antialiased`}>
+          <QueryProvider>
+            <NavigationProgress />
+            {children}
+          </QueryProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

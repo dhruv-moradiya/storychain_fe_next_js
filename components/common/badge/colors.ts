@@ -1,6 +1,6 @@
 import type { BadgeColorKey, ColorScheme } from './types';
 
-// Preset color schemes using CSS variables from theme.css
+// Preset color schemes using CSS variables from index.css
 export const badgeColors: Record<BadgeColorKey, ColorScheme> = {
   // Brand colors
   pink: {

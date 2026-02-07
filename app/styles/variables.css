@@ -116,7 +116,7 @@
      Typography
      =========================================== */
   --font-sans: Inter, var(--font-geist-sans), sans-serif;
-  --font-serif: Lora, serif;
+  --font-serif: Lora;
   --font-mono: Fira Code, var(--font-geist-mono), monospace;
 
   /* ===========================================

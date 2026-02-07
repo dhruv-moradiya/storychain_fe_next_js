@@ -32,15 +32,9 @@ import type { BadgeColorKey, BadgeConfig } from './types';
 
 const STATUS_CONFIG: Record<string, { color: BadgeColorKey; icon: LucideIcon; label: string }> = {
   draft: { color: 'gray', icon: FileEdit, label: 'Draft' },
-  DRAFT: { color: 'gray', icon: FileEdit, label: 'Draft' },
   published: { color: 'success', icon: CheckCircle, label: 'Published' },
-  PUBLISHED: { color: 'success', icon: CheckCircle, label: 'Published' },
   archived: { color: 'slate', icon: Archive, label: 'Archived' },
-  ARCHIVED: { color: 'slate', icon: Archive, label: 'Archived' },
   deleted: { color: 'error', icon: Trash2, label: 'Deleted' },
-  DELETED: { color: 'error', icon: Trash2, label: 'Deleted' },
-  completed: { color: 'info', icon: CheckCircle, label: 'Completed' },
-  COMPLETED: { color: 'info', icon: CheckCircle, label: 'Completed' },
 };
 
 export function storyStatusBadge(status: string, options?: Partial<BadgeConfig>) {
@@ -61,19 +55,12 @@ const CONTENT_RATING_CONFIG: Record<
   { color: BadgeColorKey; icon: LucideIcon; label: string }
 > = {
   all_ages: { color: 'emerald', icon: Baby, label: 'All Ages' },
-  ALL_AGES: { color: 'emerald', icon: Baby, label: 'All Ages' },
   general: { color: 'success', icon: Users, label: 'General' },
-  GENERAL: { color: 'success', icon: Users, label: 'General' },
   teen: { color: 'blue', icon: Sparkles, label: 'Teen (13+)' },
-  TEEN: { color: 'blue', icon: Sparkles, label: 'Teen (13+)' },
   young_adult: { color: 'cyan', icon: Star, label: 'Young Adult (16+)' },
-  YOUNG_ADULT: { color: 'cyan', icon: Star, label: 'Young Adult (16+)' },
   mature: { color: 'orange', icon: Flame, label: 'Mature (17+)' },
-  MATURE: { color: 'orange', icon: Flame, label: 'Mature (17+)' },
   r18: { color: 'error', icon: ShieldAlert, label: 'R18 (18+)' },
-  R18: { color: 'error', icon: ShieldAlert, label: 'R18 (18+)' },
   r18g: { color: 'rose', icon: Skull, label: 'R18G (18+)' },
-  R18G: { color: 'rose', icon: Skull, label: 'R18G (18+)' },
 };
 
 export function contentRatingBadge(rating: string, options?: Partial<BadgeConfig>) {
@@ -188,11 +175,7 @@ const CHAPTER_STATUS_CONFIG: Record<
   { color: BadgeColorKey; icon: LucideIcon; label: string }
 > = {
   PUBLISHED: { color: 'success', icon: CheckCircle, label: 'Published' },
-  PENDING_APPROVAL: {
-    color: 'warning',
-    icon: Clock,
-    label: 'Pending Approval',
-  },
+  PENDING_APPROVAL: { color: 'warning', icon: Clock, label: 'Pending Approval' },
   REJECTED: { color: 'error', icon: UserX, label: 'Rejected' },
   DELETED: { color: 'slate', icon: Trash2, label: 'Deleted' },
 };

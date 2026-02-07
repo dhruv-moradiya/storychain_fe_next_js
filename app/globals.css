@@ -1,6 +1,9 @@
 @import 'tailwindcss';
-@import './fonts.css';
+@plugin 'tailwind-scrollbar-hide';
+@plugin '@tailwindcss/typography';
 @import 'tw-animate-css';
+
+@import './fonts.css';
 @import './styles/variables.css';
 @import './styles/theme.css';
 @import './styles/base.css';

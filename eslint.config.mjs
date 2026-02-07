@@ -1,25 +1,32 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals";
-import nextTs from "eslint-config-next/typescript";
-import pluginQuery from "@tanstack/eslint-plugin-query";
+import { defineConfig, globalIgnores } from 'eslint/config';
+import nextVitals from 'eslint-config-next/core-web-vitals';
+import nextTs from 'eslint-config-next/typescript';
+import pluginQuery from '@tanstack/eslint-plugin-query';
 
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   // TanStack Query rules
-  ...pluginQuery.configs["flat/recommended"],
+  ...pluginQuery.configs['flat/recommended'],
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
+    '.next/**',
+    'out/**',
+    'build/**',
+    'next-env.d.ts',
   ]),
   {
     rules: {
-      "@typescript-eslint/no-unused-vars": ["warn"],
-      "react/jsx-sort-props": "off",
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+      'react/jsx-sort-props': 'off',
     },
   },
 ]);

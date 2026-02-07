@@ -43,7 +43,7 @@ export function createBadge(config: BadgeConfig): React.ReactElement {
         'inline-flex items-center justify-center gap-1 border font-medium transition-all',
         badgeSizes({ size }),
         badgeShapes({ shape }),
-        mono && 'font-ibm-plex-mono',
+        mono && 'font-mono',
         uppercase && 'tracking-wider uppercase',
         onClick && !disabled && 'cursor-pointer hover:opacity-80',
         disabled && 'cursor-not-allowed opacity-50',
