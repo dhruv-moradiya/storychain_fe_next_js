@@ -313,12 +313,115 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
               <ToolButton onClick={() => {}} title="Insert Link">
                 <Link2 className="size-4" />
               </ToolButton>
-              <ToolButton
-                onClick={() => editor.chain().focus().setHorizontalRule().run()}
-                title="Horizontal Rule"
-              >
-                <Minus className="size-4" />
-              </ToolButton>
+
+              {/* Scene Break Dropdown */}
+              <DropdownMenu>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="text-text-secondary hover:bg-cream-60 hover:text-text-primary size-8 transition-all duration-150"
+                      >
+                        <Minus className="size-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="text-xs">
+                    Scene Break
+                  </TooltipContent>
+                </Tooltip>
+                <DropdownMenuContent align="end" className="bg-bg-cream w-56">
+                  <div className="text-text-secondary-65 px-2 py-1.5 text-xs font-medium">
+                    Scene Break Styles
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => {
+                      editor
+                        .chain()
+                        .focus()
+                        .insertContent(
+                          '<p style="text-align: center;"><span style="color: #f472b6; letter-spacing: 0.1em;">━━━━━━━━</span></p>'
+                        )
+                        .run();
+                    }}
+                    className="flex items-center gap-3"
+                  >
+                    <div className="from-brand-pink-400/60 via-brand-blue/40 to-brand-pink-400/60 h-0.5 w-8 rounded-full bg-linear-to-r" />
+                    <span className="text-sm">Gradient Flow</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      editor
+                        .chain()
+                        .focus()
+                        .insertContent(
+                          '<p style="text-align: center;"><span style="color: #ec4899; letter-spacing: 0.3em;">✦ ✦ ✦</span></p>'
+                        )
+                        .run();
+                    }}
+                    className="flex items-center gap-3"
+                  >
+                    <span className="text-brand-pink-500/70 text-xs">✦ ✦ ✦</span>
+                    <span className="text-sm">Triple Star</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      editor
+                        .chain()
+                        .focus()
+                        .insertContent(
+                          '<p style="text-align: center;"><span style="color: #3b82f6; letter-spacing: 0.2em;">• • •</span></p>'
+                        )
+                        .run();
+                    }}
+                    className="flex items-center gap-3"
+                  >
+                    <span className="text-brand-blue/70 text-xs">• • •</span>
+                    <span className="text-sm">Dot Cluster</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      editor
+                        .chain()
+                        .focus()
+                        .insertContent(
+                          '<p style="text-align: center;"><span style="color: #f97316;">— ◆ —</span></p>'
+                        )
+                        .run();
+                    }}
+                    className="flex items-center gap-3"
+                  >
+                    <span className="text-brand-orange/70 text-xs">— ◆ —</span>
+                    <span className="text-sm">Diamond Break</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      editor
+                        .chain()
+                        .focus()
+                        .insertContent(
+                          '<p style="text-align: center;"><span style="color: #3b82f6; letter-spacing: 0.3em;">～ ～ ～</span></p>'
+                        )
+                        .run();
+                    }}
+                    className="flex items-center gap-3"
+                  >
+                    <span className="text-brand-blue/70 text-xs">～ ～ ～</span>
+                    <span className="text-sm">Wave Pattern</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => editor.chain().focus().setHorizontalRule().run()}
+                    className="flex items-center gap-3"
+                  >
+                    <Minus className="text-text-secondary-65 size-4" />
+                    <span className="text-sm">Simple Line</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </ToolGroup>
 
             <ToolSeparator />

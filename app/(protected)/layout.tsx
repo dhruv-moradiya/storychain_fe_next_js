@@ -4,7 +4,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
   return (
     <>
       <Navbar />
-      <div className="pt-16">{children}</div>
+      <div className="bg-bg-cream pt-16">{children}</div>
     </>
   );
 }
