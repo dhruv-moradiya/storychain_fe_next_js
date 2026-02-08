@@ -24,7 +24,7 @@ export function BadgeGroup({ badges, max, className, gap = 'sm' }: BadgeGroupPro
       ))}
       {remaining > 0 && (
         <span
-          className="inline-flex items-center justify-center rounded-full px-2 py-0.5 font-mono text-xs"
+          className="font-ibm-plex-mono inline-flex items-center justify-center rounded-full px-2 py-0.5 text-xs"
           style={{
             backgroundColor: badgeColors.gray.bg,
             color: badgeColors.gray.text,

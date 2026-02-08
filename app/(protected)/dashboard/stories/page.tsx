@@ -1,5 +1,3 @@
-'use client';
-
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { DashboardContentLayout, DashboardGrid } from '@/components/dashboard';
 import { StoryCard, CreateStoryButton } from '@/components/dashboard/sections/stories-section';

@@ -1,7 +1,10 @@
+// Layout components
 export {
   DashboardContentLayout,
   DashboardSection,
   DashboardGrid,
   DashboardEmptyState,
-} from './dashboard-content-layout';
+} from './layout';
+
+// Other dashboard components
 export { DashboardTabs } from './dashboard-tabs';

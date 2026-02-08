@@ -1,30 +1,9 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { BookOpen, PenTool, Bell } from 'lucide-react';
-
-const tabs = [
-  {
-    key: 'stories',
-    label: 'Stories',
-    path: '/dashboard/stories',
-    icon: BookOpen,
-  },
-  {
-    key: 'my-chapters',
-    label: 'My Chapters',
-    path: '/dashboard/my-chapters',
-    icon: PenTool,
-  },
-  {
-    key: 'notifications',
-    label: 'Notifications',
-    path: '/dashboard/notifications',
-    icon: Bell,
-  },
-];
+import { usePathname } from 'next/navigation';
+import { DASHBOARD_TABS } from '@/constants/content/dashboard/dashboard-tab-list';
 
 export function DashboardTabs() {
   const pathname = usePathname();
@@ -35,7 +14,7 @@ export function DashboardTabs() {
   return (
     <div className="bg-bg-cream/80 border-border/30 sticky top-0 z-50 w-full border-b backdrop-blur-xl">
       <div className="scrollbar-none -mx-1 flex gap-1 overflow-x-auto px-3 sm:gap-2 sm:px-4">
-        {tabs.map((t) => {
+        {DASHBOARD_TABS.map((t) => {
           const isActive = getIsActive(t.key);
           const Icon = t.icon;
 

@@ -7,6 +7,7 @@ import {
   BadgeGroup,
   type BadgeConfig,
 } from '@/components/common/badge';
+import { formatDistance } from 'date-fns';
 
 // Static story type for now (no API calls)
 export interface StaticStory {
@@ -24,27 +25,12 @@ interface StoryCardProps {
 }
 
 export function StoryCard({ story }: StoryCardProps) {
-  // Format relative time (simple version without date-fns)
-  const getRelativeTime = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 0) return 'today';
-    if (diffDays === 1) return '1 day ago';
-    if (diffDays < 7) return `${diffDays} days ago`;
-    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-    return `${Math.floor(diffDays / 30)} months ago`;
-  };
-
   // Convert tags to badge configs
   const tagBadges: BadgeConfig[] = story.tags.map((tag) => ({
     label: tag,
     color: 'pink' as const,
     shape: 'pill' as const,
     size: 'xs' as const,
-    mono: false,
   }));
 
   return (
@@ -65,7 +51,9 @@ export function StoryCard({ story }: StoryCardProps) {
             </div>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="text-muted-foreground truncate text-sm">{story.slug}</div>
+                <div className="text-muted-foreground font-ibm-plex-mono truncate text-xs">
+                  {story.slug}
+                </div>
               </TooltipTrigger>
               <TooltipContent side="top">{story.slug}</TooltipContent>
             </Tooltip>
@@ -73,9 +61,7 @@ export function StoryCard({ story }: StoryCardProps) {
 
           {/* STATUS + TITLE */}
           <div className="mb-3 flex flex-col gap-2">
-            <div className="self-start">
-              {storyStatusBadge(story.status, { size: 'xs', mono: false })}
-            </div>
+            <div className="self-start">{storyStatusBadge(story.status, { size: 'xs' })}</div>
             <Tooltip>
               <TooltipTrigger asChild>
                 <h3 className="line-clamp-2 min-h-[2.5rem] text-[15px] leading-tight font-medium">
@@ -104,7 +90,7 @@ export function StoryCard({ story }: StoryCardProps) {
         {/* FOOTER */}
         <div className="relative mt-1.5 h-5 overflow-hidden">
           <span className="text-muted-foreground absolute top-0 left-1 text-[11px] transition-transform ease-[cubic-bezier(0.2,0.4,0,1)] group-hover/story-card:-translate-x-[calc(100%+4px)]">
-            Updated {getRelativeTime(story.updatedAt)}
+            Updated {formatDistance(new Date(story.updatedAt), new Date(), { addSuffix: true })}
           </span>
 
           <span className="absolute top-0 right-0 flex translate-x-full items-center gap-1 text-[11px] transition-transform ease-[cubic-bezier(0.2,0.4,0,1)] group-hover/story-card:-translate-x-2">
