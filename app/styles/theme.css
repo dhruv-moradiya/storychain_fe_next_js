@@ -190,6 +190,7 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
+  --font-reading: var(--font-reading);
   --font-yellowtail: 'Yellowtail';
   --font-playfair: 'Playfair', serif;
   --font-libreBaskerville: 'LibreBaskerville', serif;

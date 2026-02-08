@@ -68,7 +68,7 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
             {/* Title */}
             <h1
               className={cn(
-                'text-text-primary font-serif font-bold tracking-tight',
+                'text-text-primary font-playfair font-semibold tracking-tight',
                 isCompact ? 'text-xl' : 'text-2xl sm:text-3xl'
               )}
             >
@@ -107,12 +107,14 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
         {/* Content */}
         <article
           className={cn(
+            // Chapter reader content class for font override
+            'chapter-reader-content',
             // Base typography - optimized for reading
             'prose prose-lg prose-gray dark:prose-invert',
             'mx-auto max-w-none',
 
-            // Font settings for better readability
-            'prose-p:font-serif prose-p:text-[1.125rem] prose-p:leading-[1.9] prose-p:tracking-[0.01em]',
+            // Typography settings for better readability
+            'prose-p:text-[1rem] prose-p:leading-[1.9] prose-p:tracking-[0.01em]',
             'prose-p:text-text-secondary prose-p:my-6',
 
             // Headings
@@ -127,16 +129,16 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
             // Lists
             'prose-ul:list-disc prose-ul:pl-6 prose-ul:space-y-3',
             'prose-ol:list-decimal prose-ol:pl-6 prose-ol:space-y-3',
-            'prose-li:font-serif prose-li:text-[1.125rem] prose-li:leading-[1.9]',
+            'prose-li:text-[1.125rem] prose-li:leading-[1.9]',
 
-            // Blockquotes - elegant style
+            // Blockquotes - elegant italic style
             'prose-blockquote:border-l-4',
             'prose-blockquote:border-l-brand-pink-500/40',
             'prose-blockquote:pl-6 prose-blockquote:py-1',
-            'prose-blockquote:not-italic',
-            'prose-blockquote:font-serif prose-blockquote:text-text-secondary-65',
+            'prose-blockquote:italic',
+            'prose-blockquote:text-text-secondary-65',
 
-            'selection:bg-primary selection:text-muted',
+            'selection:bg-primary selection:text-muted text-sm',
 
             // Compact / preview
             isCompact && 'prose-base prose-p:text-base prose-p:leading-[1.75] prose-p:my-4',

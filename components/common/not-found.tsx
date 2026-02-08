@@ -56,15 +56,15 @@ export function NotFound({
           {/* 404 Number */}
           <motion.div
             {...fadeIn(0.1)}
-            className="text-brand-pink-500 mb-2 font-mono text-6xl font-bold"
+            className="text-brand-pink-500 font-ibm-plex-mono mb-2 text-6xl font-bold"
           >
             404
           </motion.div>
 
           {/* Text */}
           <motion.div {...fadeIn(0.15)} className="space-y-2">
-            <h1 className="text-primary font-serif text-2xl font-bold">{title}</h1>
-            <p className="text-text-secondary-65 font-mono text-sm">{message}</p>
+            <h1 className="text-primary font-playfair text-2xl font-bold">{title}</h1>
+            <p className="text-text-secondary-65 font-ibm-plex-mono text-sm">{message}</p>
           </motion.div>
 
           {/* Action Buttons */}
@@ -75,7 +75,7 @@ export function NotFound({
             {showHomeButton && (
               <Button
                 onClick={() => router.push('/')}
-                className="bg-brand-pink-500 hover:bg-brand-pink-600 gap-2 font-mono text-sm text-white"
+                className="bg-brand-pink-500 hover:bg-brand-pink-600 font-ibm-plex-mono gap-2 text-sm text-white"
               >
                 <Home className="h-4 w-4" />
                 Go Home
@@ -85,7 +85,7 @@ export function NotFound({
               <Button
                 variant="outline"
                 onClick={() => router.back()}
-                className="gap-2 border-black/10 font-mono text-sm hover:bg-black/5"
+                className="font-ibm-plex-mono gap-2 border-black/10 text-sm hover:bg-black/5"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Go Back

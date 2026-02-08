@@ -22,3 +22,49 @@
     @apply font-libreBaskerville;
   }
 }
+
+/* ===========================================
+   Chapter Reader - Literata Reading Font
+   =========================================== */
+.chapter-reader-content {
+  font-family: var(--font-literata), 'Literata', Georgia, serif;
+  font-weight: 400;
+}
+
+.chapter-reader-content p,
+.chapter-reader-content li {
+  font-family: var(--font-literata), 'Literata', Georgia, serif;
+  font-weight: 400;
+}
+
+/* Override prose defaults for chapter reading */
+.chapter-reader-content.prose p,
+.chapter-reader-content.prose li {
+  font-family: var(--font-literata), 'Literata', Georgia, serif !important;
+  font-weight: 400 !important;
+}
+
+/* Blockquotes - elegant italic style */
+.chapter-reader-content blockquote,
+.chapter-reader-content.prose blockquote,
+.chapter-reader-content.prose blockquote p {
+  font-family: var(--font-literata), 'Literata', Georgia, serif !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+}
+
+/* Chapter Reader Headers - Playfair Display */
+.chapter-reader h1,
+.chapter-reader h2,
+.chapter-reader h3 {
+  font-family: 'Playfair', 'Playfair Display', Georgia, serif !important;
+  font-weight: 600;
+}
+
+.chapter-reader-content h2,
+.chapter-reader-content h3,
+.chapter-reader-content.prose h2,
+.chapter-reader-content.prose h3 {
+  font-family: 'Playfair', 'Playfair Display', Georgia, serif !important;
+  font-weight: 600 !important;
+}

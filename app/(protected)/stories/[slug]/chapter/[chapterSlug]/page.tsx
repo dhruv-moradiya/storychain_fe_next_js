@@ -1,4 +1,5 @@
-import ChapterReadClient from '@/components/stories/chapter-read/chapter-read-client';
+import { ChapterReadClient } from '@/components/stories/chapter-read';
+import { MOCK_CHAPTER } from '@/components/stories/chapter-read/mock-data';
 import type { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -20,5 +21,9 @@ export default async function ChapterPage({
   params: Promise<{ slug: string; chapterSlug: string }>;
 }) {
   const { slug, chapterSlug } = await params;
-  return <ChapterReadClient slug={slug} chapterSlug={chapterSlug} />;
+
+  // Simulate server-side fetching
+  const chapter = MOCK_CHAPTER;
+
+  return <ChapterReadClient chapter={chapter} slug={slug} chapterSlug={chapterSlug} />;
 }

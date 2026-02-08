@@ -13,7 +13,7 @@
 }
 
 .story-editor .ProseMirror p {
-  font-family: var(--font-lora), serif;
+  font-family: var(--font-playfair), serif;
   font-size: 1.125rem;
   line-height: 1.9;
   color: var(--text-secondary);
@@ -23,7 +23,7 @@
 .story-editor .ProseMirror h1,
 .story-editor .ProseMirror h2,
 .story-editor .ProseMirror h3 {
-  font-family: var(--font-inter), sans-serif;
+  font-family: var(--font-playfair), serif;
   color: var(--text-primary);
   font-weight: 600;
   letter-spacing: -0.02em;
