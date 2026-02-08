@@ -58,6 +58,7 @@
     "@tanstack/react-table": "^8.21.3",
     "@tiptap/extension-emoji": "^3.19.0",
     "@tiptap/extension-table": "^3.19.0",
+    "@tiptap/extension-text-align": "^3.19.0",
     "@tiptap/extension-text-style": "^3.19.0",
     "@tiptap/extension-underline": "^3.19.0",
     "@tiptap/pm": "^3.19.0",

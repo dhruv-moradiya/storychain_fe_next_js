@@ -43,7 +43,7 @@
 .story-editor .ProseMirror h2,
 .story-editor .ProseMirror h3,
 .story-editor .ProseMirror h4 {
-  font-family: var(--font-serif);
+  font-family: var(--font-playfair);
   color: var(--text-primary);
   font-weight: 600;
   letter-spacing: -0.02em;

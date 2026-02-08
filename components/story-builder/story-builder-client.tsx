@@ -3,6 +3,7 @@
 import { useState, Suspense } from 'react';
 import Emoji, { gitHubEmojis } from '@tiptap/extension-emoji';
 import { TableKit } from '@tiptap/extension-table';
+import TextAlign from '@tiptap/extension-text-align';
 import { FontSize, TextStyle, TextStyleKit } from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
@@ -30,6 +31,9 @@ const extensions = [
   FontSize,
   TextStyle,
   Underline,
+  TextAlign.configure({
+    types: ['heading', 'paragraph'],
+  }),
   Emoji.configure({
     emojis: gitHubEmojis,
     enableEmoticons: true,

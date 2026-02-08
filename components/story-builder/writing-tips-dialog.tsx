@@ -231,7 +231,7 @@ function WritingTipsDialog() {
                 {writingTips.map((tip, index) => (
                   <div
                     key={index}
-                    className="group border-border/60 hover:border-brand-pink-400/40 hover:bg-cream-30 rounded-xl border bg-white p-4 transition-all duration-200"
+                    className="group border-border/60 hover:border-brand-pink-400/40 rounded-xl border bg-white/55 p-4 transition-all duration-200"
                   >
                     <div className="flex items-start gap-3">
                       <div className="from-brand-pink-500/15 to-brand-orange/10 text-brand-pink-600 group-hover:from-brand-pink-500/25 group-hover:to-brand-orange/20 shrink-0 rounded-lg bg-linear-to-br p-2.5 transition-colors">
