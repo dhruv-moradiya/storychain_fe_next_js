@@ -1,5 +1,6 @@
 import { Clock, FileText, Type, Check } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { WritingTipsDialog } from './writing-tips-dialog';
 
 interface BuilderStatusBarProps {
   wordCount: number;
@@ -73,8 +74,10 @@ function BuilderStatusBar({ wordCount, charCount }: BuilderStatusBarProps) {
             </Tooltip>
           </div>
 
-          {/* Right Section - Last Saved */}
-          <div className="flex items-center gap-1.5">
+          {/* Right Section - Writing Tips & Last Saved */}
+          <div className="flex items-center gap-3">
+            <WritingTipsDialog />
+            <span className="text-text-secondary-65/40 hidden sm:inline">•</span>
             <div className="text-text-secondary-65 flex items-center gap-1.5 text-xs">
               <Check className="text-badge-success h-3.5 w-3.5" />
               <span className="hidden sm:inline">Saved just now</span>
