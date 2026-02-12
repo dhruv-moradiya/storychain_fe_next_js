@@ -15,6 +15,7 @@ import { TeamworkSection } from '@/components/home/teamwork-section';
 import { DarkCtaSection } from '@/components/home/dark-cta-section';
 import { FinalVisionSection } from '@/components/home/final-vision-section';
 import { FooterSection } from '@/components/home/footer-section';
+import { ToastDemo } from '@/components/shared/toast/toast-demo';
 
 export default function HomePage() {
   const { isSignedIn } = useAuth();
@@ -96,6 +97,9 @@ export default function HomePage() {
       <FinalVisionSection />
 
       <FooterSection />
+
+      {/* TODO: Remove this demo component after verification */}
+      <ToastDemo />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { Inter, Lora, Literata } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 import { QueryProvider } from '@/components/providers/query-provider';
 import { NavigationProgress } from '@/components/common/loader/navigation-progress';
+import ToastProvider from '@/components/shared/toast/toast-provider';
 import './globals.css';
 import { yellowtail, playfair, libreBaskerville, ibmPlexMono } from '@/lib/fonts';
 
@@ -40,7 +41,7 @@ export default function RootLayout({
         >
           <QueryProvider>
             <NavigationProgress />
-            {children}
+            <ToastProvider>{children}</ToastProvider>
           </QueryProvider>
         </body>
       </html>

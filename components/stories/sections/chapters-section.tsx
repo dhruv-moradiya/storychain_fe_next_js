@@ -61,7 +61,6 @@ interface ChaptersSectionProps {
 }
 
 export default function ChaptersSection({ initialData }: ChaptersSectionProps) {
-  'use no memo';
   const [data] = useState(() => initialData);
   const [expanded, setExpanded] = useState<ExpandedState>(() => expandAllRows(initialData));
 
