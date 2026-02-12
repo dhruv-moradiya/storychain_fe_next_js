@@ -30,7 +30,7 @@ export function PricingFAQ({ faqs }: PricingFAQProps) {
           </motion.div>
           <motion.h2
             {...scrollReveal.heading}
-            className="font-libreBaskerville text-text-tertiary text-2xl tracking-tight sm:text-3xl"
+            className="font-libre-baskerville text-text-tertiary text-2xl tracking-tight sm:text-3xl"
           >
             Frequently Asked Questions
           </motion.h2>

@@ -29,7 +29,7 @@ export default function FontsPage() {
     },
     {
       name: 'Libre Baskerville',
-      class: 'font-libreBaskerville',
+      class: 'font-libre-baskerville',
       weights: [400, 500, 600, 800],
     },
     {

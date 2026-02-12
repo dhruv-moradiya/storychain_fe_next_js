@@ -129,7 +129,7 @@ export function StoryHero({
         transition={{ delay: 0.15 }}
         className="space-y-2 sm:space-y-3"
       >
-        <p className="text-text-secondary-65 font-mono text-xs">{slug}</p>
+        <p className="text-text-secondary-65 font-ibm-plex-mono text-xs">{slug}</p>
         <h1 className="text-text-primary text-xl font-bold sm:text-2xl md:text-3xl">{title}</h1>
 
         <div className="flex flex-wrap gap-1.5 sm:gap-2">

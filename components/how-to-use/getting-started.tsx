@@ -23,7 +23,7 @@ export function GettingStarted({ steps }: GettingStartedProps) {
           </motion.div>
           <motion.h2
             {...scrollReveal.heading}
-            className="font-libreBaskerville text-text-tertiary text-2xl tracking-tight sm:text-3xl"
+            className="font-libre-baskerville text-text-tertiary text-2xl tracking-tight sm:text-3xl"
           >
             Getting Started in 6 Steps
           </motion.h2>

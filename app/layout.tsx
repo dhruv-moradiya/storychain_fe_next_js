@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
-import { Inter, Lora, Fira_Code, Literata } from 'next/font/google';
+import { Inter, Lora, Literata } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 import { QueryProvider } from '@/components/providers/query-provider';
 import { NavigationProgress } from '@/components/common/loader/navigation-progress';
 import './globals.css';
+import { yellowtail, playfair, libreBaskerville, ibmPlexMono } from '@/lib/fonts';
 
 const inter = Inter({
   variable: '--font-geist-sans',
@@ -12,11 +13,6 @@ const inter = Inter({
 
 const lora = Lora({
   variable: '--font-lora',
-  subsets: ['latin'],
-});
-
-const firaCode = Fira_Code({
-  variable: '--font-fira-code',
   subsets: ['latin'],
 });
 
@@ -40,7 +36,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body
-          className={`${inter.variable} ${lora.variable} ${firaCode.variable} ${literata.variable} antialiased`}
+          className={`${inter.variable} ${lora.variable} ${yellowtail.variable} ${playfair.variable} ${libreBaskerville.variable} ${ibmPlexMono.variable} ${literata.variable} antialiased`}
         >
           <QueryProvider>
             <NavigationProgress />

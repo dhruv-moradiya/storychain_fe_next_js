@@ -38,7 +38,7 @@ export function CTASection() {
 
             <motion.h2
               {...scrollReveal.heading}
-              className="font-libreBaskerville text-text-tertiary mb-4 text-2xl tracking-tight sm:text-3xl"
+              className="font-libre-baskerville text-text-tertiary mb-4 text-2xl tracking-tight sm:text-3xl"
             >
               Ready to Start Your Story?
             </motion.h2>

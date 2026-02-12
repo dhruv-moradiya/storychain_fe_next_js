@@ -29,7 +29,7 @@ export function FeatureSection({ section, index }: FeatureSectionProps) {
           </motion.span>
           <motion.h2
             {...scrollReveal.heading}
-            className="font-libreBaskerville text-text-tertiary text-2xl tracking-tight sm:text-3xl"
+            className="font-libre-baskerville text-text-tertiary text-2xl tracking-tight sm:text-3xl"
           >
             {section.title}
           </motion.h2>

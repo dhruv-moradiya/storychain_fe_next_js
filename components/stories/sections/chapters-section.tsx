@@ -216,7 +216,7 @@ export default function ChaptersSection({ initialData }: ChaptersSectionProps) {
 
           return (
             <div className="flex flex-col text-xs">
-              <span className="text-muted-foreground font-mono">#{pr.prId}</span>
+              <span className="text-muted-foreground font-ibm-plex-mono">#{pr.prId}</span>
               <span className="border-border bg-muted flex w-fit items-center gap-1 rounded-full border px-2 py-0.5 text-[11px]">
                 {icon}
                 {pr.status}
@@ -255,6 +255,7 @@ export default function ChaptersSection({ initialData }: ChaptersSectionProps) {
     []
   );
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,

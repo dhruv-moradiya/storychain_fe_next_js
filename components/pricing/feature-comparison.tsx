@@ -24,7 +24,7 @@ export function FeatureComparison({ features }: FeatureComparisonProps) {
           </motion.div>
           <motion.h2
             {...scrollReveal.heading}
-            className="font-libreBaskerville text-text-tertiary text-2xl tracking-tight sm:text-3xl"
+            className="font-libre-baskerville text-text-tertiary text-2xl tracking-tight sm:text-3xl"
           >
             Find what&apos;s right for you
           </motion.h2>

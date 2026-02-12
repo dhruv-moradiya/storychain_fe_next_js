@@ -28,7 +28,7 @@ export function ProTips({ tips }: ProTipsProps) {
           </motion.div>
           <motion.h2
             {...scrollReveal.heading}
-            className="font-libreBaskerville text-text-primary text-2xl tracking-tight sm:text-3xl md:text-4xl"
+            className="font-libre-baskerville text-text-primary text-2xl tracking-tight sm:text-3xl md:text-4xl"
           >
             Pro Tips for Success
           </motion.h2>

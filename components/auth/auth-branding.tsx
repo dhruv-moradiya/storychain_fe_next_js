@@ -71,7 +71,7 @@ export function AuthBranding({ title, subtitle, description }: AuthBrandingProps
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="font-libreBaskerville mb-4 text-3xl leading-tight text-white"
+          className="font-libre-baskerville mb-4 text-3xl leading-tight text-white"
         >
           {title}
           <br />

@@ -453,7 +453,7 @@ export default function WritingTipsPage() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-libreBaskerville text-text-tertiary mb-5 text-4xl leading-tight tracking-tight sm:text-5xl lg:text-6xl"
+            className="font-libre-baskerville text-text-tertiary mb-5 text-4xl leading-tight tracking-tight sm:text-5xl lg:text-6xl"
           >
             Craft Stories That
             <br />
@@ -540,7 +540,7 @@ export default function WritingTipsPage() {
               </motion.div>
               <motion.h2
                 {...scrollReveal.heading}
-                className="font-libreBaskerville text-text-primary text-2xl tracking-tight sm:text-3xl md:text-4xl"
+                className="font-libre-baskerville text-text-primary text-2xl tracking-tight sm:text-3xl md:text-4xl"
               >
                 {section.title}
               </motion.h2>
@@ -597,7 +597,7 @@ export default function WritingTipsPage() {
             </motion.div>
             <motion.h2
               {...scrollReveal.heading}
-              className="font-libreBaskerville text-text-primary text-2xl tracking-tight sm:text-3xl md:text-4xl"
+              className="font-libre-baskerville text-text-primary text-2xl tracking-tight sm:text-3xl md:text-4xl"
             >
               Scene Crafting Techniques
             </motion.h2>
@@ -661,7 +661,7 @@ export default function WritingTipsPage() {
             </motion.div>
             <motion.h2
               {...scrollReveal.heading}
-              className="font-libreBaskerville text-text-primary text-2xl tracking-tight sm:text-3xl md:text-4xl"
+              className="font-libre-baskerville text-text-primary text-2xl tracking-tight sm:text-3xl md:text-4xl"
             >
               Scene Break Styles
             </motion.h2>
@@ -729,7 +729,7 @@ export default function WritingTipsPage() {
             </motion.div>
             <motion.h2
               {...scrollReveal.heading}
-              className="font-libreBaskerville text-text-primary text-2xl tracking-tight sm:text-3xl md:text-4xl"
+              className="font-libre-baskerville text-text-primary text-2xl tracking-tight sm:text-3xl md:text-4xl"
             >
               Multilingual Storytelling
             </motion.h2>
@@ -804,7 +804,7 @@ export default function WritingTipsPage() {
             </motion.div>
             <motion.h2
               {...scrollReveal.heading}
-              className="font-libreBaskerville text-text-primary text-xl tracking-tight sm:text-2xl"
+              className="font-libre-baskerville text-text-primary text-xl tracking-tight sm:text-2xl"
             >
               Essential Shortcuts
             </motion.h2>
@@ -852,7 +852,7 @@ export default function WritingTipsPage() {
                 <Heart className="text-brand-pink-500 size-8" />
               </motion.div>
 
-              <h2 className="font-libreBaskerville text-text-tertiary mb-4 text-2xl tracking-tight sm:text-3xl">
+              <h2 className="font-libre-baskerville text-text-tertiary mb-4 text-2xl tracking-tight sm:text-3xl">
                 Your Story Awaits
               </h2>
 

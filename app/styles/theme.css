@@ -1,7 +1,7 @@
 /* ===========================================
    Tailwind Theme Configuration
    =========================================== */
-@theme inline {
+@theme {
   /* Base Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -191,10 +191,10 @@
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
   --font-reading: var(--font-reading);
-  --font-yellowtail: 'Yellowtail';
-  --font-playfair: 'Playfair', serif;
-  --font-libreBaskerville: 'LibreBaskerville', serif;
-  --font-ibm-plex-mono: 'IBMPlexMono', monospace;
+  --font-yellowtail: var(--font-yellowtail);
+  --font-playfair: var(--font-playfair);
+  --font-libre-baskerville: var(--font-libre-baskerville);
+  --font-ibm-plex-mono: var(--font-ibm-plex-mono);
 
   /* Border Radius */
   --radius-sm: calc(var(--radius) - 4px);

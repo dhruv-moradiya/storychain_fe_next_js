@@ -184,7 +184,7 @@ function SuccessContent({
         {paymentId && (
           <div className="bg-cream-90 mb-6 rounded-lg px-4 py-3">
             <p className="text-text-secondary-65 text-xs">Payment ID</p>
-            <p className="text-text-primary font-mono text-sm">{paymentId}</p>
+            <p className="text-text-primary font-ibm-plex-mono text-sm">{paymentId}</p>
           </div>
         )}
 
@@ -291,7 +291,7 @@ function ErrorContent({
         {errorCode && (
           <div className="mb-6 rounded-lg bg-red-500/5 px-4 py-3">
             <p className="text-text-secondary-65 text-xs">Error Code</p>
-            <p className="font-mono text-sm text-red-600">{errorCode}</p>
+            <p className="font-ibm-plex-mono text-sm text-red-600">{errorCode}</p>
           </div>
         )}
 

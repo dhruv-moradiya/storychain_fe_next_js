@@ -19,7 +19,7 @@
   h2,
   h3,
   h4 {
-    @apply font-libreBaskerville;
+    @apply font-libre-baskerville;
   }
 }
 

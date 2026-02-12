@@ -108,7 +108,7 @@ export const BasicInfoStep = memo(() => {
         {errors.title && <p className="text-xs text-red-500">{errors.title.message}</p>}
         {slug && (
           <p className="text-text-secondary-65 text-xs">
-            URL: <span className="text-brand-pink-500 font-mono">/stories/{slug}</span>
+            URL: <span className="text-brand-pink-500 font-ibm-plex-mono">/stories/{slug}</span>
           </p>
         )}
       </div>

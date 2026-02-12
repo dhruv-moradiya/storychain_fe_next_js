@@ -41,10 +41,10 @@ const DraftItem = ({ draft, onContinue }: { draft: IChapterAutoSave; onContinue:
         <Tooltip>
           <TooltipTrigger asChild>
             <div className="max-w-[140px] min-w-0 flex-1 overflow-hidden">
-              <p className="text-text-primary line-clamp-1 font-mono text-xs font-medium">
+              <p className="text-text-primary font-ibm-plex-mono line-clamp-1 text-xs font-medium">
                 {draft.title}
               </p>
-              <p className="text-text-secondary-65 line-clamp-1 font-mono text-[10px]">
+              <p className="text-text-secondary-65 font-ibm-plex-mono line-clamp-1 text-[10px]">
                 {formatDistanceToNow(draft.lastSavedAt, { addSuffix: true })}
               </p>
             </div>
@@ -213,7 +213,7 @@ export const DraftRecoveryBanner = () => {
               </div>
             )}
             <div>
-              <p className="text-text-primary font-mono text-xs font-medium">
+              <p className="text-text-primary font-ibm-plex-mono text-xs font-medium">
                 {showDraftList
                   ? 'Select a Draft'
                   : banner.count > 1
@@ -272,7 +272,7 @@ export const DraftRecoveryBanner = () => {
                   <div className="mb-3">
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <p className="text-text-primary line-clamp-2 cursor-default font-mono text-sm font-medium">
+                        <p className="text-text-primary font-ibm-plex-mono line-clamp-2 cursor-default text-sm font-medium">
                           {banner.latestTitle}
                         </p>
                       </TooltipTrigger>
@@ -280,7 +280,7 @@ export const DraftRecoveryBanner = () => {
                         <p className="text-xs break-words">{banner.latestTitle}</p>
                       </TooltipContent>
                     </Tooltip>
-                    <p className="text-text-secondary-65 mt-1 font-mono text-xs">
+                    <p className="text-text-secondary-65 font-ibm-plex-mono mt-1 text-xs">
                       {banner.words && `${banner.words} words`}
                       {banner.words && banner.timeAgo && ' • '}
                       {banner.timeAgo && `saved ${banner.timeAgo}`}
@@ -295,7 +295,7 @@ export const DraftRecoveryBanner = () => {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="border-border text-text-secondary-75 hover:bg-muted/50 min-w-[80px] shrink-0 font-mono text-xs"
+                            className="border-border text-text-secondary-75 hover:bg-muted/50 font-ibm-plex-mono min-w-[80px] shrink-0 text-xs"
                             onClick={actions.handleDiscardLatest}
                           >
                             Discard
@@ -310,7 +310,7 @@ export const DraftRecoveryBanner = () => {
                       <TooltipTrigger asChild>
                         <Button
                           size="sm"
-                          className="bg-brand-pink-500 hover:bg-brand-pink-600 min-w-[80px] shrink-0 font-mono text-xs text-white shadow-[0_2px_8px_var(--brand-pink-shadow25)]"
+                          className="bg-brand-pink-500 hover:bg-brand-pink-600 font-ibm-plex-mono min-w-[80px] shrink-0 text-xs text-white shadow-[0_2px_8px_var(--brand-pink-shadow25)]"
                           onClick={handleViewDrafts}
                         >
                           {banner.count > 1 ? 'View All' : 'Continue'}
@@ -338,7 +338,7 @@ export const DraftRecoveryBanner = () => {
               className="overflow-hidden"
             >
               <div className="px-3 py-3">
-                <p className="text-text-secondary-65 mb-2 font-mono text-[10px]">
+                <p className="text-text-secondary-65 font-ibm-plex-mono mb-2 text-[10px]">
                   {draftList.length} draft{draftList.length !== 1 ? 's' : ''} available
                 </p>
                 <ScrollArea className="max-h-[240px]">

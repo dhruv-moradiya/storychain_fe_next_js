@@ -138,7 +138,7 @@ const writingTips: WritingTip[] = [
     example: (
       <p className="font-reading text-text-secondary text-sm">
         The hologram flickered:{' '}
-        <code className="border-border bg-cream-50 text-text-primary rounded border px-1.5 py-0.5 font-mono text-xs font-medium">
+        <code className="border-border bg-cream-50 text-text-primary font-ibm-plex-mono rounded border px-1.5 py-0.5 text-xs font-medium">
           NEURAL_LINK_ESTABLISHED
         </code>
       </p>
@@ -305,7 +305,7 @@ function WritingTipsDialog() {
                       </span>
                       <span className="text-text-secondary text-sm">{shortcut.action}</span>
                     </div>
-                    <kbd className="bg-bg-cream border-border text-text-primary rounded-md border px-2 py-1 font-mono text-xs shadow-sm">
+                    <kbd className="bg-bg-cream border-border text-text-primary font-ibm-plex-mono rounded-md border px-2 py-1 text-xs shadow-sm">
                       {shortcut.keys}
                     </kbd>
                   </div>

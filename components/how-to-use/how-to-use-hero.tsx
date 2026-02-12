@@ -46,7 +46,7 @@ export function HowToUseHero() {
 
         <motion.h1
           {...fadeIn(0.2)}
-          className="font-libreBaskerville text-text-tertiary mb-5 text-4xl leading-tight tracking-tight sm:text-5xl lg:text-6xl"
+          className="font-libre-baskerville text-text-tertiary mb-5 text-4xl leading-tight tracking-tight sm:text-5xl lg:text-6xl"
         >
           How to Use
           <br />
