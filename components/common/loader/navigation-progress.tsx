@@ -37,16 +37,16 @@ function NavigationProgressContent() {
     setProgress(0.1);
 
     trickleIntervalRef.current = setInterval(() => {
-      progressRef.current += Math.random() * 0.08;
-      if (progressRef.current >= 0.9) {
-        progressRef.current = 0.9;
+      progressRef.current += Math.random() * 0.15;
+      if (progressRef.current >= 0.95) {
+        progressRef.current = 0.95;
         clearTrickle();
       }
       setProgress(progressRef.current);
-    }, 150);
+    }, 100);
   }, [clearTrickle]);
 
-  // Handle route changes - schedule completion in next tick to avoid cascading renders
+  // Handle route changes - schedule completion
   useEffect(() => {
     const currentPath = pathname + searchParams.toString();
 
@@ -54,9 +54,10 @@ function NavigationProgressContent() {
       previousPathRef.current = currentPath;
 
       if (isNavigatingRef.current) {
-        // Use queueMicrotask to avoid synchronous setState in effect
-        queueMicrotask(() => {
-          clearTrickle();
+        clearTrickle();
+
+        // Complete progress
+        setTimeout(() => {
           setProgress(1);
 
           // Hide after animation completes
@@ -64,8 +65,8 @@ function NavigationProgressContent() {
             setIsNavigating(false);
             setProgress(0);
             progressRef.current = 0;
-          }, 400);
-        });
+          }, 150);
+        }, 10);
       }
     }
   }, [pathname, searchParams, clearTrickle]);

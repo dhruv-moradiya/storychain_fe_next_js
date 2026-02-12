@@ -27,7 +27,7 @@ export default function HomePage() {
 
       {/* Background decoration */}
       <div
-        className="absolute inset-0 -z-10 h-screen w-full bg-gradient-to-b"
+        className="absolute inset-0 -z-10 h-screen w-full bg-linear-to-b"
         style={{
           backgroundImage:
             'linear-gradient(to bottom, var(--hero-gradient-from), var(--hero-gradient-via1), var(--hero-gradient-via2), var(--hero-gradient-via3), var(--hero-gradient-to))',
@@ -41,7 +41,7 @@ export default function HomePage() {
         className="pointer-events-none absolute inset-0 -z-10 mix-blend-screen"
         style={{ backgroundColor: 'var(--hero-overlay-purple5)' }}
       />
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-white/5 via-transparent to-transparent" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-linear-to-b from-white/5 via-transparent to-transparent" />
 
       {/* Floating Gradient Orbs */}
       <motion.div
