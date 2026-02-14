@@ -142,9 +142,9 @@ export const HeroSection = ({ isSignedIn }: IHeroSectionProps) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 + i * 0.1 }}
             whileHover={{ scale: 1.05, y: -2 }}
-            className="font-ibm-plex-mono flex cursor-default items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs text-white/70 backdrop-blur"
+            className="font-ibm-plex-mono bg-brand-blue/10 text-brand-blue-alt flex cursor-default items-center gap-1.5 rounded-full px-3 py-1.5 text-xs backdrop-blur"
           >
-            <Sparkles className="h-3 w-3" />
+            <Sparkles className="text-brand-blue-alt h-3 w-3" />
             {badge}
           </motion.span>
         ))}
@@ -162,8 +162,8 @@ export const HeroSection = ({ isSignedIn }: IHeroSectionProps) => {
           transition={{ duration: 1.5, repeat: Infinity }}
           className="flex flex-col items-center gap-1"
         >
-          <div className="h-6 w-px bg-gradient-to-b from-white/40 to-transparent" />
-          <div className="h-1.5 w-1.5 rounded-full bg-white/40" />
+          <div className="from-brand-blue/40 h-6 w-px bg-linear-to-b to-transparent" />
+          <div className="bg-brand-blue/40 h-1.5 w-1.5 rounded-full" />
         </motion.div>
       </motion.div>
     </section>

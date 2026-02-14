@@ -7,9 +7,9 @@ import { scrollReveal } from '@/lib/utils';
 
 export const NotJustAnAppSection = () => {
   return (
-    <section className="bg-bg-cream relative z-10 px-6 pt-8 pb-10 sm:pb-20">
+    <section className="bg-bg-cream relative z-10 px-6 pt-6 pb-8 sm:pb-20">
       <div className="mx-auto max-w-6xl">
-        <div className="relative overflow-hidden rounded-[20px] px-4 py-16 shadow-sm backdrop-blur-sm sm:rounded-[28px] sm:px-6 sm:py-32">
+        <div className="relative overflow-hidden rounded-[20px] px-4 py-12 shadow-sm backdrop-blur-sm sm:rounded-[28px] sm:px-6 sm:py-24">
           {/* <div className="pointer-events-none absolute inset-0 rounded-[28px] bg-[radial-gradient(circle,_rgba(0,0,0,0.03)_1px,_transparent_1px)] [background-size:24px_24px] opacity-60" /> */}
           <div
             className="pointer-events-none absolute inset-0 rounded-[28px]"

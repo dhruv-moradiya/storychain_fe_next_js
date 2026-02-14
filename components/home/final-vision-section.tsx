@@ -16,6 +16,7 @@ export const FinalVisionSection = () => {
             alt="Exploring a new frontier"
             fill
             className="object-cover"
+            sizes="(max-width: 640px) 100vw, 400px"
           />
           <div
             className="pointer-events-none absolute inset-x-0 top-0 h-16"

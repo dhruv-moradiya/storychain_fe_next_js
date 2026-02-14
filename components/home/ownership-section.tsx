@@ -10,7 +10,7 @@ export const OwnershipSection = () => {
   return (
     <section className="bg-bg-cream relative z-10">
       {/* Image - hidden on mobile */}
-      <div className="relative hidden w-full overflow-hidden sm:block">
+      {/* <div className="relative hidden w-full overflow-hidden sm:block">
         <motion.div {...scrollReveal.image} className="relative h-[600px] w-full">
           <Image
             src={storyChainLandingContent.ownership.imageUrl.url}
@@ -21,7 +21,7 @@ export const OwnershipSection = () => {
         </motion.div>
         <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-linear-to-b from-(--bg-cream) via-[rgba(255,245,230,0.6)] to-transparent" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-(--bg-cream) via-[rgba(255,245,230,0.6)] to-transparent" />
-      </div>
+      </div> */}
 
       <div className="relative mx-auto max-w-3xl px-6 pt-10 pb-12 text-center sm:pt-16 sm:pb-20">
         <motion.span

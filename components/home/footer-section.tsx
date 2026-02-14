@@ -5,7 +5,7 @@ import { storyChainLandingContent } from '@/constants';
 
 export const FooterSection = () => {
   return (
-    <footer className="bg-bg-cream font-ibm-plex-mono relative z-10 px-6 pt-10 pb-16 sm:pt-12 sm:pb-24">
+    <footer className="bg-bg-cream font-ibm-plex-mono relative z-10 border-t border-black/5 px-6 pt-10 pb-16 sm:pt-12 sm:pb-24">
       <div className="text-text-secondary-65 mx-auto grid max-w-6xl grid-cols-2 gap-6 text-left text-xs sm:grid-cols-5 sm:gap-12">
         <div>
           <div className="text-text-tertiary mb-3 flex items-center gap-2 font-bold">

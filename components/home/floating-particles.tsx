@@ -22,10 +22,26 @@ interface Particle {
 
 export const FloatingParticles = ({ count = 20, color = 'white' }: IFloatingParticlesProps) => {
   const [particles, setParticles] = useState<Particle[]>([]);
+  const [adjustedCount, setAdjustedCount] = useState(0);
 
   useEffect(() => {
+    const updateCount = () => {
+      // Reduce particle count on mobile - safe to access window here
+      const isMobile = window.innerWidth < 640;
+      const targetCount = isMobile ? Math.min(count, 10) : count;
+      setAdjustedCount((prev) => (prev !== targetCount ? targetCount : prev));
+    };
+
+    updateCount();
+    window.addEventListener('resize', updateCount);
+    return () => window.removeEventListener('resize', updateCount);
+  }, [count]);
+
+  useEffect(() => {
+    if (adjustedCount === 0) return;
+
     const timer = setTimeout(() => {
-      const newParticles = Array.from({ length: count }).map((_, i) => ({
+      const newParticles = Array.from({ length: adjustedCount }).map((_, i) => ({
         id: i,
         width: Math.random() * 4 + 2,
         height: Math.random() * 4 + 2,
@@ -40,7 +56,7 @@ export const FloatingParticles = ({ count = 20, color = 'white' }: IFloatingPart
     }, 0);
 
     return () => clearTimeout(timer);
-  }, [count]);
+  }, [adjustedCount]);
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">

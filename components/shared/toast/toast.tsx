@@ -1,12 +1,12 @@
 'use client';
 
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
+import { AlertTriangle, Bell, CheckCircle, Info, Loader2, X, XCircle } from 'lucide-react';
 import * as React from 'react';
 import { toast as hotToast, type Toast as HotToast } from 'react-hot-toast';
-import { CheckCircle, XCircle, AlertTriangle, Info, Bell, Loader2, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import type { ToastVariant, ToastOptions } from './types';
 import { getToastStyle } from './styles';
-import { motion, AnimatePresence } from 'framer-motion';
+import type { ToastOptions, ToastVariant } from './types';
 
 // Icon mapping
 const iconMap = {
@@ -65,7 +65,7 @@ function ToastContent({
         opacity: { duration: 0.2 },
       }}
       className={cn(
-        'pointer-events-auto flex w-full max-w-[calc(100vw-32px)] items-center gap-4 rounded-2xl border px-5 py-4 shadow-xl backdrop-blur-md sm:max-w-md',
+        'pointer-events-auto flex w-full max-w-[calc(100vw-32px)] items-center gap-3 rounded-xl border px-4 py-3 shadow-xl backdrop-blur-md sm:max-w-[350px]',
         style.bg,
         style.border
       )}
@@ -73,29 +73,34 @@ function ToastContent({
       {/* Icon */}
       <div
         className={cn(
-          'mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl',
+          'mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg',
           style.iconBg
         )}
       >
         {customIcon ? (
           <span className={cn(style.icon)}>{customIcon}</span>
         ) : (
-          <IconComponent size={18} className={cn(isLoading && 'animate-spin', style.icon)} />
+          <IconComponent size={16} className={cn(isLoading && 'animate-spin', style.icon)} />
         )}
       </div>
 
       {/* Content */}
-      <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
+      <div className="flex min-w-0 flex-1 flex-col justify-center">
         <p
           className={cn(
-            'font-libre-baskerville text-[15px] leading-tight font-bold tracking-tight',
+            'font-libre-baskerville text-sm leading-tight font-bold tracking-tight',
             style.text
           )}
         >
           {title}
         </p>
         {description && (
-          <p className={cn('font-ibm-plex-mono text-xs leading-relaxed opacity-85', style.text)}>
+          <p
+            className={cn(
+              'font-ibm-plex-mono mt-0.5 text-[11px] leading-relaxed opacity-85',
+              style.text
+            )}
+          >
             {description}
           </p>
         )}
@@ -109,7 +114,7 @@ function ToastContent({
             hotToast.dismiss(t.id);
           }}
           className={cn(
-            'font-ibm-plex-mono shrink-0 self-center rounded-lg px-3 py-1.5 text-xs font-medium transition-transform hover:scale-105 active:scale-95',
+            'font-ibm-plex-mono shrink-0 self-center rounded-lg px-2.5 py-1 text-[11px] font-medium transition-transform hover:scale-105 active:scale-95',
             style.iconBg,
             style.icon
           )}

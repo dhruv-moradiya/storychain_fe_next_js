@@ -11,8 +11,24 @@
   }
 
   * {
+    /* Firefox */
     scrollbar-width: thin;
-    scrollbar-color: theme(--color-muted-foreground) theme(--color-sidebar);
+    scrollbar-color: var(--brand-pink-500) transparent;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--brand-pink-500);
+    border-radius: 20px;
   }
 
   h1,

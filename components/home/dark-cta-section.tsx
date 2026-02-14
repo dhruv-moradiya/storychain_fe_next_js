@@ -148,7 +148,7 @@ export const DarkCtaSection = () => {
             ].map(({ Icon, angle, delay, size, iconSize, showOnMobile }, i) => (
               <motion.div
                 key={i}
-                className={`absolute top-1/2 left-1/2 ${!showOnMobile ? 'hidden sm:block' : ''}`}
+                className={`absolute top-1/2 left-1/2 ${!showOnMobile ? 'hidden sm:block' : ''} [--line-width:35px] [--radius:70px] sm:[--line-width:110px] sm:[--radius:160px]`}
                 initial={{ opacity: 0, scale: 0 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
@@ -158,7 +158,7 @@ export const DarkCtaSection = () => {
                 <motion.div
                   className="absolute top-1/2 left-1/2 h-px origin-left"
                   style={{
-                    width: '50px',
+                    width: 'var(--line-width)',
                     background: 'linear-gradient(90deg, rgba(236, 72, 153, 0.38), transparent)',
                     transform: `rotate(${angle}deg)`,
                   }}
@@ -169,9 +169,9 @@ export const DarkCtaSection = () => {
                 <motion.div
                   className={`absolute ${size} flex items-center justify-center rounded-lg border border-white/20 bg-white/10 backdrop-blur-sm sm:rounded-xl`}
                   style={{
-                    left: `${Math.cos((angle * Math.PI) / 180) * 60}px`,
-                    top: `${Math.sin((angle * Math.PI) / 180) * 60}px`,
-                    transform: 'translate(-50%, -50%)',
+                    left: `50%`,
+                    top: `50%`,
+                    transform: `translate(calc(-50% + ${Math.cos((angle * Math.PI) / 180)} * var(--radius)), calc(-50% + ${Math.sin((angle * Math.PI) / 180)} * var(--radius)))`,
                   }}
                   animate={{ y: [0, -3, 0] }}
                   transition={{ duration: 3, repeat: Infinity, delay: delay, ease: 'easeInOut' }}

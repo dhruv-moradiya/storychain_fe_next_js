@@ -10,7 +10,7 @@ export const TeamworkSection = () => {
   return (
     <section className="bg-bg-cream relative z-10">
       {/* Image - hidden on mobile */}
-      <div className="relative hidden h-[260px] w-full overflow-hidden sm:block">
+      {/* <div className="relative hidden h-[260px] w-full overflow-hidden sm:block">
         <motion.div {...scrollReveal.image} className="relative h-full w-full">
           <Image
             src={storyChainLandingContent.collaboration.imageUrl.url}
@@ -31,9 +31,9 @@ export const TeamworkSection = () => {
             background: 'linear-gradient(to top, var(--bg-cream), var(--cream-75), transparent)',
           }}
         />
-      </div>
+      </div> */}
 
-      <div className="mx-auto max-w-4xl px-6 pt-10 pb-12 text-center sm:pt-16 sm:pb-20">
+      <div className="mx-auto max-w-4xl px-6 pt-10 pb-12 text-center sm:mb-24 sm:pt-16 sm:pb-20">
         <motion.span
           {...scrollReveal.paragraph}
           className="font-yellowtail text-brand-pink-500 mb-4 block text-lg"
@@ -64,7 +64,7 @@ export const TeamworkSection = () => {
               key={feature}
               initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: '-20%' }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ scale: 1.02 }}
               className="flex items-center gap-2 rounded-xl bg-white/60 px-4 py-3 text-left shadow-sm ring-1 ring-black/5"
@@ -75,7 +75,7 @@ export const TeamworkSection = () => {
           ))}
         </div>
 
-        <motion.div {...scrollReveal.paragraph}>
+        <motion.div {...scrollReveal.paragraph} className="flex justify-center">
           <motion.button
             className="group bg-brand-blue flex items-center gap-2 rounded-[6px] px-7 py-2.5 text-sm font-medium text-white shadow-md"
             whileHover={{ scale: 1.03 }}
