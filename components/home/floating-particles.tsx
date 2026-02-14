@@ -26,9 +26,9 @@ export const FloatingParticles = ({ count = 20, color = 'white' }: IFloatingPart
 
   useEffect(() => {
     const updateCount = () => {
-      // Reduce particle count on mobile - safe to access window here
+      // Optimized particle count: 5 on mobile, max 15 on desktop
       const isMobile = window.innerWidth < 640;
-      const targetCount = isMobile ? Math.min(count, 10) : count;
+      const targetCount = isMobile ? Math.min(count, 5) : Math.min(count, 15);
       setAdjustedCount((prev) => (prev !== targetCount ? targetCount : prev));
     };
 
@@ -71,6 +71,7 @@ export const FloatingParticles = ({ count = 20, color = 'white' }: IFloatingPart
             top: `${particle.top}%`,
             backgroundColor: color,
             opacity: particle.opacity,
+            willChange: 'transform, opacity',
           }}
           animate={{
             y: [0, -30, 0],

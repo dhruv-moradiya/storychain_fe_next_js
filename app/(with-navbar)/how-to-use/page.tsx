@@ -7,6 +7,8 @@ import { ProTips } from '@/components/how-to-use/pro-tips';
 import { CTASection } from '@/components/how-to-use/cta-section';
 import { gettingStartedSteps, sections, proTips } from '@/lib/data/how-to-use-data';
 
+// Note: Metadata must be exported from a Server Component
+// Moving this to a layout.tsx for this route group would be better
 export default function HowToUsePage() {
   return (
     <div className="bg-bg-cream min-h-screen">

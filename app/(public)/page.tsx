@@ -1,24 +1,79 @@
-'use client';
+import { auth } from '@clerk/nextjs/server';
+import dynamic from 'next/dynamic';
 
-import { useAuth } from '@clerk/nextjs';
-import { motion } from 'framer-motion';
-import { ScrollProgress } from '@/components/home/scroll-progress';
-import { Navbar } from '@/components/home/navbar';
-import { HeroSection } from '@/components/home/hero-section';
-import { FloatingParticles } from '@/components/home/floating-particles';
-import { NotJustAnAppSection } from '@/components/home/not-just-an-app-section';
-import { FeaturesGridSection } from '@/components/home/features-grid-section';
-import { OwnershipSection } from '@/components/home/ownership-section';
-import { TestimonialsSection } from '@/components/home/testimonials-section';
-import { CreatorToolsSection } from '@/components/home/creator-tools-section';
-import { TeamworkSection } from '@/components/home/teamwork-section';
-import { DarkCtaSection } from '@/components/home/dark-cta-section';
-import { FinalVisionSection } from '@/components/home/final-vision-section';
-import { FooterSection } from '@/components/home/footer-section';
-import { ToastDemo } from '@/components/shared/toast/toast-demo';
+// Lazy load ALL client components to maintain server/client boundary
+const Navbar = dynamic(() => import('@/components/home/navbar').then((mod) => mod.Navbar), {
+  ssr: true,
+});
+const ScrollProgress = dynamic(
+  () => import('@/components/home/scroll-progress').then((mod) => mod.ScrollProgress),
+  { ssr: true }
+);
 
-export default function HomePage() {
-  const { isSignedIn } = useAuth();
+const HeroSection = dynamic(
+  () => import('@/components/home/hero-section').then((mod) => mod.HeroSection),
+  { ssr: true }
+);
+
+const FloatingParticles = dynamic(
+  () => import('@/components/home/floating-particles').then((mod) => mod.FloatingParticles),
+  { ssr: true }
+);
+
+const NotJustAnAppSection = dynamic(
+  () => import('@/components/home/not-just-an-app-section').then((mod) => mod.NotJustAnAppSection),
+  { ssr: true }
+);
+
+const FeaturesGridSection = dynamic(
+  () => import('@/components/home/features-grid-section').then((mod) => mod.FeaturesGridSection),
+  { ssr: true }
+);
+
+// Lazy load below-fold sections to reduce initial bundle size
+const OwnershipSection = dynamic(
+  () => import('@/components/home/ownership-section').then((mod) => mod.OwnershipSection),
+  { ssr: true }
+);
+
+const TestimonialsSection = dynamic(
+  () => import('@/components/home/testimonials-section').then((mod) => mod.TestimonialsSection),
+  { ssr: true }
+);
+
+const CreatorToolsSection = dynamic(
+  () => import('@/components/home/creator-tools-section').then((mod) => mod.CreatorToolsSection),
+  { ssr: true }
+);
+
+const TeamworkSection = dynamic(
+  () => import('@/components/home/teamwork-section').then((mod) => mod.TeamworkSection),
+  { ssr: true }
+);
+
+const DarkCtaSection = dynamic(
+  () => import('@/components/home/dark-cta-section').then((mod) => mod.DarkCtaSection),
+  { ssr: true }
+);
+
+const FinalVisionSection = dynamic(
+  () => import('@/components/home/final-vision-section').then((mod) => mod.FinalVisionSection),
+  { ssr: true }
+);
+
+const FooterSection = dynamic(
+  () => import('@/components/home/footer-section').then((mod) => mod.FooterSection),
+  { ssr: true }
+);
+
+const ToastDemo = dynamic(
+  () => import('@/components/shared/toast/toast-demo').then((mod) => mod.ToastDemo),
+  { ssr: true }
+);
+
+export default async function HomePage() {
+  const { userId } = await auth();
+  const isSignedIn = !!userId;
 
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -44,31 +99,33 @@ export default function HomePage() {
       <div className="pointer-events-none absolute inset-0 -z-10 bg-linear-to-b from-white/5 via-transparent to-transparent" />
 
       {/* Floating Gradient Orbs */}
-      <motion.div
-        className="pointer-events-none absolute top-32 left-1/4 h-64 w-64 rounded-full opacity-25 blur-3xl"
-        style={{
-          background: 'radial-gradient(circle, var(--hero-gradient-via1) 0%, transparent 70%)',
-        }}
-      />
-      <motion.div
-        className="pointer-events-none absolute top-48 right-1/4 h-48 w-48 rounded-full opacity-20 blur-3xl"
-        style={{
-          background: 'radial-gradient(circle, var(--hero-gradient-via2) 0%, transparent 70%)',
-        }}
-      />
-      <motion.div
-        className="pointer-events-none absolute top-64 left-1/3 h-32 w-32 rounded-full opacity-30 blur-2xl"
-        style={{
-          background: 'radial-gradient(circle, var(--brand-pink-400) 0%, transparent 70%)',
-        }}
-      />
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div
+          className="absolute top-32 left-1/4 h-64 w-64 animate-pulse rounded-full opacity-25 blur-3xl"
+          style={{
+            background: 'radial-gradient(circle, var(--hero-gradient-via1) 0%, transparent 70%)',
+          }}
+        />
+        <div
+          className="absolute top-48 right-1/4 h-48 w-48 animate-pulse rounded-full opacity-20 blur-3xl"
+          style={{
+            background: 'radial-gradient(circle, var(--hero-gradient-via2) 0%, transparent 70%)',
+          }}
+        />
+        <div
+          className="absolute top-64 left-1/3 h-32 w-32 animate-pulse rounded-full opacity-30 blur-2xl"
+          style={{
+            background: 'radial-gradient(circle, var(--brand-pink-400) 0%, transparent 70%)',
+          }}
+        />
+      </div>
 
-      {/* Hero floating particles */}
-      <FloatingParticles count={30} color="rgba(255,255,255,0.6)" />
+      {/* Hero floating particles - optimized count */}
+      <FloatingParticles count={20} color="rgba(255,255,255,0.6)" />
 
-      <Navbar isSignedIn={!!isSignedIn} />
+      <Navbar isSignedIn={isSignedIn} />
 
-      <HeroSection isSignedIn={!!isSignedIn} />
+      <HeroSection isSignedIn={isSignedIn} />
 
       {/* SECTION BLEND TO CREAM */}
       <section className="relative z-10 h-24 w-full overflow-hidden">
@@ -84,6 +141,7 @@ export default function HomePage() {
 
       <FeaturesGridSection />
 
+      {/* Below-fold sections: lazy loaded */}
       <OwnershipSection />
 
       <TestimonialsSection />
