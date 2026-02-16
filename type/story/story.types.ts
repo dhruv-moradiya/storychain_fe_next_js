@@ -76,7 +76,7 @@ interface IStory {
 
   tags: string[];
   genres: string[]; // Added genres to root to match usage
-  contentRating: string; // Added contentRating to root to match usage
+  contentRating: TStoryContentRating; // Added contentRating to root to match usage
 
   status: TStoryStatus;
 

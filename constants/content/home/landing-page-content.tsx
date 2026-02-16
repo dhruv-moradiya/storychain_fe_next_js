@@ -238,7 +238,7 @@ export const storyChainLandingContent = {
 
   footer: {
     brand: {
-      name: 'Story Chain',
+      name: 'Storychain',
       tagline: 'Write gently. Branch bravely. Let stories live.',
       description: 'A living space for collaborative storytelling',
     },

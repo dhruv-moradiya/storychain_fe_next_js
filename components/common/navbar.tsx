@@ -31,10 +31,12 @@ import {
   User,
   Settings,
   LogOut,
+  TestTube,
 } from 'lucide-react';
 import { NavItem } from '@/components/common';
 import { useState } from 'react';
 import Image from 'next/image';
+import { StorychainLogo } from './logo/storychain-logo';
 
 // Mock notifications data - replace with real data
 const mockNotifications = [
@@ -194,7 +196,12 @@ export default function Navbar() {
           {isSignedIn && (
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-9 w-9 md:hidden">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9 md:hidden"
+                  aria-label="Open mobile menu"
+                >
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
@@ -207,10 +214,7 @@ export default function Navbar() {
                       className="flex items-center gap-2.5"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      <span className="bg-brand-pink-500 h-3 w-3 rounded-full shadow-[0_0_12px_var(--brand-pink-shadow35)]" />
-                      <span className="text-text-primary text-[18px] font-semibold tracking-tight">
-                        StoryChain
-                      </span>
+                      <StorychainLogo size="medium" className="h-9 w-auto" />
                     </Link>
                   </div>
 
@@ -298,10 +302,7 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5">
-            <span className="bg-brand-pink-500 h-3 w-3 rounded-full shadow-[0_0_12px_var(--brand-pink-shadow35)]" />
-            <span className="text-text-primary text-[18px] font-semibold tracking-tight">
-              StoryChain
-            </span>
+            <StorychainLogo size="medium" className="text-text-primary h-9 w-auto" />
           </Link>
         </div>
 
@@ -309,6 +310,7 @@ export default function Navbar() {
         {isSignedIn && (
           <ul className="hidden items-center gap-2 md:flex">
             <NavItem to="/dashboard" label="Dashboard" icon={<LayoutDashboard size={16} />} />
+            <NavItem to="/test" label="Test" icon={<TestTube size={16} />} />
             <NavItem to="/explore" label="Explore" icon={<Compass size={16} />} />
             <NavItem to="/builder" label="Builder" icon={<Feather size={16} />} />
             <NavItem to="/pricing" label="Pricing" icon={<CoinsIcon size={16} />} />
@@ -425,6 +427,8 @@ export default function Navbar() {
                     'relative h-8 w-8 cursor-pointer overflow-hidden rounded-full',
                     'border-border/50 bg-muted/60 border backdrop-blur-sm'
                   )}
+                  role="button"
+                  tabIndex={0}
                 >
                   <Image
                     src={

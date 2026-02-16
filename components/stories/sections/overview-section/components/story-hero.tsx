@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Heart, Share2, Bell, Bookmark, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { storyStatusBadge, contentRatingBadge, genresBadges } from '@/components/common/badge';
-import type { TStoryStatus } from '@/type/story';
+import type { TStoryStatus, TStoryContentRating } from '@/type/story';
 import Image from 'next/image';
 
 interface StoryHeroProps {
@@ -11,7 +11,7 @@ interface StoryHeroProps {
   title: string;
   slug: string;
   status: TStoryStatus;
-  contentRating: string;
+  contentRating: TStoryContentRating;
   genres: string[];
   totalVotes: string;
   onBack: () => void;

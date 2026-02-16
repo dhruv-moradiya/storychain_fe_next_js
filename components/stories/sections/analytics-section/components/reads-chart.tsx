@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useId, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import {
@@ -31,6 +31,7 @@ const chartConfig = {
 export function ReadsChart({ data }: ReadsChartProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
+  const id = useId();
 
   return (
     <motion.div
@@ -55,11 +56,11 @@ export function ReadsChart({ data }: ReadsChartProps) {
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
             <defs>
-              <linearGradient id="fillReads" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id={`fillReads-${id}`} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="hsl(var(--brand-pink-500))" stopOpacity={0.8} />
                 <stop offset="95%" stopColor="hsl(var(--brand-pink-500))" stopOpacity={0.1} />
               </linearGradient>
-              <linearGradient id="fillVisitors" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id={`fillVisitors-${id}`} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="hsl(var(--brand-blue))" stopOpacity={0.8} />
                 <stop offset="95%" stopColor="hsl(var(--brand-blue))" stopOpacity={0.1} />
               </linearGradient>
@@ -90,7 +91,7 @@ export function ReadsChart({ data }: ReadsChartProps) {
             <Area
               dataKey="uniqueVisitors"
               type="monotone"
-              fill="url(#fillVisitors)"
+              fill={`url(#fillVisitors-${id})`}
               stroke="hsl(var(--brand-blue))"
               strokeWidth={2}
               stackId="a"
@@ -98,7 +99,7 @@ export function ReadsChart({ data }: ReadsChartProps) {
             <Area
               dataKey="reads"
               type="monotone"
-              fill="url(#fillReads)"
+              fill={`url(#fillReads-${id})`}
               stroke="hsl(var(--brand-pink-500))"
               strokeWidth={2}
               stackId="b"

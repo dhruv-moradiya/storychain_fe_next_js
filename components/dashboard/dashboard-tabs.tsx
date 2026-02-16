@@ -23,7 +23,7 @@ export function DashboardTabs() {
               key={t.key}
               href={t.path}
               className={cn(
-                'text-text-secondary-65 hover:text-text-primary relative flex items-center gap-1.5 px-2 py-3 text-xs font-medium whitespace-nowrap transition-colors sm:px-3 sm:text-sm',
+                'hover:text-text-primary relative flex items-center gap-1.5 px-2 py-3 text-xs font-medium whitespace-nowrap transition-colors sm:px-3 sm:text-sm',
                 isActive && 'text-brand-pink-500'
               )}
             >

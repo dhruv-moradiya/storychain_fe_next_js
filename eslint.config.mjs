@@ -28,6 +28,8 @@ const eslintConfig = defineConfig([
         },
       ],
       'react/jsx-sort-props': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@react-hooks/incompatible-library': 'off',
     },
   },
 ]);

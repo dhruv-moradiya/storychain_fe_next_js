@@ -12,6 +12,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { QueryProvider } from '@/components/providers/query-provider';
 import { NavigationProgress } from '@/components/common/loader/navigation-progress';
 import ToastProvider from '@/components/shared/toast/toast-provider';
+import { FooterSection } from '@/components/home/footer-section';
 import './globals.css';
 
 const inter = Inter({
@@ -146,8 +147,13 @@ export default function RootLayout({
           className={`${inter.variable} ${lora.variable} ${yellowtail.variable} ${playfair.variable} ${libreBaskerville.variable} ${ibmPlexMono.variable} ${literata.variable} antialiased`}
         >
           <QueryProvider>
-            <NavigationProgress />
-            <ToastProvider>{children}</ToastProvider>
+            <main>
+              <NavigationProgress />
+              <ToastProvider>
+                {children}
+                <FooterSection />
+              </ToastProvider>
+            </main>
           </QueryProvider>
         </body>
       </html>

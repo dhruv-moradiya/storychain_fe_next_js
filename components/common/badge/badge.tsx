@@ -51,13 +51,24 @@ export function createBadge(config: BadgeConfig): React.ReactElement {
       )}
       style={styleObj}
       onClick={disabled ? undefined : onClick}
-      role={onClick ? 'button' : undefined}
+      role={onClick && !disabled ? 'button' : undefined}
       tabIndex={onClick && !disabled ? 0 : undefined}
+      onKeyDown={
+        onClick && !disabled
+          ? (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onClick();
+              }
+            }
+          : undefined
+      }
     >
       {dot && (
         <span
           className="h-1.5 w-1.5 shrink-0 rounded-full"
           style={{ backgroundColor: colorScheme.text }}
+          aria-hidden="true"
         />
       )}
       {Icon && iconPosition === 'left' && (

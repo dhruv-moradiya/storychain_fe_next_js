@@ -2,22 +2,32 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 // Create an axios instance with base configuration
 const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
 // Request interceptor for adding auth tokens, etc.
 apiClient.interceptors.request.use(
-  (config) => {
-    // You can add auth token here if needed
-    // Example with Clerk:
-    // const token = await getToken();
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
+  async (config) => {
+    if (typeof window === 'undefined') {
+      // Server-side
+      const { auth } = await import('@clerk/nextjs/server');
+      const { getToken } = await auth();
+      const token = await getToken();
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const token = await (window as any).Clerk?.session?.getToken();
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
     return config;
   },
   (error) => {

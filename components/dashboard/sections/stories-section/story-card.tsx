@@ -1,43 +1,42 @@
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { ArrowRight, User } from 'lucide-react';
-import Link from 'next/link';
 import {
-  storyStatusBadge,
-  contentRatingBadge,
   BadgeGroup,
+  contentRatingBadge,
+  storyStatusBadge,
   type BadgeConfig,
 } from '@/components/common/badge';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { formatDistance } from 'date-fns';
+import { ArrowRight, User } from 'lucide-react';
+import Link from 'next/link';
+import { memo, useMemo } from 'react';
 
-// Static story type for now (no API calls)
-export interface StaticStory {
-  id: string;
-  slug: string;
-  title: string;
-  status: 'DRAFT' | 'PUBLISHED' | 'COMPLETED';
-  contentRating: 'GENERAL' | 'TEEN' | 'MATURE';
-  tags: string[];
-  updatedAt: string;
-}
+import { IUserStories } from '@/type/story/story-response.type';
 
 interface StoryCardProps {
-  story: StaticStory;
+  story: IUserStories;
 }
 
-export function StoryCard({ story }: StoryCardProps) {
+export const StoryCard = memo(function StoryCard({ story }: StoryCardProps) {
   // Convert tags to badge configs
-  const tagBadges: BadgeConfig[] = story.tags.map((tag) => ({
-    label: tag,
-    color: 'pink' as const,
-    shape: 'pill' as const,
-    size: 'xs' as const,
-  }));
+  const tagBadges: BadgeConfig[] = useMemo(() => {
+    return story.tags.map((tag) => ({
+      label: tag,
+      color: 'pink' as const,
+      shape: 'pill' as const,
+      size: 'xs' as const,
+    }));
+  }, [story.tags]);
+
+  const updatedAt = useMemo(
+    () => formatDistance(new Date(story.updatedAt), new Date(), { addSuffix: true }),
+    [story.updatedAt]
+  );
 
   return (
-    <Link href={`/stories/${story.slug}/overview`} className="block">
+    <Link href={`/stories/${story.slug}/overview`} className="block" prefetch={false}>
       <div className="group/story-card bg-card/50 relative cursor-pointer overflow-hidden rounded-[14px] p-1.5 transition-all duration-300">
         {/* ✨ HOVER GRADIENT OVERLAY */}
-        <div className="from-primary/5 via-secondary/10 to-primary/10 pointer-events-none absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-500 group-hover/story-card:opacity-100" />
+        <div className="from-primary/5 via-secondary/10 to-primary/10 pointer-events-none absolute inset-0 bg-linear-to-br opacity-0 transition-opacity duration-500 group-hover/story-card:opacity-100" />
 
         {/* ================= CARD CONTENT ================= */}
         <div className="relative flex flex-1 flex-col justify-between gap-2 rounded-[12px] border p-3 shadow">
@@ -61,28 +60,23 @@ export function StoryCard({ story }: StoryCardProps) {
 
           {/* STATUS + TITLE */}
           <div className="mb-3 flex flex-col gap-2">
-            <div className="self-start">{storyStatusBadge(story.status, { size: 'xs' })}</div>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <h3 className="line-clamp-2 min-h-[2.5rem] text-[15px] leading-tight font-medium">
-                  {story.title}
-                </h3>
-              </TooltipTrigger>
-              <TooltipContent side="top" className="max-w-[250px]">
-                {story.title}
-              </TooltipContent>
-            </Tooltip>
+            <div className="self-start">
+              {storyStatusBadge(story.status, { size: 'xs', className: 'uppercase' })}
+            </div>
+            <h3 className="line-clamp-2 min-h-10 text-[15px] leading-tight font-medium">
+              {story.title}
+            </h3>
           </div>
 
           {/* RATING + TAGS */}
           <div className="mt-auto">
             <div className="mb-2 flex items-center gap-2 text-xs">
               <span className="text-muted-foreground font-medium">Rating:</span>
-              {contentRatingBadge(story.contentRating, { size: 'xs' })}
+              {contentRatingBadge(story.contentRating, { size: 'xs', className: 'uppercase' })}
             </div>
 
             {story.tags && story.tags.length > 0 && (
-              <BadgeGroup badges={tagBadges} max={2} gap="xs" />
+              <BadgeGroup badges={tagBadges} max={2} gap="xs" className="uppercase" />
             )}
           </div>
         </div>
@@ -90,7 +84,7 @@ export function StoryCard({ story }: StoryCardProps) {
         {/* FOOTER */}
         <div className="relative mt-1.5 h-5 overflow-hidden">
           <span className="text-muted-foreground absolute top-0 left-1 text-[11px] transition-transform ease-[cubic-bezier(0.2,0.4,0,1)] group-hover/story-card:-translate-x-[calc(100%+4px)]">
-            Updated {formatDistance(new Date(story.updatedAt), new Date(), { addSuffix: true })}
+            Updated {updatedAt}
           </span>
 
           <span className="absolute top-0 right-0 flex translate-x-full items-center gap-1 text-[11px] transition-transform ease-[cubic-bezier(0.2,0.4,0,1)] group-hover/story-card:-translate-x-2">
@@ -100,6 +94,6 @@ export function StoryCard({ story }: StoryCardProps) {
       </div>
     </Link>
   );
-}
+});
 
 export default StoryCard;

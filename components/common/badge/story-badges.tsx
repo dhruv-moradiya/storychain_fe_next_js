@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { iconBadge, textBadge } from './utils';
 import type { BadgeColorKey, BadgeConfig } from './types';
+import { TStoryCollaboratorRole, TStoryContentRating } from '@/type/story';
 
 // ============================================
 // STORY STATUS BADGES
@@ -51,7 +52,7 @@ export function storyStatusBadge(status: string, options?: Partial<BadgeConfig>)
 // ============================================
 
 const CONTENT_RATING_CONFIG: Record<
-  string,
+  TStoryContentRating,
   { color: BadgeColorKey; icon: LucideIcon; label: string }
 > = {
   all_ages: { color: 'emerald', icon: Baby, label: 'All Ages' },
@@ -63,7 +64,7 @@ const CONTENT_RATING_CONFIG: Record<
   r18g: { color: 'rose', icon: Skull, label: 'R18G (18+)' },
 };
 
-export function contentRatingBadge(rating: string, options?: Partial<BadgeConfig>) {
+export function contentRatingBadge(rating: TStoryContentRating, options?: Partial<BadgeConfig>) {
   const config = CONTENT_RATING_CONFIG[rating] || {
     color: 'gray' as BadgeColorKey,
     icon: Shield,
@@ -77,7 +78,7 @@ export function contentRatingBadge(rating: string, options?: Partial<BadgeConfig
 // ============================================
 
 const COLLABORATOR_ROLE_CONFIG: Record<
-  string,
+  TStoryCollaboratorRole,
   { color: BadgeColorKey; icon: LucideIcon; label: string }
 > = {
   owner: { color: 'amber', icon: Crown, label: 'Owner' },
@@ -87,7 +88,10 @@ const COLLABORATOR_ROLE_CONFIG: Record<
   contributor: { color: 'cyan', icon: Edit3, label: 'Contributor' },
 };
 
-export function collaboratorRoleBadge(role: string, options?: Partial<BadgeConfig>) {
+export function collaboratorRoleBadge(
+  role: TStoryCollaboratorRole,
+  options?: Partial<BadgeConfig>
+) {
   const config = COLLABORATOR_ROLE_CONFIG[role] || {
     color: 'gray' as BadgeColorKey,
     icon: Users,

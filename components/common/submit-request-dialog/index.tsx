@@ -75,9 +75,9 @@ export function SubmitRequestDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="pr-desc">Description</Label>
+            <Label htmlFor="submit-request-description">Description</Label>
             <Textarea
-              id="pr-desc"
+              id="submit-request-description"
               placeholder="Describe your changes and why they should be merged..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}

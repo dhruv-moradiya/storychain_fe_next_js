@@ -145,13 +145,13 @@ export function SignUpForm() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Username */}
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="username" className="text-text-primary text-sm font-medium">
+            <Label htmlFor="signup-username" className="text-text-primary text-sm font-medium">
               Username
             </Label>
             <div className="relative">
               <User className="text-text-secondary-65 absolute top-2.5 left-3 h-4 w-4" />
               <Input
-                id="username"
+                id="signup-username"
                 placeholder="Choose a username"
                 className="focus:border-brand-blue focus:ring-brand-blue/20 border-black/10 bg-white pl-9"
                 {...register('username', {
@@ -166,13 +166,13 @@ export function SignUpForm() {
 
           {/* Email */}
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="email" className="text-text-primary text-sm font-medium">
+            <Label htmlFor="signup-email" className="text-text-primary text-sm font-medium">
               Email
             </Label>
             <div className="relative">
               <Mail className="text-text-secondary-65 absolute top-2.5 left-3 h-4 w-4" />
               <Input
-                id="email"
+                id="signup-email"
                 type="email"
                 placeholder="Enter your email"
                 className="focus:border-brand-blue focus:ring-brand-blue/20 border-black/10 bg-white pl-9"
@@ -190,13 +190,13 @@ export function SignUpForm() {
 
           {/* Password */}
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="password" className="text-text-primary text-sm font-medium">
+            <Label htmlFor="signup-password" className="text-text-primary text-sm font-medium">
               Password
             </Label>
             <div className="relative">
               <Lock className="text-text-secondary-65 absolute top-2.5 left-3 h-4 w-4" />
               <Input
-                id="password"
+                id="signup-password"
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Create a password"
                 className="focus:border-brand-blue focus:ring-brand-blue/20 border-black/10 bg-white pr-10 pl-9"

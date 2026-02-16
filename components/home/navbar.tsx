@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { LayoutDashboard, Compass } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { fadeIn } from '@/lib/utils';
+import { StorychainLogo } from '../common/logo/storychain-logo';
 
 interface INavbarProps {
   isSignedIn: boolean;
@@ -17,18 +18,9 @@ export const Navbar = ({ isSignedIn }: INavbarProps) => {
       className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-6 py-8"
     >
       <div className="flex items-center gap-2.5 font-medium text-white">
-        <motion.span
-          className="h-3 w-3 rounded-full bg-pink-500"
-          animate={{
-            boxShadow: [
-              '0 0 12px rgba(236,72,153,0.7)',
-              '0 0 20px rgba(236,72,153,0.9)',
-              '0 0 12px rgba(236,72,153,0.7)',
-            ],
-          }}
-          transition={{ duration: 2, repeat: Infinity }}
-        />
-        Story Chain
+        <Link href="/" className="flex items-center gap-2">
+          <StorychainLogo size="medium" className="h-9 w-auto text-white" />
+        </Link>
       </div>
 
       <nav className="flex items-center gap-2 text-sm text-white/80">
@@ -49,7 +41,7 @@ export const Navbar = ({ isSignedIn }: INavbarProps) => {
               className="font-ibm-plex-mono font-semibold text-white/80 hover:bg-white/10 hover:text-white"
               asChild
             >
-              <Link href="/explore" className="flex items-center gap-2">
+              <Link href="/explore" className="item s-center flex gap-2">
                 <Compass size={16} />
                 Explore
               </Link>

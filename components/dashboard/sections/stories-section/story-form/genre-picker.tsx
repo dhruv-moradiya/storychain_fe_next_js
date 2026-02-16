@@ -1,9 +1,9 @@
 'use client';
 
-import { memo, useState, useMemo } from 'react';
-import { Search, ChevronDown, Check, X } from 'lucide-react';
+import { memo, useState, useMemo, cloneElement } from 'react';
+import { Search, ChevronDown, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
+import { createBadge } from '@/components/common/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -20,7 +20,7 @@ type GenrePickerProps = {
 };
 
 export const GenrePicker = memo(
-  ({ value = [], onChange, maxSelections = 5, error }: GenrePickerProps) => {
+  ({ value = [], onChange, maxSelections = 10, error }: GenrePickerProps) => {
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState('');
 
@@ -53,6 +53,49 @@ export const GenrePicker = memo(
       return filtered;
     }, [search]);
 
+    const genreCategoryMap = useMemo(() => {
+      const map: Record<string, string> = {};
+      Object.entries(GENRE_CATEGORIES).forEach(([key, category]) => {
+        category.genres.forEach((g) => {
+          map[g.value] = key;
+        });
+      });
+      return map;
+    }, []);
+
+    const getGenreColor = (
+      categoryKey: string
+    ): import('@/components/common/badge/types').BadgeColorKey => {
+      switch (categoryKey) {
+        case 'popular':
+          return 'pink';
+        case 'japanese':
+          return 'rose';
+        case 'chinese':
+          return 'orange';
+        case 'korean':
+          return 'blue';
+        case 'litrpg':
+          return 'purple';
+        case 'fantasy':
+          return 'emerald';
+        case 'scifi':
+          return 'cyan';
+        case 'romance':
+          return 'pink';
+        case 'dark':
+          return 'slate';
+        case 'mystery':
+          return 'indigo';
+        case 'character':
+          return 'amber';
+        case 'setting':
+          return 'emerald';
+        default:
+          return 'gray';
+      }
+    };
+
     const handleToggle = (genreValue: string) => {
       if (value.includes(genreValue)) {
         onChange(value.filter((v) => v !== genreValue));
@@ -70,22 +113,21 @@ export const GenrePicker = memo(
         {/* Selected Genres Display - Using Badge */}
         <div className="flex min-h-[32px] flex-wrap gap-1.5">
           {selectedGenres.length > 0 ? (
-            selectedGenres.map((genre) => (
-              <Badge
-                key={genre.value}
-                variant="secondary"
-                className="bg-brand-pink-500/10 text-brand-pink-700 hover:bg-brand-pink-500/15 gap-1.5 pr-1.5"
-              >
-                {genre.label}
-                <button
-                  type="button"
-                  onClick={() => handleRemove(genre.value)}
-                  className="hover:bg-brand-pink-500/20 rounded-full p-0.5 transition-colors"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))
+            selectedGenres.map((genre) => {
+              const categoryKey = genreCategoryMap[genre.value];
+              const color = getGenreColor(categoryKey);
+              return cloneElement(
+                createBadge({
+                  label: genre.label,
+                  color: color,
+                  shape: 'pill',
+                  removable: true,
+                  onRemove: () => handleRemove(genre.value),
+                  className: 'gap-1.5 pr-1.5',
+                }),
+                { key: genre.value }
+              );
+            })
           ) : (
             <span className="text-text-secondary-65 text-sm">No genres selected</span>
           )}
@@ -146,25 +188,29 @@ export const GenrePicker = memo(
                         {category.genres.map((genre) => {
                           const isSelected = value.includes(genre.value);
                           const isDisabled = !isSelected && value.length >= maxSelections;
+                          const color = getGenreColor(key);
 
                           return (
                             <Tooltip key={genre.value}>
                               <TooltipTrigger asChild>
-                                <button
-                                  type="button"
-                                  onClick={() => !isDisabled && handleToggle(genre.value)}
-                                  disabled={isDisabled}
-                                  className={cn(
-                                    'inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium transition-all',
-                                    isSelected
-                                      ? 'bg-brand-pink-500 border-brand-pink-500 text-white'
-                                      : 'text-text-primary hover:border-brand-pink-300 hover:bg-brand-pink-50 border-black/10 bg-white/80',
-                                    isDisabled && 'cursor-not-allowed opacity-40'
-                                  )}
-                                >
-                                  {isSelected && <Check className="h-3 w-3" />}
-                                  {genre.label}
-                                </button>
+                                {cloneElement(
+                                  createBadge({
+                                    label: genre.label,
+                                    color: isSelected ? color : 'gray',
+                                    style: isSelected ? 'filled' : 'outline',
+                                    shape: 'pill',
+                                    icon: isSelected ? Check : undefined,
+                                    onClick: () => !isDisabled && handleToggle(genre.value),
+                                    disabled: isDisabled,
+                                    className: cn(
+                                      'transition-all',
+                                      isSelected
+                                        ? 'hover:opacity-90'
+                                        : 'text-text-primary hover:border-black/20 hover:bg-black/5 border-black/10 bg-white/80'
+                                    ),
+                                  }),
+                                  { key: genre.value }
+                                )}
                               </TooltipTrigger>
                               <TooltipContent side="top" className="max-w-[200px]">
                                 {genre.description}

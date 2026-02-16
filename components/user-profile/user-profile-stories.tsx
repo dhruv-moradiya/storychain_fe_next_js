@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, BookOpen, Eye, Star } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Story {
   id: string;
@@ -59,10 +60,12 @@ function UserProfileStories({ stories, username }: UserProfileStoriesProps) {
             <Link href={`/stories/${story.slug}`}>
               <div className="bg-muted relative aspect-[3/4] overflow-hidden rounded-lg">
                 {story.coverUrl && (
-                  <img
+                  <Image
                     src={story.coverUrl}
                     alt={story.title}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />

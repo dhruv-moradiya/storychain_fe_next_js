@@ -61,11 +61,6 @@ const FinalVisionSection = dynamic(
   { ssr: true }
 );
 
-const FooterSection = dynamic(
-  () => import('@/components/home/footer-section').then((mod) => mod.FooterSection),
-  { ssr: true }
-);
-
 const ToastDemo = dynamic(
   () => import('@/components/shared/toast/toast-demo').then((mod) => mod.ToastDemo),
   { ssr: true }
@@ -153,8 +148,6 @@ export default async function HomePage() {
       <DarkCtaSection />
 
       <FinalVisionSection />
-
-      <FooterSection />
 
       {/* TODO: Remove this demo component after verification */}
       <ToastDemo />

@@ -11,6 +11,7 @@ import {
   UserPlus,
   MessageCircle,
 } from 'lucide-react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -40,9 +41,9 @@ function UserProfileHeader({ user }: UserProfileHeaderProps) {
       {/* Cover Image */}
       <div className="bg-muted relative h-48 overflow-hidden rounded-b-2xl sm:h-56 lg:h-64">
         {user.coverUrl && (
-          <img src={user.coverUrl} alt="Cover" className="h-full w-full object-cover" />
+          <Image src={user.coverUrl} alt="Cover" fill className="object-cover" sizes="100vw" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
       </div>
 
       {/* Profile Section */}
@@ -60,10 +61,12 @@ function UserProfileHeader({ user }: UserProfileHeaderProps) {
                 'border-white bg-white shadow-xl'
               )}
             >
-              <img
+              <Image
                 src={user.avatarUrl}
                 alt={user.fullName}
-                className="h-full w-full object-cover"
+                fill
+                className="object-cover"
+                sizes="100vw"
               />
             </div>
             {user.isPro && (

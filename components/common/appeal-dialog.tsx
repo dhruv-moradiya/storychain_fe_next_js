@@ -226,7 +226,7 @@ export function AppealDialog({ banId, banReason, bannedAt, trigger, onAppeal }: 
 
           {/* Explanation */}
           <div className="space-y-2">
-            <Label htmlFor="explanation" className="text-sm font-medium">
+            <Label htmlFor="appeal-explanation" className="text-sm font-medium">
               Detailed Explanation <span className="text-destructive">*</span>
             </Label>
             <p className="text-muted-foreground text-xs">
@@ -234,7 +234,7 @@ export function AppealDialog({ banId, banReason, bannedAt, trigger, onAppeal }: 
               us understand what happened.
             </p>
             <Textarea
-              id="explanation"
+              id="appeal-explanation"
               placeholder="Explain why you believe your ban should be lifted..."
               value={explanation}
               onChange={(e) => setExplanation(e.target.value)}
@@ -248,7 +248,7 @@ export function AppealDialog({ banId, banReason, bannedAt, trigger, onAppeal }: 
 
           {/* Additional Context */}
           <div className="space-y-2">
-            <Label htmlFor="context" className="text-sm font-medium">
+            <Label htmlFor="appeal-context" className="text-sm font-medium">
               Additional Context (Optional)
             </Label>
             <p className="text-muted-foreground text-xs">
@@ -256,7 +256,7 @@ export function AppealDialog({ banId, banReason, bannedAt, trigger, onAppeal }: 
               appeal.
             </p>
             <Textarea
-              id="context"
+              id="appeal-context"
               placeholder="Any additional information that might help your case..."
               value={additionalContext}
               onChange={(e) => setAdditionalContext(e.target.value)}
@@ -270,14 +270,14 @@ export function AppealDialog({ banId, banReason, bannedAt, trigger, onAppeal }: 
 
           {/* Contact Email */}
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-medium">
+            <Label htmlFor="appeal-email" className="text-sm font-medium">
               Contact Email <span className="text-destructive">*</span>
             </Label>
             <p className="text-muted-foreground text-xs">
               We&apos;ll use this email to notify you about your appeal status.
             </p>
             <Input
-              id="email"
+              id="appeal-email"
               type="email"
               placeholder="your.email@example.com"
               value={contactEmail}

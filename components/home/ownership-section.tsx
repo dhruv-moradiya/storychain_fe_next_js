@@ -1,10 +1,9 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import Image from 'next/image';
 import { storyChainLandingContent } from '@/constants';
 import { scrollReveal } from '@/lib/utils';
+import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
 
 export const OwnershipSection = () => {
   return (

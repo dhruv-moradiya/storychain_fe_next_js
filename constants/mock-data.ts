@@ -1,5 +1,14 @@
-import type { StaticStory } from '@/components/dashboard/sections/stories-section';
 import type { StaticChapter } from '@/components/dashboard/sections/my-chapters';
+
+export interface StaticStory {
+  id: string;
+  slug: string;
+  title: string;
+  status: string;
+  contentRating: string;
+  tags: string[];
+  updatedAt: string;
+}
 
 // Static mock data for stories (no API calls)
 export const MOCK_STORIES: StaticStory[] = [

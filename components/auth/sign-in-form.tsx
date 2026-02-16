@@ -107,13 +107,13 @@ export function SignInForm() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Email */}
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="email" className="text-text-primary text-sm font-medium">
+            <Label htmlFor="signin-email" className="text-text-primary text-sm font-medium">
               Email
             </Label>
             <div className="relative">
               <Mail className="text-text-secondary-65 absolute top-2.5 left-3 h-4 w-4" />
               <Input
-                id="email"
+                id="signin-email"
                 type="email"
                 placeholder="Enter your email"
                 className="focus:border-brand-blue focus:ring-brand-blue/20 border-black/10 bg-white pl-9"
@@ -128,7 +128,7 @@ export function SignInForm() {
           {/* Password */}
           <div className="flex flex-col space-y-1.5">
             <div className="flex items-center justify-between">
-              <Label htmlFor="password" className="text-text-primary text-sm font-medium">
+              <Label htmlFor="signin-password" className="text-text-primary text-sm font-medium">
                 Password
               </Label>
               <button
@@ -142,7 +142,7 @@ export function SignInForm() {
             <div className="relative">
               <Lock className="text-text-secondary-65 absolute top-2.5 left-3 h-4 w-4" />
               <Input
-                id="password"
+                id="signin-password"
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Enter your password"
                 className="focus:border-brand-blue focus:ring-brand-blue/20 border-black/10 bg-white pr-10 pl-9"

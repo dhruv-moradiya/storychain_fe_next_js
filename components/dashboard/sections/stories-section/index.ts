@@ -1,3 +1,4 @@
 export { StoryCard } from './story-card';
 export { CreateStoryButton } from './create-story-button';
-export type { StaticStory } from './story-card';
+export { StoriesList } from './stories-list';
+export { StoryCardSkeleton } from './story-card-skeleton';
