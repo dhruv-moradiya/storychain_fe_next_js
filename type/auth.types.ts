@@ -1,6 +1,6 @@
-import type { OAuthStrategy } from '@clerk/types';
-
-export type OAuthProvider = 'google' | 'github';
+// OAuth Types
+export type OAuthStrategy = 'oauth_google' | 'oauth_github' | 'oauth_discord';
+export type OAuthProvider = 'google' | 'github' | 'discord';
 
 export type ForgotPasswordStep = 'email' | 'code' | 'success';
 
@@ -18,4 +18,3 @@ export type {
   ForgotPasswordFormData,
   ResetPasswordFormData,
 } from './auth-forms';
-export type { OAuthStrategy };

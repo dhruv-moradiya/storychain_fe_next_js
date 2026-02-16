@@ -135,7 +135,13 @@ export function useSignUpLogic() {
       if (!isLoaded || !signUp) return;
 
       try {
-        setIsOAuthLoading(strategy === 'oauth_github' ? 'github' : 'google');
+        const providerMap: Record<OAuthStrategy, OAuthProvider> = {
+          oauth_google: 'google',
+          oauth_github: 'github',
+          oauth_discord: 'discord',
+        };
+        setIsOAuthLoading(providerMap[strategy]);
+
         await signUp.authenticateWithRedirect({
           strategy,
           redirectUrl: '/sso-callback',
