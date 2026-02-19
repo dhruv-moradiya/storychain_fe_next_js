@@ -1,4 +1,4 @@
-import type { StaticChapter } from '@/components/dashboard/sections/my-chapters';
+import { IUserChapters } from '@/type/chapter/chapter-response.type';
 
 export interface StaticStory {
   id: string;
@@ -60,42 +60,72 @@ export const MOCK_STORIES: StaticStory[] = [
 ];
 
 // Static mock data for chapters
-export const MOCK_CHAPTERS: StaticChapter[] = [
+export const MOCK_CHAPTERS: IUserChapters[] = [
   {
     id: 'ch1',
     title: 'The Beginning of the End',
+    slug: 'the-beginning-of-the-end',
     storyTitle: 'The Midnight Garden',
     storySlug: 'the-midnight-garden',
+    displayNumber: '1',
     status: 'published',
-    stats: { reads: 1250, comments: 45, childBranches: 3 },
+    version: 1,
+    votes: { upvotes: 120, downvotes: 5 },
+    stats: { reads: 1250, comments: 45, childBranches: 3, uniqueReaders: 1100, completionRate: 88 },
     updatedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    reportCount: 0,
+    isFlagged: false,
   },
   {
     id: 'ch2',
     title: 'A New Dawn',
+    slug: 'a-new-dawn',
     storyTitle: 'Echoes of Tomorrow',
     storySlug: 'echoes-of-tomorrow',
+    displayNumber: '2',
     status: 'pending_approval',
-    stats: { reads: 0, comments: 0, childBranches: 0 },
+    version: 2,
+    pullRequest: { isPR: true, status: 'OPEN' },
+    votes: { upvotes: 0, downvotes: 0 },
+    stats: { reads: 0, comments: 0, childBranches: 0, uniqueReaders: 0, completionRate: 0 },
     updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    reportCount: 0,
+    isFlagged: false,
   },
   {
     id: 'ch3',
     title: 'The Dark Revelation',
+    slug: 'the-dark-revelation',
     storyTitle: 'Whispers in the Dark',
     storySlug: 'whispers-in-the-dark',
+    displayNumber: '15',
+    isEnding: true,
     status: 'published',
-    stats: { reads: 3420, comments: 127, childBranches: 5 },
+    votes: { upvotes: 500, downvotes: 12 },
+    stats: {
+      reads: 3420,
+      comments: 127,
+      childBranches: 5,
+      uniqueReaders: 3100,
+      completionRate: 95,
+    },
     updatedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    reportCount: 3,
+    isFlagged: true,
   },
   {
     id: 'ch4',
     title: 'Untitled Draft',
+    slug: 'untitled-draft',
     storyTitle: 'The Last Summer',
     storySlug: 'the-last-summer',
     status: 'draft',
-    stats: { reads: 0, comments: 0, childBranches: 0 },
+    displayNumber: 'Draft',
+    votes: { upvotes: 0, downvotes: 0 },
+    stats: { reads: 0, comments: 0, childBranches: 0, uniqueReaders: 0, completionRate: 0 },
     updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    reportCount: 5,
+    isFlagged: false,
   },
 ];
 
