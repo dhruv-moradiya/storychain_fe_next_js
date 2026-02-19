@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 
-import { GitHubIcon, GoogleIcon } from './auth-icons';
+import { GitHubIcon, GoogleIcon, DiscordIcon } from './auth-icons';
 import { MobileLogo } from './auth-branding';
 import { useSignUpLogic } from '@/hooks/auth/use-sign-up';
 import type { SignUpFormData } from '@/type/auth.types';
@@ -129,6 +129,16 @@ export function SignUpForm() {
           >
             {isOAuthLoading === 'github' ? <Spinner className="h-5 w-5" /> : <GitHubIcon />}
             Continue with GitHub
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full gap-3 border-black/10 bg-white font-medium hover:bg-black/5"
+            onClick={() => handleOAuthSignUp('oauth_discord')}
+            disabled={isOAuthLoading !== null}
+          >
+            {isOAuthLoading === 'discord' ? <Spinner className="h-5 w-5" /> : <DiscordIcon />}
+            Continue with Discord
           </Button>
         </div>
 

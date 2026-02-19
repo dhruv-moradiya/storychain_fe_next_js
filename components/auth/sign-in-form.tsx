@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/responsive-dialog';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 
-import { GitHubIcon, GoogleIcon } from './auth-icons';
+import { GitHubIcon, GoogleIcon, DiscordIcon } from './auth-icons';
 import { MobileLogo } from './auth-branding';
 import { useSignInLogic } from '@/hooks/auth/use-sign-in';
 import type {
@@ -91,6 +91,16 @@ export function SignInForm() {
           >
             {isOAuthLoading === 'github' ? <Spinner className="h-5 w-5" /> : <GitHubIcon />}
             Continue with GitHub
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full gap-3 border-black/10 bg-white font-medium hover:bg-black/5"
+            onClick={() => handleOAuthSignIn('oauth_discord')}
+            disabled={isOAuthLoading !== null}
+          >
+            {isOAuthLoading === 'discord' ? <Spinner className="h-5 w-5" /> : <DiscordIcon />}
+            Continue with Discord
           </Button>
         </div>
 

@@ -211,4 +211,47 @@
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
+
+  /* Radial Gradients */
+  --image-radial-gradient-brand: radial-gradient(
+    circle at center,
+    var(--brand-pink-500) 0%,
+    var(--brand-blue) 50%,
+    var(--bg-dark) 100%
+  );
+  --image-radial-gradient-soft: radial-gradient(
+    circle at top left,
+    rgba(236, 72, 153, 0.15) 0%,
+    rgba(107, 124, 255, 0.1) 40%,
+    transparent 100%
+  );
+  --image-radial-gradient-accent: radial-gradient(
+    circle at bottom right,
+    var(--brand-orange) 0%,
+    var(--brand-pink-600) 60%
+  );
+}
+
+@utility radial-gradient-brand {
+  background-image: var(--image-radial-gradient-brand);
+}
+
+@utility radial-gradient-soft {
+  background-image: var(--image-radial-gradient-soft);
+}
+
+@utility radial-gradient-accent {
+  background-image: var(--image-radial-gradient-accent);
+}
+
+@utility radial-gradient-orb-pink {
+  background-image: radial-gradient(circle, var(--brand-pink-500) 0%, transparent 70%);
+}
+
+@utility radial-gradient-orb-blue {
+  background-image: radial-gradient(circle, var(--brand-blue) 0%, transparent 70%);
+}
+
+@utility radial-gradient-orb-orange {
+  background-image: radial-gradient(circle, var(--brand-orange) 0%, transparent 70%);
 }
