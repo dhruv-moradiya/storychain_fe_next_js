@@ -32,6 +32,9 @@ interface IStoryStats {
   totalBranches: number;
   totalReads: number;
   totalVotes: number;
+  upvotes: number;
+  downvotes: number;
+  score: number;
   uniqueContributors: number;
   averageRating: number;
 }

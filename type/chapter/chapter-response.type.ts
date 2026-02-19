@@ -1,4 +1,5 @@
 import { IBaseResponse } from '../base-response.type';
+import { TChapterStatus } from './chapter.types';
 
 interface IUserChapters {
   id: string;
@@ -6,7 +7,7 @@ interface IUserChapters {
   slug: string;
   storyTitle: string;
   storySlug: string;
-  status: string;
+  status: TChapterStatus;
   isEnding?: boolean;
   version?: number;
   displayNumber: string;

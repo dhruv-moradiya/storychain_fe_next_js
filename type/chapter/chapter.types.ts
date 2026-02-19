@@ -3,21 +3,37 @@ import { CHAPTER_PR_STATUSES, CHAPTER_STATUSES } from './chapter-enum';
 export type TChapterStatus = (typeof CHAPTER_STATUSES)[number];
 export type TChapterPRStatus = (typeof CHAPTER_PR_STATUSES)[number];
 
+export interface IChapterStats {
+  reads: number;
+  uniqueReaders: number;
+
+  completions: number;
+  dropOffs: number;
+
+  totalReadTime: number; // sum of all users
+  avgReadTime: number;
+
+  completionRate: number; // percentage
+  engagementScore: number; // 0-100 score
+
+  comments: number;
+  childBranches: number;
+}
+
 /**
  * Represents a single chapter within a story.
  */
 export interface IChapter {
   _id: string;
   slug: string;
-  storyId: string;
+  storySlug: string;
 
-  parentChapterId?: string | null;
-  ancestorIds: string[];
+  parentChapterSlug?: string | null;
+  ancestorSlugs: string[];
   depth: number;
   authorId: string;
   content: string;
   title: string;
-  chapterNumber?: number;
 
   votes: {
     upvotes: number;
@@ -41,11 +57,7 @@ export interface IChapter {
   version: number;
   previousVersionId?: string;
 
-  stats: {
-    reads: number;
-    comments: number;
-    childBranches: number;
-  };
+  stats: IChapterStats;
 
   reportCount: number;
   isFlagged: boolean;
