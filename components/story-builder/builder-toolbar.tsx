@@ -343,7 +343,7 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
                         .chain()
                         .focus()
                         .insertContent(
-                          '<p style="text-align: center;"><span style="color: #f472b6; letter-spacing: 0.1em;">━━━━━━━━</span></p>'
+                          '<hr style="border: none; margin: 2rem auto; width: 96px; height: 3px; border-radius: 9999px; background: linear-gradient(90deg, rgba(244, 114, 182, 0.6) 0%, rgba(107, 124, 255, 0.4) 50%, rgba(244, 114, 182, 0.6) 100%); opacity: 0.8;" />'
                         )
                         .run();
                     }}
@@ -358,7 +358,7 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
                         .chain()
                         .focus()
                         .insertContent(
-                          '<p style="text-align: center;"><span style="color: #ec4899; letter-spacing: 0.3em;">✦ ✦ ✦</span></p>'
+                          '<p style="text-align: center; color: #ec4899; letter-spacing: 0.4em; margin: 2rem 0; font-family: serif;">✦ ✦ ✦</p>'
                         )
                         .run();
                     }}
@@ -373,7 +373,7 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
                         .chain()
                         .focus()
                         .insertContent(
-                          '<p style="text-align: center;"><span style="color: #3b82f6; letter-spacing: 0.2em;">• • •</span></p>'
+                          '<p style="text-align: center; margin: 2rem 0;"><span style="color: #6b7cff; margin-right: 0.75rem;">•</span><span style="color: #f472b6; margin-right: 0.75rem; font-size: 1.2em;">•</span><span style="color: #6b7cff;">•</span></p>'
                         )
                         .run();
                     }}
@@ -388,7 +388,7 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
                         .chain()
                         .focus()
                         .insertContent(
-                          '<p style="text-align: center;"><span style="color: #f97316;">— ◆ —</span></p>'
+                          '<p style="text-align: center; color: #ff9f68; margin: 2rem 0;"><span style="opacity: 0.5;">————</span> ◆ <span style="opacity: 0.5;">————</span></p>'
                         )
                         .run();
                     }}
@@ -403,7 +403,7 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
                         .chain()
                         .focus()
                         .insertContent(
-                          '<p style="text-align: center;"><span style="color: #3b82f6; letter-spacing: 0.3em;">～ ～ ～</span></p>'
+                          '<p style="text-align: center; color: #6b7cff; letter-spacing: 0.5em; margin: 2rem 0;">～ ～ ～ ～ ～</p>'
                         )
                         .run();
                     }}

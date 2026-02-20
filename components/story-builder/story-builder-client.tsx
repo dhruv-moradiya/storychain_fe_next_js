@@ -3,6 +3,8 @@
 import { useBuilderParams } from '@/hooks/use-builder-params';
 import { useGetAutoSaveDraft } from '@/services/auto-save/auto-save.query';
 import Emoji, { gitHubEmojis } from '@tiptap/extension-emoji';
+import HorizontalRule from '@tiptap/extension-horizontal-rule';
+import Paragraph from '@tiptap/extension-paragraph';
 import { TableKit } from '@tiptap/extension-table';
 import TextAlign from '@tiptap/extension-text-align';
 import { FontSize, TextStyle, TextStyleKit } from '@tiptap/extension-text-style';
@@ -25,11 +27,61 @@ const DEFAULT_CONTENT = `
   <p>When you're ready, you can publish directly or create a submit request for review.</p>
 `;
 
+const CustomHorizontalRule = HorizontalRule.extend({
+  addAttributes() {
+    return {
+      style: {
+        default: null,
+        parseHTML: (element) => element.getAttribute('style'),
+        renderHTML: (attributes) => {
+          if (!attributes.style) return {};
+          return { style: attributes.style };
+        },
+      },
+    };
+  },
+});
+
+const CustomParagraph = Paragraph.extend({
+  addAttributes() {
+    return {
+      style: {
+        default: null,
+        parseHTML: (element) => element.getAttribute('style'),
+        renderHTML: (attributes) => {
+          if (!attributes.style) return {};
+          return { style: attributes.style };
+        },
+      },
+    };
+  },
+});
+
+const CustomTextStyle = TextStyle.extend({
+  addAttributes() {
+    return {
+      style: {
+        default: null,
+        parseHTML: (element) => element.getAttribute('style'),
+        renderHTML: (attributes) => {
+          if (!attributes.style) return {};
+          return { style: attributes.style };
+        },
+      },
+    };
+  },
+});
+
 const extensions = [
   TextStyleKit,
-  StarterKit,
+  StarterKit.configure({
+    paragraph: false,
+    horizontalRule: false,
+  }),
+  CustomParagraph,
+  CustomHorizontalRule,
   FontSize,
-  TextStyle,
+  CustomTextStyle,
   Underline,
   TextAlign.configure({
     types: ['heading', 'paragraph'],
