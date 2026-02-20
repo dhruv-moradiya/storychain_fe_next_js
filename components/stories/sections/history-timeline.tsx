@@ -82,7 +82,7 @@ export default function HistoryTimeline({ events, variant = 'detailed' }: Histor
             isCompact ? 'space-y-4' : 'space-y-8'
           )}
         >
-          {events.map((event, index) => {
+          {events.map((event) => {
             return (
               <div key={event.id} className="relative">
                 {/* Timeline Dot Wrapper (Solid Background) */}

@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { FileText, X, ChevronUp, ChevronDown, Trash2, ArrowLeft, NotebookPen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,22 +9,28 @@ import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/comp
 import { useRouter, useSearchParams } from 'next/navigation';
 import { formatDistanceToNow } from 'date-fns';
 import { cn } from '@/lib/utils';
-
-// Mock types since we don't have the full API
-interface IChapterAutoSave {
-  _id: string;
-  title: string;
-  lastSavedAt: Date;
-}
+import { useGetAutoSaveDraft } from '@/services/auto-save/auto-save.query';
+import { useDeleteAutoSave } from '@/services/auto-save/auto-save.mutation';
+import { IChapterAutoSave } from '@/type/auto-save.type';
+import { toast } from 'sonner';
 
 // Inline Draft Item Component
-const DraftItem = ({ draft, onContinue }: { draft: IChapterAutoSave; onContinue: () => void }) => {
+const DraftItem = ({
+  draft,
+  onContinue,
+  onDelete,
+}: {
+  draft: IChapterAutoSave;
+  onContinue: () => void;
+  onDelete: (id: string) => void;
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const handleContinue = () => {
-    const params = new URLSearchParams(searchParams?.toString());
+    const params = new URLSearchParams(searchParams.toString());
     params.set('autoSaveId', draft._id);
+    params.set('storySlug', draft.storySlug || '');
     router.push(`?${params.toString()}`);
     onContinue();
   };
@@ -42,17 +50,17 @@ const DraftItem = ({ draft, onContinue }: { draft: IChapterAutoSave; onContinue:
           <TooltipTrigger asChild>
             <div className="max-w-[140px] min-w-0 flex-1 overflow-hidden">
               <p className="text-text-primary font-ibm-plex-mono line-clamp-1 text-xs font-medium">
-                {draft.title}
+                {draft.title || 'Untitled Draft'}
               </p>
               <p className="text-text-secondary-65 font-ibm-plex-mono line-clamp-1 text-[10px]">
-                {formatDistanceToNow(draft.lastSavedAt, { addSuffix: true })}
+                {formatDistanceToNow(new Date(draft.lastSavedAt), { addSuffix: true })}
               </p>
             </div>
           </TooltipTrigger>
           <TooltipContent side="top" className="max-w-[200px]">
-            <p className="text-xs font-medium break-words">{draft.title}</p>
+            <p className="text-xs font-medium wrap-break-word">{draft.title || 'Untitled Draft'}</p>
             <p className="text-muted-foreground text-[10px]">
-              Saved {formatDistanceToNow(draft.lastSavedAt, { addSuffix: true })}
+              Saved {formatDistanceToNow(new Date(draft.lastSavedAt), { addSuffix: true })}
             </p>
           </TooltipContent>
         </Tooltip>
@@ -64,6 +72,7 @@ const DraftItem = ({ draft, onContinue }: { draft: IChapterAutoSave; onContinue:
                 variant="ghost"
                 size="icon"
                 className="text-destructive hover:bg-destructive/10 hover:text-destructive h-7 w-7"
+                onClick={() => onDelete(draft._id)}
               >
                 <Trash2 className="h-3.5 w-3.5" />
               </Button>
@@ -96,23 +105,15 @@ const DraftItem = ({ draft, onContinue }: { draft: IChapterAutoSave; onContinue:
 export const DraftRecoveryBanner = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showDraftList, setShowDraftList] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(false);
 
-  // Mocking the hook data for now
-  const banner = {
-    count: 0,
-    latestTitle: '',
-    words: 0,
-    timeAgo: '',
-  };
-  const isVisible = false;
-  const isLoading = false;
-  const actions = {
-    handleClose: () => {},
-    handleDiscardLatest: () => {},
-  };
-  const draftList: IChapterAutoSave[] = [];
+  const { data: draftResponse, isLoading } = useGetAutoSaveDraft();
+  const { mutate: deleteDraft } = useDeleteAutoSave();
 
-  if (isLoading || banner.count === 0 || !isVisible) return null;
+  const draftList = draftResponse?.data?.docs || [];
+  const latestDraft = draftList.length > 0 ? draftList[0] : null;
+
+  if (isLoading || draftList.length === 0 || isDismissed) return null;
 
   const handleViewDrafts = () => {
     setShowDraftList(true);
@@ -128,15 +129,43 @@ export const DraftRecoveryBanner = () => {
     setIsExpanded(false);
   };
 
+  const handleDeleteDraft = (id: string) => {
+    deleteDraft(id, {
+      onSuccess: () => {
+        toast.success('Draft deleted');
+      },
+      onError: () => {
+        toast.error('Failed to delete draft');
+      },
+    });
+  };
+
   const handleToggleExpand = () => {
     if (!showDraftList) {
       setIsExpanded(!isExpanded);
     }
   };
 
+  const handleDismiss = () => {
+    setIsDismissed(true);
+  };
+
+  const banner = {
+    count: draftList.length,
+    latestTitle: latestDraft?.title || 'Untitled Draft',
+    words: latestDraft?.content
+      ? latestDraft.content
+          .replace(/<[^>]*>/g, '')
+          .trim()
+          .split(/\s+/).length
+      : 0,
+    timeAgo: latestDraft?.lastSavedAt
+      ? formatDistanceToNow(new Date(latestDraft.lastSavedAt), { addSuffix: true })
+      : '',
+  };
+
   return (
     <AnimatePresence mode="wait">
-      {/* Mobile View - Collapsed icon only (screens < md) */}
       {!isExpanded && (
         <motion.div
           key="mobile-collapsed"
@@ -154,7 +183,7 @@ export const DraftRecoveryBanner = () => {
             onClick={handleToggleExpand}
             className={cn(
               'flex h-12 w-12 items-center justify-center rounded-xl',
-              'from-brand-orange/20 to-brand-pink-500/20 bg-gradient-to-br',
+              'from-brand-orange/20 to-brand-pink-500/20 bg-linear-to-br',
               'border-brand-orange/30 border shadow-lg backdrop-blur-sm',
               'transition-all duration-200 hover:shadow-xl',
               'hover:border-brand-pink-500/50'
@@ -172,7 +201,6 @@ export const DraftRecoveryBanner = () => {
         </motion.div>
       )}
 
-      {/* Full Banner - Desktop always, Mobile when expanded */}
       <motion.div
         key="full-banner"
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -182,15 +210,12 @@ export const DraftRecoveryBanner = () => {
         className={cn(
           'fixed right-4 bottom-4 z-50 overflow-hidden rounded-xl',
           'border-border/50 bg-cream-95 border shadow-lg backdrop-blur-sm',
-          // Mobile: hidden when collapsed, shown when expanded
           isExpanded ? 'block' : 'hidden md:block',
-          // Width adjustments
           'w-[calc(100vw-2rem)] max-w-[340px] sm:w-[340px]'
         )}
       >
-        {/* Header - Always visible */}
         <div
-          className="from-brand-orange/15 to-brand-pink-500/10 flex cursor-pointer items-center justify-between bg-gradient-to-r px-4 py-3"
+          className="from-brand-orange/15 to-brand-pink-500/10 flex cursor-pointer items-center justify-between bg-linear-to-r px-4 py-3"
           onClick={handleToggleExpand}
         >
           <div className="flex items-center gap-3">
@@ -208,7 +233,7 @@ export const DraftRecoveryBanner = () => {
               </Button>
             )}
             {!showDraftList && (
-              <div className="from-brand-orange/25 to-brand-pink-500/15 flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br">
+              <div className="from-brand-orange/25 to-brand-pink-500/15 flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br">
                 <FileText className="text-brand-orange h-4 w-4" />
               </div>
             )}
@@ -246,7 +271,7 @@ export const DraftRecoveryBanner = () => {
               className="hover:bg-destructive/10 h-7 w-7"
               onClick={(e) => {
                 e.stopPropagation();
-                actions.handleClose();
+                handleDismiss();
               }}
               aria-label="Close"
             >
@@ -255,7 +280,6 @@ export const DraftRecoveryBanner = () => {
           </div>
         </div>
 
-        {/* Expandable Content */}
         <AnimatePresence mode="wait">
           {isExpanded && !showDraftList && (
             <motion.div
@@ -268,7 +292,6 @@ export const DraftRecoveryBanner = () => {
             >
               <TooltipProvider delayDuration={300}>
                 <div className="px-4 py-3">
-                  {/* Draft Info */}
                   <div className="mb-3">
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -277,17 +300,16 @@ export const DraftRecoveryBanner = () => {
                         </p>
                       </TooltipTrigger>
                       <TooltipContent side="top" className="max-w-[280px]">
-                        <p className="text-xs break-words">{banner.latestTitle}</p>
+                        <p className="text-xs wrap-break-word">{banner.latestTitle}</p>
                       </TooltipContent>
                     </Tooltip>
                     <p className="text-text-secondary-65 font-ibm-plex-mono mt-1 text-xs">
-                      {banner.words && `${banner.words} words`}
-                      {banner.words && banner.timeAgo && ' • '}
+                      {banner.words > 0 && `${banner.words} words`}
+                      {banner.words > 0 && banner.timeAgo && ' • '}
                       {banner.timeAgo && `saved ${banner.timeAgo}`}
                     </p>
                   </div>
 
-                  {/* Action Buttons - Always visible with fixed widths */}
                   <div className="flex gap-2">
                     {banner.count > 1 && (
                       <Tooltip>
@@ -296,7 +318,7 @@ export const DraftRecoveryBanner = () => {
                             variant="outline"
                             size="sm"
                             className="border-border text-text-secondary-75 hover:bg-muted/50 font-ibm-plex-mono min-w-[80px] shrink-0 text-xs"
-                            onClick={actions.handleDiscardLatest}
+                            onClick={() => latestDraft && handleDeleteDraft(latestDraft._id)}
                           >
                             Discard
                           </Button>
@@ -350,7 +372,11 @@ export const DraftRecoveryBanner = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.05 }}
                       >
-                        <DraftItem draft={draft} onContinue={handleDraftContinue} />
+                        <DraftItem
+                          draft={draft}
+                          onContinue={handleDraftContinue}
+                          onDelete={handleDeleteDraft}
+                        />
                       </motion.div>
                     ))}
                   </div>

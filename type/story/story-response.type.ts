@@ -1,3 +1,4 @@
+import { IChapterTreeItem } from '@/components/stories/sections/tree-section/types/canvas.types';
 import { IStoryStats, TStoryContentRating, TStoryStatus } from '.';
 import { IBaseResponse } from '../base-response.type';
 
@@ -37,4 +38,6 @@ interface IUserStories {
 
 interface IUserStoriesResponse extends IBaseResponse<IUserStories[]> {}
 
-export type { IUserStories, IUserStoriesResponse };
+interface IStoryTreeResponse extends IBaseResponse<{ chapters: IChapterTreeItem[] }> {}
+
+export type { IUserStories, IUserStoriesResponse, IStoryTreeResponse };

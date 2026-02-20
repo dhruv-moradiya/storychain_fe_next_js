@@ -1,15 +1,15 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useBuilderParams } from '@/hooks/use-builder-params';
+import { useGetAutoSaveDraft } from '@/services/auto-save/auto-save.query';
 import Emoji, { gitHubEmojis } from '@tiptap/extension-emoji';
 import { TableKit } from '@tiptap/extension-table';
 import TextAlign from '@tiptap/extension-text-align';
 import { FontSize, TextStyle, TextStyleKit } from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
-import { useEditor } from '@tiptap/react';
+import { useEditor, Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { toast } from 'sonner';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 
 import {
   BuilderCanvas,
@@ -42,19 +42,19 @@ const extensions = [
 ];
 
 function StoryBuilderContent() {
-  const [editorContent, _setEditorContent] = useState<string>(DEFAULT_CONTENT);
-  const [title, setTitle] = useState<string>('');
-  const searchParams = useSearchParams();
-  const _router = useRouter();
-  const autoSaveId = searchParams?.get('autoSaveId');
+  const { storySlug, autoSaveId, mode, parentChapterId } = useBuilderParams();
+  const { data: draftResponse } = useGetAutoSaveDraft();
+  const draftList = draftResponse?.data?.docs || [];
 
-  // Mock data for now as we don't have the hooks
-  const _draftList = [];
-  const _selectedDraft = undefined;
+  const [title, setTitle] = useState<string>('');
+
+  const selectedDraft = useMemo(() => {
+    return draftList.find((d) => d._id === autoSaveId);
+  }, [draftList, autoSaveId]);
 
   const editor = useEditor({
     extensions,
-    content: editorContent,
+    content: DEFAULT_CONTENT,
     immediatelyRender: false,
     editorProps: {
       attributes: {
@@ -63,22 +63,28 @@ function StoryBuilderContent() {
     },
   });
 
-  const handleSave = () => {
-    toast.success('Chapter saved locally');
-  };
+  // Hydrate title when a draft is selected or loaded
+  const [hydratedId, setHydratedId] = useState<string | undefined>('');
+  if (autoSaveId !== hydratedId) {
+    if (selectedDraft) {
+      setHydratedId(autoSaveId);
+      setTitle(selectedDraft.title || '');
+    } else if (!autoSaveId && hydratedId !== undefined) {
+      setHydratedId(undefined);
+      setTitle('');
+    }
+  }
 
-  const handleSaveAsDraft = () => {
-    toast.success('Saved as draft');
-  };
-
-  const handlePublish = () => {
-    toast.success('Published successfully');
-  };
+  // Sync editor content when a draft is selected or loaded
+  useEffect(() => {
+    if (editor && selectedDraft) {
+      editor.commands.setContent(selectedDraft.content);
+    } else if (editor && !autoSaveId) {
+      editor.commands.setContent(DEFAULT_CONTENT);
+    }
+  }, [selectedDraft, editor, autoSaveId]);
 
   if (!editor) return null;
-
-  const wordCount = editor.getText().trim() ? editor.getText().trim().split(/\s+/).length : 0;
-  const charCount = editor.getText().length;
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -86,16 +92,16 @@ function StoryBuilderContent() {
       <BuilderHeader
         title={title}
         onTitleChange={setTitle}
-        onSave={handleSave}
-        isSaving={false}
-        onPublish={handlePublish}
-        onSaveAsDraft={handleSaveAsDraft}
-        editorContent={editor.getHTML()}
+        editor={editor}
         autoSaveId={autoSaveId}
+        storySlug={storySlug}
+        mode={mode}
+        parentChapterId={parentChapterId}
+        draftId={autoSaveId}
       />
       <BuilderToolbar editor={editor} />
       <BuilderCanvas editor={editor} />
-      <BuilderStatusBar wordCount={wordCount} charCount={charCount} />
+      <BuilderStatusBar editor={editor} />
     </div>
   );
 }

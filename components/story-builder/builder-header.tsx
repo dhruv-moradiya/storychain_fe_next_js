@@ -26,29 +26,36 @@ import {
 } from '@/components/ui/responsive-dialog';
 import { ChapterReader, type ChapterData } from '@/components/common/chapter-reader';
 import { SubmitRequestDialog } from '@/components/common/submit-request-dialog';
+import { Editor } from '@tiptap/react';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { statusBadge } from '@/components/common/badge';
+import { TBuilderMode } from '@/hooks/use-builder-params';
+import {
+  useAutoSaveContent,
+  useConvertToDraft,
+  useConvertToPublished,
+} from '@/services/auto-save/auto-save.mutation';
+import { TAutoSaveContentRequest, TAutoSaveType } from '@/type/auto-save.type';
 
 type ChapterStatus = 'draft' | 'pending' | 'published' | 'rejected';
 
 interface BuilderHeaderProps {
   title: string;
   onTitleChange: (title: string) => void;
-  onSave: () => void;
-  isSaving: boolean;
-  onPublish?: () => void;
-  onSaveAsDraft?: () => void;
-  editorContent?: string;
+  editor: Editor | null;
   authorName?: string;
   authorAvatar?: string;
-  autoSaveId?: string | null;
+  autoSaveId?: string;
+  // Context for builder
+  mode: TBuilderMode;
+  storySlug?: string;
+  parentChapterId?: string;
+  chapterId?: string;
   // Context for submit request dialog
   storyId?: string;
   storyTitle?: string;
-  storySlug?: string;
-  parentChapterId?: string;
   parentChapterTitle?: string;
   draftId?: string;
 }
@@ -64,38 +71,129 @@ const statusBadgeConfig: Record<
 };
 
 /**
+ * Helper to determine auto-save type based on builder state
+ */
+function getAutoSaveType(
+  mode: TBuilderMode,
+  parentChapterId?: string,
+  chapterId?: string
+): TAutoSaveType {
+  if (parentChapterId === 'root' || !parentChapterId) {
+    return 'root_chapter';
+  }
+  if (mode === 'update' && chapterId) {
+    return 'update_chapter';
+  }
+  return 'new_chapter';
+}
+
+/**
  * Builder header component
  * Top section with back button, chapter name, status, and action buttons
  */
 function BuilderHeader({
   title,
   onTitleChange,
-  onSave,
-  isSaving,
-  onPublish,
-  onSaveAsDraft,
-  editorContent = '',
+  editor,
   authorName = 'You',
   authorAvatar,
   autoSaveId,
-  storyId,
-  storyTitle,
+  mode,
   storySlug,
   parentChapterId,
+  chapterId,
+  storyId,
+  storyTitle,
   parentChapterTitle,
   draftId,
 }: BuilderHeaderProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isSubmitRequestOpen, setIsSubmitRequestOpen] = useState(false);
   const status: ChapterStatus = 'draft';
   const config = statusBadgeConfig[status];
 
+  // Mutations
+  const { mutate: autoSave, isPending: isSaving } = useAutoSaveContent();
+  const { mutate: convertToDraft, isPending: isConvertingToDraft } = useConvertToDraft();
+  const { mutate: convertToPublished, isPending: isPublishing } = useConvertToPublished();
+
+  const handleSave = () => {
+    if (!title) {
+      toast.error('Please enter a title before saving');
+      return;
+    }
+
+    if (!editor) return;
+
+    const autoSaveType = getAutoSaveType(mode, parentChapterId, chapterId);
+
+    const payload: TAutoSaveContentRequest = {
+      title,
+      content: editor.getHTML(),
+      autoSaveType,
+      storySlug,
+      autoSaveId,
+      ...(parentChapterId && parentChapterId !== 'root' ? { parentChapterId } : {}),
+      ...(chapterId ? { chapterId } : {}),
+    } as TAutoSaveContentRequest;
+
+    autoSave(payload, {
+      onSuccess: (response) => {
+        toast.success('Progress saved');
+        // Update URL with new autoSaveId if it's the first save
+        if (!autoSaveId && response.data?._id) {
+          const params = new URLSearchParams(searchParams.toString());
+          params.set('autoSaveId', response.data._id);
+          router.replace(`?${params.toString()}`);
+        }
+      },
+      onError: () => {
+        toast.error('Failed to save progress');
+      },
+    });
+  };
+
+  const handleConvertToDraft = () => {
+    if (!autoSaveId) {
+      toast.error('Please save your progress first');
+      return;
+    }
+
+    convertToDraft(autoSaveId, {
+      onSuccess: () => {
+        toast.success('Saved as draft chapter');
+        router.push(`/stories/${storySlug}/chapters`);
+      },
+      onError: () => {
+        toast.error('Failed to save as draft');
+      },
+    });
+  };
+
+  const handlePublish = () => {
+    if (!autoSaveId) {
+      toast.error('Please save your progress first');
+      return;
+    }
+
+    convertToPublished(autoSaveId, {
+      onSuccess: () => {
+        toast.success('Published successfully!');
+        router.push(`/stories/${storySlug}/chapters`);
+      },
+      onError: () => {
+        toast.error('Failed to publish chapter');
+      },
+    });
+  };
+
   // Create chapter data for preview
   const previewChapter: ChapterData = {
     id: 'preview',
     title: title || 'Untitled Chapter',
-    content: editorContent,
+    content: editor?.getHTML() || '',
     author: {
       id: 'current-user',
       name: authorName,
@@ -103,6 +201,8 @@ function BuilderHeader({
     },
     status: 'draft',
   };
+
+  const isActionPending = isSaving || isConvertingToDraft || isPublishing;
 
   return (
     <div className="border-border/50 bg-cream-95 sticky top-0 z-30 w-full border-b backdrop-blur-md">
@@ -112,7 +212,7 @@ function BuilderHeader({
           <Button
             variant="ghost"
             size="icon"
-            className="text-text-secondary hover:bg-brand-pink-500/10 hover:text-text-primary h-8 w-8 shrink-0"
+            className="text-text-secondary-65 hover:bg-brand-pink-500/10 hover:text-text-primary h-8 w-8 shrink-0"
             onClick={() => router.back()}
           >
             <ArrowLeft className="h-4 w-4" />
@@ -124,10 +224,10 @@ function BuilderHeader({
                 value={title}
                 onChange={(e) => onTitleChange(e.target.value)}
                 placeholder="Untitled Chapter"
-                className="text-text-primary placeholder:text-text-secondary-65 focus-visible:ring-brand-pink-500/30 h-8 min-w-0 flex-1 border-none bg-transparent text-sm font-medium shadow-none focus-visible:ring-1 sm:max-w-56 sm:text-base"
+                className="text-text-primary placeholder:text-text-secondary-65 focus-visible:ring-brand-pink-500/30 font-ibm-plex-mono h-8 min-w-0 flex-1 border-none bg-transparent text-sm font-medium shadow-none focus-visible:ring-1 sm:max-w-56 sm:text-base"
               />
               {autoSaveId && (
-                <span className="text-text-secondary-65 truncate pl-3 text-[10px]">
+                <span className="text-text-secondary-65 font-ibm-plex-mono truncate pl-3 text-[10px]">
                   Draft ID: {autoSaveId.slice(0, 8)}...
                 </span>
               )}
@@ -185,8 +285,8 @@ function BuilderHeader({
             variant="outline"
             size="sm"
             className="border-border text-text-secondary hover:bg-muted/50 hover:text-text-primary gap-1.5"
-            onClick={onSave}
-            disabled={isSaving}
+            onClick={handleSave}
+            disabled={isActionPending}
           >
             {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             <span className="hidden sm:inline">{isSaving ? 'Saving...' : 'Save'}</span>
@@ -198,22 +298,41 @@ function BuilderHeader({
               <Button
                 size="sm"
                 className="bg-brand-pink-500 hover:bg-brand-pink-600 gap-1.5 text-white shadow-[0_2px_8px_var(--brand-pink-shadow25)]"
+                disabled={isActionPending}
               >
-                <Send className="h-4 w-4" />
-                <span className="hidden sm:inline">Publish</span>
+                {isPublishing ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
+                <span className="hidden sm:inline">
+                  {isPublishing ? 'Publishing...' : 'Publish'}
+                </span>
                 <ChevronDown className="h-3 w-3" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem onClick={onPublish} className="gap-2">
+              <DropdownMenuItem
+                onClick={handlePublish}
+                className="gap-2"
+                disabled={isActionPending}
+              >
                 <Send className="h-4 w-4" />
-                Publish
+                Publish Directly
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={onSaveAsDraft} className="gap-2">
+              <DropdownMenuItem
+                onClick={handleConvertToDraft}
+                className="gap-2"
+                disabled={isActionPending}
+              >
                 <FileText className="h-4 w-4" />
-                Save as Draft
+                Save as Draft Chapter
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setIsSubmitRequestOpen(true)} className="gap-2">
+              <DropdownMenuItem
+                onClick={() => setIsSubmitRequestOpen(true)}
+                className="gap-2"
+                disabled={isActionPending}
+              >
                 <GitPullRequest className="h-4 w-4" />
                 Create Submit Request
               </DropdownMenuItem>
@@ -233,7 +352,7 @@ function BuilderHeader({
         parentChapterTitle={parentChapterTitle}
         draftId={draftId}
         draftTitle={title}
-        draftContent={editorContent}
+        draftContent={editor?.getHTML() || ''}
         onSubmit={(data) => {
           toast.success('Submit request created successfully!');
           console.log('Submit request data:', data);

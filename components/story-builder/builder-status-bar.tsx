@@ -1,10 +1,10 @@
 import { Clock, FileText, Type, Check } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { WritingTipsDialog } from './writing-tips-dialog';
+import { Editor, useEditorState } from '@tiptap/react';
 
 interface BuilderStatusBarProps {
-  wordCount: number;
-  charCount: number;
+  editor: Editor | null;
 }
 
 function calculateReadTime(wordCount: number): string {
@@ -18,7 +18,21 @@ function calculateReadTime(wordCount: number): string {
  * Builder status bar component
  * Shows word count, character count, read time, and last saved status
  */
-function BuilderStatusBar({ wordCount, charCount }: BuilderStatusBarProps) {
+function BuilderStatusBar({ editor }: BuilderStatusBarProps) {
+  const editorState = useEditorState({
+    editor,
+    selector: (ctx) => {
+      const text = ctx.editor?.getText().trim() || '';
+      return {
+        wordCount: text ? text.split(/\s+/).length : 0,
+        charCount: ctx.editor?.getText().length || 0,
+      };
+    },
+  });
+
+  const wordCount = editorState?.wordCount || 0;
+  const charCount = editorState?.charCount || 0;
+
   const readTime = calculateReadTime(wordCount);
 
   return (

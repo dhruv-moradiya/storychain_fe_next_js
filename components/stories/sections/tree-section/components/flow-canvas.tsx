@@ -13,6 +13,7 @@ import {
   type ReactFlowInstance,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import useChapterEdge from '../hooks/use-chapter-edge';
 import { useChapterFlowLayout } from '../hooks/use-chapter-flow-layout';
@@ -24,7 +25,8 @@ import { TopActionButtons } from './top-action-buttons';
 const EMPTY_ARRAY: [] = [];
 
 const FlowCanvas = () => {
-  const { data } = useGetStoryTree('story-slug');
+  const { slug } = useParams();
+  const { data } = useGetStoryTree(slug as string);
   const storyTree = data?.data;
   const [_openPanel, setOpenPanel] = useState<string | null>(null);
 
@@ -72,6 +74,7 @@ const FlowCanvas = () => {
       nodesToLayout.length
         ? layout(nodesToLayout, edgesToLayout)
         : { nodes: EMPTY_ARRAY, edges: EMPTY_ARRAY },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [nodesToLayout.length, nodesToLayout, edgesToLayout, layout]
   );
 
