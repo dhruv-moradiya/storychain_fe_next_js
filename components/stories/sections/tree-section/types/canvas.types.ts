@@ -1,6 +1,6 @@
 import type { Edge, EdgeProps, Node, NodeProps } from '@xyflow/react';
 import { IChapter } from '@/type/chapter/chapter.types';
-import { ChapterCardNode, LoadMorePlaceholderNode } from '../components';
+import { ChapterCardNode, LoadMorePlaceholderNode, LoadingNode } from '../components';
 import AddNodePlaceholderNode from '../components/add-node-placeholder-node';
 import { CanvasEdge } from '../components/canvas-edge';
 
@@ -59,6 +59,8 @@ type IAddNodePlaceholderType = Node<AddNodePlaceholderData, 'addNodePlaceholder'
 
 type ILoadMorePlaceholderType = Node<LoadMorePlaceholderData, 'loadMorePlaceholder'>;
 
+type ILoadingNodeType = Node<Record<string, never>, 'loadingNode'>;
+
 const loadMorePlaceholderWidth = 200;
 const loadMorePlaceholderHeight = 160;
 
@@ -66,6 +68,7 @@ export const nodeTypes = {
   chapterNode: ChapterCardNode,
   addNodePlaceholder: AddNodePlaceholderNode,
   loadMorePlaceholder: LoadMorePlaceholderNode,
+  loadingNode: LoadingNode,
 };
 
 export const edgeTypes = {
@@ -82,6 +85,7 @@ export type {
   IChapterEdgeProps,
   IAddNodePlaceholderType,
   ILoadMorePlaceholderType,
+  ILoadingNodeType,
 };
 export {
   loadMorePlaceholderHeight,

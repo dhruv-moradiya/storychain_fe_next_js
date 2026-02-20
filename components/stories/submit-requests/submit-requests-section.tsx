@@ -1,7 +1,8 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
+import { SecondaryBadge } from '@/components/common/badge';
 import { Button } from '@/components/ui/button';
+import { DataTable } from '@/components/ui/data-table';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -11,25 +12,27 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn, fadeIn } from '@/lib/utils';
 import { mockPullRequests } from '@/lib/data/pull-requests';
+import { cn, fadeIn } from '@/lib/utils';
 import type { IPullRequest, PRStatus, PRType } from '@/type/pull-request.type';
+import { motion } from 'framer-motion';
 import {
-  GitPullRequest,
-  GitMerge,
-  GitPullRequestClosed,
-  Search,
-  Filter,
-  Plus,
   CheckCircle,
-  XCircle,
   FileEdit,
+  Filter,
+  GitMerge,
+  GitPullRequest,
+  GitPullRequestClosed,
+  Plus,
+  Search,
+  Send,
+  XCircle,
 } from 'lucide-react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { PRCard, PRListEmpty, PRListLoading, PRListError, CreatePRDialog } from '.';
+import { CreatePRDialog, PRListEmpty, PRListError, PRListLoading } from '.';
+import { columns } from './columns';
 
 type FilterStatus = PRStatus | 'all';
 type FilterType = PRType | 'all';
@@ -96,17 +99,17 @@ export default function SubmitRequestsSection({ slug }: SubmitRequestsSectionPro
       <motion.div {...fadeIn()} className="mb-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-100 dark:bg-purple-900/30">
-              <GitPullRequest className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+            <div className="bg-brand-pink-500/10 flex h-12 w-12 items-center justify-center rounded-xl">
+              <Send className="text-brand-pink-500 h-6 w-6" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold">Submit Requests</h1>
-              <p className="text-muted-foreground">Review and manage chapter contributions</p>
+              <h1 className="text-text-primary text-2xl font-bold">Submit Requests</h1>
+              <p className="text-text-secondary-65">Review and manage chapter contributions</p>
             </div>
           </div>
 
           <Button
-            className="bg-brand-pink-500 hover:bg-brand-pink-600 gap-2 text-white"
+            className="bg-brand-pink-500 hover:bg-brand-pink-600 gap-2 text-white shadow-sm"
             onClick={() => setIsCreateDialogOpen(true)}
           >
             <Plus className="h-4 w-4" />
@@ -115,71 +118,120 @@ export default function SubmitRequestsSection({ slug }: SubmitRequestsSectionPro
         </div>
       </motion.div>
 
-      {/* Stats - GitHub style */}
+      {/* Stats - GitHub style (Themed) */}
       <motion.div
         {...fadeIn(0.1)}
         className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6"
       >
         {[
-          { label: 'Total', value: stats.total, icon: GitPullRequest, color: 'text-foreground' },
-          { label: 'Open', value: stats.open, icon: GitPullRequest, color: 'text-green-500' },
-          { label: 'Approved', value: stats.approved, icon: CheckCircle, color: 'text-blue-500' },
-          { label: 'Merged', value: stats.merged, icon: GitMerge, color: 'text-purple-500' },
-          { label: 'Rejected', value: stats.rejected, icon: XCircle, color: 'text-red-500' },
+          {
+            label: 'Total',
+            value: stats.total,
+            icon: GitPullRequest,
+            color: 'text-text-primary',
+            bg: 'bg-cream-95',
+          },
+          {
+            label: 'Open',
+            value: stats.open,
+            icon: GitPullRequest,
+            color: 'text-green-600',
+            bg: 'bg-green-500/10',
+          },
+          {
+            label: 'Approved',
+            value: stats.approved,
+            icon: CheckCircle,
+            color: 'text-blue-600',
+            bg: 'bg-blue-500/10',
+          },
+          {
+            label: 'Merged',
+            value: stats.merged,
+            icon: GitMerge,
+            color: 'text-purple-600',
+            bg: 'bg-purple-500/10',
+          },
+          {
+            label: 'Rejected',
+            value: stats.rejected,
+            icon: XCircle,
+            color: 'text-red-600',
+            bg: 'bg-red-500/10',
+          },
           {
             label: 'Closed',
             value: stats.closed,
             icon: GitPullRequestClosed,
             color: 'text-slate-500',
+            bg: 'bg-slate-500/10',
           },
         ].map((stat) => (
           <motion.div
             key={stat.label}
             whileHover={{ y: -2 }}
-            className="bg-card cursor-pointer rounded-xl border p-4 transition-shadow hover:shadow-md"
+            className="bg-cream-95 border-border/50 group hover:border-brand-pink-500/30 cursor-pointer rounded-xl border p-4 transition-all hover:shadow-sm"
             onClick={() => setStatusFilter(stat.label.toUpperCase() as FilterStatus)}
           >
             <div className="flex items-center gap-2">
-              <stat.icon className={cn('h-4 w-4', stat.color)} />
-              <span className="text-muted-foreground text-sm">{stat.label}</span>
+              <div className={cn('flex h-6 w-6 items-center justify-center rounded-md', stat.bg)}>
+                <stat.icon className={cn('h-3.5 w-3.5', stat.color)} />
+              </div>
+              <span className="text-text-secondary-65 text-sm font-medium">{stat.label}</span>
             </div>
-            <p className="mt-1 text-2xl font-bold">{stat.value}</p>
+            <p className="text-text-primary mt-2 text-2xl font-bold">{stat.value}</p>
           </motion.div>
         ))}
       </motion.div>
 
-      {/* Filters - GitHub style */}
+      {/* Filters */}
       <motion.div {...fadeIn(0.15)} className="mb-6 space-y-4">
         {/* Status tabs */}
         <div className="overflow-x-auto pb-2">
           <Tabs value={statusFilter} onValueChange={(v) => setStatusFilter(v as FilterStatus)}>
-            <TabsList className="bg-muted/50 h-auto flex-nowrap p-1">
-              <TabsTrigger value="all" className="gap-1.5">
+            <TabsList className="bg-cream-95 border-border/50 h-auto flex-nowrap border p-1">
+              <TabsTrigger
+                value="all"
+                className="data-[state=active]:bg-brand-pink-500/10 data-[state=active]:text-brand-pink-500 gap-1.5"
+              >
                 All
               </TabsTrigger>
-              <TabsTrigger value="OPEN" className="gap-1.5">
-                <GitPullRequest className="h-3.5 w-3.5 text-green-500" />
+              <TabsTrigger
+                value="OPEN"
+                className="gap-1.5 data-[state=active]:bg-green-500/10 data-[state=active]:text-green-600"
+              >
+                <GitPullRequest className="size-3.5" />
                 Open
                 {stats.open > 0 && (
-                  <Badge variant="secondary" className="ml-1 h-5 px-1.5">
-                    {stats.open}
-                  </Badge>
+                  <SecondaryBadge label={stats.open.toString()} size="sm" className="ml-1" />
                 )}
               </TabsTrigger>
-              <TabsTrigger value="APPROVED" className="gap-1.5">
-                <CheckCircle className="h-3.5 w-3.5 text-blue-500" />
+              <TabsTrigger
+                value="APPROVED"
+                className="gap-1.5 data-[state=active]:bg-blue-500/10 data-[state=active]:text-blue-600"
+              >
+                <CheckCircle className="size-3.5" />
                 Approved
               </TabsTrigger>
-              <TabsTrigger value="MERGED" className="gap-1.5">
-                <GitMerge className="h-3.5 w-3.5 text-purple-500" />
+              <TabsTrigger
+                value="MERGED"
+                className="gap-1.5 data-[state=active]:bg-purple-500/10 data-[state=active]:text-purple-600"
+              >
+                <GitMerge className="size-3.5" />
                 Merged
               </TabsTrigger>
-              <TabsTrigger value="REJECTED" className="gap-1.5">
-                <XCircle className="h-3.5 w-3.5 text-red-500" />
+              <TabsTrigger
+                value="REJECTED"
+                className="gap-1.5 data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600"
+              >
+                <XCircle className="size-3.5" />
                 Rejected
               </TabsTrigger>
-              <TabsTrigger value="CLOSED" className="gap-1.5">
-                <GitPullRequestClosed className="h-3.5 w-3.5 text-slate-500" />
+              <TabsTrigger
+                value="CLOSED"
+                className="gap-1.5 data-[state=active]:bg-slate-500/10 data-[state=active]:text-slate-600"
+              >
+                <GitPullRequestClosed className="size-3.5" />
                 Closed
               </TabsTrigger>
             </TabsList>
@@ -189,37 +241,37 @@ export default function SubmitRequestsSection({ slug }: SubmitRequestsSectionPro
         {/* Search and type filter */}
         <div className="flex flex-col gap-3 sm:flex-row">
           <div className="relative flex-1">
-            <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+            <Search className="text-text-secondary-65 absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <Input
               placeholder="Search submit requests..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9"
+              className="border-border/50 bg-cream-95 focus-visible:ring-brand-pink-500 pl-9"
             />
           </div>
 
           <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v as FilterType)}>
-            <SelectTrigger className="w-full sm:w-[180px]">
-              <Filter className="mr-2 h-4 w-4" />
+            <SelectTrigger className="border-border/50 bg-cream-95 focus:ring-brand-pink-500 w-full sm:w-[180px]">
+              <Filter className="text-text-secondary-65 mr-2 h-4 w-4" />
               <SelectValue placeholder="Type" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-cream-95 border-border/50">
               <SelectItem value="all">All Types</SelectItem>
               <SelectItem value="NEW_CHAPTER">
                 <div className="flex items-center gap-2">
-                  <Plus className="h-4 w-4 text-green-500" />
+                  <Plus className="h-4 w-4 text-green-600" />
                   New Chapter
                 </div>
               </SelectItem>
               <SelectItem value="EDIT_CHAPTER">
                 <div className="flex items-center gap-2">
-                  <FileEdit className="h-4 w-4 text-amber-500" />
+                  <FileEdit className="h-4 w-4 text-amber-600" />
                   Edit Chapter
                 </div>
               </SelectItem>
               <SelectItem value="DELETE_CHAPTER">
                 <div className="flex items-center gap-2">
-                  <XCircle className="h-4 w-4 text-red-500" />
+                  <XCircle className="h-4 w-4 text-red-600" />
                   Delete Chapter
                 </div>
               </SelectItem>
@@ -228,7 +280,7 @@ export default function SubmitRequestsSection({ slug }: SubmitRequestsSectionPro
         </div>
       </motion.div>
 
-      {/* Pull Request List - GitHub style */}
+      {/* Pull Request Table */}
       <motion.div {...fadeIn(0.2)}>
         {isLoading ? (
           <PRListLoading count={5} />
@@ -246,66 +298,7 @@ export default function SubmitRequestsSection({ slug }: SubmitRequestsSectionPro
             }
           />
         ) : (
-          <div className="bg-card overflow-hidden rounded-xl border">
-            {/* List Header - GitHub style */}
-            <div className="bg-muted/50 flex items-center justify-between border-b px-4 py-3">
-              <div className="flex items-center gap-4 text-sm font-medium">
-                <button
-                  onClick={() => setStatusFilter('OPEN')}
-                  className={cn(
-                    'flex items-center gap-1.5 transition-colors',
-                    statusFilter === 'OPEN'
-                      ? 'text-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
-                  )}
-                >
-                  <GitPullRequest className="h-4 w-4" />
-                  {stats.open} Open
-                </button>
-                <button
-                  onClick={() => setStatusFilter('MERGED')}
-                  className={cn(
-                    'flex items-center gap-1.5 transition-colors',
-                    statusFilter === 'MERGED'
-                      ? 'text-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
-                  )}
-                >
-                  <GitMerge className="h-4 w-4" />
-                  {stats.merged} Merged
-                </button>
-                <button
-                  onClick={() => setStatusFilter('CLOSED')}
-                  className={cn(
-                    'flex items-center gap-1.5 transition-colors',
-                    statusFilter === 'CLOSED'
-                      ? 'text-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
-                  )}
-                >
-                  <GitPullRequestClosed className="h-4 w-4" />
-                  {stats.closed + stats.rejected} Closed
-                </button>
-              </div>
-            </div>
-
-            {/* PR Items */}
-            <div className="divide-y">
-              <AnimatePresence mode="popLayout">
-                {filteredPRs.map((pr, index) => (
-                  <motion.div
-                    key={pr._id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ delay: index * 0.03 }}
-                  >
-                    <PRCard pullRequest={pr} onClick={() => handlePRClick(pr)} />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </div>
-          </div>
+          <DataTable columns={columns} data={filteredPRs} onRowClick={handlePRClick} />
         )}
       </motion.div>
 

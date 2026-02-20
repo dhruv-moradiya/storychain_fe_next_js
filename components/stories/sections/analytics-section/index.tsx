@@ -14,9 +14,8 @@ import {
   OverviewStats,
   ReadsChart,
   TopChapters,
-  RecentActivity,
   ReadingProgress,
-  EngagementFunnel,
+  BranchingStats,
 } from './components';
 import { mockAnalyticsData } from './analytics.data';
 import type { DateRange } from './analytics.types';
@@ -113,15 +112,14 @@ const AnalyticsSection = ({ slug }: AnalyticsSectionProps) => {
       {/* Reads Over Time Chart */}
       <ReadsChart data={data.readsOverTime} />
 
-      {/* Three Column Layout: Top Chapters, Recent Activity & Reading Progress */}
-      <div className="grid gap-5 lg:grid-cols-3">
+      {/* Two Column Layout: Top Chapters & Reading Progress */}
+      <div className="grid gap-5 lg:grid-cols-2 lg:items-start">
         <TopChapters chapters={data.topChapters} slug={slug} />
-        <RecentActivity activities={data.recentActivity} />
         <ReadingProgress data={data.readingProgress} />
       </div>
 
-      {/* Engagement Funnel */}
-      <EngagementFunnel data={data.engagementFunnel} />
+      {/* Branching Statistics */}
+      <BranchingStats data={data.branchingStats} />
     </motion.div>
   );
 };

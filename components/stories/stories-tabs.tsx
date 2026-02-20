@@ -1,44 +1,41 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { usePathname, useParams, useRouter } from 'next/navigation';
-import { cn } from '@/lib/utils';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { Button } from '@/components/ui/button';
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
-  ResponsiveDialogTrigger,
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
+  ResponsiveDialogTrigger,
 } from '@/components/ui/responsive-dialog';
-import { Button } from '@/components/ui/button';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 import {
-  BookOpen,
+  AlertTriangle,
+  BarChart3,
+  Check,
+  ChevronDown,
   FileText,
   GitBranch,
   History,
-  MessageSquare,
-  Users,
-  Vote,
-  Settings,
-  AlertTriangle,
-  Send,
   LayoutDashboard,
-  ChevronDown,
-  Check,
-  BarChart3,
+  Send,
+  Settings,
+  Users,
 } from 'lucide-react';
+import Link from 'next/link';
+import { useParams, usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const baseTabs = [
   { key: 'overview', label: 'Overview', path: 'overview', icon: LayoutDashboard },
   { key: 'chapters', label: 'Chapters', path: 'chapters', icon: FileText },
   { key: 'tree', label: 'Tree', path: 'tree', icon: GitBranch },
-  { key: 'versions', label: 'Versions', path: 'versions', icon: BookOpen },
+  // { key: 'versions', label: 'Versions', path: 'versions', icon: BookOpen },
   { key: 'reports', label: 'Reports', path: 'reports', icon: AlertTriangle },
-  { key: 'comments', label: 'Comments', path: 'comments', icon: MessageSquare },
+  // { key: 'comments', label: 'Comments', path: 'comments', icon: MessageSquare },
   { key: 'collab', label: 'Collaborators', path: 'collaborators', icon: Users },
-  { key: 'votes', label: 'Votes', path: 'votes', icon: Vote },
+  // { key: 'votes', label: 'Votes', path: 'votes', icon: Vote },
   { key: 'analytics', label: 'Analytics', path: 'analytics', icon: BarChart3 },
   { key: 'history', label: 'History', path: 'history', icon: History },
   { key: 'settings', label: 'Settings', path: 'settings', icon: Settings },

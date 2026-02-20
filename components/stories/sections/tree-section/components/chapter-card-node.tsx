@@ -83,7 +83,7 @@ export const ChapterCardNode = ({
             <div className="bg-brand-blue/8 flex items-center gap-1.5 rounded-full px-2 py-0.5">
               <BookOpen className="text-brand-blue h-3 w-3" />
               <span className="text-brand-blue text-[10px] font-semibold">
-                Chapter {chapterNum}
+                Chapter {data.displayNumber}
               </span>
             </div>
             {isPopular && (

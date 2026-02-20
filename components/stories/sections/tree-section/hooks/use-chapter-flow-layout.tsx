@@ -8,7 +8,7 @@ import {
   nodeWidth,
 } from '../types/canvas.types';
 
-type LayoutDirection = 'TB' | 'LR';
+export type LayoutDirection = 'TB' | 'LR';
 
 const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
@@ -29,7 +29,9 @@ export function useChapterFlowLayout() {
 
       // Register nodes with appropriate dimensions
       nodes.forEach((node) => {
-        const isPlaceholder = node.type === 'addNodePlaceholder';
+        const isPlaceholder = ['addNodePlaceholder', 'loadMorePlaceholder', 'loadingNode'].includes(
+          node.type || ''
+        );
         dagreGraph.setNode(node.id, {
           width: isPlaceholder ? addNodePlaceholderWidth : nodeWidth,
           height: isPlaceholder ? addNodePlaceholderHeight : nodeHeight,
@@ -45,7 +47,9 @@ export function useChapterFlowLayout() {
 
       const layoutedNodes: N[] = nodes.map((node) => {
         const { x, y } = dagreGraph.node(node.id);
-        const isPlaceholder = node.type === 'addNodePlaceholder';
+        const isPlaceholder = ['addNodePlaceholder', 'loadMorePlaceholder', 'loadingNode'].includes(
+          node.type || ''
+        );
         const width = isPlaceholder ? addNodePlaceholderWidth : nodeWidth;
         const height = isPlaceholder ? addNodePlaceholderHeight : nodeHeight;
 

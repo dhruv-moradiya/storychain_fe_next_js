@@ -28,19 +28,22 @@ export interface FunnelStep {
   percentage: number;
 }
 
-export interface RecentActivityItem {
-  id: string;
-  type: 'read' | 'comment' | 'vote' | 'subscribe' | 'branch';
-  user: string;
-  action: string;
-  target?: string;
-  time: string;
-}
-
 export interface ReadingProgressData {
   label: string;
   value: number;
   [key: string]: string | number;
+}
+
+export interface BranchStats {
+  totalBranches: number;
+  activeBranches: number;
+  maxDepth: number;
+  avgReadsPerBranch: number;
+  topBranches: {
+    name: string;
+    reads: number;
+    depth: number;
+  }[];
 }
 
 export interface AnalyticsData {
@@ -58,9 +61,8 @@ export interface AnalyticsData {
   };
   readsOverTime: ReadData[];
   topChapters: TopChapter[];
-  recentActivity: RecentActivityItem[];
   readingProgress: ReadingProgressData[];
-  engagementFunnel: FunnelStep[];
+  branchingStats: BranchStats;
 }
 
 export type DateRange = '7d' | '30d' | '90d' | '1y' | 'all';

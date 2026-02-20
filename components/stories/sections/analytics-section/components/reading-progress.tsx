@@ -39,7 +39,7 @@ export function ReadingProgress({ data }: ReadingProgressProps) {
       transition={{ duration: 0.4, delay: 0.25 }}
       className="border-border/50 bg-cream-95 rounded-xl border p-4"
     >
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-3 flex items-center justify-between">
         <h3 className="text-text-primary flex items-center gap-2 text-sm font-semibold tracking-wide uppercase">
           <div className="h-1 w-1 rounded-full bg-purple-500" />
           Reading Progress
@@ -72,7 +72,7 @@ export function ReadingProgress({ data }: ReadingProgressProps) {
         </ChartContainer>
 
         {/* Legend */}
-        <div className="flex-1 space-y-1.5">
+        <div className="flex-1 space-y-1">
           {data.map((item, index) => (
             <motion.div
               key={item.label}
@@ -86,7 +86,7 @@ export function ReadingProgress({ data }: ReadingProgressProps) {
                   className="h-2.5 w-2.5 rounded-full"
                   style={{ backgroundColor: COLORS[index % COLORS.length] }}
                 />
-                <span className="text-text-primary text-xs">{item.label}</span>
+                <span className="text-text-primary text-xs font-medium">{item.label}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-text-primary text-xs font-semibold">
