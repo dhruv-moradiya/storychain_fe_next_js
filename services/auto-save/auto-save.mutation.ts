@@ -3,7 +3,7 @@ import {
   IConvertAutoSaveToDraftResponse,
   IConvertAutoSaveToPublishedResponse,
   TAutoSaveContentRequest,
-} from '@/type/auto-save.type';
+} from '@/type/auto-save';
 import { IBaseResponse } from '@/type/base-response.type';
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 import { AxiosError } from 'axios';

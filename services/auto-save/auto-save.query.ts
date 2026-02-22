@@ -1,4 +1,4 @@
-import { IGetAutoSaveDraftResponse } from '@/type/auto-save.type';
+import { IGetAutoSaveDraftResponse } from '@/type/auto-save';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { chapterAutoSaveApi } from './auto-save-api';

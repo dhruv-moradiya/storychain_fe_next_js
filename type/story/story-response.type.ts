@@ -1,5 +1,5 @@
 import { IChapterTreeItem } from '@/components/stories/sections/tree-section/types/canvas.types';
-import { IStoryStats, TStoryContentRating, TStoryStatus } from '.';
+import { IStoryStats, IStorySettings, TStoryContentRating, TStoryStatus } from '.';
 import { IBaseResponse } from '../base-response.type';
 
 interface IUserStories {
@@ -40,4 +40,10 @@ interface IUserStoriesResponse extends IBaseResponse<IUserStories[]> {}
 
 interface IStoryTreeResponse extends IBaseResponse<{ chapters: IChapterTreeItem[] }> {}
 
-export type { IUserStories, IUserStoriesResponse, IStoryTreeResponse };
+interface IStorySettingsResponse extends IBaseResponse<{
+  settings: IStorySettings;
+  coverImage?: { url: string; publicId: string };
+  cardImage?: { url: string; publicId: string };
+}> {}
+
+export type { IUserStories, IUserStoriesResponse, IStoryTreeResponse, IStorySettingsResponse };

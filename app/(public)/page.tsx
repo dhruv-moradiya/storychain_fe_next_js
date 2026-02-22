@@ -51,10 +51,10 @@ const TeamworkSection = dynamic(
   { ssr: true }
 );
 
-const DarkCtaSection = dynamic(
-  () => import('@/components/home/dark-cta-section').then((mod) => mod.DarkCtaSection),
-  { ssr: true }
-);
+// const DarkCtaSection = dynamic(
+//   () => import('@/components/home/dark-cta-section').then((mod) => mod.DarkCtaSection),
+//   { ssr: true }
+// );
 
 const FinalVisionSection = dynamic(
   () => import('@/components/home/final-vision-section').then((mod) => mod.FinalVisionSection),
@@ -145,7 +145,7 @@ export default async function HomePage() {
 
       <TeamworkSection />
 
-      <DarkCtaSection />
+      {/* <DarkCtaSection /> */}
 
       <FinalVisionSection />
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Bell, CheckCircle, Info, Loader2, X, XCircle } from 'lucide-react';
@@ -83,7 +84,6 @@ function ToastContent({
           <IconComponent size={16} className={cn(isLoading && 'animate-spin', style.icon)} />
         )}
       </div>
-
       {/* Content */}
       <div className="flex min-w-0 flex-1 flex-col justify-center">
         <p
@@ -108,21 +108,22 @@ function ToastContent({
 
       {/* Action button */}
       {action && (
-        <button
+        <Button
+          size="sm"
           onClick={() => {
             action.onClick();
             hotToast.dismiss(t.id);
           }}
           className={cn(
-            'font-ibm-plex-mono shrink-0 self-center rounded-lg px-2.5 py-1 text-[11px] font-medium transition-transform hover:scale-105 active:scale-95',
+            'font-ibm-plex-mono h-7 shrink-0 px-2.5 text-[11px] font-medium transition-transform hover:scale-105 active:scale-95',
             style.iconBg,
-            style.icon
+            style.icon,
+            'hover:bg-opacity-80'
           )}
         >
           {action.label}
-        </button>
+        </Button>
       )}
-
       {/* Dismiss button */}
       {dismissible && !isLoading && (
         <button

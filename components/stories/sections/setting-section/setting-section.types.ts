@@ -2,7 +2,7 @@ import type { IStorySettings } from '@/type/story/story.types';
 
 export interface SettingTabProps {
   settings: IStorySettings;
-  onSettingUpdate: (key: keyof IStorySettings, value: boolean | string) => void;
+  onSettingUpdate: <K extends keyof IStorySettings>(key: K, value: IStorySettings[K]) => void;
 }
 
 export interface ImageUploadState {

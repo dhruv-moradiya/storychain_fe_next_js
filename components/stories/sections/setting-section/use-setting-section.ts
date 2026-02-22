@@ -1,67 +1,54 @@
-import { useState } from 'react';
-import { toast } from 'sonner';
+import { useUpdateStorySettings } from '@/services/stories/stories.mutation';
+import { useGetStorySettings } from '@/services/stories/stories.query';
 import type { IStorySettings } from '@/type/story/story.types';
+import { useState } from 'react';
 import type { SettingTab } from './setting-section.types';
 
 export function useSettingSection(slug: string | undefined) {
   const [activeTab, setActiveTab] = useState<SettingTab>('general');
 
-  // Mock settings
-  const [settings, setSettings] = useState<{
-    settings: IStorySettings;
-    cardImage?: { url: string };
-    coverImage?: { url: string };
-  } | null>({
-    settings: {
-      isPublic: true,
-      allowBranching: true,
-      requireApproval: true,
-      allowComments: true,
-      allowVoting: true,
-      genres: ['fantasy', 'adventure'],
-      contentRating: 'teen',
-    },
-    cardImage: { url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400' },
-    coverImage: { url: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200' },
-  });
+  // Real data fetching
+  const { data: storyData, isLoading } = useGetStorySettings(slug);
+  const settings = storyData?.data;
 
-  const isLoading = false;
+  // Real data mutation
+  const updateSettingsMutation = useUpdateStorySettings(slug || '');
 
   const [cardUploading, setCardUploading] = useState(false);
   const [coverUploading, setCoverUploading] = useState(false);
   const [cardPreview, setCardPreview] = useState<string | null>(null);
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
 
-  const handleSettingUpdate = (key: keyof IStorySettings, value: boolean | string) => {
-    toast.success(`Updated ${key} to ${value}`);
-    setSettings((prev) => {
-      if (!prev) return null;
-      return {
-        ...prev,
-        settings: {
-          ...prev.settings,
-          [key]: value,
-        },
-      };
-    });
+  const handleSettingUpdate = <K extends keyof IStorySettings>(
+    key: K,
+    value: IStorySettings[K]
+  ) => {
+    if (!settings?.settings) return;
+
+    // Send the full settings object to prevent overwriting other fields with defaults
+    const updatedSettings = {
+      ...settings.settings,
+      [key]: value,
+    };
+
+    updateSettingsMutation.mutate(updatedSettings);
   };
 
   const handleImageUpload = async (file: File, type: 'card' | 'cover') => {
     if (!slug) return;
 
+    // TODO: Implement image upload API integration when needed
     if (type === 'card') {
       setCardUploading(true);
       setCardPreview(URL.createObjectURL(file));
       setTimeout(() => {
         setCardUploading(false);
-        toast.success('Card image updated');
       }, 1500);
     } else {
       setCoverUploading(true);
       setCoverPreview(URL.createObjectURL(file));
       setTimeout(() => {
         setCoverUploading(false);
-        toast.success('Cover image updated');
       }, 1500);
     }
   };

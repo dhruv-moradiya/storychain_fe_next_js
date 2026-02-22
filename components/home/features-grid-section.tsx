@@ -67,7 +67,9 @@ export const FeaturesGridSection = () => {
                   <div className="flex flex-1 flex-col items-center justify-center text-center">
                     <motion.div
                       className="mb-2 flex h-9 w-9 items-center justify-center sm:mb-4 sm:h-12 sm:w-12"
-                      style={{ backgroundColor: `${feature.color}12` }}
+                      style={{
+                        backgroundColor: `color-mix(in srgb, ${feature.color}, transparent 93%)`,
+                      }}
                       whileHover={{ scale: 1.1, rotate: 5 }}
                     >
                       <feature.icon

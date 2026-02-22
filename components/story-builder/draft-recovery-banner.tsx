@@ -11,7 +11,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useGetAutoSaveDraft } from '@/services/auto-save/auto-save.query';
 import { useDeleteAutoSave } from '@/services/auto-save/auto-save.mutation';
-import { IChapterAutoSave } from '@/type/auto-save.type';
+import { IChapterAutoSave } from '@/type/auto-save';
 import { toast } from 'sonner';
 
 // Inline Draft Item Component

@@ -10,7 +10,6 @@ export const NotJustAnAppSection = () => {
     <section className="bg-bg-cream relative z-10 px-6 pt-6 pb-8 sm:pb-20">
       <div className="mx-auto max-w-6xl">
         <div className="relative overflow-hidden rounded-[20px] px-4 py-12 shadow-sm backdrop-blur-sm sm:rounded-[28px] sm:px-6 sm:py-24">
-          {/* <div className="pointer-events-none absolute inset-0 rounded-[28px] bg-[radial-gradient(circle,_rgba(0,0,0,0.03)_1px,_transparent_1px)] [background-size:24px_24px] opacity-60" /> */}
           <div
             className="pointer-events-none absolute inset-0 rounded-[28px]"
             style={{
@@ -53,19 +52,6 @@ export const NotJustAnAppSection = () => {
               }}
               className="relative flex justify-center gap-6"
             >
-              {/* Connecting line behind icons */}
-              <motion.div
-                variants={{
-                  hidden: { scaleX: 0, opacity: 0 },
-                  visible: {
-                    scaleX: 1,
-                    opacity: 1,
-                    transition: { duration: 0.8, ease: 'easeOut' },
-                  },
-                }}
-                className="absolute top-1/2 right-1/4 left-1/4 h-px -translate-y-1/2 bg-linear-to-r from-transparent via-black/10 to-transparent"
-              />
-
               {[
                 { Icon: BookOpen, gradient: 'from-brand-orange to-brand-pink-500' },
                 { Icon: Sparkles, gradient: 'from-brand-blue to-brand-pink-400' },

@@ -310,7 +310,6 @@ export default function Navbar() {
         {isSignedIn && (
           <ul className="hidden items-center gap-2 md:flex">
             <NavItem to="/dashboard" label="Dashboard" icon={<LayoutDashboard size={16} />} />
-            <NavItem to="/test" label="Test" icon={<TestTube size={16} />} />
             <NavItem to="/explore" label="Explore" icon={<Compass size={16} />} />
             <NavItem to="/builder" label="Builder" icon={<Feather size={16} />} />
             <NavItem to="/pricing" label="Pricing" icon={<CoinsIcon size={16} />} />

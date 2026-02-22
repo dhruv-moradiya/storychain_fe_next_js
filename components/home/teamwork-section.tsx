@@ -32,7 +32,7 @@ export const TeamworkSection = () => {
         />
       </div> */}
 
-      <div className="mx-auto max-w-4xl px-6 pt-10 pb-12 text-center sm:mb-24 sm:pt-16 sm:pb-20">
+      <div className="mx-auto mb-0! max-w-4xl px-6 pt-10 pb-12 text-center sm:mb-24 sm:pt-16 sm:pb-20">
         <motion.span
           {...scrollReveal.paragraph}
           className="font-yellowtail text-brand-pink-500 mb-4 block text-lg"

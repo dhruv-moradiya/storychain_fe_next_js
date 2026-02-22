@@ -5,19 +5,19 @@ const features = [
     icon: GitBranch,
     title: 'Infinite Branching',
     description: 'Let your story split into countless paths. Every choice creates a new reality.',
-    color: 'var(--brand-blue)',
+    color: '#6b7cff',
   },
   {
     icon: Users,
     title: 'Collaborative Writing',
     description: 'Invite co-authors into your world. Write together in real-time harmony.',
-    color: 'var(--brand-pink-500)',
+    color: '#ec4899',
   },
   {
     icon: MessageCircle,
     title: 'Inline Comments',
     description: 'Discuss moments within the story. Let feedback flow naturally.',
-    color: 'var(--brand-orange)',
+    color: '#ff9f68',
   },
   {
     icon: Layers,

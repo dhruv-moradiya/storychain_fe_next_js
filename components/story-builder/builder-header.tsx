@@ -37,7 +37,7 @@ import {
   useConvertToDraft,
   useConvertToPublished,
 } from '@/services/auto-save/auto-save.mutation';
-import { TAutoSaveContentRequest, TAutoSaveType } from '@/type/auto-save.type';
+import { TAutoSaveContentRequest, TAutoSaveType, AutoSaveType } from '@/type/auto-save';
 
 type ChapterStatus = 'draft' | 'pending' | 'published' | 'rejected';
 
@@ -79,12 +79,12 @@ function getAutoSaveType(
   chapterId?: string
 ): TAutoSaveType {
   if (parentChapterId === 'root' || !parentChapterId) {
-    return 'root_chapter';
+    return AutoSaveType.ROOT_CHAPTER;
   }
   if (mode === 'update' && chapterId) {
-    return 'update_chapter';
+    return AutoSaveType.UPDATE_CHAPTER;
   }
-  return 'new_chapter';
+  return AutoSaveType.NEW_CHAPTER;
 }
 
 /**

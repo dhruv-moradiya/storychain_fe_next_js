@@ -5,7 +5,7 @@ import {
   IConvertAutoSaveToPublishedResponse,
   IGetAutoSaveDraftResponse,
   TAutoSaveContentRequest,
-} from '@/type/auto-save.type';
+} from '@/type/auto-save';
 import { IBaseResponse } from '@/type/base-response.type';
 import { AxiosResponse } from 'axios';
 
