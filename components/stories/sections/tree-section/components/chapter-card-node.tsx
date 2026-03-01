@@ -1,3 +1,5 @@
+'use client';
+
 import { IChapterNodeProps } from '../types/canvas.types';
 import { Handle, Position } from '@xyflow/react';
 import {
@@ -7,11 +9,13 @@ import {
   GitBranch,
   Heart,
   MessageCircle,
+  Plus,
   Sparkles,
   BookOpen,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useRouter } from 'next/navigation';
 
 // Static preview excerpts for chapters
 const CHAPTER_EXCERPTS = [
@@ -23,14 +27,8 @@ const CHAPTER_EXCERPTS = [
   'What they discovered in the ruins would rewrite history itself...',
 ];
 
-export const ChapterCardNode = ({
-  id,
-  data,
-  selected,
-  sourcePosition,
-  targetPosition,
-}: IChapterNodeProps) => {
-  console.log('sourcePosition', sourcePosition, targetPosition);
+export const ChapterCardNode = ({ id, data, selected }: IChapterNodeProps) => {
+  const router = useRouter();
   const chapterNum = data.depth + 1;
   const excerpt = CHAPTER_EXCERPTS[data.depth % CHAPTER_EXCERPTS.length];
   const readTime = Math.max(2, Math.floor(chapterNum * 1.5 + 2));
@@ -66,12 +64,12 @@ export const ChapterCardNode = ({
       <Handle
         type="target"
         position={Position.Top}
-        className="!border-bg-cream !bg-brand-pink-500 !-top-1.5 !h-2.5 !w-2.5 !rounded-full !border-2"
+        className="border-bg-cream! bg-brand-pink-500! -top-1.5! h-2.5! w-2.5! rounded-full! border-2!"
       />
       <Handle
         type="source"
         position={Position.Bottom}
-        className="!border-bg-cream !bg-brand-pink-500 !-bottom-1.5 !h-2.5 !w-2.5 !rounded-full !border-2"
+        className="border-bg-cream! bg-brand-pink-500! -bottom-1.5! h-2.5! w-2.5! rounded-full! border-2!"
       />
 
       {/* Card Content */}
@@ -87,13 +85,13 @@ export const ChapterCardNode = ({
               </span>
             </div>
             {isPopular && (
-              <div className="from-brand-orange/15 to-brand-pink-500/15 flex items-center gap-0.5 rounded-full bg-gradient-to-r px-1.5 py-0.5">
+              <div className="from-brand-orange/15 to-brand-pink-500/15 flex items-center gap-0.5 rounded-full bg-linear-to-r px-1.5 py-0.5">
                 <Sparkles className="text-brand-orange h-2.5 w-2.5" />
               </div>
             )}
           </div>
 
-          {/* Status Badges */}
+          {/* Status Badges + Quick-add button */}
           <div className="flex items-center gap-1.5">
             {data.stats.childBranches > 0 && (
               <div className="bg-badge-purple/8 text-badge-purple flex items-center gap-0.5 rounded-full px-1.5 py-0.5">
@@ -106,6 +104,28 @@ export const ChapterCardNode = ({
                 <Flag className="h-2.5 w-2.5" />
                 <span className="text-[9px] font-semibold">End</span>
               </div>
+            )}
+
+            {/* Quick-add child chapter — only visible on hover */}
+            {!data.isEnding && (
+              <button
+                type="button"
+                title="Add child chapter"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const slug = data.storySlug;
+                  if (!slug) return;
+                  const params = new URLSearchParams({
+                    mode: 'new',
+                    parentChapterSlug: data.slug,
+                    storySlug: slug,
+                  });
+                  router.push(`/stories/${slug}/builder?${params.toString()}`);
+                }}
+                className="hover:bg-brand-pink-500/10 hover:text-brand-pink-500 text-text-secondary-65 flex items-center justify-center rounded-full p-0.5 opacity-0 transition-all group-hover:opacity-100"
+              >
+                <Plus className="h-3 w-3" strokeWidth={2.5} />
+              </button>
             )}
           </div>
         </div>
@@ -129,7 +149,7 @@ export const ChapterCardNode = ({
           <div className="flex items-center gap-2">
             <Avatar className="h-6 w-6 ring-1 ring-black/5">
               <AvatarImage src={data.author.avatarUrl} alt={data.author.username} />
-              <AvatarFallback className="from-brand-blue/20 to-brand-pink-500/20 text-text-primary bg-gradient-to-br text-[9px] font-semibold">
+              <AvatarFallback className="from-brand-blue/20 to-brand-pink-500/20 text-text-primary bg-linear-to-br text-[9px] font-semibold">
                 {data.author.username.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>

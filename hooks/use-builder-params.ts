@@ -10,12 +10,12 @@ export function useBuilderParams() {
   const storySlug = searchParams.get('storySlug') || undefined;
   const mode = (searchParams.get('mode') as TBuilderMode) || 'new';
   const autoSaveId = searchParams.get('autoSaveId') || undefined;
-  const parentChapterId = searchParams.get('parent') || undefined;
+  const parentChapterSlug = searchParams.get('parentChapterSlug') || undefined;
 
   return {
     storySlug,
     mode,
     autoSaveId,
-    parentChapterId,
+    parentChapterSlug,
   };
 }

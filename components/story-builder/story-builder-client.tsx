@@ -94,7 +94,7 @@ const extensions = [
 ];
 
 function StoryBuilderContent() {
-  const { storySlug, autoSaveId, mode, parentChapterId } = useBuilderParams();
+  const { storySlug, autoSaveId, mode, parentChapterSlug } = useBuilderParams();
   const { data: draftResponse } = useGetAutoSaveDraft();
   const draftList = draftResponse?.data?.docs || [];
 
@@ -148,7 +148,7 @@ function StoryBuilderContent() {
         autoSaveId={autoSaveId}
         storySlug={storySlug}
         mode={mode}
-        parentChapterId={parentChapterId}
+        parentChapterSlug={parentChapterSlug}
         draftId={autoSaveId}
       />
       <BuilderToolbar editor={editor} />

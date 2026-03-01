@@ -44,15 +44,15 @@ const addNodePlaceholderWidth = 200;
 const addNodePlaceholderHeight = 160;
 
 interface AddNodePlaceholderData extends Record<string, unknown> {
-  parentChapterId: string;
+  parentChapterSlug: string;
   storySlug?: string;
 }
 
 interface LoadMorePlaceholderData extends Record<string, unknown> {
-  parentChapterId: string;
+  parentChapterSlug: string;
   storySlug?: string;
   remainingCount?: number;
-  onLoadMore?: (parentChapterId: string) => Promise<void>;
+  onLoadMore?: (parentChapterSlug: string) => Promise<void>;
 }
 
 type IAddNodePlaceholderType = Node<AddNodePlaceholderData, 'addNodePlaceholder'>;

@@ -1,21 +1,32 @@
+'use client';
+
 import { Handle, Position } from '@xyflow/react';
 import { Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { NodeProps, Node } from '@xyflow/react';
+import { useRouter } from 'next/navigation';
 
 export interface AddNodePlaceholderNodeData extends Record<string, unknown> {
-  parentChapterId: string;
+  parentChapterSlug: string;
   storySlug?: string;
 }
 
 export type AddNodePlaceholderNodeProps = NodeProps<Node<AddNodePlaceholderNodeData>>;
 
 export function AddNodePlaceholderNode({ data, selected }: AddNodePlaceholderNodeProps) {
-  console.log('data', data);
-  // const storySlug = data.storySlug || params.slug;
+  const router = useRouter();
 
   const handleClick = () => {
-    // navigate(`/stories/${storySlug}/builder?mode=new&parent=${data.parentChapterId}`);
+    const slug = data.storySlug;
+    if (!slug || !data.parentChapterSlug) return;
+
+    const params = new URLSearchParams({
+      mode: 'new',
+      parentChapterSlug: data.parentChapterSlug,
+      storySlug: slug,
+    });
+
+    router.push(`/stories/${slug}/builder?${params.toString()}`);
   };
 
   return (
@@ -35,7 +46,7 @@ export function AddNodePlaceholderNode({ data, selected }: AddNodePlaceholderNod
       <Handle
         type="target"
         position={Position.Top}
-        className="!from-brand-blue !to-brand-pink-500 !-top-1 !h-2.5 !w-2.5 !rounded-full !border-2 !border-white !bg-gradient-to-br !shadow-sm"
+        className="from-brand-blue! to-brand-pink-500! -top-1! h-2.5! w-2.5! rounded-full! border-2! border-white! bg-linear-to-br! shadow-sm!"
       />
 
       {/* Gradient background on hover */}
@@ -76,7 +87,7 @@ export function AddNodePlaceholderNode({ data, selected }: AddNodePlaceholderNod
       <div
         className={cn(
           'pointer-events-none absolute -inset-1 -z-10 rounded-3xl opacity-0 blur-lg transition-opacity duration-300',
-          'from-brand-blue/40 via-brand-pink-500/30 to-brand-orange/40 bg-gradient-to-br',
+          'from-brand-blue/40 via-brand-pink-500/30 to-brand-orange/40 bg-linear-to-br',
           'group-hover:opacity-100'
         )}
       />

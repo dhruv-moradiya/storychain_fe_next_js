@@ -60,12 +60,12 @@ const FlowCanvas = () => {
         type: 'chapterEdge',
         animated: true,
         style: { stroke: '#6b7cff', strokeWidth: 2, strokeLinecap: 'round' as const },
-        data: { storySlug: 'demo' },
+        data: { storySlug: slug as string },
       },
     ];
 
     return { nodes: newNodes, edges: newEdges };
-  }, [chapters.length, rawNodes, rawEdges]);
+  }, [chapters.length, rawNodes, rawEdges, slug]);
 
   const { layout } = useChapterFlowLayout();
 
@@ -82,8 +82,9 @@ const FlowCanvas = () => {
    * Node interaction
    * ---------------------------------- */
   const handleNodeButtonClick = (nodeId: string) => {
-    console.log('Node ID', nodeId);
     setOpenPanel('comments');
+    // Suppress unused variable warning — nodeId used for future panel targeting
+    void nodeId;
   };
 
   const nodesWithHandlers = useMemo(
@@ -92,10 +93,12 @@ const FlowCanvas = () => {
         ...node,
         data: {
           ...node.data,
-          onCommentClick: (nodeId: string) => handleNodeButtonClick(nodeId), // Ensure it matches the expected type
+          // Inject storySlug into every addNodePlaceholder so it can build the correct URL
+          ...(node.type === 'addNodePlaceholder' ? { storySlug: slug as string } : {}),
+          onCommentClick: (nodeId: string) => handleNodeButtonClick(nodeId),
         },
       })),
-    [layoutedNodes]
+    [layoutedNodes, slug]
   );
 
   const [nodes, setNodes, onNodesChange] = useNodesState(nodesWithHandlers as Node[]);

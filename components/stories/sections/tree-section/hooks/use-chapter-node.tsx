@@ -78,7 +78,7 @@ const useChapterNode = (chapters: IChapterTreeItem[]): AllNodeTypes[] => {
           y: placeholderY,
         },
         data: {
-          parentChapterId: node._id,
+          parentChapterSlug: node.slug,
         },
       } as IAddNodePlaceholderType);
     }

@@ -51,7 +51,7 @@ interface BuilderHeaderProps {
   // Context for builder
   mode: TBuilderMode;
   storySlug?: string;
-  parentChapterId?: string;
+  parentChapterSlug?: string;
   chapterId?: string;
   // Context for submit request dialog
   storyId?: string;
@@ -75,10 +75,10 @@ const statusBadgeConfig: Record<
  */
 function getAutoSaveType(
   mode: TBuilderMode,
-  parentChapterId?: string,
+  parentChapterSlug?: string,
   chapterId?: string
 ): TAutoSaveType {
-  if (parentChapterId === 'root' || !parentChapterId) {
+  if (parentChapterSlug === 'root' || !parentChapterSlug) {
     return AutoSaveType.ROOT_CHAPTER;
   }
   if (mode === 'update' && chapterId) {
@@ -100,7 +100,7 @@ function BuilderHeader({
   autoSaveId,
   mode,
   storySlug,
-  parentChapterId,
+  parentChapterSlug,
   chapterId,
   storyId,
   storyTitle,
@@ -127,7 +127,7 @@ function BuilderHeader({
 
     if (!editor) return;
 
-    const autoSaveType = getAutoSaveType(mode, parentChapterId, chapterId);
+    const autoSaveType = getAutoSaveType(mode, parentChapterSlug, chapterId);
 
     const payload: TAutoSaveContentRequest = {
       title,
@@ -135,7 +135,10 @@ function BuilderHeader({
       autoSaveType,
       storySlug,
       autoSaveId,
-      ...(parentChapterId && parentChapterId !== 'root' ? { parentChapterId } : {}),
+      // API key is parentChapterId; value is now a slug string
+      ...(parentChapterSlug && parentChapterSlug !== 'root'
+        ? { parentChapterId: parentChapterSlug }
+        : {}),
       ...(chapterId ? { chapterId } : {}),
     } as TAutoSaveContentRequest;
 
@@ -348,14 +351,14 @@ function BuilderHeader({
         storyId={storyId}
         storyTitle={storyTitle}
         storySlug={storySlug}
-        parentChapterId={parentChapterId}
+        parentChapterId={parentChapterSlug}
         parentChapterTitle={parentChapterTitle}
         draftId={draftId}
         draftTitle={title}
         draftContent={editor?.getHTML() || ''}
         onSubmit={(data) => {
           toast.success('Submit request created successfully!');
-          console.log('Submit request data:', data);
+          void data;
         }}
       />
     </div>
