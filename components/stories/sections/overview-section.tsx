@@ -1,9 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { formatDistanceToNow, format } from 'date-fns';
+import { format } from 'date-fns';
 import { FileEdit } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import {
   OverviewSectionError,
   OverviewSectionLoading,
@@ -12,50 +12,34 @@ import {
   CollaboratorsPreview,
   ChapterPreview,
 } from './overview-section/index';
-import { StoryCollaboratorRole, type IStory, type IStoryCollaboratorInfo } from '@/type/story';
+import type { IStoryOverview, IStoryOverviewResponse } from '@/type/story';
+import { useGetStoryOverview } from '@/services/stories/stories.query';
 
 interface OverviewSectionProps {
-  story: IStory & { collaborators: IStoryCollaboratorInfo[] };
-  inlineStats: {
-    totalChapters: number;
-    totalReads: string;
-    totalVotes: string;
-    totalContributors: number;
-    rating: string;
-    ratingVotes: number;
-    progressPercent: number;
-    estimatedChapters: number;
-    startedAt: string;
-  };
-  latestChapters: {
-    title: string;
-    reads: string;
-    comments: number;
-    likes: number;
-    date: string;
-    authorName: string;
-    authorRole: string;
-    authorAvatar: string;
-  }[];
-  isLoading?: boolean;
-  error?: Error | null;
+  /** Server-prefetched story data passed as TanStack Query initialData */
+  initialData?: IStoryOverview;
 }
 
-const OverviewSection = ({
-  story,
-  inlineStats,
-  latestChapters,
-  isLoading = false,
-  error = null,
-}: OverviewSectionProps) => {
+const OverviewSection = ({ initialData }: OverviewSectionProps) => {
   const router = useRouter();
+  const params = useParams();
+  const slug = params?.slug as string;
+
+  // If initialData is provided (from server prefetch), TanStack Query uses it
+  // immediately — no loading state, no extra network request on first render.
+  const tanstackInitialData: IStoryOverviewResponse | undefined = initialData
+    ? { data: initialData, success: true, message: '', code: '' }
+    : undefined;
+
+  const { data, isLoading, error } = useGetStoryOverview(slug, {
+    initialData: tanstackInitialData,
+  });
+
+  const story = data?.data as IStoryOverview | undefined;
 
   if (isLoading) return <OverviewSectionLoading />;
   if (error) return <OverviewSectionError message={error.message} />;
   if (!story) return <OverviewSectionError message="Story not found." />;
-
-  const storyOwner = story.collaborators.find((c) => c.role === StoryCollaboratorRole.OWNER);
-  const collaborators = story.collaborators.filter((c) => c.role !== StoryCollaboratorRole.OWNER);
 
   return (
     <motion.div
@@ -65,31 +49,14 @@ const OverviewSection = ({
       className="mx-auto w-full max-w-4xl space-y-6 px-3 pb-14 sm:space-y-8 sm:px-4"
     >
       {/* Hero Section */}
-      <StoryHero
-        coverImage={story.coverImage?.url}
-        title={story.title}
-        slug={story.slug}
-        status={story.status}
-        genres={story.genres}
-        contentRating={story.contentRating}
-        totalVotes={inlineStats.totalVotes}
-        onBack={() => router.push('/')}
-      />
+      <StoryHero story={story} onBack={() => router.push('/')} />
 
       {/* Stats Section */}
-      <StoryStats
-        description={story.description}
-        stats={{
-          ...inlineStats,
-          updatedAgo: formatDistanceToNow(new Date(story.lastActivityAt), { addSuffix: true }),
-        }}
-        status={story.status}
-      />
+      <StoryStats story={story} />
 
       {/* Collaborators Section */}
       <CollaboratorsPreview
-        owner={storyOwner}
-        collaborators={collaborators}
+        collaborators={story.collaborators}
         onOwnerClick={(clerkId) => router.push(`/profile/${clerkId}`)}
         onCollaboratorClick={(clerkId) => router.push(`/profile/${clerkId}`)}
         onViewAll={() => router.push(`/stories/${story.slug}/collaborators`)}
@@ -97,7 +64,7 @@ const OverviewSection = ({
 
       {/* Chapters Section */}
       <ChapterPreview
-        chapters={latestChapters}
+        chapters={story.latestChapters}
         onViewAll={() => router.push(`/stories/${story.slug}/chapters`)}
         onStartReading={() => router.push(`/stories/${story.slug}/chapter/1`)}
         onContinueReading={() => router.push(`/stories/${story.slug}/chapter/23`)}
@@ -112,7 +79,9 @@ const OverviewSection = ({
         className="border-border/30 text-text-secondary-65 flex items-center gap-2 border-t pt-4 text-xs"
       >
         <FileEdit size={14} />
-        <span>Last updated {format(new Date(story.lastActivityAt), 'MMM dd, yyyy')}</span>
+        <span>
+          {/* Last updated {format(new Date(story.lastActivityAt || Date.now()), 'MMM dd, yyyy')} */}
+        </span>
       </motion.footer>
     </motion.div>
   );

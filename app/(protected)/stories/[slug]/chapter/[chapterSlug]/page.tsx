@@ -1,5 +1,6 @@
 import { ChapterReadClient } from '@/components/stories/chapter-read';
 import { MOCK_CHAPTER } from '@/components/stories/chapter-read/mock-data';
+import { buildChapterMeta } from '@/components/common';
 import type { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -8,11 +9,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string; chapterSlug: string }>;
 }): Promise<Metadata> {
   const { slug, chapterSlug } = await params;
-  // In a real app, fetch chapter details here
-  return {
-    title: `Chapter ${chapterSlug} - ${slug} | StoryChain`,
-    description: `Read Chapter ${chapterSlug} of ${slug} on StoryChain.`,
-  };
+  // TODO: replace with real chapter fetch
+  return buildChapterMeta({
+    storyTitle: slug,
+    storySlug: slug,
+    chapterTitle: chapterSlug,
+    chapterSlug,
+  });
 }
 
 export default async function ChapterPage({

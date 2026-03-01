@@ -40,7 +40,7 @@ const literata = Literata({
   adjustFontFallback: true,
 });
 
-const playfair = Playfair_Display({
+export const playfair = Playfair_Display({
   variable: '--font-playfair',
   subsets: ['latin'],
   display: 'swap',

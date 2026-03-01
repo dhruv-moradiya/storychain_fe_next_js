@@ -2,32 +2,17 @@ import { motion } from 'framer-motion';
 import { Heart, Share2, Bell, Bookmark, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { storyStatusBadge, contentRatingBadge, genresBadges } from '@/components/common/badge';
-import type { TStoryStatus, TStoryContentRating } from '@/type/story';
+import type { IStory } from '@/type/story';
 import Image from 'next/image';
 
 interface StoryHeroProps {
-  coverImage?: string;
-  cardImage?: string;
-  title: string;
-  slug: string;
-  status: TStoryStatus;
-  contentRating: TStoryContentRating;
-  genres: string[];
-  totalVotes: string;
+  story: IStory;
   onBack: () => void;
 }
 
-export function StoryHero({
-  coverImage,
-  cardImage,
-  title,
-  slug,
-  status,
-  contentRating,
-  genres,
-  totalVotes,
-  onBack,
-}: StoryHeroProps) {
+export function StoryHero({ story, onBack }: StoryHeroProps) {
+  const { title, slug, status, contentRating, genres, coverImage, cardImage, stats } = story;
+
   return (
     <div className="space-y-6">
       {/* Top Actions */}
@@ -60,7 +45,9 @@ export function StoryHero({
             className="border-border/50 text-text-secondary-65 hover:border-brand-pink-500/50 hover:text-brand-pink-500 flex h-8 items-center gap-1 rounded-lg border px-2 transition sm:h-9 sm:gap-1.5 sm:px-3"
           >
             <Heart size={14} className="sm:h-4 sm:w-4" />
-            <span className="text-xs font-medium sm:text-sm">{totalVotes}</span>
+            <span className="text-xs font-medium sm:text-sm">
+              {stats?.totalVotes?.toLocaleString() || 0}
+            </span>
           </motion.button>
 
           <motion.button
@@ -88,16 +75,16 @@ export function StoryHero({
         transition={{ duration: 0.5 }}
         className="relative h-48 w-full overflow-hidden rounded-2xl shadow-lg sm:h-56"
       >
-        {coverImage ? (
+        {coverImage?.url ? (
           <Image
-            src={coverImage}
+            src={coverImage.url}
             alt={title}
             fill
             className="h-full w-full object-cover"
             priority
           />
         ) : (
-          <div className="from-brand-pink-500/20 via-brand-purple/20 to-brand-orange/20 flex h-full w-full items-center justify-center bg-gradient-to-br">
+          <div className="from-brand-pink-500/20 via-brand-purple/20 to-brand-orange/20 flex h-full w-full items-center justify-center bg-linear-to-br">
             <div className="flex flex-col items-center gap-3">
               <div className="bg-background/10 flex h-16 w-16 items-center justify-center rounded-full backdrop-blur-sm">
                 <BookOpen className="text-foreground/60 h-8 w-8" />
@@ -108,7 +95,7 @@ export function StoryHero({
         )}
 
         {/* Card Image Overlay */}
-        {cardImage && (
+        {cardImage?.url && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -116,7 +103,7 @@ export function StoryHero({
             className="absolute bottom-4 left-4 z-20 hidden sm:block"
           >
             <div className="relative h-32 w-24 overflow-hidden rounded-lg border-2 border-white shadow-xl">
-              <Image src={cardImage} alt={title} fill className="object-cover" />
+              <Image src={cardImage.url} alt={title} fill className="object-cover" />
             </div>
           </motion.div>
         )}

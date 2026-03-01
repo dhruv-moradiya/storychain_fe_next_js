@@ -52,6 +52,7 @@ export function StorychainLogo({
         fontWeight="600"
         fill="currentColor"
         letterSpacing="-0.5"
+        className="text-(--font-playfair)"
       >
         Storychain
       </text>

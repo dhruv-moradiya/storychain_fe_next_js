@@ -1,98 +1,138 @@
 import {
+  ICollaboratorListResponse,
+  IStoryOverviewResponse,
   IStorySettingsResponse,
   IStoryTreeResponse,
   IUserStoriesResponse,
 } from '@/type/story/story-response.type';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { QueryKey } from '@/lib/query-keys';
 import { StoryApi } from './stories-api';
 
-const storyKeys = {
-  all: ['stories'] as const,
-  my: () => [...storyKeys.all, 'my'] as const,
-  tree: (slug: string) => [...storyKeys.all, 'tree', slug] as const,
-  settings: (slug: string) => [...storyKeys.all, 'settings', slug] as const,
-};
+// ── Query functions (importable for SSR / prefetch) ───────────────────────────
 
-const getUserStoriesQueryFn = async () => {
+export const getUserStoriesQueryFn = async () => {
   const response = await StoryApi.getUserStories();
   return response.data;
 };
 
-const useGetUserStories = (
+export const getStoryTreeQueryFn = async (slug: string) => {
+  const response = await StoryApi.getStoryTree(slug);
+  return response.data;
+};
+
+export const getStorySettingsQueryFn = async (slug: string) => {
+  const response = await StoryApi.getStorySettings(slug);
+  return response.data;
+};
+
+export const getStoryOverviewQueryFn = async (slug: string) => {
+  const response = await StoryApi.getStoryOverview(slug);
+  return response.data;
+};
+
+export const getCollaboratorsQueryFn = async (slug: string) => {
+  const response = await StoryApi.getCollaborators(slug);
+  return response.data;
+};
+
+// ── Hooks ─────────────────────────────────────────────────────────────────────
+
+export const useGetUserStories = (
   options?: Omit<
     UseQueryOptions<
       IUserStoriesResponse,
       AxiosError,
       IUserStoriesResponse,
-      ReturnType<typeof storyKeys.my>
+      typeof QueryKey.story.my
     >,
     'queryKey' | 'queryFn'
   >
 ) => {
   return useQuery({
-    queryKey: storyKeys.my(),
+    queryKey: QueryKey.story.my,
     queryFn: getUserStoriesQueryFn,
     ...options,
   });
 };
 
-const getStoryTreeQueryFn = async (slug: string) => {
-  const response = await StoryApi.getStoryTree(slug);
-  return response.data;
-};
-
-const useGetStoryTree = (
+export const useGetStoryTree = (
   slug: string,
   options?: Omit<
     UseQueryOptions<
       IStoryTreeResponse,
       AxiosError,
       IStoryTreeResponse,
-      ReturnType<typeof storyKeys.tree>
+      ReturnType<typeof QueryKey.story.bySlug>
     >,
     'queryKey' | 'queryFn'
   >
 ) => {
   return useQuery({
-    queryKey: storyKeys.tree(slug),
+    queryKey: QueryKey.story.bySlug(slug),
     queryFn: () => getStoryTreeQueryFn(slug),
     enabled: !!slug,
     ...options,
   });
 };
 
-const getStorySettingsQueryFn = async (slug: string) => {
-  const response = await StoryApi.getStorySettings(slug);
-  return response.data;
-};
-
-const useGetStorySettings = (
+export const useGetStorySettings = (
   slug: string | undefined,
   options?: Omit<
     UseQueryOptions<
       IStorySettingsResponse,
       AxiosError,
       IStorySettingsResponse,
-      ReturnType<typeof storyKeys.settings>
+      ReturnType<typeof QueryKey.story.settingsBySlug>
     >,
     'queryKey' | 'queryFn'
   >
 ) => {
   return useQuery({
-    queryKey: storyKeys.settings(slug || ''),
-    queryFn: () => getStorySettingsQueryFn(slug || ''),
+    queryKey: QueryKey.story.settingsBySlug(slug ?? ''),
+    queryFn: () => getStorySettingsQueryFn(slug ?? ''),
     enabled: !!slug,
     ...options,
   });
 };
 
-export {
-  getStorySettingsQueryFn,
-  getStoryTreeQueryFn,
-  getUserStoriesQueryFn,
-  storyKeys,
-  useGetStorySettings,
-  useGetStoryTree,
-  useGetUserStories,
+export const useGetStoryOverview = (
+  slug: string,
+  options?: Omit<
+    UseQueryOptions<
+      IStoryOverviewResponse,
+      AxiosError,
+      IStoryOverviewResponse,
+      ReturnType<typeof QueryKey.story.overviewBySlug>
+    >,
+    'queryKey' | 'queryFn'
+  >
+) => {
+  return useQuery({
+    queryKey: QueryKey.story.overviewBySlug(slug),
+    queryFn: () => getStoryOverviewQueryFn(slug),
+    enabled: !!slug,
+    ...options,
+  });
+};
+
+export const useGetCollaborators = (
+  slug: string,
+  options?: Omit<
+    UseQueryOptions<
+      ICollaboratorListResponse,
+      AxiosError,
+      ICollaboratorListResponse,
+      ReturnType<typeof QueryKey.story.collaborators>
+    >,
+    'queryKey' | 'queryFn'
+  >
+) => {
+  return useQuery({
+    queryKey: QueryKey.story.collaborators(slug),
+    queryFn: () => getCollaboratorsQueryFn(slug),
+    enabled: !!slug,
+    ...options,
+  });
 };

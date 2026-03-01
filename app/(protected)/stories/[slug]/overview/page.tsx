@@ -1,6 +1,20 @@
-import OverviewSection from '@/components/stories/sections/overview-section';
-import { MOCK_STORY, MOCK_INLINE_STATS, MOCK_LATEST_CHAPTERS } from '@/lib/data/mock-story';
+import { cache } from 'react';
 import type { Metadata } from 'next';
+import OverviewSection from '@/components/stories/sections/overview-section';
+import { getStoryOverviewQueryFn } from '@/services/stories/stories.query';
+import { buildStoryMeta } from '@/components/common';
+import type { IStoryOverview } from '@/type/story';
+
+// React.cache deduplicates this fetch so generateMetadata and the page
+// share a single network request per render cycle.
+const getStoryOverview = cache(async (slug: string) => {
+  try {
+    const res = await getStoryOverviewQueryFn(slug);
+    return res.data as IStoryOverview;
+  } catch {
+    return null;
+  }
+});
 
 export async function generateMetadata({
   params,
@@ -8,32 +22,24 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  return {
-    title: `${MOCK_STORY.title} - Overview | StoryChain`,
-    description: MOCK_STORY.description.replace(/<[^>]*>?/gm, '').substring(0, 160), // Strip HTML
-    openGraph: {
-      title: MOCK_STORY.title,
-      description: MOCK_STORY.description.replace(/<[^>]*>?/gm, '').substring(0, 160),
-      images: [MOCK_STORY.coverImage?.url || ''],
-      url: `/stories/${slug}/overview`,
-    },
-  };
+  const story = await getStoryOverview(slug);
+
+  return buildStoryMeta({
+    title: story?.title ?? slug,
+    description: story?.description ?? '',
+    rawDescription: story?.description,
+    slug,
+    coverImageUrl: story?.coverImage?.url,
+    pageLabel: 'Overview',
+  });
 }
 
-export default async function OverviewPage({
-  params: _params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  // Simulate data fetching
-  // const { slug } = await params;
-  // const story = await getStoryBySlug(slug);
+export default async function OverviewPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  // Prefetch on the server so the client component gets initialData
+  // and avoids a loading flash. React.cache ensures this reuses the
+  // same fetch result from generateMetadata above.
+  const story = await getStoryOverview(slug);
 
-  return (
-    <OverviewSection
-      story={MOCK_STORY}
-      inlineStats={MOCK_INLINE_STATS}
-      latestChapters={MOCK_LATEST_CHAPTERS}
-    />
-  );
+  return <OverviewSection initialData={story ?? undefined} />;
 }

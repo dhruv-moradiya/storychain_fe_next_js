@@ -1,5 +1,7 @@
 'use client';
 
+import { NavItem } from '@/components/common';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,35 +9,32 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { useClerk, useUser } from '@clerk/nextjs';
-import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { useClerk, useUser } from '@clerk/nextjs';
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import {
+  Bell,
+  BookOpen,
+  Check,
+  CoinsIcon,
   Compass,
   Feather,
-  LayoutDashboard,
-  Bell,
-  Check,
-  MessageSquare,
-  UserPlus,
-  BookOpen,
-  Star,
-  CoinsIcon,
   HandHeart,
-  Menu,
-  User,
-  Settings,
+  LayoutDashboard,
   LogOut,
-  TestTube,
+  Menu,
+  MessageSquare,
+  Settings,
+  Star,
+  User,
+  UserPlus,
 } from 'lucide-react';
-import { NavItem } from '@/components/common';
-import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { StorychainLogo } from './logo/storychain-logo';
 
 // Mock notifications data - replace with real data

@@ -1,5 +1,6 @@
-import type { IChapter } from '../chapter/chapter.types';
+import type { IChapter, IChapterStats } from '../chapter/chapter.types';
 import type { IChapterNodeData } from '../story-canvas.type';
+import type { IImageAsset, IUserBasic, IVotes } from '../common';
 import type {
   STORY_COLLABORATOR_ROLES,
   STORY_COLLABORATOR_STATUSES,
@@ -8,14 +9,14 @@ import type {
   STORY_STATUSES,
 } from './story-enum';
 
-// Derived types from enums
+// ── Derived types from enums ──────────────────────────────────────────────────
 type TStoryStatus = (typeof STORY_STATUSES)[number];
 type TStoryCollaboratorRole = (typeof STORY_COLLABORATOR_ROLES)[number];
 type TStoryCollaboratorStatus = (typeof STORY_COLLABORATOR_STATUSES)[number];
 type TStoryGenres = (typeof STORY_GENRES)[number];
 type TStoryContentRating = (typeof STORY_CONTENT_RATINGS)[number];
 
-// Story Settings
+// ── Story Settings ────────────────────────────────────────────────────────────
 interface IStorySettings {
   isPublic: boolean;
   allowBranching: boolean;
@@ -26,7 +27,7 @@ interface IStorySettings {
   contentRating: TStoryContentRating;
 }
 
-// Story Stats
+// ── Story Stats ───────────────────────────────────────────────────────────────
 interface IStoryStats {
   totalChapters: number;
   totalBranches: number;
@@ -39,7 +40,7 @@ interface IStoryStats {
   averageRating: number;
 }
 
-// Story Creator
+// ── Story Creator ─────────────────────────────────────────────────────────────
 interface IStoryCreator {
   clerkId: string;
   email: string;
@@ -47,7 +48,7 @@ interface IStoryCreator {
   avatar: string;
 }
 
-// Story Collaborator Info
+// ── Story Collaborator Info (for display badges etc.) ─────────────────────────
 interface IStoryCollaboratorInfo {
   clerkId: string;
   username: string;
@@ -55,22 +56,21 @@ interface IStoryCollaboratorInfo {
   role: TStoryCollaboratorRole;
 }
 
-// Main Story Interface
+/**
+ * Minimal user shape returned in populated/nested API fields.
+ * Alias of IUserBasic — prefer importing IUserBasic from '@/type/common' for new code.
+ */
+type ICollaboratorUser = IUserBasic;
+
+// ── Main Story Interface ──────────────────────────────────────────────────────
 interface IStory {
   _id: string;
   title: string;
   slug: string;
   description: string;
 
-  coverImage?: {
-    url: string;
-    publicId: string;
-  };
-
-  cardImage?: {
-    url: string;
-    publicId: string;
-  };
+  coverImage?: IImageAsset;
+  cardImage?: IImageAsset;
 
   creatorId: string;
 
@@ -78,8 +78,8 @@ interface IStory {
   stats: IStoryStats;
 
   tags: string[];
-  genres: string[]; // Added genres to root to match usage
-  contentRating: TStoryContentRating; // Added contentRating to root to match usage
+  genres: string[];
+  contentRating: TStoryContentRating;
 
   status: TStoryStatus;
 
@@ -91,7 +91,7 @@ interface IStory {
   updatedAt: Date;
 }
 
-// Story Collaborator
+// ── Story Collaborator (raw DB shape) ─────────────────────────────────────────
 interface IStoryCollaborator {
   _id: string;
   storyId: string;
@@ -105,15 +105,7 @@ interface IStoryCollaborator {
   updatedAt?: Date;
 }
 
-// Collaborator User
-interface ICollaboratorUser {
-  clerkId: string;
-  email: string;
-  username: string;
-  avatarUrl: string;
-}
-
-// Story Collaborator with User info
+// ── Story Collaborator with populated User ────────────────────────────────────
 type IStoryCollaboratorWithUser = Omit<IStoryCollaborator, 'userId' | 'invitedBy'> & {
   role: TStoryCollaboratorRole;
   status: TStoryCollaboratorStatus;
@@ -123,7 +115,29 @@ type IStoryCollaboratorWithUser = Omit<IStoryCollaborator, 'userId' | 'invitedBy
   updatedAt: Date;
 };
 
-// Chapter Tree
+// ── Populated Collaborator (used in Overview) ──────────────────────────────────
+interface IStoryCollaboratorPopulated {
+  _id: string;
+  role: TStoryCollaboratorRole;
+  status: TStoryCollaboratorStatus;
+  details: ICollaboratorUser;
+}
+
+// ── Latest Chapter Summary (used in Overview) ─────────────────────────────────
+interface IStoryLatestChapter {
+  _id: string;
+  storySlug: string;
+  slug: string;
+  title: string;
+  stats: IChapterStats;
+  votes: IVotes;
+  displayNumber: string;
+  author: ICollaboratorUser;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// ── Chapter Tree ──────────────────────────────────────────────────────────────
 interface IChapterTree extends IChapter {
   children: IChapterNodeData[];
 }
@@ -135,6 +149,8 @@ export type {
   IStoryCollaborator,
   IStoryCollaboratorInfo,
   IStoryCollaboratorWithUser,
+  IStoryCollaboratorPopulated,
+  IStoryLatestChapter,
   IStoryCreator,
   IStorySettings,
   IStoryStats,
@@ -144,3 +160,6 @@ export type {
   TStoryGenres,
   TStoryContentRating,
 };
+
+// Re-export common types so story-specific consumers can get them from one place
+export type { IImageAsset, IUserBasic, IVotes };

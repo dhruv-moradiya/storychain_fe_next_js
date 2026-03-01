@@ -1,6 +1,6 @@
 // Types based on BE models: pullRequest.model.ts, prVote.model.ts, prComment.model.ts, prReview.model.ts
 
-// ==================== PULL REQUEST TYPES ====================
+// ── Pull Request Types ────────────────────────────────────────────────────────
 
 export type PRType = 'NEW_CHAPTER' | 'EDIT_CHAPTER' | 'DELETE_CHAPTER';
 
@@ -102,25 +102,12 @@ export interface IPullRequest {
     slug?: string;
   };
 
-  // PR Type
   prType: PRType;
-
-  // Changes
   changes: IPRChanges;
-
-  // Status
   status: PRStatus;
-
-  // Voting
   votes: IPRVotes;
-
-  // Comments
   commentCount: number;
-
-  // Auto-approval config
   autoApprove: IAutoApprove;
-
-  // Labels
   labels: PRLabel[];
 
   // Merge info
@@ -135,13 +122,9 @@ export interface IPullRequest {
   draftReason?: string;
   draftedAt?: string;
 
-  // Timeline
+  // Timeline & Stats
   timeline: ITimelineEntry[];
-
-  // Stats
   stats: IPRStats;
-
-  // Approvals
   approvalsStatus: IApprovalsStatus;
 
   // Moderation
@@ -150,12 +133,11 @@ export interface IPullRequest {
   moderationNotes?: string;
   reportIds: string[];
 
-  // Timestamps
   createdAt: string;
   updatedAt: string;
 }
 
-// ==================== PR VOTE TYPES ====================
+// ── PR Vote Types ─────────────────────────────────────────────────────────────
 
 export type VoteValue = 1 | -1;
 
@@ -175,7 +157,7 @@ export interface IPRVote {
   };
 }
 
-// ==================== PR COMMENT TYPES ====================
+// ── PR Comment Types ──────────────────────────────────────────────────────────
 
 export type PRCommentType = 'GENERAL' | 'SUGGESTION' | 'QUESTION' | 'APPROVAL' | 'REQUEST_CHANGES';
 
@@ -213,7 +195,7 @@ export interface IPRComment {
   replies?: IPRComment[];
 }
 
-// ==================== PR REVIEW TYPES ====================
+// ── PR Review Types ───────────────────────────────────────────────────────────
 
 export type ReviewStatus =
   | 'PENDING_REVIEW'
@@ -249,22 +231,6 @@ export interface IPRReview {
   };
 }
 
-// ==================== STORY COLLABORATOR ROLES ====================
-// These are the 5 story-level roles from BE
-
-export type StoryCollaboratorRole =
-  | 'OWNER'
-  | 'CO_AUTHOR'
-  | 'MODERATOR'
-  | 'REVIEWER'
-  | 'CONTRIBUTOR';
-
-export const ROLE_HIERARCHY: Record<StoryCollaboratorRole, number> = {
-  CONTRIBUTOR: 0,
-  REVIEWER: 1,
-  MODERATOR: 2,
-  CO_AUTHOR: 3,
-  OWNER: 4,
-};
-
-export type StoryCollaboratorStatus = 'PENDING' | 'ACCEPTED' | 'DECLINED' | 'REMOVED';
+// ── Story Collaborator Roles ──────────────────────────────────────────────────
+// NOTE: TStoryCollaboratorRole / TStoryCollaboratorStatus live in '@/type/story'.
+// ROLE_HIERARCHY is also exported from there; import from '@/type/story' directly.

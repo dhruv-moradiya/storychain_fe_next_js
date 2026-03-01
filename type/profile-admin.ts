@@ -1,15 +1,11 @@
 import { Clock, Shield, FileText, Users } from 'lucide-react';
+import type { ReportType, ReportReason } from './report.type';
+
+// Re-export so existing consumers of profile-admin.ts keep working
+export type { ReportType, ReportReason };
 
 export type PlatformRole = 'SUPER_ADMIN' | 'PLATFORM_MODERATOR' | 'APPEAL_MODERATOR' | 'USER';
 export type ReportStatus = 'PENDING' | 'REVIEWED' | 'RESOLVED' | 'DISMISSED';
-export type ReportType = 'CHAPTER' | 'COMMENT' | 'USER' | 'STORY';
-export type ReportReason =
-  | 'SPAM'
-  | 'HARASSMENT'
-  | 'INAPPROPRIATE_CONTENT'
-  | 'COPYRIGHT'
-  | 'OFF_TOPIC'
-  | 'OTHER';
 
 export type SubscriptionPlan = 'FREE' | 'PRO' | 'ENTERPRISE';
 export type SubscriptionStatus = 'ACTIVE' | 'CANCELLED' | 'EXPIRED' | 'PENDING';

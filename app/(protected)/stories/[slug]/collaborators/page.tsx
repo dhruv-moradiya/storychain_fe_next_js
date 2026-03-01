@@ -1,4 +1,5 @@
 import CollaboratorSection from '@/components/stories/sections/collaborators-section';
+import { buildStorySubPageMeta } from '@/components/common';
 import type { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -7,10 +8,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  return {
-    title: `Collaborators - ${slug} | StoryChain`,
-    description: `Manage collaborators for the story ${slug}`,
-  };
+  return buildStorySubPageMeta(slug, 'Collaborators');
 }
 
 export default async function CollaboratorsPage({ params }: { params: Promise<{ slug: string }> }) {

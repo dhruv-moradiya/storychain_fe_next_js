@@ -1,4 +1,5 @@
 import { AUTO_SAVE_TYPES, CONVERTED_CHAPTER_STATUSES } from './auto-save-enum';
+import type { IPagination } from '../common';
 
 export type TAutoSaveType = (typeof AUTO_SAVE_TYPES)[number];
 
@@ -17,17 +18,9 @@ export interface IChapterAutoSave {
   parentChapterId?: string;
 }
 
-export interface IPaginatedAutoSaveDrafts {
+/** Paginated list of auto-save drafts. */
+export interface IPaginatedAutoSaveDrafts extends IPagination {
   docs: IChapterAutoSave[];
-  totalDocs: number;
-  limit: number;
-  totalPages: number;
-  page: number;
-  pagingCounter: number;
-  hasPrevPage: boolean;
-  hasNextPage: boolean;
-  prevPage: number | null;
-  nextPage: number | null;
 }
 
 export interface IConvertedChapter {

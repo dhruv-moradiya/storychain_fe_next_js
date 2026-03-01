@@ -1,4 +1,5 @@
 import SubmitRequestsSection from '@/components/stories/submit-requests/submit-requests-section';
+import { buildStorySubPageMeta } from '@/components/common';
 import type { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -7,10 +8,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  return {
-    title: `Submit Requests - ${slug} | StoryChain`,
-    description: `Manage chapter contributions and merge requests for ${slug}`,
-  };
+  return buildStorySubPageMeta(slug, 'Submit Requests');
 }
 
 export default async function SubmitRequestsPage({

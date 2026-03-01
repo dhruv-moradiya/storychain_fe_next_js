@@ -2,21 +2,12 @@ import { motion } from 'framer-motion';
 import { Eye, MessageSquare, Heart, BookOpen, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { formatDistanceToNow } from 'date-fns';
+import type { IStoryLatestChapter } from '@/type/story';
 import Image from 'next/image';
 
-interface Chapter {
-  title: string;
-  reads: string;
-  comments: number;
-  likes: number;
-  date: string;
-  authorName: string;
-  authorRole: string;
-  authorAvatar: string;
-}
-
 interface ChapterPreviewProps {
-  chapters: Chapter[];
+  chapters: IStoryLatestChapter[];
   onViewAll: () => void;
   onStartReading: () => void;
   onContinueReading?: () => void;
@@ -55,8 +46,8 @@ export function ChapterPreview({
 
       {/* Chapters List */}
       <div className="space-y-2 sm:space-y-3">
-        {chapters.map((chapter, index) => (
-          <ChapterCard key={index} chapter={chapter} index={index} />
+        {chapters.map((chapter) => (
+          <ChapterCard key={chapter._id} chapter={chapter} />
         ))}
       </div>
 
@@ -64,7 +55,7 @@ export function ChapterPreview({
       <div className="flex flex-col gap-2 pt-3 sm:flex-row sm:gap-3 sm:pt-4">
         <Button
           onClick={onStartReading}
-          className="from-brand-pink-500 to-brand-orange flex-1 gap-2 bg-gradient-to-r text-sm text-white hover:opacity-90 sm:text-base"
+          className="from-brand-pink-500 to-brand-orange flex-1 gap-2 bg-linear-to-r text-sm text-white hover:opacity-90 sm:text-base"
         >
           <BookOpen size={16} className="sm:h-[18px] sm:w-[18px]" />
           Start Reading
@@ -85,7 +76,12 @@ export function ChapterPreview({
   );
 }
 
-function ChapterCard({ chapter }: { chapter: Chapter; index: number }) {
+function ChapterCard({ chapter }: { chapter: IStoryLatestChapter }) {
+  const { title, stats, author, createdAt } = chapter;
+
+  // eslint-disable-next-line react-hooks/purity
+  const dateFormatted = formatDistanceToNow(new Date(createdAt || Date.now()), { addSuffix: true });
+
   return (
     <div
       className={cn(
@@ -97,41 +93,39 @@ function ChapterCard({ chapter }: { chapter: Chapter; index: number }) {
       <div className="flex items-center gap-2 sm:gap-3">
         <div className="relative h-7 w-7 sm:h-8 sm:w-8">
           <Image
-            src={chapter.authorAvatar}
-            alt={chapter.authorName}
+            src={author.avatarUrl}
+            alt={author.username}
             fill
             className="border-brand-pink-500/20 rounded-full border object-cover"
           />
         </div>
         <div className="min-w-0 flex-1">
           <span className="text-text-primary text-xs font-medium sm:text-sm">
-            {chapter.authorName}
+            {author.username}
           </span>
           <span className="text-text-secondary-65 ml-1.5 text-[10px] sm:ml-2 sm:text-xs">
-            • {chapter.authorRole}
+            • Author
           </span>
         </div>
-        <span className="text-text-secondary-65 text-[10px] sm:text-xs">{chapter.date}</span>
+        <span className="text-text-secondary-65 text-[10px] sm:text-xs">{dateFormatted}</span>
       </div>
 
       {/* Chapter Title */}
-      <h3 className="text-text-primary mt-2 text-sm font-semibold sm:mt-3 sm:text-base">
-        {chapter.title}
-      </h3>
+      <h3 className="text-text-primary mt-2 text-sm font-semibold sm:mt-3 sm:text-base">{title}</h3>
 
       {/* Stats */}
       <div className="text-text-secondary-65 mt-2 flex items-center gap-3 text-[10px] sm:mt-3 sm:gap-4 sm:text-xs">
         <span className="flex items-center gap-1">
           <Eye size={12} className="text-blue-500 sm:h-3.5 sm:w-3.5" />
-          {chapter.reads}
+          {stats.reads.toLocaleString()}
         </span>
         <span className="flex items-center gap-1">
           <MessageSquare size={12} className="text-green-500 sm:h-3.5 sm:w-3.5" />
-          {chapter.comments}
+          {stats.comments}
         </span>
         <span className="flex items-center gap-1">
           <Heart size={12} className="text-red-500 sm:h-3.5 sm:w-3.5" />
-          {chapter.likes}
+          {/* {votes.score.toLocaleString()} */}
         </span>
       </div>
     </div>

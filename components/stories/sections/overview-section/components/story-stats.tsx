@@ -1,25 +1,24 @@
 import { motion } from 'framer-motion';
 import { BookOpen, Eye, Heart, Users, Star, Calendar, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { format, formatDistanceToNow } from 'date-fns';
+import type { IStory } from '@/type/story';
 
 interface StoryStatsProps {
-  description: string;
-  stats: {
-    totalChapters: number;
-    totalReads: string;
-    totalVotes: string;
-    totalContributors: number;
-    rating: string;
-    ratingVotes: number;
-    progressPercent: number;
-    estimatedChapters: number;
-    startedAt: string;
-    updatedAgo: string;
-  };
-  status: string;
+  story: IStory;
 }
 
-export function StoryStats({ description, stats, status }: StoryStatsProps) {
+export function StoryStats({ story }: StoryStatsProps) {
+  const { description, stats, status, createdAt, lastActivityAt } = story;
+  // Formatting dates using date-fns
+  // eslint-disable-next-line react-hooks/purity
+  const startedAt = format(new Date(createdAt || Date.now()), 'MMM yyyy');
+  const updatedAgo = formatDistanceToNow(new Date(lastActivityAt), { addSuffix: true });
+
+  // Progress logic (placeholders for now if not in API)
+  const progressPercent = 0;
+  const estimatedChapters = 0;
+
   return (
     <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
       {/* About Section */}
@@ -42,11 +41,11 @@ export function StoryStats({ description, stats, status }: StoryStatsProps) {
         <div className="text-text-secondary-65 space-y-1.5 pt-2 text-xs sm:space-y-2">
           <div className="flex items-center gap-2">
             <Calendar size={14} className="text-brand-pink-500/70" />
-            <span>Started: {stats.startedAt}</span>
+            <span>Started: {startedAt}</span>
           </div>
           <div className="flex items-center gap-2">
             <RefreshCw size={14} className="text-brand-pink-500/70" />
-            <span>Updated: {stats.updatedAgo}</span>
+            <span>Updated: {updatedAgo}</span>
           </div>
           <div className="flex items-center gap-2">
             <Star size={14} className="text-brand-pink-500/70" />
@@ -74,12 +73,22 @@ export function StoryStats({ description, stats, status }: StoryStatsProps) {
             value={stats.totalChapters}
             color="pink"
           />
-          <StatCard icon={<Eye size={16} />} label="Reads" value={stats.totalReads} color="blue" />
-          <StatCard icon={<Heart size={16} />} label="Votes" value={stats.totalVotes} color="red" />
+          <StatCard
+            icon={<Eye size={16} />}
+            label="Reads"
+            value={stats.totalReads.toLocaleString()}
+            color="blue"
+          />
+          <StatCard
+            icon={<Heart size={16} />}
+            label="Votes"
+            value={stats.totalVotes.toLocaleString()}
+            color="red"
+          />
           <StatCard
             icon={<Users size={16} />}
             label="Contributors"
-            value={stats.totalContributors}
+            value={stats.uniqueContributors}
             color="purple"
           />
         </div>
@@ -88,8 +97,8 @@ export function StoryStats({ description, stats, status }: StoryStatsProps) {
         <div className="text-text-secondary-65 flex items-center gap-2 text-sm">
           <span className="text-yellow-500">⭐</span>
           <span>
-            Rating: <strong className="text-text-primary">{stats.rating}</strong> (
-            {stats.ratingVotes} votes)
+            Rating: <strong className="text-text-primary">{stats.averageRating.toFixed(1)}</strong>{' '}
+            ({stats.totalVotes.toLocaleString()} votes)
           </span>
         </div>
 
@@ -98,13 +107,13 @@ export function StoryStats({ description, stats, status }: StoryStatsProps) {
           <div className="bg-muted/50 h-2 w-full overflow-hidden rounded-full">
             <motion.div
               initial={{ width: 0 }}
-              animate={{ width: `${stats.progressPercent}%` }}
+              animate={{ width: `${progressPercent}%` }}
               transition={{ duration: 1, delay: 0.5, ease: 'easeOut' }}
-              className="from-brand-pink-500 to-brand-orange h-full bg-gradient-to-r"
+              className="from-brand-pink-500 to-brand-orange h-full bg-linear-to-r"
             />
           </div>
           <p className="text-text-secondary-65 text-xs">
-            Progress: {stats.progressPercent}% (Est. {stats.estimatedChapters} chapters)
+            Progress: {progressPercent}% (Est. {estimatedChapters} chapters)
           </p>
         </div>
       </motion.div>

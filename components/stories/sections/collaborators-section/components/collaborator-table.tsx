@@ -1,13 +1,15 @@
 'use client';
 
-import type { IStoryCollaboratorWithUser } from '@/type/story/story.types';
+import type { ICollaboratorRecord } from '@/type/story/story-response.type';
+import type { TStoryCollaboratorRole } from '@/type/story/story.types';
+import type { IUserBasic } from '@/type/common';
 import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
   Table,
@@ -28,11 +30,11 @@ import {
   MoreHorizontal,
   PenTool,
   Shield,
+  Trash2,
+  UserCog,
   XCircle,
 } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
 import { createBadge } from '@/components/common/badge';
 import type { BadgeColorKey } from '@/components/common/badge/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -44,16 +46,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
+import { ChangeRoleDialog } from './change-role-dialog';
+import { RemoveCollaboratorAlert } from './remove-collaborator-alert';
 
-interface ICollaboratorTableProps {
-  data: IStoryCollaboratorWithUser[];
-  search: string;
-}
+// ── Config maps ───────────────────────────────────────────────────────────────
 
-const columnHelper = createColumnHelper<IStoryCollaboratorWithUser>();
-
-// Role configuration with icons and colors
-const ROLE_CONFIG: Record<string, { icon: LucideIcon; color: BadgeColorKey; label: string }> = {
+const ROLE_DISPLAY: Record<string, { icon: LucideIcon; color: BadgeColorKey; label: string }> = {
   owner: { icon: Crown, color: 'orange', label: 'Owner' },
   co_author: { icon: PenTool, color: 'purple', label: 'Co-Author' },
   moderator: { icon: Shield, color: 'blue', label: 'Moderator' },
@@ -61,75 +60,107 @@ const ROLE_CONFIG: Record<string, { icon: LucideIcon; color: BadgeColorKey; labe
   contributor: { icon: Handshake, color: 'gray', label: 'Contributor' },
 };
 
-// Status configuration
-const STATUS_CONFIG: Record<string, { icon: LucideIcon; color: BadgeColorKey; label: string }> = {
+const STATUS_DISPLAY: Record<string, { icon: LucideIcon; color: BadgeColorKey; label: string }> = {
   accepted: { icon: CheckCircle, color: 'success', label: 'Accepted' },
   pending: { icon: Clock, color: 'warning', label: 'Pending' },
   declined: { icon: XCircle, color: 'error', label: 'Declined' },
   removed: { icon: XCircle, color: 'gray', label: 'Removed' },
 };
 
-const CollaboratorTable = ({ data, search }: ICollaboratorTableProps) => {
+const ROLE_ICON_COLOR: Record<string, string> = {
+  owner: 'text-amber-500',
+  co_author: 'text-purple-500',
+  moderator: 'text-blue-500',
+  reviewer: 'text-cyan-500',
+  contributor: 'text-gray-500',
+};
+
+// ── Column helper ─────────────────────────────────────────────────────────────
+
+const columnHelper = createColumnHelper<ICollaboratorRecord>();
+
+// ── Dialog state type ─────────────────────────────────────────────────────────
+
+interface ActiveCollaborator {
+  _id: string;
+  user: IUserBasic;
+  currentRole: TStoryCollaboratorRole;
+}
+
+// ── Props ─────────────────────────────────────────────────────────────────────
+
+interface CollaboratorTableProps {
+  data: ICollaboratorRecord[];
+  search: string;
+  onChangeRole?: (collaboratorId: string, newRole: TStoryCollaboratorRole) => void;
+  onRemove?: (collaboratorId: string) => void;
+  isChangingRole?: boolean;
+  isRemoving?: boolean;
+}
+
+// ── Component ─────────────────────────────────────────────────────────────────
+
+const CollaboratorTable = ({
+  data,
+  search,
+  onChangeRole,
+  onRemove,
+  isChangingRole = false,
+  isRemoving = false,
+}: CollaboratorTableProps) => {
+  // ── Dialog state ───────────────────────────────────────────────────────────
+  const [changeRoleTarget, setChangeRoleTarget] = useState<ActiveCollaborator | null>(null);
+  const [removeTarget, setRemoveTarget] = useState<{ _id: string; user: IUserBasic } | null>(null);
+
+  // ── Filter ─────────────────────────────────────────────────────────────────
   const filteredData = useMemo(() => {
     if (!search.trim()) return data;
-    return data.filter((d) => d.user.username.toLowerCase().includes(search.toLowerCase()));
+    const q = search.toLowerCase();
+    return data.filter(
+      (c) => c.user.username.toLowerCase().includes(q) || c.user.email?.toLowerCase().includes(q)
+    );
   }, [search, data]);
 
+  // ── Columns ────────────────────────────────────────────────────────────────
   const columns = useMemo(
     () => [
-      // ========== USER INFO ==============
+      // ── Collaborator ─────────────────────────────────────────────────────
       columnHelper.display({
         id: 'user',
         header: 'Collaborator',
         cell: ({ row }) => {
-          const collaborator = row.original;
-          const roleConfig = ROLE_CONFIG[collaborator.role];
+          const { user, role } = row.original;
+          const roleConfig = ROLE_DISPLAY[role];
 
           return (
             <div className="flex items-center gap-3">
               <Avatar className="h-10 w-10 border-2 border-white shadow-sm">
-                <AvatarImage src={collaborator.user.avatarUrl} alt={collaborator.user.username} />
+                <AvatarImage src={user.avatarUrl} alt={user.username} />
                 <AvatarFallback className="bg-brand-blue/10 text-brand-blue font-medium">
-                  {collaborator.user.username.charAt(0).toUpperCase()}
+                  {user.username.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
 
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
-                  <span className="text-text-primary text-sm font-semibold">
-                    @{collaborator.user.username}
-                  </span>
+                  <span className="text-text-primary text-sm font-semibold">{user.username}</span>
                   {roleConfig && (
-                    <roleConfig.icon
-                      className={cn(
-                        'h-4 w-4',
-                        collaborator.role === 'owner' && 'text-amber-500',
-                        collaborator.role === 'co_author' && 'text-purple-500',
-                        collaborator.role === 'moderator' && 'text-blue-500',
-                        collaborator.role === 'reviewer' && 'text-cyan-500',
-                        collaborator.role === 'contributor' && 'text-gray-500'
-                      )}
-                    />
+                    <roleConfig.icon className={cn('h-4 w-4', ROLE_ICON_COLOR[role])} />
                   )}
                 </div>
-                <span className="text-text-secondary-65 text-xs">
-                  Joined {formatDate(collaborator.invitedAt)}
-                </span>
+                <span className="text-text-secondary-65 text-xs">{user.email}</span>
               </div>
             </div>
           );
         },
       }),
 
-      // ========== ROLE ==============
+      // ── Role ─────────────────────────────────────────────────────────────
       columnHelper.accessor('role', {
         header: 'Role',
         cell: (info) => {
-          const value = info.getValue();
-          const config = ROLE_CONFIG[value];
-
+          const config = ROLE_DISPLAY[info.getValue()];
           if (!config) return null;
-
           return createBadge({
             label: config.label,
             icon: config.icon,
@@ -141,15 +172,12 @@ const CollaboratorTable = ({ data, search }: ICollaboratorTableProps) => {
         },
       }),
 
-      // ========== STATUS ==============
+      // ── Status ───────────────────────────────────────────────────────────
       columnHelper.accessor('status', {
         header: 'Status',
         cell: (info) => {
-          const status = info.getValue();
-          const config = STATUS_CONFIG[status];
-
+          const config = STATUS_DISPLAY[info.getValue()];
           if (!config) return null;
-
           return createBadge({
             label: config.label,
             icon: config.icon,
@@ -161,40 +189,58 @@ const CollaboratorTable = ({ data, search }: ICollaboratorTableProps) => {
         },
       }),
 
-      // ========== CONTRIBUTIONS ==============
-      columnHelper.display({
-        id: 'contributions',
-        header: 'Contributions',
-        cell: ({ row }) => {
-          // Mock contribution count (deterministic)
-          const contributions = (row.original.user.username.length * 7) % 25;
-          return <span className="text-text-secondary-65 text-sm">{contributions} chapters</span>;
-        },
-      }),
-
-      // ========== LAST ACTIVE ==============
-      columnHelper.display({
-        id: 'lastActive',
-        header: 'Last Active',
-        cell: ({ row }) => {
-          const collaborator = row.original;
+      // ── Invited At ───────────────────────────────────────────────────────
+      columnHelper.accessor('invitedAt', {
+        header: 'Invited At',
+        cell: (info) => {
+          const date = info.getValue();
           return (
-            <span className="text-text-secondary-65 text-sm">
-              {formatRelativeTime(collaborator.updatedAt ?? collaborator.invitedAt)}
+            <span
+              className="text-text-secondary-65 text-sm"
+              title={new Date(date).toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+              })}
+            >
+              {formatRelativeTime(date)}
             </span>
           );
         },
       }),
 
-      // ========== ACTIONS ==============
+      // ── Invited By ───────────────────────────────────────────────────────
+      columnHelper.display({
+        id: 'invitedBy',
+        header: 'Invited By',
+        cell: ({ row }) => {
+          const invitedBy = row.original.invitedBy;
+
+          if (!invitedBy) {
+            return <span className="text-text-secondary-65 text-sm">—</span>;
+          }
+
+          return (
+            <div className="flex items-center gap-2">
+              <Avatar className="h-6 w-6">
+                <AvatarImage src={invitedBy.avatarUrl} alt={invitedBy.username} />
+                <AvatarFallback className="bg-brand-blue/10 text-brand-blue text-[10px] font-medium">
+                  {invitedBy.username.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <span className="text-text-secondary-65 text-sm">{invitedBy.username}</span>
+            </div>
+          );
+        },
+      }),
+
+      // ── Actions ──────────────────────────────────────────────────────────
       columnHelper.display({
         id: 'actions',
         header: '',
         cell: ({ row }) => {
-          const collaborator = row.original;
-
-          // Don't show actions for owner
-          if (collaborator.role === 'owner') return null;
+          const collab = row.original;
+          if (collab.role === 'owner') return null;
 
           return (
             <DropdownMenu>
@@ -202,16 +248,58 @@ const CollaboratorTable = ({ data, search }: ICollaboratorTableProps) => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="text-text-secondary-65 hover:text-text-primary h-8 w-8"
+                  className="text-text-secondary-65 hover:text-text-primary hover:bg-muted/60 h-8 w-8 rounded-lg transition-colors"
                 >
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem>Change Role</DropdownMenuItem>
-                <DropdownMenuItem>View Profile</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive">
+
+              <DropdownMenuContent
+                align="end"
+                sideOffset={6}
+                className="border-border/50 shadow-card w-52 overflow-hidden rounded-xl p-1.5"
+              >
+                {/* Header chip */}
+                <div className="border-border/30 mb-1.5 flex items-center gap-2.5 border-b px-2 pb-2">
+                  <Avatar className="h-7 w-7">
+                    <AvatarImage src={collab.user.avatarUrl} alt={collab.user.username} />
+                    <AvatarFallback className="bg-brand-blue/10 text-brand-blue text-[10px] font-semibold">
+                      {collab.user.username.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col leading-none">
+                    <span className="text-text-primary text-xs font-semibold">
+                      {collab.user.username}
+                    </span>
+                    <span className="text-text-secondary-65 text-[10px]">
+                      {ROLE_DISPLAY[collab.role]?.label ?? collab.role}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Change Role */}
+                <DropdownMenuItem
+                  className="text-text-primary hover:bg-muted/70 flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium transition-colors"
+                  onSelect={() =>
+                    setChangeRoleTarget({
+                      _id: collab._id,
+                      user: collab.user,
+                      currentRole: collab.role,
+                    })
+                  }
+                >
+                  <UserCog className="text-text-secondary-65 h-4 w-4" />
+                  Change Role
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator className="bg-border/30 my-1" />
+
+                {/* Remove */}
+                <DropdownMenuItem
+                  className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium text-red-500 transition-colors hover:bg-red-50 hover:text-red-600 focus:bg-red-50 focus:text-red-600"
+                  onSelect={() => setRemoveTarget({ _id: collab._id, user: collab.user })}
+                >
+                  <Trash2 className="h-4 w-4" />
                   Remove Collaborator
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -223,6 +311,7 @@ const CollaboratorTable = ({ data, search }: ICollaboratorTableProps) => {
     []
   );
 
+  // eslint-disable-next-line
   const table = useReactTable({
     data: filteredData,
     columns,
@@ -230,77 +319,90 @@ const CollaboratorTable = ({ data, search }: ICollaboratorTableProps) => {
   });
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2 }}
-      className="border-border/50 overflow-hidden rounded-xl border"
-    >
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow
-              key={headerGroup.id}
-              className="bg-muted/30 hover:bg-muted/30 border-border/30 border-b"
-            >
-              {headerGroup.headers.map((header) => (
-                <TableHead
-                  key={header.id}
-                  className="text-text-secondary-65 px-4 py-3 text-xs font-semibold tracking-wider uppercase"
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
+    <>
+      <div className="border-border/50 animate-in fade-in-0 overflow-hidden rounded-xl border duration-200">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow
+                key={headerGroup.id}
+                className="bg-muted/30 hover:bg-muted/30 border-border/30 border-b"
+              >
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="text-text-secondary-65 px-4 py-3 text-xs font-semibold tracking-wider uppercase"
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
 
-        <TableBody>
-          {table.getRowModel().rows.map((row, idx) => (
-            <motion.tr
-              key={row.id}
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.15, delay: idx * 0.03 }}
-              className="group hover:bg-muted/30 border-border/30 border-b transition-colors"
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id} className="px-4 py-4">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </motion.tr>
-          ))}
-        </TableBody>
-      </Table>
+          <TableBody>
+            {table.getRowModel().rows.map((row, idx) => (
+              <tr
+                key={row.id}
+                style={{ animationDelay: `${idx * 30}ms` }}
+                className="animate-in fade-in-0 slide-in-from-bottom-1 group hover:bg-muted/20 border-border/30 fill-mode-both border-b duration-150 last:border-0"
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id} className="px-4 py-3.5">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </tr>
+            ))}
+          </TableBody>
+        </Table>
 
-      {filteredData.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-12 text-center">
-          <p className="text-text-secondary-65 text-sm">
-            No collaborators found matching "{search}"
-          </p>
-        </div>
-      )}
-    </motion.div>
+        {filteredData.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <p className="text-text-secondary-65 text-sm">
+              No collaborators found matching "{search}"
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* ── Dialogs ──────────────────────────────────────────────────────── */}
+      <ChangeRoleDialog
+        open={!!changeRoleTarget}
+        onOpenChange={(open) => {
+          if (!open) setChangeRoleTarget(null);
+        }}
+        collaborator={changeRoleTarget}
+        isPending={isChangingRole}
+        onConfirm={(id, role) => {
+          onChangeRole?.(id, role);
+          setChangeRoleTarget(null);
+        }}
+      />
+
+      <RemoveCollaboratorAlert
+        open={!!removeTarget}
+        onOpenChange={(open) => {
+          if (!open) setRemoveTarget(null);
+        }}
+        collaborator={removeTarget}
+        isPending={isRemoving}
+        onConfirm={(id) => {
+          onRemove?.(id);
+          setRemoveTarget(null);
+        }}
+      />
+    </>
   );
 };
 
 export default CollaboratorTable;
 
-/* ------------------------------
-   Date Formatters
------------------------------- */
-function formatDate(date: Date | string) {
-  return new Date(date).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-}
+/* ── Date helpers ─────────────────────────────────────────────────────────── */
 
-function formatRelativeTime(date: Date | string) {
+export function formatRelativeTime(date: Date | string) {
   const now = new Date();
   const then = new Date(date);
   const diffMs = now.getTime() - then.getTime();
@@ -312,5 +414,9 @@ function formatRelativeTime(date: Date | string) {
   if (diffMins < 60) return `${diffMins} min ago`;
   if (diffHours < 24) return `${diffHours}h ago`;
   if (diffDays < 7) return `${diffDays}d ago`;
-  return formatDate(date);
+  return new Date(date).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
 }
