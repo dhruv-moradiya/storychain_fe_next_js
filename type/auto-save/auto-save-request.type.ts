@@ -13,12 +13,12 @@ export interface IAutoSaveRootChapterRequest extends IAutoSaveContentBaseRequest
 
 export interface IAutoSaveNewChapterRequest extends IAutoSaveContentBaseRequest {
   autoSaveType: AutoSaveType.NEW_CHAPTER;
-  parentChapterId: string;
+  parentChapterSlug: string;
 }
 
 export interface IAutoSaveUpdateChapterRequest extends IAutoSaveContentBaseRequest {
   autoSaveType: AutoSaveType.UPDATE_CHAPTER;
-  parentChapterId: string;
+  parentChapterSlug: string;
   chapterId: string;
 }
 

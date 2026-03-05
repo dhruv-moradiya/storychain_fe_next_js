@@ -1,6 +1,5 @@
 'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -9,11 +8,11 @@ import { formatDistance } from 'date-fns';
 import {
   CalendarDays,
   CheckCircle2,
+  Clock,
+  GitMerge,
   GitPullRequest,
   User,
   XCircle,
-  GitMerge,
-  Clock,
 } from 'lucide-react';
 
 interface ChapterPRStatusProps {

@@ -9,7 +9,7 @@ import { TableKit } from '@tiptap/extension-table';
 import TextAlign from '@tiptap/extension-text-align';
 import { FontSize, TextStyle, TextStyleKit } from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
-import { useEditor, Editor } from '@tiptap/react';
+import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 

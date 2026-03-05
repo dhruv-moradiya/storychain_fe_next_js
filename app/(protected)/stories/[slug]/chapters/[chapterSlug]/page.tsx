@@ -1,5 +1,3 @@
-import { ChapterReader } from '@/components/common/chapter-reader';
-import { motion } from 'framer-motion';
 import {
   ChapterCommentsSection,
   ChapterHeader,
@@ -8,14 +6,15 @@ import {
   ChapterVotePanel,
   VersionHistoryDialog,
 } from '@/components/chapter-read';
+import { ChapterReader } from '@/components/common/chapter-reader';
 import { Separator } from '@/components/ui/separator';
-import { BookOpen } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import {
   MOCK_CHAPTER_DETAIL,
   MOCK_CHAPTER_VERSIONS,
   MOCK_COMMENTS,
 } from '@/lib/data/mock-chapter-detail';
+import { cn } from '@/lib/utils';
+import { BookOpen } from 'lucide-react';
 import type { Metadata } from 'next';
 
 type PageParams = {

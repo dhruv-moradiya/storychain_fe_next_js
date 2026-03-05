@@ -18,12 +18,11 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import { IChapterVersion } from '@/type/chapter/chapter-detail.type';
-import { formatDistance } from 'date-fns';
-import { CheckCircle2, Clock, FileText, GitMerge, Pencil, History, User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
+import { IChapterVersion } from '@/type/chapter/chapter-detail.type';
+import { formatDistance } from 'date-fns';
+import { CheckCircle2, Clock, GitMerge, History, Pencil } from 'lucide-react';
 
 interface VersionHistoryDialogProps {
   versions: IChapterVersion[];

@@ -1,19 +1,18 @@
 'use client';
 
+import { useGetStoryOverview } from '@/services/stories/stories.query';
+import type { IStoryOverview, IStoryOverviewResponse } from '@/type/story';
 import { motion } from 'framer-motion';
-import { format } from 'date-fns';
 import { FileEdit } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import {
+  ChapterPreview,
+  CollaboratorsPreview,
   OverviewSectionError,
   OverviewSectionLoading,
   StoryHero,
   StoryStats,
-  CollaboratorsPreview,
-  ChapterPreview,
 } from './overview-section/index';
-import type { IStoryOverview, IStoryOverviewResponse } from '@/type/story';
-import { useGetStoryOverview } from '@/services/stories/stories.query';
 
 interface OverviewSectionProps {
   /** Server-prefetched story data passed as TanStack Query initialData */

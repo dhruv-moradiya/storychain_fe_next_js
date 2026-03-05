@@ -135,10 +135,7 @@ function BuilderHeader({
       autoSaveType,
       storySlug,
       autoSaveId,
-      // API key is parentChapterId; value is now a slug string
-      ...(parentChapterSlug && parentChapterSlug !== 'root'
-        ? { parentChapterId: parentChapterSlug }
-        : {}),
+      ...(parentChapterSlug && parentChapterSlug !== 'root' ? { parentChapterSlug } : {}),
       ...(chapterId ? { chapterId } : {}),
     } as TAutoSaveContentRequest;
 
@@ -351,7 +348,7 @@ function BuilderHeader({
         storyId={storyId}
         storyTitle={storyTitle}
         storySlug={storySlug}
-        parentChapterId={parentChapterSlug}
+        parentChapterSlug={parentChapterSlug}
         parentChapterTitle={parentChapterTitle}
         draftId={draftId}
         draftTitle={title}

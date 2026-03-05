@@ -30,7 +30,6 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
-import { toast } from 'sonner';
 import { CreatePRDialog, PRListEmpty, PRListError, PRListLoading } from '.';
 import { columns } from './columns';
 
@@ -81,12 +80,6 @@ export default function SubmitRequestsSection({ slug }: SubmitRequestsSectionPro
 
   const handlePRClick = (pr: IPullRequest) => {
     router.push(`/stories/${slug}/submit-requests/${pr._id}`);
-  };
-
-  const handleCreatePR = (data: unknown) => {
-    console.log('Creating PR:', data);
-    toast.success('Submit request created successfully!');
-    setIsCreateDialogOpen(false);
   };
 
   if (error) {

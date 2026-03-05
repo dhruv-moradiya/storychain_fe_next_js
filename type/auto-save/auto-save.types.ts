@@ -15,7 +15,7 @@ export interface IChapterAutoSave {
   autoSaveType: TAutoSaveType;
   storyId: string;
   storySlug?: string;
-  parentChapterId?: string;
+  parentChapterSlug?: string;
 }
 
 /** Paginated list of auto-save drafts. */
@@ -29,7 +29,7 @@ export interface IConvertedChapter {
   content: string;
   storyId: string;
   authorId: string;
-  parentChapterId?: string;
+  parentChapterSlug?: string;
   ancestorIds: string[];
   depth: number;
   status: (typeof CONVERTED_CHAPTER_STATUSES)[number];
