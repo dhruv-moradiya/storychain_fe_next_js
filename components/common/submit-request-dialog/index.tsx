@@ -1,18 +1,22 @@
 'use client';
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import {
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogDescription,
+  ResponsiveDialogFooter,
+  ResponsiveDialogHeader,
+  ResponsiveDialogTitle,
+} from '@/components/ui/responsive-dialog';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AnimatePresence } from 'framer-motion';
+import { ChevronRight, GitPullRequest } from 'lucide-react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { SelectionStep } from './component/selection-step';
+import { StepIndicator } from './component/step-indiacator';
+import { TypeStep } from './component/type-step';
+import { SubmitRequestFormSchema, TSubmitRequestFormData } from './types/submit-request.schema';
 
 interface SubmitRequestDialogProps {
   open: boolean;
@@ -25,77 +29,67 @@ interface SubmitRequestDialogProps {
   draftId?: string;
   draftTitle?: string;
   draftContent?: string;
-  onSubmit: (data: { description: string }) => void;
 }
 
-export function SubmitRequestDialog({
-  open,
-  onOpenChange,
-  storyTitle,
-  parentChapterTitle,
-  draftTitle,
-  onSubmit,
-}: SubmitRequestDialogProps) {
-  const [description, setDescription] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+export function SubmitRequestDialog({ open, onOpenChange }: SubmitRequestDialogProps) {
+  // const [currentStep, setCurrentStep] = useState(0);
 
-  const handleSubmit = async () => {
-    setIsSubmitting(true);
-    // Mock submit
-    setTimeout(() => {
-      onSubmit({ description });
-      setIsSubmitting(false);
-      onOpenChange(false);
-      setDescription('');
-    }, 1000);
-  };
+  const form = useForm<TSubmitRequestFormData>({
+    resolver: zodResolver(SubmitRequestFormSchema),
+    defaultValues: {
+      title: '',
+      description: '',
+      submitRequestType: 'new_chapter',
+      storyId: '',
+      storyTitle: '',
+      storySlug: '',
+      chapterId: '',
+      parentChapterId: '',
+      parentChapterTitle: '',
+      draftId: '',
+      draftTitle: '',
+      draftContent: '',
+      proposedContent: '',
+      labels: [],
+      isDraft: false,
+      autoApproveEnabled: false,
+    },
+  });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
-          <DialogTitle>Submit Pull Request</DialogTitle>
-          <DialogDescription>Propose your changes to be merged into the story.</DialogDescription>
-        </DialogHeader>
+    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      <ResponsiveDialogContent className="overflow-y-auto p-4 max-xl:h-[calc(100vh-10rem)] xl:max-w-[calc(100vw-40rem)]">
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle className="flex items-center gap-2">
+            <div className="bg-brand-pink-500/15 flex h-8 w-8 items-center justify-center rounded-lg">
+              <GitPullRequest className="text-brand-pink-500 h-4 w-4" />
+            </div>
+            Create Submit Request
+          </ResponsiveDialogTitle>
+          <ResponsiveDialogDescription className="font-ibm-plex-mono">
+            Propose your changes to be merged into the story.
+          </ResponsiveDialogDescription>
+        </ResponsiveDialogHeader>
 
-        <div className="grid gap-4 py-4">
-          <div className="space-y-1">
-            <Label className="text-muted-foreground text-xs">Story</Label>
-            <p className="text-sm font-medium">{storyTitle || 'Untitled Story'}</p>
-          </div>
+        <StepIndicator steps={['1', '2', '3', '4', '5']} currentStep={0} />
 
-          <div className="space-y-1">
-            <Label className="text-muted-foreground text-xs">Branching From</Label>
-            <p className="text-sm font-medium">{parentChapterTitle || 'Root'}</p>
-          </div>
+        <div className="min-h-[300px] py-4">
+          <AnimatePresence mode="wait">
+            <FormProvider {...form}>
+              <TypeStep />
 
-          <div className="space-y-1">
-            <Label className="text-muted-foreground text-xs">Your Chapter</Label>
-            <p className="text-sm font-medium">{draftTitle || 'Untitled Chapter'}</p>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="submit-request-description">Description</Label>
-            <Textarea
-              id="submit-request-description"
-              placeholder="Describe your changes and why they should be merged..."
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="h-24 resize-none"
-            />
-          </div>
+              <SelectionStep />
+            </FormProvider>
+          </AnimatePresence>
         </div>
 
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+        <ResponsiveDialogFooter>
+          <Button className="bg-brand-blue hover:bg-brand-blue-alt gap-1 font-mono text-white">
+            Next
+            <ChevronRight className="h-4 w-4" />
           </Button>
-          <Button onClick={handleSubmit} disabled={isSubmitting || !description.trim()}>
-            {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Submit Request
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </ResponsiveDialogFooter>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   );
 }

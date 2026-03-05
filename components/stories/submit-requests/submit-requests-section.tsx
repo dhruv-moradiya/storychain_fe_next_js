@@ -306,7 +306,6 @@ export default function SubmitRequestsSection({ slug }: SubmitRequestsSectionPro
       <CreatePRDialog
         open={isCreateDialogOpen}
         onOpenChange={setIsCreateDialogOpen}
-        onSubmit={handleCreatePR}
         storyTitle="The Jujutsu Legacy"
       />
     </div>

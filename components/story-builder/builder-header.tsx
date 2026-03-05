@@ -356,10 +356,6 @@ function BuilderHeader({
         draftId={draftId}
         draftTitle={title}
         draftContent={editor?.getHTML() || ''}
-        onSubmit={(data) => {
-          toast.success('Submit request created successfully!');
-          void data;
-        }}
       />
     </div>
   );
