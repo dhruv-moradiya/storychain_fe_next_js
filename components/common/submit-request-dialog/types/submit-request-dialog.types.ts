@@ -1,11 +1,33 @@
-import { TSubmitRequestLabel, TSubmitRequestType } from './submit-request.schema';
 import { FileEdit, Plus, Trash2 } from 'lucide-react';
+import { ComponentType } from 'react';
+import { TSubmitRequestFormData } from '../schema/submit-request.form.schema';
+import {
+  TSubmitRequestApiPayload,
+  TSubmitRequestLabel,
+  TSubmitRequestType,
+} from '../schema/submit-request.api.schema';
+
+export interface SubmitRequestDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSubmit?: (data: TSubmitRequestApiPayload) => void;
+  storyId?: string;
+  storyTitle?: string;
+  storySlug?: string;
+  parentChapterSlug?: string;
+  parentChapterTitle?: string;
+  draftId?: string;
+  draftTitle?: string;
+  draftContent?: string;
+  chapterId?: string;
+  submitRequestType?: TSubmitRequestType;
+}
 
 export interface SubmitRequestTypeConfig {
   value: TSubmitRequestType;
   label: string;
   description: string;
-  icon: React.ElementType;
+  icon: ComponentType<{ className?: string }>;
   colorClass: string;
   bgClass: string;
 }
@@ -17,7 +39,6 @@ export interface DraftOption {
   updatedAt: string;
   wordCount: number;
   storySlug?: string;
-  parentChapterId?: string;
 }
 
 export interface ChapterOption {
@@ -35,7 +56,24 @@ export interface StoryOption {
   chapterCount: number;
 }
 
-export const SUBMIT_REQUEST_TYPES: SubmitRequestTypeConfig[] = [
+export interface SubmitRequestDialogContextData {
+  stories: StoryOption[];
+  chapters: ChapterOption[];
+  drafts: DraftOption[];
+}
+
+export interface SubmitRequestStepProps {
+  context: SubmitRequestDialogContextData;
+  hasContext: boolean;
+}
+
+export interface SubmitRequestStepConfig {
+  name: string;
+  fields: readonly (keyof TSubmitRequestFormData)[];
+  component: ComponentType<SubmitRequestStepProps>;
+}
+
+export const SUBMIT_REQUEST_TYPES: readonly SubmitRequestTypeConfig[] = [
   {
     value: 'new_chapter',
     label: 'New Chapter',
@@ -62,10 +100,43 @@ export const SUBMIT_REQUEST_TYPES: SubmitRequestTypeConfig[] = [
   },
 ];
 
-export const LABELS: { value: TSubmitRequestLabel; label: string }[] = [
+export const LABELS: readonly { value: TSubmitRequestLabel; label: string }[] = [
   { value: 'needs_review', label: 'Needs Review' },
   { value: 'quality_issue', label: 'Quality Issue' },
   { value: 'grammar', label: 'Grammar' },
   { value: 'plot_hole', label: 'Plot Hole' },
   { value: 'good_first_submission', label: 'Good First Submission' },
 ];
+
+export const MOCK_DIALOG_CONTEXT: SubmitRequestDialogContextData = {
+  stories: [
+    {
+      id: 's1',
+      title: 'The Whispering Woods',
+      slug: 'whispering-woods',
+      genre: 'Fantasy',
+      chapterCount: 4,
+    },
+    {
+      id: 's2',
+      title: 'Neon Shadows',
+      slug: 'neon-shadows',
+      genre: 'Cyberpunk',
+      chapterCount: 2,
+    },
+  ],
+  chapters: [
+    { id: 'root', title: 'Story Introduction', order: 0, content: 'Opening scene for context.' },
+    { id: 'c1', title: 'The Silent Grove', order: 1, content: 'The woods were unusually quiet.' },
+  ],
+  drafts: [
+    {
+      id: 'd1',
+      title: 'New Chapter Draft',
+      content: 'The woods were darker than usual today...',
+      updatedAt: '2024-03-04',
+      wordCount: 156,
+      storySlug: 'whispering-woods',
+    },
+  ],
+};
