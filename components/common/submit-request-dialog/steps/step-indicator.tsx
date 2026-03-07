@@ -1,8 +1,12 @@
 import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+export type StepName = 'Type' | 'Select' | 'Details' | 'Preview' | 'Review';
+
+export const STEPS: StepName[] = ['Type', 'Select', 'Details', 'Preview', 'Review'];
+
 interface StepIndicatorProps {
-  steps: string[];
+  steps: StepName[];
   currentStep: number;
 }
 

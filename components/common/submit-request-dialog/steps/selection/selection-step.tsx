@@ -1,11 +1,13 @@
+'use client';
+
 import { motion } from 'framer-motion';
+import { Controller, useFormContext } from 'react-hook-form';
+import { ChapterOption, DraftOption, StoryOption } from '../../types/submit-request-dialog.types';
+import { TSubmitRequestFormData } from '../../types/submit-request.schema';
 import { ChapterSelection } from './chapter-selection';
-import { DraftSelection } from './draft-section';
+import { DraftSelection } from './draft-selection';
 import { SelectionSection } from './selection-section';
 import { StorySelection } from './story-selection';
-import { useFormContext, Controller } from 'react-hook-form';
-import { TSubmitRequestFormData } from '../../types/submit-request.schema';
-import { ChapterOption, DraftOption, StoryOption } from '../../types/submit-request-dialog.types';
 
 type SelectionSubStep = 'draft' | 'story' | 'chapter';
 
@@ -30,28 +32,29 @@ export function SelectionStep({
   const formData = watch();
 
   const isNewChapter = formData.submitRequestType === 'new_chapter';
+  // new_chapter and edit_chapter both need a draft
   const needsDraft = isNewChapter || formData.submitRequestType === 'edit_chapter';
 
-  // Determine current active sub-step
-  const getCurrentSubStep = (): SelectionSubStep => {
+  // Determine the currently active sub-step
+  const currentSubStep = ((): SelectionSubStep => {
     if (needsDraft && !formData.draftId) return 'draft';
-    if (!formData.storyId) return 'story';
+    if (!formData.storySlug) return 'story';
     return 'chapter';
-  };
+  })();
 
-  const currentSubStep = getCurrentSubStep();
-
-  // Derived labels
+  // Derived display labels
   const selectedDraftTitle = drafts.find((d) => d.id === formData.draftId)?.title;
-  const selectedStoryTitle = stories.find((s) => s.id === formData.storyId)?.title;
+  const selectedStoryTitle = stories.find((s) => s.slug === formData.storySlug)?.title;
 
-  const targetId = isNewChapter ? formData.parentChapterSlug : formData.chapterId;
+  const activeChapterSlug = isNewChapter ? formData.parentChapterSlug : formData.chapterSlug;
   const selectedChapterTitle =
-    targetId === 'root' ? 'Story Introduction' : chapters.find((c) => c.id === targetId)?.title;
+    activeChapterSlug === 'root'
+      ? 'Story Introduction'
+      : chapters.find((c) => c.slug === activeChapterSlug)?.title;
 
-  const getStepNumber = (step: SelectionSubStep): number => {
-    if (needsDraft) return step === 'draft' ? 1 : step === 'story' ? 2 : 3;
-    return step === 'story' ? 1 : 2;
+  const getSubStepNumber = (sub: SelectionSubStep): number => {
+    if (needsDraft) return sub === 'draft' ? 1 : sub === 'story' ? 2 : 3;
+    return sub === 'story' ? 1 : 2;
   };
 
   return (
@@ -63,28 +66,28 @@ export function SelectionStep({
       transition={{ duration: 0.15 }}
       className="space-y-3"
     >
-      {/* Draft Selection */}
+      {/* Draft Selection (new_chapter / edit_chapter only) */}
       {needsDraft && (
         <Controller
           name="draftId"
           control={control}
           render={({ field }) => (
             <SelectionSection
-              stepNumber={getStepNumber('draft')}
+              stepNumber={getSubStepNumber('draft')}
               title="Select Draft"
               isActive={currentSubStep === 'draft'}
               isCompleted={Boolean(field.value)}
               selectedLabel={selectedDraftTitle}
               onEdit={() => {
                 field.onChange('');
-                setValue('storyId', '');
-                setValue('chapterId', '');
+                setValue('storySlug', '');
+                setValue('chapterSlug', '');
                 setValue('parentChapterSlug', '');
               }}
             >
               <DraftSelection
                 drafts={drafts}
-                selectedDraftId={field.value || ''}
+                selectedDraftId={field.value ?? ''}
                 onSelect={field.onChange}
                 isLoading={isLoadingDrafts}
               />
@@ -95,11 +98,11 @@ export function SelectionStep({
 
       {/* Story Selection */}
       <Controller
-        name="storyId"
+        name="storySlug"
         control={control}
         render={({ field }) => (
           <SelectionSection
-            stepNumber={getStepNumber('story')}
+            stepNumber={getSubStepNumber('story')}
             title="Select Story"
             isActive={currentSubStep === 'story'}
             isCompleted={Boolean(field.value)}
@@ -107,13 +110,13 @@ export function SelectionStep({
             selectedLabel={selectedStoryTitle}
             onEdit={() => {
               field.onChange('');
-              setValue('chapterId', '');
+              setValue('chapterSlug', '');
               setValue('parentChapterSlug', '');
             }}
           >
             <StorySelection
               stories={stories}
-              selectedStoryId={field.value || ''}
+              selectedStorySlug={field.value ?? ''}
               onSelect={field.onChange}
               isLoading={isLoadingStories}
             />
@@ -123,21 +126,21 @@ export function SelectionStep({
 
       {/* Chapter Selection */}
       <Controller
-        name={isNewChapter ? 'parentChapterSlug' : 'chapterId'}
+        name={isNewChapter ? 'parentChapterSlug' : 'chapterSlug'}
         control={control}
         render={({ field }) => (
           <SelectionSection
-            stepNumber={getStepNumber('chapter')}
+            stepNumber={getSubStepNumber('chapter')}
             title={isNewChapter ? 'Insert After Chapter' : 'Select Chapter'}
             isActive={currentSubStep === 'chapter'}
             isCompleted={Boolean(field.value)}
-            isDisabled={!formData.storyId}
+            isDisabled={!formData.storySlug}
             selectedLabel={selectedChapterTitle}
             onEdit={() => field.onChange('')}
           >
             <ChapterSelection
               chapters={chapters}
-              selectedChapterId={field.value || ''}
+              selectedChapterSlug={field.value ?? ''}
               onSelect={field.onChange}
               showRootOption={isNewChapter}
               isLoading={isLoadingChapters}

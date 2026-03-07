@@ -1,41 +1,49 @@
-import { motion } from 'framer-motion';
-import { Label } from '@/components/ui/label';
+'use client';
+
 import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
-import { useFormContext, Controller } from 'react-hook-form';
-import { TSubmitRequestFormData, TSubmitRequestLabel } from '../types/submit-request.schema';
+import { motion } from 'framer-motion';
+import { Controller, useFormContext } from 'react-hook-form';
 import {
-  LABELS,
+  ChapterOption,
+  SR_LABEL_OPTIONS,
   SUBMIT_REQUEST_TYPES,
   StoryOption,
-  ChapterOption,
 } from '../types/submit-request-dialog.types';
+import { TSubmitRequestFormData, TSubmitRequestLabel } from '../types/submit-request.schema';
 
 interface ReviewStepProps {
   stories: StoryOption[];
   chapters: ChapterOption[];
 }
 
+/**
+ * Step 5 — Review
+ * Labels, SR options (draft / auto-approve), and a final summary.
+ */
 export function ReviewStep({ stories, chapters }: ReviewStepProps) {
-  const { watch, setValue } = useFormContext<TSubmitRequestFormData>();
+  const { watch, setValue, control } = useFormContext<TSubmitRequestFormData>();
   const formData = watch();
 
   const toggleLabel = (label: TSubmitRequestLabel) => {
-    const currentLabels = formData.labels || [];
-    const isSelected = currentLabels.includes(label);
-    const newLabels: TSubmitRequestLabel[] = isSelected
-      ? currentLabels.filter((l) => l !== label)
-      : [...currentLabels, label];
-    setValue('labels', newLabels);
+    const current = formData.labels ?? [];
+    const isSelected = current.includes(label);
+    const next: TSubmitRequestLabel[] = isSelected
+      ? current.filter((l) => l !== label)
+      : [...current, label];
+    setValue('labels', next);
   };
 
   // Derive display info
-  const storyTitle = stories.find((s) => s.id === formData.storyId)?.title;
+  const storyTitle = stories.find((s) => s.slug === formData.storySlug)?.title;
   const isNewChapter = formData.submitRequestType === 'new_chapter';
-  const targetId = isNewChapter ? formData.parentChapterSlug : formData.chapterId;
+  const activeChapterSlug = isNewChapter ? formData.parentChapterSlug : formData.chapterSlug;
   const targetChapterTitle =
-    targetId === 'root' ? 'Story Introduction' : chapters.find((c) => c.id === targetId)?.title;
+    activeChapterSlug === 'root'
+      ? 'Story Introduction'
+      : chapters.find((c) => c.slug === activeChapterSlug)?.title;
 
   return (
     <motion.div
@@ -52,13 +60,13 @@ export function ReviewStep({ stories, chapters }: ReviewStepProps) {
           Labels
         </Label>
         <div className="flex flex-wrap gap-2">
-          {LABELS.map((label) => {
-            const isSelected = formData.labels?.includes(label.value);
+          {SR_LABEL_OPTIONS.map((option) => {
+            const isSelected = formData.labels?.includes(option.value);
             return (
               <button
-                key={label.value}
+                key={option.value}
                 type="button"
-                onClick={() => toggleLabel(label.value)}
+                onClick={() => toggleLabel(option.value)}
                 className={cn(
                   'rounded-full border px-3 py-1.5 font-mono text-xs transition-all',
                   isSelected
@@ -66,14 +74,14 @@ export function ReviewStep({ stories, chapters }: ReviewStepProps) {
                     : 'text-text-secondary-75 border-black/10 hover:border-black/20'
                 )}
               >
-                {label.label}
+                {option.label}
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Settings */}
+      {/* SR Options */}
       <div className="space-y-4 rounded-xl border border-black/5 bg-black/2 p-4">
         <div className="flex items-center justify-between">
           <div>
@@ -84,6 +92,7 @@ export function ReviewStep({ stories, chapters }: ReviewStepProps) {
           </div>
           <Controller
             name="isDraft"
+            control={control}
             render={({ field }) => (
               <Switch checked={field.value} onCheckedChange={field.onChange} />
             )}
@@ -99,6 +108,7 @@ export function ReviewStep({ stories, chapters }: ReviewStepProps) {
           </div>
           <Controller
             name="autoApproveEnabled"
+            control={control}
             render={({ field }) => (
               <Switch checked={field.value} onCheckedChange={field.onChange} />
             )}
@@ -109,7 +119,7 @@ export function ReviewStep({ stories, chapters }: ReviewStepProps) {
       {/* Summary */}
       <div className="rounded-xl border border-black/5 bg-black/2 p-4">
         <p className="text-text-secondary-65 font-mono text-xs font-medium tracking-wider uppercase">
-          Summary
+          SR Summary
         </p>
         <div className="mt-3 space-y-2">
           <div className="flex items-center justify-between font-mono text-sm">

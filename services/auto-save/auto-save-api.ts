@@ -4,12 +4,22 @@ import {
   IConvertAutoSaveToDraftResponse,
   IConvertAutoSaveToPublishedResponse,
   IGetAutoSaveDraftResponse,
+  IAutoSaveSearchResponse,
   TAutoSaveContentRequest,
 } from '@/type/auto-save';
 import { IBaseResponse } from '@/type/base-response.type';
 import { AxiosResponse } from 'axios';
 
 const chapterAutoSaveApi = {
+  /**
+   * Search auto-save drafts.
+   */
+  searchDrafts: async (limit = 5): Promise<AxiosResponse<IAutoSaveSearchResponse>> => {
+    return await apiClient.get<IAutoSaveSearchResponse>('/auto-save/search', {
+      params: { limit },
+    });
+  },
+
   /**
    * Fetches all active auto-save drafts for the authenticated user.
    */

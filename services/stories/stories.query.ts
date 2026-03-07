@@ -1,5 +1,6 @@
 import {
   ICollaboratorListResponse,
+  IStoryBasicResponse,
   IStoryOverviewResponse,
   IStorySettingsResponse,
   IStoryTreeResponse,
@@ -14,6 +15,11 @@ import { StoryApi } from './stories-api';
 
 export const getUserStoriesQueryFn = async () => {
   const response = await StoryApi.getUserStories();
+  return response.data;
+};
+
+export const getStoryBasicQueryFn = async (slug: string) => {
+  const response = await StoryApi.getStoryBasic(slug);
   return response.data;
 };
 
@@ -53,6 +59,26 @@ export const useGetUserStories = (
   return useQuery({
     queryKey: QueryKey.story.my,
     queryFn: getUserStoriesQueryFn,
+    ...options,
+  });
+};
+
+export const useGetStoryBasic = (
+  slug: string,
+  options?: Omit<
+    UseQueryOptions<
+      IStoryBasicResponse,
+      AxiosError,
+      IStoryBasicResponse,
+      ReturnType<typeof QueryKey.story.basicBySlug>
+    >,
+    'queryKey' | 'queryFn'
+  >
+) => {
+  return useQuery({
+    queryKey: QueryKey.story.basicBySlug(slug),
+    queryFn: () => getStoryBasicQueryFn(slug),
+    enabled: !!slug,
     ...options,
   });
 };

@@ -1,4 +1,4 @@
-import { useUpdateStorySettings } from '@/services/stories/stories.mutation';
+import { useUpdateStorySettings, useUploadStoryImage } from '@/services/stories/stories.mutation';
 import { useGetStorySettings } from '@/services/stories/stories.query';
 import type { IStorySettings } from '@/type/story/story.types';
 import { useState } from 'react';
@@ -13,6 +13,7 @@ export function useSettingSection(slug: string | undefined) {
 
   // Real data mutation
   const updateSettingsMutation = useUpdateStorySettings(slug || '');
+  const uploadImageMutation = useUploadStoryImage(slug || '');
 
   const [cardUploading, setCardUploading] = useState(false);
   const [coverUploading, setCoverUploading] = useState(false);
@@ -37,19 +38,30 @@ export function useSettingSection(slug: string | undefined) {
   const handleImageUpload = async (file: File, type: 'card' | 'cover') => {
     if (!slug) return;
 
-    // TODO: Implement image upload API integration when needed
     if (type === 'card') {
       setCardUploading(true);
       setCardPreview(URL.createObjectURL(file));
-      setTimeout(() => {
-        setCardUploading(false);
-      }, 1500);
+      uploadImageMutation.mutate(
+        { file, type },
+        {
+          onSettled: () => {
+            setCardUploading(false);
+            setCardPreview(null);
+          },
+        }
+      );
     } else {
       setCoverUploading(true);
       setCoverPreview(URL.createObjectURL(file));
-      setTimeout(() => {
-        setCoverUploading(false);
-      }, 1500);
+      uploadImageMutation.mutate(
+        { file, type },
+        {
+          onSettled: () => {
+            setCoverUploading(false);
+            setCoverPreview(null);
+          },
+        }
+      );
     }
   };
 

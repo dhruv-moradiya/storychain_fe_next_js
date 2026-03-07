@@ -36,7 +36,19 @@ const FlowCanvas = () => {
   const rawEdges = useChapterEdge(chapters);
 
   const { nodes: nodesToLayout, edges: edgesToLayout } = useMemo(() => {
-    if (!chapters.length) return { nodes: [], edges: [] };
+    if (!chapters.length) {
+      return {
+        nodes: [
+          {
+            id: 'root-placeholder',
+            type: 'addNodePlaceholder',
+            data: { parentChapterSlug: 'root', storySlug: slug as string },
+            position: { x: 0, y: 0 },
+          },
+        ],
+        edges: [],
+      };
+    }
 
     const lastNode = rawNodes[rawNodes.length - 1];
     const loadingNodeId = 'loading-node-demo';

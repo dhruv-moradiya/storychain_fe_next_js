@@ -78,7 +78,9 @@ export function AddNodePlaceholderNode({ data, selected }: AddNodePlaceholderNod
           'shadow-lg'
         )}
       >
-        <span className="font-sans">Add Chapter</span>
+        <span className="font-sans">
+          {data.parentChapterSlug === 'root' ? 'Create First Chapter' : 'Add Chapter'}
+        </span>
         {/* Tooltip arrow */}
         <div className="bg-text-primary absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45" />
       </div>

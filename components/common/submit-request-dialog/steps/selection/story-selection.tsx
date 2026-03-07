@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useMemo } from 'react';
 import { BookOpen, Check, Search, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -6,22 +8,23 @@ import { StoryOption } from '../../types/submit-request-dialog.types';
 
 interface StorySelectionProps {
   stories: StoryOption[];
-  selectedStoryId: string;
-  onSelect: (storyId: string) => void;
+  selectedStorySlug: string;
+  onSelect: (slug: string) => void;
   isLoading?: boolean;
 }
 
 export function StorySelection({
   stories,
-  selectedStoryId,
+  selectedStorySlug,
   onSelect,
   isLoading,
 }: StorySelectionProps) {
   const [search, setSearch] = useState('');
 
-  const filteredStories = useMemo(() => {
-    return stories.filter((story) => story.title.toLowerCase().includes(search.toLowerCase()));
-  }, [stories, search]);
+  const filteredStories = useMemo(
+    () => stories.filter((story) => story.title.toLowerCase().includes(search.toLowerCase())),
+    [stories, search]
+  );
 
   if (isLoading) {
     return (
@@ -45,17 +48,17 @@ export function StorySelection({
       </div>
 
       {/* Story list */}
-      <div className="max-h-[140px] space-y-2 overflow-y-auto pr-1">
+      <div className="max-h-[200px] space-y-2 overflow-y-auto pr-1">
         {filteredStories.length === 0 ? (
           <p className="text-text-secondary-65 py-4 text-center text-sm">No stories found</p>
         ) : (
           filteredStories.map((story) => {
-            const isSelected = selectedStoryId === story.id;
+            const isSelected = selectedStorySlug === story.slug;
             return (
               <button
-                key={story.id}
+                key={story.slug}
                 type="button"
-                onClick={() => onSelect(story.id)}
+                onClick={() => onSelect(story.slug)}
                 className={cn(
                   'flex w-full items-center gap-3 rounded-lg border p-2.5 text-left transition-all',
                   isSelected

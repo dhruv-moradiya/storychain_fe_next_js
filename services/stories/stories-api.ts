@@ -3,17 +3,27 @@ import {
   ICollaboratorListResponse,
   IInvitationActionResponse,
   ISendInvitationBody,
+  IStoryBasicResponse,
   IStoryOverviewResponse,
   IStorySettingsResponse,
   IStoryTreeResponse,
   IUserStoriesResponse,
+  ICloudinarySignatureResponse,
+  IStoryImageUpdateResponse,
 } from '@/type/story/story-response.type';
 import { IStorySettings } from '@/type/story/story.types';
+import { IImageAsset } from '@/type/common';
 import { AxiosResponse } from 'axios';
 
 const StoryApi = {
   getUserStories: async (): Promise<AxiosResponse<IUserStoriesResponse>> => {
     return await apiClient.get<IUserStoriesResponse>('/stories/my');
+  },
+
+  getStoryBasic: async (slug: string): Promise<AxiosResponse<IStoryBasicResponse>> => {
+    return await apiClient.get<IStoryBasicResponse>(`/stories/slug/${slug}`, {
+      params: { fields: 'title,slug' },
+    });
   },
 
   getStoryTree: async (slug: string): Promise<AxiosResponse<IStoryTreeResponse>> => {
@@ -33,6 +43,30 @@ const StoryApi = {
     settings: Partial<IStorySettings>
   ): Promise<AxiosResponse<IStorySettingsResponse>> => {
     return await apiClient.post<IStorySettingsResponse>(`/stories/slug/${slug}/settings`, settings);
+  },
+
+  // ── Images ──────────────────────────────────────────────────────────────────
+
+  getSignatureUrl: async (slug: string): Promise<AxiosResponse<ICloudinarySignatureResponse>> => {
+    return await apiClient.get<ICloudinarySignatureResponse>(`/stories/slug/${slug}/signature-url`);
+  },
+
+  updateStoryCoverImage: async (
+    slug: string,
+    image: { url: string; publicId: string }
+  ): Promise<AxiosResponse<IStoryImageUpdateResponse>> => {
+    return await apiClient.patch<IStoryImageUpdateResponse>(`/stories/slug/${slug}/cover-image`, {
+      coverImage: image,
+    });
+  },
+
+  updateStoryCardImage: async (
+    slug: string,
+    image: { url: string; publicId: string }
+  ): Promise<AxiosResponse<IStoryImageUpdateResponse>> => {
+    return await apiClient.patch<IStoryImageUpdateResponse>(`/stories/slug/${slug}/card-image`, {
+      cardImage: image,
+    });
   },
 
   // ── Collaborators ───────────────────────────────────────────────────────────

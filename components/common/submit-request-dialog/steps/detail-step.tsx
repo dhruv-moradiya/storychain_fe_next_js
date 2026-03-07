@@ -1,8 +1,7 @@
-import { motion } from 'framer-motion';
-import { BookOpen } from 'lucide-react';
+'use client';
+
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
@@ -10,16 +9,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useFormContext, Controller } from 'react-hook-form';
-import { TSubmitRequestFormData } from '../types/submit-request.schema';
+import { Textarea } from '@/components/ui/textarea';
+import { motion } from 'framer-motion';
+import { BookOpen } from 'lucide-react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { ChapterOption, StoryOption } from '../types/submit-request-dialog.types';
+import { TSubmitRequestFormData } from '../types/submit-request.schema';
 
 interface DetailStepProps {
+  /** When true the story/chapter fields were pre-filled via props — show them as read-only info */
   hasContext: boolean;
   chapters: ChapterOption[];
   stories: StoryOption[];
 }
 
+/**
+ * Step 3 — Details
+ * Title, description, and (when hasContext=true) a chapter picker.
+ */
 export function DetailStep({ hasContext, chapters, stories }: DetailStepProps) {
   const {
     register,
@@ -31,14 +38,16 @@ export function DetailStep({ hasContext, chapters, stories }: DetailStepProps) {
   const submitRequestType = watch('submitRequestType');
   const isNewChapter = submitRequestType === 'new_chapter';
 
-  const storyId = watch('storyId');
+  const storySlug = watch('storySlug');
   const parentChapterSlug = watch('parentChapterSlug');
-  const chapterId = watch('chapterId');
+  const chapterSlug = watch('chapterSlug');
 
-  const storyTitle = stories.find((s) => s.id === storyId)?.title;
-  const targetId = isNewChapter ? parentChapterSlug : chapterId;
+  const storyTitle = stories.find((s) => s.slug === storySlug)?.title;
+  const activeChapterSlug = isNewChapter ? parentChapterSlug : chapterSlug;
   const targetChapterTitle =
-    targetId === 'root' ? 'Story Introduction' : chapters.find((c) => c.id === targetId)?.title;
+    activeChapterSlug === 'root'
+      ? 'Story Introduction'
+      : chapters.find((c) => c.slug === activeChapterSlug)?.title;
 
   return (
     <motion.div
@@ -49,6 +58,7 @@ export function DetailStep({ hasContext, chapters, stories }: DetailStepProps) {
       transition={{ duration: 0.15 }}
       className="space-y-5"
     >
+      {/* Title */}
       <div className="space-y-2">
         <Label className="text-text-secondary-65 font-mono text-xs tracking-wider uppercase">
           Title
@@ -61,6 +71,7 @@ export function DetailStep({ hasContext, chapters, stories }: DetailStepProps) {
         {errors.title && <p className="font-mono text-xs text-red-500">{errors.title.message}</p>}
       </div>
 
+      {/* Description */}
       <div className="space-y-2">
         <Label className="text-text-secondary-65 font-mono text-xs tracking-wider uppercase">
           Description
@@ -76,16 +87,20 @@ export function DetailStep({ hasContext, chapters, stories }: DetailStepProps) {
         )}
       </div>
 
+      {/*
+       * When hasContext=true the story and chapter were passed in as props.
+       * Show a chapter picker so the user can override which chapter is targeted.
+       */}
       {hasContext && (
         <div className="space-y-2">
           <Label className="text-text-secondary-65 font-mono text-xs tracking-wider uppercase">
             {isNewChapter ? 'Insert After' : 'Target Chapter'}
           </Label>
           <Controller
-            name={isNewChapter ? 'parentChapterSlug' : 'chapterId'}
+            name={isNewChapter ? 'parentChapterSlug' : 'chapterSlug'}
             control={control}
             render={({ field }) => (
-              <Select onValueChange={field.onChange} value={(field.value as string) || ''}>
+              <Select onValueChange={field.onChange} value={field.value ?? ''}>
                 <SelectTrigger className="border-black/10 bg-white/50 font-mono">
                   <SelectValue placeholder="Select chapter" />
                 </SelectTrigger>
@@ -99,7 +114,7 @@ export function DetailStep({ hasContext, chapters, stories }: DetailStepProps) {
                     </SelectItem>
                   )}
                   {chapters.map((chapter) => (
-                    <SelectItem key={chapter.id} value={chapter.id} className="font-mono">
+                    <SelectItem key={chapter.slug} value={chapter.slug} className="font-mono">
                       {chapter.title}
                     </SelectItem>
                   ))}
@@ -110,13 +125,19 @@ export function DetailStep({ hasContext, chapters, stories }: DetailStepProps) {
         </div>
       )}
 
+      {/*
+       * When hasContext=false the chapter came from the SelectionStep — show it
+       * as a read-only summary card.
+       */}
       {!hasContext && targetChapterTitle && (
         <div className="rounded-xl border border-black/5 bg-black/2 p-3">
           <p className="text-text-secondary-65 mb-1 font-mono text-xs uppercase">
             {isNewChapter ? 'Insert After' : 'Target Chapter'}
           </p>
           <p className="text-text-primary font-medium">{targetChapterTitle}</p>
-          <p className="text-text-secondary-65 mt-0.5 font-mono text-xs">in {storyTitle}</p>
+          {storyTitle && (
+            <p className="text-text-secondary-65 mt-0.5 font-mono text-xs">in {storyTitle}</p>
+          )}
         </div>
       )}
     </motion.div>

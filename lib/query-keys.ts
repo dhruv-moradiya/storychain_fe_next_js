@@ -11,6 +11,7 @@ export const QueryKey = {
   chapter: {
     byId: (chapterId: string) => ['chapter', 'detail', chapterId] as const,
     my: ['chapter', 'my'] as const,
+    search: (storySlug: string) => ['chapter', 'search', storySlug] as const,
   },
 
   story: {
@@ -24,6 +25,7 @@ export const QueryKey = {
     overviewBySlug: (slug: string) => ['story', 'overview', slug] as const,
     settingsBySlug: (slug: string) => ['story', 'settings', slug] as const,
     bySlug: (slug: string) => ['story', 'slug', slug] as const,
+    basicBySlug: (slug: string) => ['story', 'basic', slug] as const,
     byId: (storyId: string) => ['story', 'detail', storyId] as const,
     search: (query: string) => ['story', 'search', query] as const,
     collaborators: (slug: string) => ['story', slug, 'collaborators'] as const,

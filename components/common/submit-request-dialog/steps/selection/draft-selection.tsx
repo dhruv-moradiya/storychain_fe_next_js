@@ -1,4 +1,5 @@
-// TODO: Move color to global color palette
+'use client';
+
 import { FileText, Clock, Check, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { DraftOption } from '../../types/submit-request-dialog.types';
@@ -42,6 +43,7 @@ export function DraftSelection({
         return (
           <button
             key={draft.id}
+            type="button"
             onClick={() => onSelect(draft.id)}
             className={cn(
               'flex w-full items-center gap-3 rounded-lg border p-3 text-left transition-all',

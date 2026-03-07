@@ -11,6 +11,7 @@ interface SubmitRequestTypeCardProps {
 export function SubmitRequestTypeCard({ type, isSelected, onSelect }: SubmitRequestTypeCardProps) {
   return (
     <button
+      type="button"
       onClick={onSelect}
       className={cn(
         'flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-all',

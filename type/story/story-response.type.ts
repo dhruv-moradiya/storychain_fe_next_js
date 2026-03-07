@@ -13,6 +13,13 @@ import {
 import { IBaseResponse } from '../base-response.type';
 import { IImageAsset, IUserBasic } from '../common';
 
+// ── Basic Story (fields select) ──────────────────────────────────────────────
+interface IStoryBasic {
+  _id: string;
+  title: string;
+  slug: string;
+}
+
 // ── User Stories (dashboard list item) ───────────────────────────────────────
 interface IUserStories {
   _id: string;
@@ -48,6 +55,8 @@ interface IStoryOverview extends IStory {
 }
 
 // ── Response Wrappers ─────────────────────────────────────────────────────────
+interface IStoryBasicResponse extends IBaseResponse<IStoryBasic> {}
+
 interface IUserStoriesResponse extends IBaseResponse<IUserStories[]> {}
 
 interface IStoryTreeResponse extends IBaseResponse<{ chapters: IChapterTreeItem[] }> {}
@@ -102,7 +111,16 @@ interface ISendInvitationBody {
   invitedUserName: string;
 }
 
+// ── Images ────────────────────────────────────────────────────────────────────
+interface ICloudinarySignatureResponse extends IBaseResponse<{
+  uploadURL: string;
+}> {}
+
+interface IStoryImageUpdateResponse extends IBaseResponse<IImageAsset> {}
+
 export type {
+  IStoryBasic,
+  IStoryBasicResponse,
   IUserStories,
   IUserStoriesResponse,
   IStoryTreeResponse,
@@ -114,4 +132,6 @@ export type {
   ICollaboratorActionData,
   IInvitationActionResponse,
   ISendInvitationBody,
+  ICloudinarySignatureResponse,
+  IStoryImageUpdateResponse,
 };

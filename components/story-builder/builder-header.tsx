@@ -54,7 +54,6 @@ interface BuilderHeaderProps {
   parentChapterSlug?: string;
   chapterId?: string;
   // Context for submit request dialog
-  storyId?: string;
   storyTitle?: string;
   parentChapterTitle?: string;
   draftId?: string;
@@ -102,7 +101,6 @@ function BuilderHeader({
   storySlug,
   parentChapterSlug,
   chapterId,
-  storyId,
   storyTitle,
   parentChapterTitle,
   draftId,
@@ -345,9 +343,8 @@ function BuilderHeader({
       <SubmitRequestDialog
         open={isSubmitRequestOpen}
         onOpenChange={setIsSubmitRequestOpen}
-        storyId={storyId}
-        storyTitle={storyTitle}
         storySlug={storySlug}
+        storyTitle={storyTitle}
         parentChapterSlug={parentChapterSlug}
         parentChapterTitle={parentChapterTitle}
         draftId={draftId}

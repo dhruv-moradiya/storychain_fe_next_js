@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -43,7 +45,7 @@ export function SelectionSection({
         )}
         onClick={isCompleted && !isActive ? onEdit : undefined}
       >
-        {/* Step number */}
+        {/* Step number / check */}
         <div
           className={cn(
             'flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium transition-all',

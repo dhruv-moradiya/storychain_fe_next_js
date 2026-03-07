@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { BookOpen, Check, Search, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -6,15 +8,17 @@ import { ChapterOption } from '../../types/submit-request-dialog.types';
 
 interface ChapterSelectionProps {
   chapters: ChapterOption[];
-  selectedChapterId: string;
-  onSelect: (chapterId: string) => void;
+  /** Slug of the currently selected chapter (or 'root' for Story Introduction) */
+  selectedChapterSlug: string;
+  onSelect: (slug: string) => void;
+  /** When true, shows "Story Introduction / insert as first chapter" option with slug='root' */
   showRootOption?: boolean;
   isLoading?: boolean;
 }
 
 export function ChapterSelection({
   chapters,
-  selectedChapterId,
+  selectedChapterSlug,
   onSelect,
   showRootOption = false,
   isLoading,
@@ -47,7 +51,7 @@ export function ChapterSelection({
       </div>
 
       {/* Chapter list */}
-      <div className="max-h-[140px] space-y-2 overflow-y-auto pr-1">
+      <div className="max-h-[200px] space-y-2 overflow-y-auto pr-1">
         {/* Root option */}
         {showRootOption && (
           <button
@@ -55,7 +59,7 @@ export function ChapterSelection({
             onClick={() => onSelect('root')}
             className={cn(
               'flex w-full items-center gap-3 rounded-lg border p-2 text-left transition-all',
-              selectedChapterId === 'root'
+              selectedChapterSlug === 'root'
                 ? 'border-brand-pink-500 bg-brand-pink-500/5'
                 : 'border-black/10 hover:border-black/20 hover:bg-black/2'
             )}
@@ -63,13 +67,13 @@ export function ChapterSelection({
             <div
               className={cn(
                 'flex h-7 w-7 shrink-0 items-center justify-center rounded-md',
-                selectedChapterId === 'root' ? 'bg-brand-pink-500/15' : 'bg-black/5'
+                selectedChapterSlug === 'root' ? 'bg-brand-pink-500/15' : 'bg-black/5'
               )}
             >
               <BookOpen
                 className={cn(
                   'h-3.5 w-3.5',
-                  selectedChapterId === 'root' ? 'text-brand-pink-500' : 'text-text-secondary-65'
+                  selectedChapterSlug === 'root' ? 'text-brand-pink-500' : 'text-text-secondary-65'
                 )}
               />
             </div>
@@ -77,7 +81,7 @@ export function ChapterSelection({
               <p className="text-text-primary text-sm font-medium">Story Introduction</p>
               <p className="text-text-secondary-65 font-mono text-xs">Insert as first chapter</p>
             </div>
-            {selectedChapterId === 'root' && (
+            {selectedChapterSlug === 'root' && (
               <div className="bg-brand-pink-500 flex h-4 w-4 shrink-0 items-center justify-center rounded-full">
                 <Check className="h-2.5 w-2.5 text-white" />
               </div>
@@ -89,12 +93,12 @@ export function ChapterSelection({
           <p className="text-text-secondary-65 py-4 text-center text-sm">No chapters found</p>
         ) : (
           filteredChapters.map((chapter) => {
-            const isSelected = selectedChapterId === chapter.id;
+            const isSelected = selectedChapterSlug === chapter.slug;
             return (
               <button
-                key={chapter.id}
+                key={chapter.slug}
                 type="button"
-                onClick={() => onSelect(chapter.id)}
+                onClick={() => onSelect(chapter.slug)}
                 className={cn(
                   'flex w-full items-center gap-3 rounded-lg border p-2 text-left transition-all',
                   isSelected

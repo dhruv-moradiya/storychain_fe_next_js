@@ -1,8 +1,9 @@
 import { z } from 'zod';
 
-/**
- * Enums
- */
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
 export const SubmitRequestTypeEnum = z.enum(['new_chapter', 'edit_chapter', 'delete_chapter']);
 export type TSubmitRequestType = z.infer<typeof SubmitRequestTypeEnum>;
 
@@ -15,10 +16,12 @@ export const SubmitRequestLabelEnum = z.enum([
 ]);
 export type TSubmitRequestLabel = z.infer<typeof SubmitRequestLabelEnum>;
 
-/**
- * Main Schema
- */
+// ---------------------------------------------------------------------------
+// Form Schema
+// ---------------------------------------------------------------------------
+
 export const SubmitRequestFormSchema = z.object({
+  // SR metadata
   title: z
     .string()
     .min(3, 'Title must be at least 3 characters')
@@ -31,33 +34,29 @@ export const SubmitRequestFormSchema = z.object({
 
   submitRequestType: SubmitRequestTypeEnum,
 
+  // Slug-based selection (no IDs)
+  storySlug: z.string().min(1, 'Please select a story'),
+
   /**
-   * Selection IDs
+   * chapterSlug: the chapter being edited or deleted (EDIT / DELETE)
+   * parentChapterSlug: the chapter after which a new chapter is inserted (NEW)
    */
-  storyId: z.string().min(1, 'Please select a story'),
-  // chapterId is the chapter being affected (EDIT/DELETE)
-  chapterId: z.string().optional(),
-  // parentChapterSlug is the chapter after which a new chapter is added (NEW)
+  chapterSlug: z.string().optional(),
   parentChapterSlug: z.string().optional(),
 
+  // Draft
   draftId: z.string().optional(),
 
-  /**
-   * Proposed content
-   */
+  // Proposed content
   proposedContent: z
     .string()
     .min(1, 'Proposed content is required')
-    .max(100000, 'Content too large'),
+    .max(100_000, 'Content too large'),
 
-  /**
-   * Labels
-   */
+  // Labels
   labels: z.array(SubmitRequestLabelEnum).max(10, 'Maximum 10 labels allowed').optional(),
 
-  /**
-   * Submit Request Options
-   */
+  // SR options
   isDraft: z.boolean(),
   autoApproveEnabled: z.boolean(),
 });

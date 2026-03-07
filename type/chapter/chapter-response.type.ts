@@ -40,4 +40,12 @@ interface IUserChapters {
 
 interface IUserChaptersResponse extends IBaseResponse<IUserChapters[]> {}
 
-export type { IUserChapters, IUserChaptersResponse };
+interface IChapterSearchItem {
+  _id: string;
+  title: string;
+  slug: string;
+}
+
+interface IChapterSearchResponse extends IBaseResponse<IChapterSearchItem[]> {}
+
+export type { IUserChapters, IUserChaptersResponse, IChapterSearchItem, IChapterSearchResponse };
