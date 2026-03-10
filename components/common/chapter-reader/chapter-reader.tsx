@@ -142,7 +142,7 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
 
             // Compact / preview
             isCompact && 'prose-base prose-p:text-base prose-p:leading-[1.75] prose-p:my-4',
-            isPreview && 'max-h-[65vh] overflow-y-auto pr-2'
+            isPreview && 'pr-2'
           )}
           dangerouslySetInnerHTML={{ __html: chapter.content }}
         />

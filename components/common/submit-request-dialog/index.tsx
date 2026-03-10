@@ -15,8 +15,10 @@ import {
 } from '@/components/ui/responsive-dialog';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, GitPullRequestArrow } from 'lucide-react';
+import { ChevronLeft, ChevronRight, GitPullRequestArrow, Loader2 } from 'lucide-react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useCreatePullRequest } from '@/services/pull-requests/pull-requests.mutation';
+import { ICreatePullRequestRequest } from '@/services/pull-requests/pull-requests.api';
 import { ContentPreviewStep } from './steps/content-preview-step';
 import { DetailStep } from './steps/detail-step';
 import { ReviewStep } from './steps/review-step';
@@ -236,9 +238,42 @@ export function SubmitRequestDialog(props: SubmitRequestDialogProps) {
     if (currentStep > 0) setCurrentStep((prev) => prev - 1);
   };
 
+  const { mutate: createPullRequest, isPending: isSubmitting } = useCreatePullRequest();
+
   const onFormSubmit = (data: TSubmitRequestFormData) => {
-    onSubmit?.(data);
-    onOpenChange(false);
+    // Basic slugification for new chapters if chapterSlug is missing
+    let finalChapterSlug = data.chapterSlug;
+    if (data.submitRequestType === 'new_chapter' && !finalChapterSlug) {
+      finalChapterSlug = data.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+    }
+
+    const payload: ICreatePullRequestRequest = {
+      title: data.title,
+      description: data.description,
+      storySlug: data.storySlug,
+      prType: data.submitRequestType,
+      isDraft: data.isDraft,
+      chapterSlug: finalChapterSlug || '',
+      parentChapterSlug: data.parentChapterSlug || 'root',
+      changes: {
+        proposed: data.proposedContent,
+        original: chapters.find((c) => c.slug === data.chapterSlug)?.content,
+      },
+    };
+
+    createPullRequest(payload, {
+      onSuccess: (response) => {
+        if (response.data.success) {
+          onSubmit?.(data);
+          onOpenChange(false);
+          reset();
+          setCurrentStep(0);
+        }
+      },
+    });
   };
 
   const isLastStep = currentStep === STEPS.length - 1;
@@ -314,7 +349,27 @@ export function SubmitRequestDialog(props: SubmitRequestDialogProps) {
                 Back
               </Button>
             )}
-            {!isLastStep ? (
+            {isLastStep ? (
+              <Button
+                type="button"
+                onClick={handleSubmit(onFormSubmit)}
+                className="bg-brand-pink-500 hover:bg-brand-pink-400 gap-2 font-mono text-white"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <GitPullRequestArrow className="h-4 w-4" />
+                )}
+                {isSubmitting
+                  ? 'Submitting...'
+                  : formData.isDraft
+                    ? 'Save as Draft'
+                    : isEditMode
+                      ? 'Update SR'
+                      : 'Submit SR'}
+              </Button>
+            ) : (
               <Button
                 type="button"
                 onClick={handleNext}
@@ -322,15 +377,6 @@ export function SubmitRequestDialog(props: SubmitRequestDialogProps) {
               >
                 Next
                 <ChevronRight className="h-4 w-4" />
-              </Button>
-            ) : (
-              <Button
-                type="button"
-                onClick={handleSubmit(onFormSubmit)}
-                className="bg-brand-pink-500 hover:bg-brand-pink-400 gap-2 font-mono text-white"
-              >
-                <GitPullRequestArrow className="h-4 w-4" />
-                {formData.isDraft ? 'Save as Draft' : isEditMode ? 'Update SR' : 'Submit SR'}
               </Button>
             )}
           </ResponsiveDialogFooter>

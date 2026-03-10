@@ -20,6 +20,7 @@ import {
   BuilderToolbar,
   DraftRecoveryBanner,
 } from '@/components/story-builder';
+import { useHotkey } from '@tanstack/react-hotkeys';
 
 const DEFAULT_CONTENT = `
   <h2>Welcome to StoryChain</h2>
@@ -135,6 +136,14 @@ function StoryBuilderContent() {
       editor.commands.setContent(DEFAULT_CONTENT);
     }
   }, [selectedDraft, editor, autoSaveId]);
+
+  useHotkey(
+    'Mod+S',
+    () => {
+      console.log('save');
+    },
+    { requireReset: true }
+  );
 
   if (!editor) return null;
 

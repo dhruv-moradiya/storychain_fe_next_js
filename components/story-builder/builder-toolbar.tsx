@@ -36,6 +36,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
+import { useInitializeToolbarShortcutKey } from './hooks/use-initialize-toolbar-shortcut-key';
+import { formatForDisplay } from '@tanstack/react-hotkeys';
+import { ShortcutKeys } from './types/shortcut-keys.enum';
 
 interface BuilderToolbarProps {
   editor: Editor;
@@ -139,6 +142,8 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
   const currentHeadingLabel = editorState.currentHeading?.label || 'Paragraph';
   const HeadingIcon = editorState.currentHeading?.icon || Pilcrow;
 
+  useInitializeToolbarShortcutKey(editor);
+
   return (
     <TooltipProvider delayDuration={300}>
       <div className="border-border/50 from-cream-90 via-cream-85 to-cream-90 w-full border-b bg-linear-to-r">
@@ -198,6 +203,7 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
               >
                 <Pilcrow className="size-4" />
                 Paragraph
+                {formatForDisplay(ShortcutKeys.Paragraph)}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

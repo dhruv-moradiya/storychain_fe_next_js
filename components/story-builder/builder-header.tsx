@@ -16,6 +16,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -252,20 +253,59 @@ function BuilderHeader({
             </Button>
 
             <ResponsiveDialogContent
-              className="sm:max-w-2xl"
-              sheetHeight="90%"
+              className="h-[92vh] w-full overflow-hidden border-none bg-transparent p-0 shadow-none sm:max-w-4xl"
+              sheetHeight="95%"
               showCloseButton={true}
             >
-              <ResponsiveDialogHeader>
-                <ResponsiveDialogTitle>Preview</ResponsiveDialogTitle>
-              </ResponsiveDialogHeader>
-              <div className="mt-4 max-h-[70vh] overflow-y-auto">
-                <ChapterReader
-                  chapter={previewChapter}
-                  showHeader={true}
-                  showStats={false}
-                  variant="preview"
-                />
+              <div className="bg-bg-cream-light relative flex h-full flex-col overflow-hidden border border-black/5 shadow-2xl">
+                {/* Immersive Header */}
+                <ResponsiveDialogHeader className="border-border/20 border-b bg-white/40 px-8 py-5 backdrop-blur-xl">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <ResponsiveDialogTitle className="font-playfair text-text-tertiary text-2xl font-bold tracking-tight">
+                        Chapter Preview
+                      </ResponsiveDialogTitle>
+                      <p className="text-text-secondary-50 font-ibm-plex-mono mt-1.5 flex items-center gap-2 text-[10px] tracking-wider uppercase">
+                        <span className="bg-brand-pink-500 h-1.5 w-1.5 animate-pulse rounded-full" />
+                        Live Draft Rendering
+                      </p>
+                    </div>
+                  </div>
+                </ResponsiveDialogHeader>
+
+                {/* Readable Content Area */}
+                <div className="relative flex-1 overflow-y-auto px-6 py-8 sm:px-14 sm:py-12">
+                  {/* Subtle Paper Texture Background Effect */}
+                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#000_1px,transparent_1px)] bg-size-[20px_20px] opacity-[0.03]" />
+
+                  <div className="relative z-10 mx-auto max-w-2xl">
+                    <ChapterReader
+                      chapter={previewChapter}
+                      showHeader={true}
+                      showStats={false}
+                      variant="preview"
+                    />
+                  </div>
+                </div>
+
+                {/* Preview Footer */}
+                <div className="border-border/10 flex items-center justify-between border-t bg-white/30 px-8 py-4 backdrop-blur-md">
+                  <div className="flex items-center gap-3">
+                    <div className="text-text-secondary-40 font-ibm-plex-mono flex items-center gap-2 text-[10px]">
+                      <span>{previewChapter.title.length} characters</span>
+                      <span className="opacity-30">|</span>
+                      <span>Story Chain Engine</span>
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-brand-pink-500 hover:text-brand-pink-600 hover:bg-brand-pink-500/5 text-xs font-bold"
+                    onClick={() => setIsPreviewOpen(false)}
+                  >
+                    Return to Editor
+                  </Button>
+                </div>
               </div>
             </ResponsiveDialogContent>
           </ResponsiveDialog>
@@ -309,7 +349,8 @@ function BuilderHeader({
                 <ChevronDown className="h-3 w-3" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
+
+            <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem
                 onClick={handlePublish}
                 className="gap-2"
@@ -317,7 +358,9 @@ function BuilderHeader({
               >
                 <Send className="h-4 w-4" />
                 Publish Directly
+                <DropdownMenuShortcut>⌘↵</DropdownMenuShortcut>
               </DropdownMenuItem>
+
               <DropdownMenuItem
                 onClick={handleConvertToDraft}
                 className="gap-2"
@@ -325,7 +368,9 @@ function BuilderHeader({
               >
                 <FileText className="h-4 w-4" />
                 Save as Draft Chapter
+                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
               </DropdownMenuItem>
+
               <DropdownMenuItem
                 onClick={() => setIsSubmitRequestOpen(true)}
                 className="gap-2"
@@ -333,6 +378,7 @@ function BuilderHeader({
               >
                 <GitPullRequest className="h-4 w-4" />
                 Create Submit Request
+                <DropdownMenuShortcut>⌘⇧P</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
