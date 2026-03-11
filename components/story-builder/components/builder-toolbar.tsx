@@ -36,9 +36,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
-import { useInitializeToolbarShortcutKey } from './hooks/use-initialize-toolbar-shortcut-key';
+import { useInitializeToolbarShortcutKey } from '../hooks/useInitializeToolbarShortcutKey';
 import { formatForDisplay } from '@tanstack/react-hotkeys';
-import { ShortcutKeys } from './types/shortcut-keys.enum';
+import { ShortcutKeys } from '../types/shortcut-keys.enum';
 
 interface BuilderToolbarProps {
   editor: Editor;

@@ -1,7 +1,7 @@
 import type { Editor } from '@tiptap/react';
 import { EditorContent } from '@tiptap/react';
 import { cn } from '@/lib/utils';
-import './builder-canvas.css';
+import '../builder-canvas.css';
 
 interface BuilderCanvasProps {
   editor: Editor;

@@ -28,8 +28,10 @@ enum ShortcutKeys {
   Redo = 'Mod+Shift+Z',
 
   Save = 'Mod+S',
+  SaveAsDraft = 'Mod+Shift+D',
   Preview = 'Mod+Shift+P',
-  Publish = 'Mod+Enter',
+  CreateSubmitRequest = 'Mod+Enter',
+  Publish = 'Mod+P',
 }
 
 export { ShortcutKeys };

@@ -1,6 +1,6 @@
-export { BuilderCanvas } from './builder-canvas';
-export { BuilderHeader } from './builder-header';
-export { BuilderStatusBar } from './builder-status-bar';
-export { BuilderToolbar } from './builder-toolbar';
-export { DraftRecoveryBanner } from './draft-recovery-banner';
-export { WritingTipsDialog } from './writing-tips-dialog';
+export { BuilderCanvas } from './components/builder-canvas';
+export { BuilderHeader } from './components/builder-header';
+export { BuilderStatusBar } from './components/builder-status-bar';
+export { BuilderToolbar } from './components/builder-toolbar';
+export { DraftRecoveryBanner } from './components/draft-recovery-banner';
+export { ShortcutKeysDialog } from './components/shortcut-key-dialog';

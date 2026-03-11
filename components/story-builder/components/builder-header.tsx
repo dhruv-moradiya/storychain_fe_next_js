@@ -39,6 +39,8 @@ import {
   useConvertToPublished,
 } from '@/services/auto-save/auto-save.mutation';
 import { TAutoSaveContentRequest, TAutoSaveType, AutoSaveType } from '@/type/auto-save';
+import { formatForDisplay, useHotkey } from '@tanstack/react-hotkeys';
+import { ShortcutKeys } from '../types/shortcut-keys.enum';
 
 type ChapterStatus = 'draft' | 'pending' | 'published' | 'rejected';
 
@@ -203,6 +205,18 @@ function BuilderHeader({
 
   const isActionPending = isSaving || isConvertingToDraft || isPublishing;
 
+  useHotkey(ShortcutKeys.Save, () => {
+    handleSave();
+  });
+
+  useHotkey(ShortcutKeys.Preview, () => {
+    setIsPreviewOpen(true);
+  });
+
+  useHotkey(ShortcutKeys.CreateSubmitRequest, () => {
+    setIsSubmitRequestOpen(true);
+  });
+
   return (
     <div className="border-border/50 bg-cream-95 sticky top-0 z-30 w-full border-b backdrop-blur-md">
       <div className="mx-auto flex max-w-[1100px] items-center justify-between gap-2 px-3 py-2 sm:gap-4">
@@ -358,7 +372,9 @@ function BuilderHeader({
               >
                 <Send className="h-4 w-4" />
                 Publish Directly
-                <DropdownMenuShortcut>⌘↵</DropdownMenuShortcut>
+                <DropdownMenuShortcut>
+                  {formatForDisplay(ShortcutKeys.Publish)}
+                </DropdownMenuShortcut>
               </DropdownMenuItem>
 
               <DropdownMenuItem
@@ -368,7 +384,9 @@ function BuilderHeader({
               >
                 <FileText className="h-4 w-4" />
                 Save as Draft Chapter
-                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                <DropdownMenuShortcut>
+                  {formatForDisplay(ShortcutKeys.SaveAsDraft)}
+                </DropdownMenuShortcut>
               </DropdownMenuItem>
 
               <DropdownMenuItem
@@ -378,7 +396,9 @@ function BuilderHeader({
               >
                 <GitPullRequest className="h-4 w-4" />
                 Create Submit Request
-                <DropdownMenuShortcut>⌘⇧P</DropdownMenuShortcut>
+                <DropdownMenuShortcut>
+                  {formatForDisplay(ShortcutKeys.CreateSubmitRequest)}
+                </DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

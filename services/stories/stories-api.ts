@@ -1,18 +1,17 @@
 import apiClient from '@/lib/api-client';
 import {
+  ICloudinarySignatureResponse,
   ICollaboratorListResponse,
   IInvitationActionResponse,
   ISendInvitationBody,
   IStoryBasicResponse,
+  IStoryImageUpdateResponse,
   IStoryOverviewResponse,
   IStorySettingsResponse,
   IStoryTreeResponse,
   IUserStoriesResponse,
-  ICloudinarySignatureResponse,
-  IStoryImageUpdateResponse,
 } from '@/type/story/story-response.type';
 import { IStorySettings } from '@/type/story/story.types';
-import { IImageAsset } from '@/type/common';
 import { AxiosResponse } from 'axios';
 
 const StoryApi = {

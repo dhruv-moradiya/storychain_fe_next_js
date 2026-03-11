@@ -1,6 +1,6 @@
 import { Clock, FileText, Type, Check } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { WritingTipsDialog } from './writing-tips-dialog';
+import { ShortcutKeysDialog } from './shortcut-key-dialog';
 import { Editor, useEditorState } from '@tiptap/react';
 
 interface BuilderStatusBarProps {
@@ -90,7 +90,7 @@ function BuilderStatusBar({ editor }: BuilderStatusBarProps) {
 
           {/* Right Section - Writing Tips & Last Saved */}
           <div className="flex items-center gap-3">
-            <WritingTipsDialog />
+            <ShortcutKeysDialog />
             <span className="text-text-secondary-65/40 hidden sm:inline">•</span>
             <div className="text-text-secondary-65 flex items-center gap-1.5 text-xs">
               <Check className="text-badge-success h-3.5 w-3.5" />
