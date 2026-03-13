@@ -1,6 +1,7 @@
 'use client';
 
 import { useBuilderParams } from '@/hooks/use-builder-params';
+import { cn } from '@/lib/utils';
 import { useGetAutoSaveDraft } from '@/services/auto-save/auto-save.query';
 import Emoji, { gitHubEmojis } from '@tiptap/extension-emoji';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
@@ -97,13 +98,14 @@ const extensions = [
 function StoryBuilderContent() {
   const { storySlug, autoSaveId, mode, parentChapterSlug } = useBuilderParams();
   const { data: draftResponse } = useGetAutoSaveDraft();
-  const draftList = draftResponse?.data?.docs || [];
+  const draftedDocs = draftResponse?.data?.docs;
 
   const [title, setTitle] = useState<string>('');
 
   const selectedDraft = useMemo(() => {
+    const draftList = draftedDocs || [];
     return draftList.find((d) => d._id === autoSaveId);
-  }, [draftList, autoSaveId]);
+  }, [draftedDocs, autoSaveId]);
 
   const editor = useEditor({
     extensions,
@@ -111,7 +113,28 @@ function StoryBuilderContent() {
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        class: 'prose prose-lg focus:outline-none max-w-none',
+        class: cn(
+          'focus:outline-none',
+          'chapter-reader-content',
+          'prose prose-lg prose-gray dark:prose-invert',
+          'mx-auto max-w-none',
+          'prose-p:text-[1rem] prose-p:leading-[1.9] prose-p:tracking-[0.01em]',
+          'prose-p:text-text-secondary prose-p:my-6',
+          'prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-text-primary',
+          'prose-h2:mt-12 prose-h2:mb-5 prose-h2:text-xl',
+          'prose-h3:mt-10 prose-h3:mb-4',
+          'prose-a:text-brand-pink-500 prose-a:font-medium prose-a:no-underline',
+          'hover:prose-a:underline',
+          'prose-ul:list-disc prose-ul:pl-6 prose-ul:space-y-1',
+          'prose-ol:list-decimal prose-ol:pl-6 prose-ol:space-y-1',
+          'prose-li:text-[1.125rem] prose-li:leading-[1.9]',
+          'prose-blockquote:border-l-4',
+          'prose-blockquote:border-l-brand-pink-500/40',
+          'prose-blockquote:pl-6 prose-blockquote:py-1',
+          'prose-blockquote:italic',
+          'prose-blockquote:text-text-secondary-65',
+          'selection:bg-primary selection:text-muted text-sm'
+        ),
       },
     },
   });

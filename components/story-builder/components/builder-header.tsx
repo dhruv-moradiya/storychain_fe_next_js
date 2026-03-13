@@ -30,17 +30,13 @@ import { SubmitRequestDialog } from '@/components/common/submit-request-dialog';
 import { Editor } from '@tiptap/react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { toast } from 'sonner';
 import { statusBadge } from '@/components/common/badge';
 import { TBuilderMode } from '@/hooks/use-builder-params';
-import {
-  useAutoSaveContent,
-  useConvertToDraft,
-  useConvertToPublished,
-} from '@/services/auto-save/auto-save.mutation';
+import { useAutoSaveContent, useConvertAutoSave } from '@/services/auto-save/auto-save.mutation';
 import { TAutoSaveContentRequest, TAutoSaveType, AutoSaveType } from '@/type/auto-save';
 import { formatForDisplay, useHotkey } from '@tanstack/react-hotkeys';
 import { ShortcutKeys } from '../types/shortcut-keys.enum';
+import toast from '@/components/shared/toast/toast';
 
 type ChapterStatus = 'draft' | 'pending' | 'published' | 'rejected';
 
@@ -117,8 +113,7 @@ function BuilderHeader({
 
   // Mutations
   const { mutate: autoSave, isPending: isSaving } = useAutoSaveContent();
-  const { mutate: convertToDraft, isPending: isConvertingToDraft } = useConvertToDraft();
-  const { mutate: convertToPublished, isPending: isPublishing } = useConvertToPublished();
+  const { mutate: convertAutoSave, isPending: isConverting } = useConvertAutoSave();
 
   const handleSave = () => {
     if (!title) {
@@ -162,15 +157,18 @@ function BuilderHeader({
       return;
     }
 
-    convertToDraft(autoSaveId, {
-      onSuccess: () => {
-        toast.success('Saved as draft chapter');
-        router.push(`/stories/${storySlug}/chapters`);
-      },
-      onError: () => {
-        toast.error('Failed to save as draft');
-      },
-    });
+    convertAutoSave(
+      { autoSaveId, type: 'draft' },
+      {
+        onSuccess: () => {
+          toast.success('Saved as draft chapter');
+          // router.push(`/stories/${storySlug}/chapters`);
+        },
+        onError: () => {
+          toast.error('Failed to save as draft');
+        },
+      }
+    );
   };
 
   const handlePublish = () => {
@@ -179,15 +177,18 @@ function BuilderHeader({
       return;
     }
 
-    convertToPublished(autoSaveId, {
-      onSuccess: () => {
-        toast.success('Published successfully!');
-        router.push(`/stories/${storySlug}/chapters`);
-      },
-      onError: () => {
-        toast.error('Failed to publish chapter');
-      },
-    });
+    convertAutoSave(
+      { autoSaveId, type: 'publish' },
+      {
+        onSuccess: () => {
+          toast.success('Published successfully!');
+          // router.push(`/stories/${storySlug}/chapters`);
+        },
+        onError: () => {
+          toast.error('Failed to publish chapter');
+        },
+      }
+    );
   };
 
   // Create chapter data for preview
@@ -203,7 +204,7 @@ function BuilderHeader({
     status: 'draft',
   };
 
-  const isActionPending = isSaving || isConvertingToDraft || isPublishing;
+  const isActionPending = isSaving || isConverting;
 
   useHotkey(ShortcutKeys.Save, () => {
     handleSave();
@@ -352,13 +353,13 @@ function BuilderHeader({
                 className="bg-brand-pink-500 hover:bg-brand-pink-600 gap-1.5 text-white shadow-[0_2px_8px_var(--brand-pink-shadow25)]"
                 disabled={isActionPending}
               >
-                {isPublishing ? (
+                {isActionPending ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <Send className="h-4 w-4" />
                 )}
                 <span className="hidden sm:inline">
-                  {isPublishing ? 'Publishing...' : 'Publish'}
+                  {isActionPending ? 'Processing...' : 'Publish'}
                 </span>
                 <ChevronDown className="h-3 w-3" />
               </Button>

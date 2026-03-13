@@ -1,8 +1,7 @@
 import apiClient from '@/lib/api-client';
 import {
   IChapterAutoSaveContentResponse,
-  IConvertAutoSaveToDraftResponse,
-  IConvertAutoSaveToPublishedResponse,
+  IConvertAutoSaveResponse,
   IGetAutoSaveDraftResponse,
   IAutoSaveSearchResponse,
   TAutoSaveContentRequest,
@@ -39,27 +38,16 @@ const chapterAutoSaveApi = {
   },
 
   /**
-   * Converts an auto-save draft to a real chapter (saved as draft).
+   * Converts an auto-save draft to a real chapter (draft or published).
    */
-  convertToDraft: async (
-    autoSaveId: string
-  ): Promise<AxiosResponse<IConvertAutoSaveToDraftResponse>> => {
-    return await apiClient.post<IConvertAutoSaveToDraftResponse>('/auto-save/convert-to-draft', {
-      autoSaveId,
-    });
-  },
-
-  /**
-   * Converts an auto-save draft to a real chapter and publishes it directly.
-   */
-  convertToPublished: async (
-    autoSaveId: string
-  ): Promise<AxiosResponse<IConvertAutoSaveToPublishedResponse>> => {
-    return await apiClient.post<IConvertAutoSaveToPublishedResponse>(
-      '/auto-save/convert-to-published',
-      {
-        autoSaveId,
-      }
+  convertAutoSave: async (
+    autoSaveId: string,
+    type: 'draft' | 'publish'
+  ): Promise<AxiosResponse<IConvertAutoSaveResponse>> => {
+    return await apiClient.post<IConvertAutoSaveResponse>(
+      `/auto-save/convert`,
+      { autoSaveId },
+      { params: { type } }
     );
   },
 

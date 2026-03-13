@@ -1,7 +1,6 @@
 import {
   IChapterAutoSaveContentResponse,
-  IConvertAutoSaveToDraftResponse,
-  IConvertAutoSaveToPublishedResponse,
+  IConvertAutoSaveResponse,
   TAutoSaveContentRequest,
 } from '@/type/auto-save';
 import { IBaseResponse } from '@/type/base-response.type';
@@ -19,22 +18,16 @@ const useAutoSaveContent = (
   });
 };
 
-const useConvertToDraft = (
-  options?: UseMutationOptions<IConvertAutoSaveToDraftResponse, AxiosError, string>
+const useConvertAutoSave = (
+  options?: UseMutationOptions<
+    IConvertAutoSaveResponse,
+    AxiosError,
+    { autoSaveId: string; type: 'draft' | 'publish' }
+  >
 ) => {
   return useMutation({
-    mutationFn: (autoSaveId: string) =>
-      chapterAutoSaveApi.convertToDraft(autoSaveId).then((res) => res.data),
-    ...options,
-  });
-};
-
-const useConvertToPublished = (
-  options?: UseMutationOptions<IConvertAutoSaveToPublishedResponse, AxiosError, string>
-) => {
-  return useMutation({
-    mutationFn: (autoSaveId: string) =>
-      chapterAutoSaveApi.convertToPublished(autoSaveId).then((res) => res.data),
+    mutationFn: ({ autoSaveId, type }) =>
+      chapterAutoSaveApi.convertAutoSave(autoSaveId, type).then((res) => res.data),
     ...options,
   });
 };
@@ -49,4 +42,4 @@ const useDeleteAutoSave = (
   });
 };
 
-export { useAutoSaveContent, useConvertToDraft, useConvertToPublished, useDeleteAutoSave };
+export { useAutoSaveContent, useConvertAutoSave, useDeleteAutoSave };

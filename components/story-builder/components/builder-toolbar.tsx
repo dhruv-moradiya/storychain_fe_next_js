@@ -55,6 +55,7 @@ interface ToolButtonProps {
   isActive?: boolean;
   disabled?: boolean;
   title: string;
+  shortcutKey?: string;
   children: React.ReactNode;
   className?: string;
 }
@@ -64,6 +65,7 @@ function ToolButton({
   isActive = false,
   disabled = false,
   title,
+  shortcutKey,
   children,
   className,
 }: ToolButtonProps) {
@@ -88,7 +90,14 @@ function ToolButton({
         </Button>
       </TooltipTrigger>
       <TooltipContent side="bottom" className="text-xs">
-        {title}
+        <div className="flex items-center gap-2">
+          <span>{title}</span>
+          {shortcutKey && (
+            <kbd className="bg-cream-60 text-text-secondary-65 rounded px-1.5 py-0.5 font-mono text-[10px]">
+              {formatForDisplay(shortcutKey)}
+            </kbd>
+          )}
+        </div>
       </TooltipContent>
     </Tooltip>
   );
@@ -153,14 +162,16 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
             <ToolButton
               onClick={() => editor.chain().focus().undo().run()}
               disabled={!editorState.canUndo}
-              title="Undo (Ctrl+Z)"
+              title="Undo"
+              shortcutKey={ShortcutKeys.Undo}
             >
               <Undo className="size-4" />
             </ToolButton>
             <ToolButton
               onClick={() => editor.chain().focus().redo().run()}
               disabled={!editorState.canRedo}
-              title="Redo (Ctrl+Y)"
+              title="Redo"
+              shortcutKey={ShortcutKeys.Redo}
             >
               <Redo className="size-4" />
             </ToolButton>
@@ -215,21 +226,24 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
             <ToolButton
               isActive={editorState.isBold}
               onClick={() => editor.chain().focus().toggleBold().run()}
-              title="Bold (Ctrl+B)"
+              title="Bold"
+              shortcutKey={ShortcutKeys.Bold}
             >
               <Bold className="size-4" />
             </ToolButton>
             <ToolButton
               isActive={editorState.isItalic}
               onClick={() => editor.chain().focus().toggleItalic().run()}
-              title="Italic (Ctrl+I)"
+              title="Italic"
+              shortcutKey={ShortcutKeys.Italic}
             >
               <Italic className="size-4" />
             </ToolButton>
             <ToolButton
               isActive={editorState.isUnderline}
               onClick={() => editor.chain().focus().toggleUnderline().run()}
-              title="Underline (Ctrl+U)"
+              title="Underline"
+              shortcutKey={ShortcutKeys.Underline}
             >
               <Underline className="size-4" />
             </ToolButton>
@@ -237,6 +251,7 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
               isActive={editorState.isStrike}
               onClick={() => editor.chain().focus().toggleStrike().run()}
               title="Strikethrough"
+              shortcutKey={ShortcutKeys.Strike}
             >
               <Strikethrough className="size-4" />
             </ToolButton>
@@ -250,6 +265,7 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
               isActive={editorState.isAlignLeft}
               onClick={() => editor.chain().focus().setTextAlign('left').run()}
               title="Align Left"
+              shortcutKey={ShortcutKeys.AlignLeft}
             >
               <AlignLeft className="size-4" />
             </ToolButton>
@@ -257,6 +273,7 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
               isActive={editorState.isAlignCenter}
               onClick={() => editor.chain().focus().setTextAlign('center').run()}
               title="Align Center"
+              shortcutKey={ShortcutKeys.AlignCenter}
             >
               <AlignCenter className="size-4" />
             </ToolButton>
@@ -264,6 +281,7 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
               isActive={editorState.isAlignRight}
               onClick={() => editor.chain().focus().setTextAlign('right').run()}
               title="Align Right"
+              shortcutKey={ShortcutKeys.AlignRight}
             >
               <AlignRight className="size-4" />
             </ToolButton>
@@ -271,6 +289,7 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
               isActive={editorState.isAlignJustify}
               onClick={() => editor.chain().focus().setTextAlign('justify').run()}
               title="Justify"
+              shortcutKey={ShortcutKeys.AlignJustify}
             >
               <AlignJustify className="size-4" />
             </ToolButton>
@@ -284,6 +303,7 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
               isActive={editorState.isBulletList}
               onClick={() => editor.chain().focus().toggleBulletList().run()}
               title="Bullet List"
+              shortcutKey={ShortcutKeys.BulletList}
             >
               <List className="size-4" />
             </ToolButton>
@@ -291,6 +311,7 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
               isActive={editorState.isOrderedList}
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
               title="Numbered List"
+              shortcutKey={ShortcutKeys.OrderedList}
             >
               <ListOrdered className="size-4" />
             </ToolButton>
@@ -298,6 +319,7 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
               isActive={editorState.isBlockquote}
               onClick={() => editor.chain().focus().toggleBlockquote().run()}
               title="Blockquote"
+              shortcutKey={ShortcutKeys.Blockquote}
             >
               <Quote className="size-4" />
             </ToolButton>
@@ -313,121 +335,25 @@ function BuilderToolbar({ editor }: BuilderToolbarProps) {
                 isActive={editorState.isCode}
                 onClick={() => editor.chain().focus().toggleCode().run()}
                 title="Inline Code"
+                shortcutKey={ShortcutKeys.InlineCode}
               >
                 <Code className="size-4" />
               </ToolButton>
-              <ToolButton onClick={() => {}} title="Insert Link">
+              <ToolButton
+                onClick={() => {}}
+                title="Insert Link"
+                shortcutKey={ShortcutKeys.InsertLink}
+              >
                 <Link2 className="size-4" />
               </ToolButton>
 
-              {/* Scene Break Dropdown */}
-              <DropdownMenu>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        size="icon"
-                        variant="ghost"
-                        className="text-text-secondary hover:bg-cream-60 hover:text-text-primary size-8 transition-all duration-150"
-                      >
-                        <Minus className="size-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom" className="text-xs">
-                    Scene Break
-                  </TooltipContent>
-                </Tooltip>
-                <DropdownMenuContent align="end" className="bg-bg-cream w-56">
-                  <div className="text-text-secondary-65 px-2 py-1.5 text-xs font-medium">
-                    Scene Break Styles
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => {
-                      editor
-                        .chain()
-                        .focus()
-                        .insertContent(
-                          '<hr style="border: none; margin: 2rem auto; width: 96px; height: 3px; border-radius: 9999px; background: linear-gradient(90deg, rgba(244, 114, 182, 0.6) 0%, rgba(107, 124, 255, 0.4) 50%, rgba(244, 114, 182, 0.6) 100%); opacity: 0.8;" />'
-                        )
-                        .run();
-                    }}
-                    className="flex items-center gap-3"
-                  >
-                    <div className="from-brand-pink-400/60 via-brand-blue/40 to-brand-pink-400/60 h-0.5 w-8 rounded-full bg-linear-to-r" />
-                    <span className="text-sm">Gradient Flow</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      editor
-                        .chain()
-                        .focus()
-                        .insertContent(
-                          '<p style="text-align: center; color: #ec4899; letter-spacing: 0.4em; margin: 2rem 0; font-family: serif;">✦ ✦ ✦</p>'
-                        )
-                        .run();
-                    }}
-                    className="flex items-center gap-3"
-                  >
-                    <span className="text-brand-pink-500/70 text-xs">✦ ✦ ✦</span>
-                    <span className="text-sm">Triple Star</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      editor
-                        .chain()
-                        .focus()
-                        .insertContent(
-                          '<p style="text-align: center; margin: 2rem 0;"><span style="color: #6b7cff; margin-right: 0.75rem;">•</span><span style="color: #f472b6; margin-right: 0.75rem; font-size: 1.2em;">•</span><span style="color: #6b7cff;">•</span></p>'
-                        )
-                        .run();
-                    }}
-                    className="flex items-center gap-3"
-                  >
-                    <span className="text-brand-blue/70 text-xs">• • •</span>
-                    <span className="text-sm">Dot Cluster</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      editor
-                        .chain()
-                        .focus()
-                        .insertContent(
-                          '<p style="text-align: center; color: #ff9f68; margin: 2rem 0;"><span style="opacity: 0.5;">————</span> ◆ <span style="opacity: 0.5;">————</span></p>'
-                        )
-                        .run();
-                    }}
-                    className="flex items-center gap-3"
-                  >
-                    <span className="text-brand-orange/70 text-xs">— ◆ —</span>
-                    <span className="text-sm">Diamond Break</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      editor
-                        .chain()
-                        .focus()
-                        .insertContent(
-                          '<p style="text-align: center; color: #6b7cff; letter-spacing: 0.5em; margin: 2rem 0;">～ ～ ～ ～ ～</p>'
-                        )
-                        .run();
-                    }}
-                    className="flex items-center gap-3"
-                  >
-                    <span className="text-brand-blue/70 text-xs">～ ～ ～</span>
-                    <span className="text-sm">Wave Pattern</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => editor.chain().focus().setHorizontalRule().run()}
-                    className="flex items-center gap-3"
-                  >
-                    <Minus className="text-text-secondary-65 size-4" />
-                    <span className="text-sm">Simple Line</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {/* Horizontal Line Tool */}
+              <ToolButton
+                onClick={() => editor.chain().focus().setHorizontalRule().run()}
+                title="Horizontal Line"
+              >
+                <Minus className="size-4" />
+              </ToolButton>
             </ToolGroup>
 
             <ToolSeparator />

@@ -8,8 +8,7 @@ export interface IChapterAutoSaveContentResponse extends IBaseResponse<{
   saveCount: number;
 }> {}
 
-export interface IConvertAutoSaveToDraftResponse extends IBaseResponse<IConvertedChapter> {}
-export interface IConvertAutoSaveToPublishedResponse extends IBaseResponse<IConvertedChapter> {}
+export interface IConvertAutoSaveResponse extends IBaseResponse<IConvertedChapter> {}
 
 export interface IAutoSaveSearchItem {
   _id: string;

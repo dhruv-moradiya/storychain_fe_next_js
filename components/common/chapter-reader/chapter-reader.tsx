@@ -127,8 +127,8 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
             'hover:prose-a:underline',
 
             // Lists
-            'prose-ul:list-disc prose-ul:pl-6 prose-ul:space-y-3',
-            'prose-ol:list-decimal prose-ol:pl-6 prose-ol:space-y-3',
+            'prose-ul:list-disc prose-ul:pl-6 prose-ul:space-y-1',
+            'prose-ol:list-decimal prose-ol:pl-6 prose-ol:space-y-1',
             'prose-li:text-[1.125rem] prose-li:leading-[1.9]',
 
             // Blockquotes - elegant italic style
