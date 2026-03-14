@@ -6,6 +6,28 @@ import { ISendInvitationBody } from '@/type/story/story-response.type';
 import { toast } from '@/components/shared/toast/toast';
 import { AxiosError } from 'axios';
 import { getErrorMessage } from '@/lib/error';
+import { TStoryFormValues } from '@/lib/schemas/story.schema';
+
+// ── Story Creation ────────────────────────────────────────────────────────────
+
+export const useCreateStory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: TStoryFormValues) => StoryApi.createStory(payload),
+    onSuccess: (response) => {
+      if (response.data.success) {
+        queryClient.invalidateQueries({ queryKey: ['story'] });
+        toast.success(response.data.message || 'Story created successfully');
+      } else {
+        toast.error(response.data.message || 'Failed to create story');
+      }
+    },
+    onError: (error: unknown) => {
+      toast.error(getErrorMessage(error, 'Something went wrong while creating story'));
+    },
+  });
+};
 
 // ── Settings ──────────────────────────────────────────────────────────────────
 

@@ -118,6 +118,14 @@ interface ICloudinarySignatureResponse extends IBaseResponse<{
 
 interface IStoryImageUpdateResponse extends IBaseResponse<IImageAsset> {}
 
+interface ICreateStoryResponse extends IBaseResponse<{
+  _id: string;
+  title: string;
+  slug: string;
+  status: TStoryStatus;
+  createdAt: string;
+}> {}
+
 export type {
   IStoryBasic,
   IStoryBasicResponse,
@@ -134,4 +142,5 @@ export type {
   ISendInvitationBody,
   ICloudinarySignatureResponse,
   IStoryImageUpdateResponse,
+  ICreateStoryResponse,
 };

@@ -16,6 +16,10 @@ import { Button } from '@/components/ui/button';
 
 import { StoryFormSchema, type TStoryFormValues } from '@/lib/schemas/story.schema';
 import { BasicInfoStep, SettingsStep, StepIndicator } from './story-form';
+import { useCreateStory } from '@/services/stories/stories.mutation';
+import { getFieldErrorMap, getErrorMessage } from '@/lib/error';
+import { toast } from '@/components/shared/toast/toast';
+import { Loader2 } from 'lucide-react';
 
 interface CreateStoryDialogProps {
   open: boolean;
@@ -41,13 +45,15 @@ const defaultValues: TStoryFormValues = {
 };
 
 export function CreateStoryDialog({ open, onOpenChange }: CreateStoryDialogProps) {
+  const { mutate: createStory, isPending } = useCreateStory();
+
   const methods = useForm<TStoryFormValues>({
     resolver: zodResolver(StoryFormSchema),
     defaultValues,
     mode: 'onBlur',
   });
 
-  const { handleSubmit, reset, trigger } = methods;
+  const { handleSubmit, reset, trigger, setError } = methods;
 
   const resetForm = useCallback(() => {
     reset(defaultValues);
@@ -64,8 +70,29 @@ export function CreateStoryDialog({ open, onOpenChange }: CreateStoryDialogProps
   );
 
   const onSubmit = (data: TStoryFormValues) => {
-    console.log('Create story:', data);
-    handleOpenChange(false);
+    createStory(data, {
+      onSuccess: (res) => {
+        if (res.data.success) {
+          handleOpenChange(false);
+          resetForm();
+        }
+      },
+      onError: (error) => {
+        // Handle field-level validation errors
+        const fieldErrors = getFieldErrorMap(error);
+        if (Object.keys(fieldErrors).length > 0) {
+          Object.entries(fieldErrors).forEach(([field, message]) => {
+            setError(field as keyof TStoryFormValues, {
+              type: 'server',
+              message: message,
+            });
+          });
+        } else {
+          // If no specific field errors, show a general toast
+          toast.error(getErrorMessage(error));
+        }
+      },
+    });
   };
 
   return (
@@ -80,6 +107,7 @@ export function CreateStoryDialog({ open, onOpenChange }: CreateStoryDialogProps
             onSubmit={handleSubmit(onSubmit)}
             onClose={() => handleOpenChange(false)}
             trigger={trigger}
+            isPending={isPending}
           />
         </FormProvider>
       </ResponsiveDialogContent>
@@ -92,10 +120,12 @@ function CreateStoryDialogContent({
   onSubmit,
   onClose,
   trigger,
+  isPending,
 }: {
   onSubmit: () => void;
   onClose: () => void;
   trigger: (fields?: (keyof TStoryFormValues)[]) => Promise<boolean>;
+  isPending: boolean;
 }) {
   const [step, setStep] = React.useState(1);
 
@@ -114,7 +144,7 @@ function CreateStoryDialogContent({
   return (
     <>
       {/* Header */}
-      <ResponsiveDialogHeader className="border-border/50 relative space-y-4 border-b bg-white/50 px-6 py-5">
+      <ResponsiveDialogHeader className="border-border/50 relative space-y-4 rounded-t-2xl border-b bg-white/50 px-6 py-5">
         <div className="flex items-center gap-3">
           <div className="bg-brand-pink-500/10 flex h-11 w-11 items-center justify-center rounded-xl">
             <BookOpen className="text-brand-pink-500 h-5 w-5" />
@@ -137,13 +167,14 @@ function CreateStoryDialogContent({
       </div>
 
       {/* Footer */}
-      <ResponsiveDialogFooter className="border-border/50 gap-3 border-t bg-white/50 px-6 py-4">
+      <ResponsiveDialogFooter className="border-border/50 gap-3 rounded-b-2xl border-t bg-white/50 px-6 py-4">
         {step === 1 ? (
           <>
             <Button
               type="button"
               variant="outline"
               onClick={onClose}
+              disabled={isPending}
               className="border-border/60 text-text-secondary hover:bg-muted/50 hover:text-text-primary h-10 px-5"
             >
               Cancel
@@ -151,6 +182,7 @@ function CreateStoryDialogContent({
             <Button
               type="button"
               onClick={handleNext}
+              disabled={isPending}
               className="bg-brand-pink-500 hover:bg-brand-pink-600 h-10 gap-2 px-5 text-white shadow-sm transition-all hover:shadow-md"
             >
               Next Step
@@ -163,6 +195,7 @@ function CreateStoryDialogContent({
               type="button"
               variant="outline"
               onClick={handleBack}
+              disabled={isPending}
               className="border-border/60 text-text-secondary hover:bg-muted/50 hover:text-text-primary h-10 gap-2 px-5"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -171,10 +204,20 @@ function CreateStoryDialogContent({
             <Button
               type="button"
               onClick={onSubmit}
+              disabled={isPending}
               className="bg-brand-pink-500 hover:bg-brand-pink-600 h-10 min-w-[140px] gap-2 px-5 text-white shadow-sm transition-all hover:shadow-md"
             >
-              <Send className="h-4 w-4" />
-              Create Story
+              {isPending ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                <>
+                  <Send className="h-4 w-4" />
+                  Create Story
+                </>
+              )}
             </Button>
           </>
         )}

@@ -1,9 +1,11 @@
-import { motion } from 'framer-motion';
-import { Users, Crown, Pen, Shield } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Users, Crown, PenTool, Shield, Handshake, Eye, type LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import type { IStoryCollaboratorPopulated } from '@/type/story';
 import Image from 'next/image';
+
+import { createBadge } from '@/components/common/badge';
+import type { BadgeColorKey } from '@/components/common/badge/types';
 
 interface CollaboratorsPreviewProps {
   collaborators: IStoryCollaboratorPopulated[];
@@ -12,12 +14,12 @@ interface CollaboratorsPreviewProps {
   onViewAll: () => void;
 }
 
-const roleConfig: Record<string, { icon: typeof Crown; color: string; bg: string }> = {
-  owner: { icon: Crown, color: 'text-yellow-600', bg: 'bg-yellow-500/10' },
-  co_author: { icon: Pen, color: 'text-purple-600', bg: 'bg-purple-500/10' },
-  moderator: { icon: Shield, color: 'text-blue-600', bg: 'bg-blue-500/10' },
-  reviewer: { icon: Users, color: 'text-green-600', bg: 'bg-green-500/10' },
-  contributor: { icon: Users, color: 'text-gray-600', bg: 'bg-gray-500/10' },
+const ROLE_DISPLAY: Record<string, { icon: LucideIcon; color: BadgeColorKey; label: string }> = {
+  owner: { icon: Crown, color: 'orange', label: 'Owner' },
+  co_author: { icon: PenTool, color: 'purple', label: 'Co-Author' },
+  moderator: { icon: Shield, color: 'blue', label: 'Moderator' },
+  reviewer: { icon: Eye, color: 'cyan', label: 'Reviewer' },
+  contributor: { icon: Handshake, color: 'gray', label: 'Contributor' },
 };
 
 export function CollaboratorsPreview({
@@ -67,9 +69,14 @@ export function CollaboratorsPreview({
               <span className="text-text-primary truncate text-sm font-medium sm:text-base">
                 @{owner.details.username}
               </span>
-              <span className="rounded-md bg-yellow-500/10 px-1.5 py-0.5 text-[10px] font-medium text-yellow-600 sm:px-2 sm:text-xs">
-                Owner
-              </span>
+              {createBadge({
+                label: ROLE_DISPLAY['owner']?.label ?? 'Owner',
+                icon: ROLE_DISPLAY['owner']?.icon ?? Crown,
+                color: ROLE_DISPLAY['owner']?.color ?? 'orange',
+                size: 'xs',
+                shape: 'pill',
+                style: 'soft',
+              })}
             </div>
             <p className="text-text-secondary-65 hidden text-xs sm:block">
               Building worlds one chapter at a time
@@ -87,59 +94,68 @@ export function CollaboratorsPreview({
       )}
 
       {/* Collaborators Grid */}
-      <div className="-mx-3 flex gap-2 overflow-x-auto px-3 pb-2 sm:mx-0 sm:gap-3 sm:px-0">
-        {otherCollaborators.slice(0, 3).map((collab) => {
-          const config = roleConfig[collab.role] || roleConfig.contributor;
-          const Icon = config.icon;
+      <AnimatePresence>
+        <div className="scrollbar-hide -mx-3 flex gap-2 overflow-x-auto px-3 pb-2 sm:mx-0 sm:gap-3 sm:px-0">
+          {otherCollaborators.slice(0, 3).map((collab, index) => {
+            const config = ROLE_DISPLAY[collab.role] || ROLE_DISPLAY.contributor;
 
-          return (
-            <div
-              key={collab.details.clerkId}
-              onClick={() => onCollaboratorClick(collab.details.clerkId)}
-              className="border-border/50 hover:border-brand-pink-500/50 min-w-[120px] cursor-pointer rounded-xl border p-2.5 transition sm:min-w-[140px] sm:p-3"
+            return (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.2, delay: 0.4 + index * 0.05 }}
+                key={collab.details.clerkId}
+                onClick={() => onCollaboratorClick(collab.details.clerkId)}
+                className="border-border/50 hover:border-brand-pink-500/50 min-w-[120px] cursor-pointer rounded-xl border p-2.5 shadow-sm transition-all hover:shadow-md sm:min-w-[140px] sm:p-3"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="relative h-7 w-7 sm:h-8 sm:w-8">
+                    <Image
+                      src={
+                        collab.details.avatarUrl ||
+                        'https://i.pinimg.com/736x/ab/41/40/ab4140adebd1a3420ef2969ab775664f.jpg'
+                      }
+                      alt={collab.details.username}
+                      fill
+                      className="rounded-full border-2 border-transparent object-cover"
+                    />
+                  </div>
+                  <span className="text-text-primary truncate text-xs font-medium sm:text-sm">
+                    @{collab.details.username}
+                  </span>
+                </div>
+                <div className="mt-2.5 flex items-center justify-start">
+                  {createBadge({
+                    label: config.label,
+                    icon: config.icon,
+                    color: config.color,
+                    size: 'xs',
+                    shape: 'pill',
+                    style: 'soft',
+                  })}
+                </div>
+              </motion.div>
+            );
+          })}
+
+          {otherCollaborators.length > 3 && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onViewAll}
+              className="border-brand-pink-500/30 bg-brand-pink-500/5 text-brand-pink-500 hover:border-brand-pink-500/50 hover:bg-brand-pink-500/10 flex min-w-[80px] flex-col items-center justify-center gap-1 rounded-xl border border-dashed p-2.5 transition-colors sm:min-w-[100px] sm:p-3"
             >
-              <div className="flex items-center gap-2">
-                <div className="relative h-7 w-7 sm:h-8 sm:w-8">
-                  <Image
-                    src={
-                      collab.details.avatarUrl ||
-                      'https://i.pinimg.com/736x/ab/41/40/ab4140adebd1a3420ef2969ab775664f.jpg'
-                    }
-                    alt={collab.details.username}
-                    fill
-                    className="rounded-full border-2 object-cover"
-                  />
-                </div>
-                <span className="text-text-primary truncate text-xs font-medium sm:text-sm">
-                  @{collab.details.username}
-                </span>
-              </div>
-              <div className="mt-2 flex items-center gap-1.5">
-                <div className={cn('flex h-5 w-5 items-center justify-center rounded', config.bg)}>
-                  <Icon size={12} className={config.color} />
-                </div>
-                <span className={cn('text-[10px] font-medium sm:text-xs', config.color)}>
-                  {collab.role.replace(/_/g, ' ')}
-                </span>
-              </div>
-            </div>
-          );
-        })}
-
-        {otherCollaborators.length > 3 && (
-          <motion.button
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            whileHover={{ scale: 1.05 }}
-            onClick={onViewAll}
-            className="border-brand-pink-500/30 bg-brand-pink-500/5 text-brand-pink-500 hover:border-brand-pink-500/50 hover:bg-brand-pink-500/10 flex min-w-[80px] flex-col items-center justify-center gap-1 rounded-xl border border-dashed p-2.5 transition sm:min-w-[100px] sm:p-3"
-          >
-            <span className="text-base font-bold sm:text-lg">+{otherCollaborators.length - 3}</span>
-            <span className="text-[10px] sm:text-xs">more</span>
-          </motion.button>
-        )}
-      </div>
+              <span className="font-ibm-plex-mono text-base font-bold sm:text-lg">
+                +{otherCollaborators.length - 3}
+              </span>
+              <span className="text-muted-foreground/80 font-ibm-plex-mono text-[10px] font-semibold tracking-wider uppercase sm:text-xs">
+                more
+              </span>
+            </motion.button>
+          )}
+        </div>
+      </AnimatePresence>
     </motion.div>
   );
 }

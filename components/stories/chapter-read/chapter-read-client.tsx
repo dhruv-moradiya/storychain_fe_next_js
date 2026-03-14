@@ -5,14 +5,22 @@ import { ChapterHeader } from './header/chapter-header';
 import { ChapterActionBar } from './actions/chapter-action-bar';
 import { ChapterPagination } from './navigation/chapter-pagination';
 import { useChapterActions } from './hooks/use-chapter-actions';
+import { ChapterCommentsSection } from '@/components/chapter-read';
+import { type IComment } from '@/type/chapter/chapter-detail.type';
 
 interface ChapterReadClientProps {
   chapter: ChapterData;
   slug: string;
   chapterSlug: string;
+  comments: IComment[];
 }
 
-export default function ChapterReadClient({ chapter, slug, chapterSlug }: ChapterReadClientProps) {
+export default function ChapterReadClient({
+  chapter,
+  slug,
+  chapterSlug,
+  comments,
+}: ChapterReadClientProps) {
   const {
     isBookmarked,
     userVote,
@@ -59,6 +67,14 @@ export default function ChapterReadClient({ chapter, slug, chapterSlug }: Chapte
           nextChapter={nextChapter}
           onNavigate={navigateToChapter}
         />
+
+        <div className="mt-12 px-2 sm:px-4">
+          <ChapterCommentsSection
+            comments={comments}
+            chapterSlug={chapterSlug}
+            totalCount={chapter.stats?.comments}
+          />
+        </div>
       </main>
     </div>
   );

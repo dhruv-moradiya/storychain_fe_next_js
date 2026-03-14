@@ -69,7 +69,7 @@ function ReplyBox({ authorName, onSubmit, onCancel }: ReplyBoxProps) {
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Write your reply..."
-          className="placeholder:text-muted-foreground/30 min-h-[90px] resize-none border-0 bg-transparent p-0 font-sans text-sm leading-relaxed shadow-none focus-visible:ring-0"
+          className="placeholder:text-muted-foreground/30 text-text-primary font-lora min-h-[90px] resize-none border-0 bg-transparent p-0 text-[15px] leading-relaxed shadow-none focus-visible:ring-0"
           maxLength={2000}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleSubmit();
@@ -104,38 +104,69 @@ function ReplyBox({ authorName, onSubmit, onCancel }: ReplyBoxProps) {
   );
 }
 
-// ─── Vote Button ──────────────────────────────────────────────────────────────
+// ─── Vote Pill ──────────────────────────────────────────────────────────────
 
-interface VoteButtonProps {
-  direction: 'up' | 'down';
-  count: number;
-  active: boolean;
-  onClick: () => void;
+interface VotePillProps {
+  upvotes: number;
+  downvotes: number;
+  userVote: 'up' | 'down' | null;
+  onUpvote: () => void;
+  onDownvote: () => void;
 }
 
-function VoteButton({ direction, count, active, onClick }: VoteButtonProps) {
-  const isUp = direction === 'up';
-  const Icon = isUp ? ThumbsUp : ThumbsDown;
+function VotePill({ upvotes, downvotes, userVote, onUpvote, onDownvote }: VotePillProps) {
+  const score = upvotes - downvotes;
 
-  const activeClass = isUp ? 'text-emerald-600 bg-emerald-500/10' : 'text-red-600 bg-red-500/10';
-  const hoverClass = isUp
-    ? 'hover:text-emerald-600 hover:bg-emerald-500/5'
-    : 'hover:text-red-600 hover:bg-red-500/5';
-  const fillClass = isUp ? (active ? 'fill-emerald-600' : '') : active ? 'fill-red-600' : '';
+  const scoreColor =
+    score > 0 ? 'text-brand-pink-600' : score < 0 ? 'text-destructive' : 'text-muted-foreground/80';
 
   return (
-    <motion.button
-      whileTap={{ scale: 0.9 }}
-      onClick={onClick}
-      className={cn(
-        'font-ibm-plex-mono flex h-8 items-center gap-1.5 rounded-full px-2.5 text-[11px] font-bold transition-all',
-        active ? activeClass : `text-muted-foreground/60 ${hoverClass}`
-      )}
-      aria-label={`${isUp ? 'Up' : 'Down'}vote comment`}
-    >
-      <Icon size={12} className={fillClass} />
-      <span>{count}</span>
-    </motion.button>
+    <div className="bg-card border-brand-pink-500/10 inline-flex items-center rounded-full border shadow-sm backdrop-blur-sm transition-all hover:shadow-md">
+      <motion.button
+        whileTap={{ scale: 0.9 }}
+        onClick={onUpvote}
+        className={cn(
+          'flex h-7 items-center justify-center rounded-l-full px-2.5 transition-colors',
+          userVote === 'up'
+            ? 'bg-brand-pink-500/15 text-brand-pink-600'
+            : 'text-muted-foreground hover:bg-muted/50 hover:text-brand-pink-500'
+        )}
+        aria-label="Upvote comment"
+      >
+        <ThumbsUp
+          size={13}
+          strokeWidth={userVote === 'up' ? 2.5 : 2}
+          className={cn('transition-transform', userVote === 'up' && 'fill-brand-pink-500')}
+        />
+      </motion.button>
+
+      <span
+        className={cn(
+          'font-ibm-plex-mono min-w-[28px] text-center text-[11px] font-bold',
+          scoreColor
+        )}
+      >
+        {score > 0 ? `+${score}` : score}
+      </span>
+
+      <motion.button
+        whileTap={{ scale: 0.9 }}
+        onClick={onDownvote}
+        className={cn(
+          'flex h-7 items-center justify-center rounded-r-full px-2.5 transition-colors',
+          userVote === 'down'
+            ? 'bg-red-500/15 text-red-600'
+            : 'text-muted-foreground hover:bg-muted/50 hover:text-red-500'
+        )}
+        aria-label="Downvote comment"
+      >
+        <ThumbsDown
+          size={13}
+          strokeWidth={userVote === 'down' ? 2.5 : 2}
+          className={cn('transition-transform', userVote === 'down' && 'fill-red-500')}
+        />
+      </motion.button>
+    </div>
   );
 }
 
@@ -206,10 +237,6 @@ export function CommentItem({
     onDownvote?.(comment.id);
   }
 
-  const score = votes.upvotes - votes.downvotes;
-  const scoreColor =
-    score > 0 ? 'text-emerald-600' : score < 0 ? 'text-destructive' : 'text-muted-foreground/60';
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 6 }}
@@ -256,43 +283,28 @@ export function CommentItem({
             )}
           </div>
 
-          {/* Body text */}
-          <p className="text-text-secondary-75 mt-1.5 font-sans text-sm leading-relaxed whitespace-pre-wrap">
+          {/* Body text styling updated to look more like story text */}
+          <p className="text-text-primary/90 font-lora mt-2 text-[15px] leading-relaxed whitespace-pre-wrap antialiased">
             {comment.content}
           </p>
 
-          {/* Action row — now shown directly */}
-          <div className="mt-2.5 flex items-center gap-1">
-            <VoteButton
-              direction="up"
-              count={votes.upvotes}
-              active={userVote === 'up'}
-              onClick={handleUpvote}
-            />
-
-            <span
-              className={cn(
-                'font-ibm-plex-mono min-w-[20px] text-center text-[11px] font-semibold',
-                scoreColor
-              )}
-            >
-              {score > 0 ? `+${score}` : score}
-            </span>
-
-            <VoteButton
-              direction="down"
-              count={votes.downvotes}
-              active={userVote === 'down'}
-              onClick={handleDownvote}
+          {/* Action row */}
+          <div className="mt-3 flex items-center gap-3">
+            <VotePill
+              upvotes={votes.upvotes}
+              downvotes={votes.downvotes}
+              userVote={userVote}
+              onUpvote={handleUpvote}
+              onDownvote={handleDownvote}
             />
 
             {canNestDeeper && (
               <button
                 onClick={() => setShowReply((p) => !p)}
-                className="font-ibm-plex-mono text-muted-foreground hover:bg-brand-pink-500/10 hover:text-brand-pink-600 ml-1 flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-medium tracking-wide uppercase transition-colors"
+                className="font-ibm-plex-mono text-muted-foreground hover:bg-muted/50 hover:text-text-primary ml-1 flex h-7 items-center gap-1.5 rounded-full px-3 text-[11px] font-semibold transition-all hover:shadow-sm"
                 aria-label="Reply to this comment"
               >
-                <CornerDownRight size={11} />
+                <CornerDownRight size={12} strokeWidth={2.5} />
                 Reply
               </button>
             )}

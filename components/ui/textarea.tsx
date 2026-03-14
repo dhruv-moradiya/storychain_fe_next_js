@@ -14,7 +14,7 @@ function Textarea({ className, ...props }: React.ComponentProps<'textarea'>) {
         // Selection styles
         'selection:bg-brand-pink-500/20 selection:text-text-primary',
         // Focus styles - brand pink
-        'focus-visible:border-brand-pink-500/50 focus-visible:ring-brand-pink-ring30 focus-visible:ring-2',
+        'focus-visible:border-brand-pink-500/50 focus-visible:ring-brand-pink-ring30 focus-visible:bg-white/50 focus-visible:ring-2',
         // Hover state
         'hover:border-text-secondary/25',
         // Error state

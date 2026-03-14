@@ -4,6 +4,7 @@ import {
   ICollaboratorListResponse,
   IInvitationActionResponse,
   ISendInvitationBody,
+  ICreateStoryResponse,
   IStoryBasicResponse,
   IStoryImageUpdateResponse,
   IStoryOverviewResponse,
@@ -12,9 +13,14 @@ import {
   IUserStoriesResponse,
 } from '@/type/story/story-response.type';
 import { IStorySettings } from '@/type/story/story.types';
+import { TStoryFormValues } from '@/lib/schemas/story.schema';
 import { AxiosResponse } from 'axios';
 
 const StoryApi = {
+  createStory: async (payload: TStoryFormValues): Promise<AxiosResponse<ICreateStoryResponse>> => {
+    return await apiClient.post<ICreateStoryResponse>('/stories', payload);
+  },
+
   getUserStories: async (): Promise<AxiosResponse<IUserStoriesResponse>> => {
     return await apiClient.get<IUserStoriesResponse>('/stories/my');
   },

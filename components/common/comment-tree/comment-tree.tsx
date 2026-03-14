@@ -48,7 +48,7 @@ function Composer({ onSubmit }: ComposerProps) {
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Share your thoughts…"
-        className="text-text-secondary placeholder:text-muted-foreground/30 min-h-[100px] resize-none border-0 bg-transparent p-0 font-sans text-[15px] leading-relaxed shadow-none focus-visible:ring-0"
+        className="text-text-primary placeholder:text-muted-foreground/40 font-lora min-h-[100px] resize-none border-0 bg-transparent p-0 text-[16px] leading-relaxed shadow-none focus-visible:ring-0"
         maxLength={maxLen}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleSubmit();
