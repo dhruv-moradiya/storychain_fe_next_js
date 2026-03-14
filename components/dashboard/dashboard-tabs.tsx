@@ -8,14 +8,19 @@ import { DASHBOARD_TABS } from '@/constants/content/dashboard/dashboard-tab-list
 export function DashboardTabs() {
   const pathname = usePathname();
 
-  const getIsActive = (tabKey: string) => pathname?.includes(tabKey) ?? false;
+  const getIsActive = (tabPath: string) => {
+    if (tabPath === '/dashboard') {
+      return pathname === '/dashboard';
+    }
+    return pathname?.startsWith(tabPath) ?? false;
+  };
 
   // Desktop: Show horizontal tabs
   return (
     <div className="bg-bg-cream/80 border-border/30 sticky top-0 z-50 w-full border-b backdrop-blur-xl">
       <div className="scrollbar-none -mx-1 flex gap-1 overflow-x-auto px-3 sm:gap-2 sm:px-4">
         {DASHBOARD_TABS.map((t) => {
-          const isActive = getIsActive(t.key);
+          const isActive = getIsActive(t.path);
           const Icon = t.icon;
 
           return (

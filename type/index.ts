@@ -23,4 +23,6 @@ export * from './auto-save';
 // ── Feature types ─────────────────────────────────────────────────────────────
 export * from './pull-request.type';
 export * from './report.type';
+export * from './story-canvas.type';
+export * from './notification';
 export * from './auth.types';

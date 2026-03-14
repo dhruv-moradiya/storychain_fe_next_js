@@ -16,7 +16,6 @@ import { useClerk, useUser } from '@clerk/nextjs';
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import {
   Bell,
-  BookOpen,
   Check,
   CoinsIcon,
   Compass,
@@ -25,11 +24,8 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
-  MessageSquare,
   Settings,
-  Star,
   User,
-  UserPlus,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -37,47 +33,13 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { StorychainLogo } from './logo/storychain-logo';
 
-// Mock notifications data - replace with real data
-const mockNotifications = [
-  {
-    id: '1',
-    type: 'comment',
-    title: 'New comment on your story',
-    message: 'John Doe commented on "The Adventure Begins"',
-    time: '2 min ago',
-    read: false,
-    icon: MessageSquare,
-  },
-  {
-    id: '2',
-    type: 'follow',
-    title: 'New follower',
-    message: 'Jane Smith started following you',
-    time: '1 hour ago',
-    read: false,
-    icon: UserPlus,
-  },
-  {
-    id: '3',
-    type: 'chapter',
-    title: 'Chapter published',
-    message: 'Your chapter "The Hidden Door" is now live',
-    time: '3 hours ago',
-    read: true,
-    icon: BookOpen,
-  },
-  {
-    id: '4',
-    type: 'like',
-    title: 'Story liked',
-    message: 'Your story received 10 new likes',
-    time: '1 day ago',
-    read: true,
-    icon: Star,
-  },
-];
-
-type Notification = (typeof mockNotifications)[number];
+import { NotificationMessage } from '../shared/notification-message';
+import { useGetNotifications } from '@/services/notifications/notifications.query';
+import { INotification } from '@/type/notification';
+import {
+  NOTIFICATION_ICONS,
+  DEFAULT_NOTIFICATION_ICON,
+} from '@/components/notifications/notification-icon-map';
 
 const mobileNavItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -87,14 +49,8 @@ const mobileNavItems = [
   { to: '/how-to-use', label: 'How to use', icon: HandHeart },
 ];
 
-const NotificationItem = ({
-  notification,
-  onMarkRead,
-}: {
-  notification: Notification;
-  onMarkRead: (id: string) => void;
-}) => {
-  const Icon = notification.icon;
+const NotificationItem = ({ notification }: { notification: INotification }) => {
+  const Icon = NOTIFICATION_ICONS[notification.type] ?? DEFAULT_NOTIFICATION_ICON;
 
   return (
     <motion.div
@@ -102,16 +58,15 @@ const NotificationItem = ({
       animate={{ opacity: 1, x: 0 }}
       className={cn(
         'flex cursor-pointer items-start gap-3 rounded-lg p-3 transition-colors',
-        notification.read
+        notification.isRead
           ? 'hover:bg-muted/30 bg-transparent'
           : 'bg-brand-pink-500/5 hover:bg-brand-pink-500/10'
       )}
-      onClick={() => !notification.read && onMarkRead(notification.id)}
     >
       <div
         className={cn(
           'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg',
-          notification.read
+          notification.isRead
             ? 'bg-muted/50'
             : 'from-brand-pink-500/20 to-brand-orange/20 bg-linear-to-br'
         )}
@@ -119,23 +74,27 @@ const NotificationItem = ({
         <Icon
           className={cn(
             'h-4 w-4',
-            notification.read ? 'text-text-secondary-65' : 'text-brand-pink-500'
+            notification.isRead ? 'text-text-secondary-65' : 'text-brand-pink-500'
           )}
         />
       </div>
       <div className="min-w-0 flex-1">
         <p
           className={cn(
-            'text-sm',
-            notification.read ? 'text-text-secondary-65' : 'text-text-primary font-medium'
+            'font-lora text-sm',
+            notification.isRead ? 'text-text-secondary-65' : 'text-text-primary font-medium'
           )}
         >
-          {notification.title}
+          <NotificationMessage message={notification.title} />
         </p>
-        <p className="text-text-secondary-65 truncate text-xs">{notification.message}</p>
-        <p className="text-text-secondary-65/70 mt-1 text-[10px]">{notification.time}</p>
+        <p className="font-lora text-text-secondary-65 line-clamp-2 text-xs leading-relaxed">
+          <NotificationMessage message={notification.message} />
+        </p>
+        <p className="text-text-secondary-65/70 mt-1 text-[10px]">
+          {new Date(notification.createdAt).toLocaleDateString()}
+        </p>
       </div>
-      {!notification.read && <div className="bg-brand-pink-500 h-2 w-2 shrink-0 rounded-full" />}
+      {!notification.isRead && <div className="bg-brand-pink-500 h-2 w-2 shrink-0 rounded-full" />}
     </motion.div>
   );
 };
@@ -145,7 +104,8 @@ export default function Navbar() {
   const { isSignedIn, user } = useUser();
   const router = useRouter();
   const pathname = usePathname();
-  const [notifications, setNotifications] = useState(mockNotifications);
+  const { data: notificationsData } = useGetNotifications({ enabled: !!isSignedIn });
+  const notifications = notificationsData?.notifications ?? [];
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
@@ -162,14 +122,10 @@ export default function Navbar() {
     }
   });
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
-
-  const handleMarkRead = (id: string) => {
-    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
-  };
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const handleMarkAllRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    // API Call to mark all read
   };
 
   const handleMobileNavigate = (path: string) => {
@@ -375,11 +331,7 @@ export default function Navbar() {
                     {notifications.length > 0 ? (
                       <div className="space-y-1">
                         {notifications.map((notification) => (
-                          <NotificationItem
-                            key={notification.id}
-                            notification={notification}
-                            onMarkRead={handleMarkRead}
-                          />
+                          <NotificationItem key={notification._id} notification={notification} />
                         ))}
                       </div>
                     ) : (

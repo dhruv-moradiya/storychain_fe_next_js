@@ -1,10 +1,10 @@
-import { BookOpen, PenTool, Bell } from 'lucide-react';
+import { BookOpen, PenTool } from 'lucide-react';
 
 const DASHBOARD_TABS = [
   {
     key: 'stories',
     label: 'Stories',
-    path: '/dashboard/stories',
+    path: '/dashboard',
     icon: BookOpen,
   },
   {
@@ -12,12 +12,6 @@ const DASHBOARD_TABS = [
     label: 'My Chapters',
     path: '/dashboard/my-chapters',
     icon: PenTool,
-  },
-  {
-    key: 'notifications',
-    label: 'Notifications',
-    path: '/dashboard/notifications',
-    icon: Bell,
   },
 ];
 
