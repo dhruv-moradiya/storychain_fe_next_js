@@ -1,5 +1,6 @@
-import { BookOpen, Plus, ArrowUpRightIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { ArrowUpRightIcon, BookOpen, Plus } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 
 interface StoryNotFoundProps {

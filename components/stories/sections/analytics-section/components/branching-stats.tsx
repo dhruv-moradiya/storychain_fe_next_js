@@ -1,9 +1,11 @@
 'use client';
 
 import { GitBranch, GitFork, GitMerge, Layers } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import type { BranchStats } from '../analytics.types';
+
 import { SecondaryBadge } from '@/components/common/badge';
+import { Card, CardContent } from '@/components/ui/card';
+
+import type { BranchStats } from '../analytics.types';
 
 interface BranchingStatsProps {
   data: BranchStats;

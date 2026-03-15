@@ -1,10 +1,13 @@
 import { useState } from 'react';
+
+import { type CreateReportData, type ReportType } from '@/type/report.type';
 import { Flag } from 'lucide-react';
+import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+
 import { ReportDialog } from './report-dialog';
-import { type ReportType, type CreateReportData } from '@/type/report.type';
-import { toast } from 'sonner';
 
 interface ReportButtonProps {
   reportType: ReportType;

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+
 import { storyChainLandingContent } from '@/constants';
 
 export const FooterSection = () => {

@@ -1,10 +1,13 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, LayoutDashboard, Sparkles, PenTool, BookOpen } from 'lucide-react';
-import { fadeIn } from '@/lib/utils';
+
 import { storyChainLandingContent } from '@/constants';
+import { motion } from 'framer-motion';
+import { ArrowRight, BookOpen, LayoutDashboard, PenTool, Sparkles } from 'lucide-react';
+
+import { fadeIn } from '@/lib/utils';
+
 import { DotsGrid } from './dots-grid';
 
 interface IHeroSectionProps {

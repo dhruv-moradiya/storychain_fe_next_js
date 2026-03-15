@@ -1,4 +1,4 @@
-import { GitBranch, Users, MessageCircle, Zap, Shield, Layers } from 'lucide-react';
+import { GitBranch, Layers, MessageCircle, Shield, Users, Zap } from 'lucide-react';
 
 const features = [
   {

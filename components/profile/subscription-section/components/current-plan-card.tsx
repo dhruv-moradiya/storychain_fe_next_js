@@ -1,24 +1,26 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import Link from 'next/link';
+
+import type { PlanType, UserSubscription } from '@/type/profile-subscription';
 import { format } from 'date-fns';
+import { motion } from 'framer-motion';
 import {
-  Crown,
-  Zap,
-  BookOpen,
   ArrowRight,
+  BookOpen,
   Calendar,
-  RefreshCw,
+  Crown,
   Pause,
   Play,
+  RefreshCw,
   Sparkles,
+  Zap,
 } from 'lucide-react';
-import Link from 'next/link';
-import type { UserSubscription, PlanType } from '@/type/profile-subscription';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { planDetails } from '@/lib/data/profile-subscription';
+import { cn } from '@/lib/utils';
 
 interface CurrentPlanCardProps {
   subscription: UserSubscription | null;

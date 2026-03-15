@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+
 import { rarityConfig } from './badge-types';
 
 const rarities = [

@@ -1,12 +1,13 @@
 'use client';
 
 import * as React from 'react';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { XIcon } from 'lucide-react';
-import { AnimatePresence, motion, type PanInfo } from 'framer-motion';
 
-import { cn } from '@/lib/utils';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { AnimatePresence, type PanInfo, motion } from 'framer-motion';
+import { XIcon } from 'lucide-react';
+
 import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
 /* -------------------------------------------------------------------------------------------------
  * Context

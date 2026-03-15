@@ -1,6 +1,6 @@
 import type { IChapter, IChapterStats } from '../chapter/chapter.types';
-import type { IChapterNodeData } from '../story-canvas.type';
 import type { IImageAsset, IUserBasic, IVotes } from '../common';
+import type { IChapterNodeData } from '../story-canvas.type';
 import type {
   STORY_COLLABORATOR_ROLES,
   STORY_COLLABORATOR_STATUSES,

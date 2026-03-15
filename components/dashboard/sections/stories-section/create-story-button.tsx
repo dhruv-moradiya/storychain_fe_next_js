@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { Plus } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import { useState } from 'react';
+
+import { FileDown, LayoutTemplate, Plus } from 'lucide-react';
 
 const CreateStoryDialog = dynamic(() => import('./create-story-dialog'), {
   ssr: false,
@@ -13,21 +14,47 @@ export function CreateStoryButton() {
 
   return (
     <>
-      <button
-        type="button"
-        className="group border-brand-pink-500/30 from-brand-pink-500/5 to-brand-orange/5 hover:border-brand-pink-500/60 hover:from-brand-pink-500/10 hover:to-brand-orange/10 hover:shadow-brand-pink-500/10 focus-visible:ring-brand-pink-500 relative col-span-1 flex min-h-[180px] w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed bg-linear-to-br transition-all duration-300 hover:bg-linear-to-br hover:shadow-lg focus-visible:ring-2 focus-visible:outline-none"
-        onClick={() => setDialogOpen(true)}
-      >
-        <div className="flex flex-col items-center gap-3">
-          <div className="from-brand-pink-500/20 to-brand-orange/20 flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br transition-transform duration-300 group-hover:scale-110">
-            <Plus className="text-brand-pink-500 h-6 w-6" />
+      <div className="border-border/50 bg-card/40 hover:bg-card/60 col-span-1 flex min-h-[220px] w-full flex-col gap-3 rounded-xl border p-5 shadow-sm transition-all duration-300 hover:shadow-md">
+        <span className="text-text-secondary-65 mb-2 text-xs font-semibold tracking-wider">
+          CREATE STORY
+        </span>
+
+        <button
+          type="button"
+          onClick={() => setDialogOpen(true)}
+          className="group hover:bg-muted/40 flex w-full items-center gap-3 rounded-lg p-2.5 transition-colors"
+        >
+          <div className="border-border/50 bg-brand-pink-500/10 text-brand-pink-500 dark:border-brand-pink-500/20 flex h-8 w-8 items-center justify-center rounded-md border">
+            <Plus className="h-4 w-4" />
           </div>
-          <span className="text-text-secondary group-hover:text-brand-pink-500 font-medium transition-colors">
-            Create Story
+          <span className="text-text-primary group-hover:text-brand-pink-500 text-sm font-medium transition-colors">
+            Create from Blank
           </span>
-          <span className="text-text-secondary-65 text-xs">Start a new adventure</span>
-        </div>
-      </button>
+        </button>
+
+        <button
+          type="button"
+          disabled
+          className="group flex w-full cursor-not-allowed items-center gap-3 rounded-lg p-2.5 opacity-60 transition-colors"
+        >
+          <div className="border-border/50 bg-muted/40 text-text-secondary-65 flex h-8 w-8 items-center justify-center rounded-md border">
+            <LayoutTemplate className="h-4 w-4" />
+          </div>
+          <span className="text-text-secondary-65 text-sm font-medium">Create from Template</span>
+        </button>
+
+        <button
+          type="button"
+          disabled
+          className="group flex w-full cursor-not-allowed items-center gap-3 rounded-lg p-2.5 opacity-60 transition-colors"
+        >
+          <div className="border-border/50 bg-muted/40 text-text-secondary-65 flex h-8 w-8 items-center justify-center rounded-md border">
+            <FileDown className="h-4 w-4" />
+          </div>
+          <span className="text-text-secondary-65 text-sm font-medium">Import DSL file</span>
+        </button>
+      </div>
+
       {dialogOpen && <CreateStoryDialog open={dialogOpen} onOpenChange={setDialogOpen} />}
     </>
   );

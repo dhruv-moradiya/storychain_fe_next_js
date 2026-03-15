@@ -1,8 +1,9 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { BookOpen, Sparkles, GitBranch, Users } from 'lucide-react';
 import { storyChainLandingContent } from '@/constants';
+import { motion } from 'framer-motion';
+import { BookOpen, GitBranch, Sparkles, Users } from 'lucide-react';
+
 import { scrollReveal } from '@/lib/utils';
 
 export const NotJustAnAppSection = () => {

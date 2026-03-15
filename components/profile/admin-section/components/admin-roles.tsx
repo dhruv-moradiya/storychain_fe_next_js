@@ -1,8 +1,9 @@
 'use client';
 
+import { Info, Shield, ShieldAlert, ShieldCheck, User } from 'lucide-react';
+
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Info, Shield, ShieldCheck, ShieldAlert, User } from 'lucide-react';
 
 const roleInfo = [
   {

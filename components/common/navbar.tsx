@@ -1,17 +1,11 @@
 'use client';
 
-import { NavItem } from '@/components/common';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { cn } from '@/lib/utils';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+import { INotification } from '@/type/notification';
 import { useClerk, useUser } from '@clerk/nextjs';
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import {
@@ -27,19 +21,27 @@ import {
   Settings,
   User,
 } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { StorychainLogo } from './logo/storychain-logo';
+
+import { NavItem } from '@/components/common';
+import {
+  DEFAULT_NOTIFICATION_ICON,
+  NOTIFICATION_ICONS,
+} from '@/components/notifications/notification-icon-map';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { cn } from '@/lib/utils';
+import { useGetNotifications } from '@/services/notifications/notifications.query';
 
 import { NotificationMessage } from '../shared/notification-message';
-import { useGetNotifications } from '@/services/notifications/notifications.query';
-import { INotification } from '@/type/notification';
-import {
-  NOTIFICATION_ICONS,
-  DEFAULT_NOTIFICATION_ICON,
-} from '@/components/notifications/notification-icon-map';
+import { StorychainLogo } from './logo/storychain-logo';
 
 const mobileNavItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },

@@ -1,9 +1,11 @@
 'use client';
 
-import { Globe, Lock, Star, BookOpen } from 'lucide-react';
-import { SettingCard, BadgeRow, ToggleRow } from './setting-components';
+import { BookOpen, Globe, Lock, Star } from 'lucide-react';
+
+import { contentRatingBadge, genresBadges } from '@/components/common/badge';
+
+import { BadgeRow, SettingCard, ToggleRow } from './setting-components';
 import type { SettingTabProps } from './setting-section.types';
-import { genresBadges, contentRatingBadge } from '@/components/common/badge';
 
 export function GeneralTab({ settings, onSettingUpdate }: SettingTabProps) {
   return (

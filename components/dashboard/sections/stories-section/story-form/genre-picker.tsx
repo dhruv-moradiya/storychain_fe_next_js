@@ -1,14 +1,16 @@
 'use client';
 
-import { memo, useState, useMemo, cloneElement } from 'react';
-import { Search, ChevronDown, Check } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cloneElement, memo, useMemo, useState } from 'react';
+
+import { ALL_GENRES, GENRE_CATEGORIES, type Genre } from '@/constants/story.constants';
+import { Check, ChevronDown, Search } from 'lucide-react';
+
 import { createBadge } from '@/components/common/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
-import { GENRE_CATEGORIES, ALL_GENRES, type Genre } from '@/constants/story.constants';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 
 type CategoryMap = Record<string, { label: string; genres: readonly Genre[] }>;
 

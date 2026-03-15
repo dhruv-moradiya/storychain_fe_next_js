@@ -1,10 +1,12 @@
+import { CheckCircle, Search, X, XCircle } from 'lucide-react';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { CheckCircle, Search, X, XCircle } from 'lucide-react';
+
+import type { ISearchUser, InviteFormData } from './invite-dialog.types';
 import { SearchResultsContent } from './search-results-content';
-import type { InviteFormData, ISearchUser } from './invite-dialog.types';
 
 // ── SelectedUserBadge ─────────────────────────────────────────────────────────
 

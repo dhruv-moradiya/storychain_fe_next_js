@@ -1,10 +1,13 @@
 'use client';
 
 import { useRef } from 'react';
+
 import { motion, useInView } from 'framer-motion';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { BookOpen } from 'lucide-react';
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
+
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+
 import type { ReadingProgressData } from '../analytics.types';
 
 interface ReadingProgressProps {

@@ -1,10 +1,5 @@
 'use client';
 
-import { InfoBadge, SecondaryBadge, TagBadge } from '@/components/common/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent } from '@/components/ui/card';
-import { IHistoryEvent } from '@/lib/data/mock-history';
-import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import {
   FileText,
@@ -17,6 +12,12 @@ import {
   UserPlus,
   Users,
 } from 'lucide-react';
+
+import { InfoBadge, SecondaryBadge, TagBadge } from '@/components/common/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent } from '@/components/ui/card';
+import { IHistoryEvent } from '@/lib/data/mock-history';
+import { cn } from '@/lib/utils';
 
 interface HistoryTimelineProps {
   events: IHistoryEvent[];

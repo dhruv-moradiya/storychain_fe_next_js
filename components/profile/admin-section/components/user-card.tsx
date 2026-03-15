@@ -1,3 +1,34 @@
+import type {
+  PlatformRole,
+  PlatformUser,
+  SubscriptionPlan,
+  SubscriptionStatus,
+  UserSubscription,
+} from '@/type/profile-admin';
+import {
+  Ban,
+  Building2,
+  Calendar,
+  CheckCircle,
+  CreditCard,
+  Crown,
+  DollarSign,
+  IndianRupee,
+  Mail,
+  MoreHorizontal,
+  Receipt,
+  Scale,
+  ShieldCheck,
+  Sparkles,
+  Users,
+} from 'lucide-react';
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,12 +40,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -26,30 +51,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-import {
-  Ban,
-  CheckCircle,
-  Crown,
-  MoreHorizontal,
-  Scale,
-  ShieldCheck,
-  Users,
-  Mail,
-  CreditCard,
-  Calendar,
-  Receipt,
-  Sparkles,
-  Building2,
-  IndianRupee,
-  DollarSign,
-} from 'lucide-react';
-import type {
-  PlatformUser,
-  PlatformRole,
-  SubscriptionPlan,
-  SubscriptionStatus,
-  UserSubscription,
-} from '@/type/profile-admin';
 
 const roleConfig: Record<PlatformRole, { label: string; color: string; icon: typeof Crown }> = {
   SUPER_ADMIN: {

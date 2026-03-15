@@ -2,6 +2,7 @@
 
 import { IChapterDetail } from '@/type/chapter/chapter-detail.type';
 import { Eye, GitBranch, MessageSquare, ThumbsUp, Users, Zap } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 
 interface ChapterStatsBarProps {

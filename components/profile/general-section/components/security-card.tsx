@@ -1,9 +1,10 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
-import { Button } from '@/components/ui/button';
+import { CheckCircle2, Key, Lock, Mail, Shield, Smartphone } from 'lucide-react';
+
 import { Badge } from '@/components/ui/badge';
-import { Mail, Lock, Smartphone, Key, Shield, CheckCircle2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface SecurityRowProps {
   icon: React.ComponentType<{ className?: string }>;

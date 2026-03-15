@@ -1,9 +1,10 @@
 'use client';
 
 import { storyChainLandingContent } from '@/constants';
-import { scrollReveal } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { ArrowRight, Feather } from 'lucide-react';
+
+import { scrollReveal } from '@/lib/utils';
 
 export const TeamworkSection = () => {
   return (

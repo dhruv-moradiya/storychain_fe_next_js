@@ -2,13 +2,15 @@
 
 import {
   ArrowLeft,
-  Share2,
   Bookmark,
   BookmarkCheck,
-  MoreHorizontal,
   Edit,
   GitPullRequest,
+  MoreHorizontal,
+  Share2,
 } from 'lucide-react';
+
+import type { ChapterData } from '@/components/common/chapter-reader';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -17,12 +19,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { statusBadge } from '@/components/common/badge';
-import { ReportButton } from '@/components/common/report-appeal';
-import type { ChapterData } from '@/components/common/chapter-reader';
 
-interface ChapterHeaderProps {
-  chapter: ChapterData;
+interface IChapterHeaderProps {
   isBookmarked: boolean;
   onBack: () => void;
   onShare: () => void;
@@ -32,14 +30,13 @@ interface ChapterHeaderProps {
 }
 
 export function ChapterHeader({
-  chapter,
   isBookmarked,
   onBack,
   onShare,
   onBookmark,
   onEdit,
   onCreatePR,
-}: ChapterHeaderProps) {
+}: IChapterHeaderProps) {
   return (
     <header className="border-border/50 bg-bg-cream sticky top-0 z-10 border-b">
       <div className="mx-auto flex h-14 max-w-4xl items-center justify-between px-4">
@@ -49,7 +46,7 @@ export function ChapterHeader({
           <span className="hidden sm:inline">Back</span>
         </Button>
 
-        {/* Center - Story Title */}
+        {/* Center - Story Title
         <div className="flex items-center gap-2 text-sm">
           <span className="text-muted-foreground max-w-[150px] truncate sm:max-w-[250px]">
             {chapter.storyTitle}
@@ -64,7 +61,7 @@ export function ChapterHeader({
               })}
             </>
           )}
-        </div>
+        </div> */}
 
         {/* Right - Actions */}
         <div className="flex items-center gap-1">
@@ -110,7 +107,7 @@ export function ChapterHeader({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <ReportButton reportType="CHAPTER" relatedId={chapter.id} relatedTitle={chapter.title} />
+          {/* <ReportButton reportType="CHAPTER" relatedIsd={chapter.id} relatedTitle={chapter.title} /> */}
         </div>
       </div>
     </header>

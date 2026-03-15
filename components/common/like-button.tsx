@@ -1,5 +1,6 @@
-import { motion, AnimatePresence } from 'framer-motion';
 import { useMemo } from 'react';
+
+import { AnimatePresence, motion } from 'framer-motion';
 
 type LikeButtonProps = {
   liked: boolean;

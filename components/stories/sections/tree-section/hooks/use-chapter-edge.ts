@@ -1,5 +1,6 @@
-import type { IChapterEdge, IChapterTreeItem } from '../types/canvas.types';
 import type { Edge } from '@xyflow/react';
+
+import type { IChapterEdge, IChapterTreeItem } from '../types/canvas.types';
 
 const EDGE_STYLE = {
   stroke: '#6b7cff',

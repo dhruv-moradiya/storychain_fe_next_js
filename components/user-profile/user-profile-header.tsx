@@ -1,17 +1,19 @@
 'use client';
 
+import Image from 'next/image';
+
 import { motion } from 'framer-motion';
 import {
-  MapPin,
-  Link as LinkIcon,
-  Calendar,
   BadgeCheck,
+  Calendar,
   Crown,
+  Link as LinkIcon,
+  MapPin,
+  MessageCircle,
   Settings,
   UserPlus,
-  MessageCircle,
 } from 'lucide-react';
-import Image from 'next/image';
+
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 

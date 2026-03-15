@@ -1,4 +1,4 @@
-import type { ToastVariant, ToastStyleConfig } from './types';
+import type { ToastStyleConfig, ToastVariant } from './types';
 
 // Toast style configurations using CSS variables defined in theme.css
 // We use arbitrary values in Tailwind to reference the CSS variables directly

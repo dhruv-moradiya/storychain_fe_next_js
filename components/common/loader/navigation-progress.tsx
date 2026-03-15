@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback, Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 
 /**
  * A navigation progress bar that animates from left to right on route changes.

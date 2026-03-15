@@ -1,17 +1,26 @@
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+
+import { AutoSaveType, TAutoSaveContentRequest, TAutoSaveType } from '@/type/auto-save';
+import { formatForDisplay, useHotkey } from '@tanstack/react-hotkeys';
+import { Editor } from '@tiptap/react';
 import {
   ArrowLeft,
-  Eye,
-  Settings,
-  Save,
-  Send,
-  Loader2,
   ChevronDown,
+  Eye,
   FileText,
   GitPullRequest,
+  Loader2,
+  Save,
+  Send,
+  Settings,
 } from 'lucide-react';
-import { useState } from 'react';
+
+import { statusBadge } from '@/components/common/badge';
+import { type ChapterData, ChapterReader } from '@/components/common/chapter-reader';
+import { SubmitRequestDialog } from '@/components/common/submit-request-dialog';
+import toast from '@/components/shared/toast/toast';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,24 +28,17 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
 } from '@/components/ui/responsive-dialog';
-import { ChapterReader, type ChapterData } from '@/components/common/chapter-reader';
-import { SubmitRequestDialog } from '@/components/common/submit-request-dialog';
-import { Editor } from '@tiptap/react';
-
-import { useRouter, useSearchParams } from 'next/navigation';
-import { statusBadge } from '@/components/common/badge';
 import { TBuilderMode } from '@/hooks/use-builder-params';
 import { useAutoSaveContent, useConvertAutoSave } from '@/services/auto-save/auto-save.mutation';
-import { TAutoSaveContentRequest, TAutoSaveType, AutoSaveType } from '@/type/auto-save';
-import { formatForDisplay, useHotkey } from '@tanstack/react-hotkeys';
+
 import { ShortcutKeys } from '../types/shortcut-keys.enum';
-import toast from '@/components/shared/toast/toast';
 
 type ChapterStatus = 'draft' | 'pending' | 'published' | 'rejected';
 

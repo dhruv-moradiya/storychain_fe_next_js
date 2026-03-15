@@ -1,9 +1,11 @@
 'use client';
 
+import Image from 'next/image';
+
+import { storyChainLandingContent } from '@/constants';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import Image from 'next/image';
-import { storyChainLandingContent } from '@/constants';
+
 import { scrollReveal } from '@/lib/utils';
 
 export const CreatorToolsSection = () => {

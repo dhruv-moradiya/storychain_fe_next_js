@@ -1,6 +1,8 @@
-import { Button } from '@/components/ui/button';
 import { BaseEdge, EdgeLabelRenderer, getSmoothStepPath } from '@xyflow/react';
 import { Plus } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+
 import { IChapterEdgeProps } from '../types/canvas.types';
 
 export function CanvasEdge({

@@ -1,8 +1,9 @@
 'use client';
 
-import { cn, scrollReveal } from '@/lib/utils';
-import { Lightbulb, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Lightbulb, Sparkles } from 'lucide-react';
+
+import { cn, scrollReveal } from '@/lib/utils';
 
 interface ProTip {
   title: string;

@@ -1,5 +1,10 @@
 'use client';
 
+import { useState } from 'react';
+
+import { AlertCircle, Loader2, Scale } from 'lucide-react';
+import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -15,9 +20,6 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { AlertCircle, Loader2, Scale } from 'lucide-react';
-import { useState } from 'react';
-import { toast } from 'sonner';
 
 export type AppealReason =
   | 'WRONGFUL_BAN'

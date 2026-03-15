@@ -1,8 +1,8 @@
 import type {
-  IPullRequest,
   IPRComment,
   IPRReview,
   IPRVote,
+  IPullRequest,
   PRStatus,
   PRType,
 } from '@/type/pull-request.type';

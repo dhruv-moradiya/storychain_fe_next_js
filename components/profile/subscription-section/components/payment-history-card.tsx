@@ -1,23 +1,24 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { cn } from '@/lib/utils';
+import type { PaymentHistory, PaymentMethod, PaymentStatus } from '@/type/profile-subscription';
 import { format } from 'date-fns';
+import { motion } from 'framer-motion';
 import {
   Building2,
   CheckCircle,
   Clock,
   CreditCard,
   Download,
+  Receipt,
   RefreshCw,
   Smartphone,
   Wallet,
   XCircle,
-  Receipt,
 } from 'lucide-react';
-import type { PaymentHistory, PaymentMethod, PaymentStatus } from '@/type/profile-subscription';
+
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
 
 interface PaymentHistoryCardProps {
   payments: PaymentHistory[];

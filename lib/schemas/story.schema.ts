@@ -1,6 +1,6 @@
 // lib/schemas/story.schema.ts
+import { CONTENT_RATING_VALUES, GENRE_VALUES, STORY_STATUSES } from '@/constants/story.constants';
 import { z } from 'zod';
-import { GENRE_VALUES, CONTENT_RATING_VALUES, STORY_STATUSES } from '@/constants/story.constants';
 
 // Re-export constants for backward compatibility
 export { CONTENT_RATINGS, STORY_STATUSES } from '@/constants/story.constants';

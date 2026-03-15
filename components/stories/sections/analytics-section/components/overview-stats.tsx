@@ -1,16 +1,18 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
 import {
   Eye,
-  ThumbsUp,
   MessageSquare,
   Star,
-  UserPlus,
-  TrendingUp,
+  ThumbsUp,
   TrendingDown,
+  TrendingUp,
+  UserPlus,
 } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+
 import type { AnalyticsData } from '../analytics.types';
 
 interface OverviewStatsProps {

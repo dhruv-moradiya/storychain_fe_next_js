@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
+
 import { createBadge } from './badge';
 import type { BadgeColorKey, BadgeConfig } from './types';
 

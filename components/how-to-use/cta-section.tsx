@@ -1,9 +1,11 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { ArrowRight, BookOpen, Sparkles, Zap } from 'lucide-react';
 import Link from 'next/link';
+
 import { motion } from 'framer-motion';
+import { ArrowRight, BookOpen, Sparkles, Zap } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 import { scrollReveal } from '@/lib/utils';
 
 export function CTASection() {

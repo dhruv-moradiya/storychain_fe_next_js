@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Twitter, Instagram, Globe } from 'lucide-react';
+import { Globe, Instagram, Twitter } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 
 interface UserProfileBioProps {

@@ -1,14 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { PricingHero } from '@/components/pricing/pricing-hero';
+
+import type { BillingInterval, Currency } from '@/type/pricing';
+
 import { BillingToggle } from '@/components/pricing/billing-toggle';
-import { PlanCard } from '@/components/pricing/plan-card';
 import { FeatureComparison } from '@/components/pricing/feature-comparison';
 import { PaymentMethods } from '@/components/pricing/payment-methods';
+import { PlanCard } from '@/components/pricing/plan-card';
 import { PricingFAQ } from '@/components/pricing/pricing-faq';
-import { plans, featureComparison, faqs } from '@/lib/data/pricing-data';
-import type { BillingInterval, Currency } from '@/type/pricing';
+import { PricingHero } from '@/components/pricing/pricing-hero';
+import { faqs, featureComparison, plans } from '@/lib/data/pricing-data';
 
 export default function PricingPage() {
   const [billingInterval, setBillingInterval] = useState<BillingInterval>('monthly');

@@ -1,19 +1,8 @@
 'use client';
 
-import { SecondaryBadge } from '@/components/common/badge';
-import { Button } from '@/components/ui/button';
-import { DataTable } from '@/components/ui/data-table';
-import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { mockPullRequests } from '@/lib/data/pull-requests';
-import { cn, fadeIn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
+import { useMemo, useState } from 'react';
+
 import type { IPullRequest, PRStatus, PRType } from '@/type/pull-request.type';
 import { motion } from 'framer-motion';
 import {
@@ -28,8 +17,22 @@ import {
   Send,
   XCircle,
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+
+import { SecondaryBadge } from '@/components/common/badge';
+import { Button } from '@/components/ui/button';
+import { DataTable } from '@/components/ui/data-table';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { mockPullRequests } from '@/lib/data/pull-requests';
+import { cn, fadeIn } from '@/lib/utils';
+
 import { CreatePRDialog, PRListEmpty, PRListError, PRListLoading } from '.';
 import { columns } from './columns';
 

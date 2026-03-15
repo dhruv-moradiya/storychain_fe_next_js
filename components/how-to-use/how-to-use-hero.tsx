@@ -1,7 +1,8 @@
 'use client';
 
-import { BookOpen, Sparkles, Clock, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { BookOpen, Clock, Sparkles, Users } from 'lucide-react';
+
 import { fadeIn } from '@/lib/utils';
 
 export function HowToUseHero() {

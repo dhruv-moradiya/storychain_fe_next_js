@@ -1,25 +1,28 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
+
 import {
   Bell,
+  BookOpen,
+  CheckCheck,
+  GitPullRequest,
+  type LucideIcon,
   Mail,
   MessageSquare,
-  GitPullRequest,
+  Settings,
   Star,
   Users,
-  BookOpen,
-  Settings,
-  CheckCheck,
-  type LucideIcon,
 } from 'lucide-react';
 import { toast } from 'sonner';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGetNotifications } from '@/services/notifications/notifications.query';
+
 import { NotificationRow } from './notification-row';
 
 // ── Types ─────────────────────────────────────────────────────────────────────

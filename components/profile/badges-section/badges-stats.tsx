@@ -1,8 +1,9 @@
 'use client';
 
-import { Trophy, Award, Target } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
 import type { BadgeStats } from '@/type/profile-badges';
+import { Award, Target, Trophy } from 'lucide-react';
+
+import { Progress } from '@/components/ui/progress';
 
 interface BadgesStatsProps {
   stats: BadgeStats;

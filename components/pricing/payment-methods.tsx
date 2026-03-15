@@ -2,13 +2,13 @@
 
 import { motion } from 'framer-motion';
 import {
-  Shield,
-  CreditCard,
-  Smartphone,
   Building2,
-  Wallet,
   CalendarClock,
+  CreditCard,
   Lock,
+  Shield,
+  Smartphone,
+  Wallet,
 } from 'lucide-react';
 
 const paymentMethods = [

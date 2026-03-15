@@ -1,5 +1,6 @@
-import UserProfileView from '@/components/user-profile/user-profile-view';
 import type { Metadata } from 'next';
+
+import UserProfileView from '@/components/user-profile/user-profile-view';
 
 export async function generateMetadata({
   params,

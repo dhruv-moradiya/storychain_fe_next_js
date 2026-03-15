@@ -1,25 +1,16 @@
 'use client';
 
+import { useMemo, useState } from 'react';
+
+import type { IUserBasic } from '@/type/common';
 import type { ICollaboratorRecord } from '@/type/story/story-response.type';
 import type { TStoryCollaboratorRole } from '@/type/story/story.types';
-import type { IUserBasic } from '@/type/common';
 import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-
 import {
   CheckCircle,
   Clock,
@@ -46,7 +37,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { cn } from '@/lib/utils';
+
 import { ChangeRoleDialog } from './change-role-dialog';
 import { RemoveCollaboratorAlert } from './remove-collaborator-alert';
 

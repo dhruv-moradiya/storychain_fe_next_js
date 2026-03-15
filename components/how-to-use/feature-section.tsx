@@ -1,9 +1,10 @@
 'use client';
 
-import { cn, scrollReveal } from '@/lib/utils';
-import { Check } from 'lucide-react';
-import { motion } from 'framer-motion';
 import type { Section } from '@/type/how-to-use';
+import { motion } from 'framer-motion';
+import { Check } from 'lucide-react';
+
+import { cn, scrollReveal } from '@/lib/utils';
 
 interface FeatureSectionProps {
   section: Section;

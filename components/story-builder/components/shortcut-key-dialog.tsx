@@ -1,5 +1,8 @@
 'use client';
 
+import { useState } from 'react';
+
+import { formatForDisplay } from '@tanstack/react-hotkeys';
 import {
   AlignCenter,
   Keyboard,
@@ -9,8 +12,8 @@ import {
   Type,
   Undo2,
 } from 'lucide-react';
-import { useState } from 'react';
 
+import { Button } from '@/components/ui/button';
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
@@ -19,11 +22,9 @@ import {
   ResponsiveDialogTitle,
   ResponsiveDialogTrigger,
 } from '@/components/ui/responsive-dialog';
-
-import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+
 import { shortcutGroups } from '../data/shortcut-groups';
-import { formatForDisplay } from '@tanstack/react-hotkeys';
 
 function ShortcutKeysDialog() {
   const [open, setOpen] = useState(false);

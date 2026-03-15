@@ -1,16 +1,19 @@
 'use client';
 
 import { useId, useRef } from 'react';
+
 import { motion, useInView } from 'framer-motion';
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { TrendingUp } from 'lucide-react';
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+
 import {
   ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
   ChartLegend,
   ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
 } from '@/components/ui/chart';
-import { TrendingUp } from 'lucide-react';
+
 import type { ReadData } from '../analytics.types';
 
 interface ReadsChartProps {

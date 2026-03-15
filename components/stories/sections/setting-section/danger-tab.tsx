@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+
+import { motion } from 'framer-motion';
 import { AlertTriangle, Archive, Trash2, UserX } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,8 +15,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 interface DangerTabProps {

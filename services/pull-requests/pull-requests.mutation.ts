@@ -1,7 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
-import { PullRequestApi, ICreatePullRequestRequest } from './pull-requests.api';
-import { toast } from '@/components/shared/toast/toast';
 import { AxiosError } from 'axios';
+
+import { toast } from '@/components/shared/toast/toast';
+
+import { ICreatePullRequestRequest, PullRequestApi } from './pull-requests.api';
 
 export const useCreatePullRequest = () => {
   return useMutation({

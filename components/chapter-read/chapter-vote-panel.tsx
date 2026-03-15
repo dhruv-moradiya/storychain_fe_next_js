@@ -1,9 +1,11 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { IChapterDetail } from '@/type/chapter/chapter-detail.type';
 import { useState } from 'react';
+
+import { IChapterDetail } from '@/type/chapter/chapter-detail.type';
 import { ThumbsDown, ThumbsUp } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface ChapterVotePanelProps {

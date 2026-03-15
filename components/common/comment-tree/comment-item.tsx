@@ -1,11 +1,9 @@
 'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
+
 import { formatDistance } from 'date-fns';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   ChevronDown,
   ChevronUp,
@@ -15,7 +13,12 @@ import {
   ThumbsDown,
   ThumbsUp,
 } from 'lucide-react';
-import { useState } from 'react';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
+
 import type { CommentItemProps } from './comment-tree.types';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

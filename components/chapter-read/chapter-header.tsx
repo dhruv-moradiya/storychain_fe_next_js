@@ -1,15 +1,18 @@
 'use client';
 
-import { chapterStatusBadge } from '@/components/common/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
+import { IChapterDetailExtended } from '@/type';
 import { IChapterDetail } from '@/type/chapter/chapter-detail.type';
 import { formatDistance } from 'date-fns';
 import { Clock, Flag, GitMerge, GitPullRequest } from 'lucide-react';
+
+import { chapterStatusBadge } from '@/components/common/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+
 import { Separator } from '../ui/separator';
 
 interface ChapterHeaderProps {
-  chapter: IChapterDetail;
+  chapter: IChapterDetailExtended;
 }
 
 export function ChapterHeader({ chapter }: ChapterHeaderProps) {

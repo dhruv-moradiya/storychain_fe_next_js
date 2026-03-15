@@ -1,10 +1,11 @@
 'use client';
 
+import type { PlanFeature } from '@/type/pricing';
+import { motion } from 'framer-motion';
+import { Infinity as InfinityIcon, BarChart3, Check } from 'lucide-react';
+
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn, scrollReveal } from '@/lib/utils';
-import { Check, Infinity as InfinityIcon, BarChart3 } from 'lucide-react';
-import { motion } from 'framer-motion';
-import type { PlanFeature } from '@/type/pricing';
 
 interface FeatureComparisonProps {
   features: PlanFeature[];

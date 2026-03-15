@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { NotificationApi } from './notifications-api';
+
 import { QueryKey } from '@/lib/query-keys';
+
+import { NotificationApi } from './notifications-api';
 
 export const useGetNotifications = (options?: { enabled?: boolean }) => {
   return useQuery({

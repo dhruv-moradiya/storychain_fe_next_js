@@ -1,10 +1,5 @@
 'use client';
 
-import type { BadgeColorKey } from '@/components/common/badge';
-import { createBadge as Badge } from '@/components/common/badge';
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { IPullRequest, PRStatus, PRType } from '@/type/pull-request.type';
 import { ColumnDef } from '@tanstack/react-table';
 import { formatDistanceToNow } from 'date-fns';
@@ -22,6 +17,12 @@ import {
   ThumbsUp,
   Trash2,
 } from 'lucide-react';
+
+import type { BadgeColorKey } from '@/components/common/badge';
+import { createBadge as Badge } from '@/components/common/badge';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 // --- Config ---
 

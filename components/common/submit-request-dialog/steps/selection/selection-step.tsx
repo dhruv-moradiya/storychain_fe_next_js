@@ -1,7 +1,9 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { motion } from 'framer-motion';
+
 import { ChapterOption, DraftOption, StoryOption } from '../../types/submit-request-dialog.types';
 import { TSubmitRequestFormData } from '../../types/submit-request.schema';
 import { ChapterSelection } from './chapter-selection';

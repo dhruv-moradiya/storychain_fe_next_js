@@ -1,10 +1,11 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, CheckCircle2, XCircle, RefreshCw, CreditCard, Shield, X } from 'lucide-react';
+import type { Currency, PaymentState, Plan } from '@/type/pricing';
+import { AnimatePresence, motion } from 'framer-motion';
+import { CheckCircle2, CreditCard, Loader2, RefreshCw, Shield, X, XCircle } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import type { PaymentState, Plan, Currency } from '@/type/pricing';
 
 interface PaymentModalProps {
   isOpen: boolean;

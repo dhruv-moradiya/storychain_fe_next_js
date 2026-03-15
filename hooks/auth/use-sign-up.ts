@@ -1,16 +1,17 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { useSignUp as useClerkSignUp } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
+import { useCallback, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
+
 import type {
-  SignUpFormData,
-  OAuthStrategy,
-  OAuthProvider,
   ClerkAPIError,
+  OAuthProvider,
+  OAuthStrategy,
+  SignUpFormData,
 } from '@/type/auth.types';
+import { useSignUp as useClerkSignUp } from '@clerk/nextjs';
+import { toast } from 'sonner';
 
 function isClerkAPIError(error: unknown): error is ClerkAPIError {
   return (

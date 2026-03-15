@@ -1,6 +1,7 @@
 import { IAutoSaveSearchResponse, IGetAutoSaveDraftResponse } from '@/type/auto-save';
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+
 import { chapterAutoSaveApi } from './auto-save-api';
 
 const autoSaveKeys = {

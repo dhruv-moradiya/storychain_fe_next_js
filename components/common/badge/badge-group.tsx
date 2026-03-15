@@ -1,5 +1,7 @@
 import * as React from 'react';
+
 import { cn } from '@/lib/utils';
+
 import { createBadge } from './badge';
 import { badgeColors } from './colors';
 import type { BadgeGroupProps } from './types';

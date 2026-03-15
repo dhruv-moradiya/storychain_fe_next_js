@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://storychain.ai'; // Update this to your production domain
+  const baseUrl = 'https://storychain-fe.vercel.app'; // Update this to your production domain
 
   return [
     {

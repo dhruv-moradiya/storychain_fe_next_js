@@ -1,6 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+
+import type { PlatformRole, PlatformUser } from '@/type/profile-admin';
+import { Search, Users } from 'lucide-react';
+import { toast } from 'sonner';
+
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
@@ -10,9 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Search, Users } from 'lucide-react';
-import { toast } from 'sonner';
-import type { PlatformRole, PlatformUser } from '@/type/profile-admin';
+
 import { AdminStats } from './admin-stats';
 import { UserCard } from './user-card';
 

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+
 import { fadeIn } from '@/lib/utils';
 
 const SettingSectionLoading = () => {

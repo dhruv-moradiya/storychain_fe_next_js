@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { BookOpen, FileText, Type, Eye, Heart, Star } from 'lucide-react';
+import { BookOpen, Eye, FileText, Heart, Star, Type } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 
 interface UserProfileStatsProps {

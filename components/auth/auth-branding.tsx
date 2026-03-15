@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { BookOpen, GitBranch, Users, Sparkles } from 'lucide-react';
+import { BookOpen, GitBranch, Sparkles, Users } from 'lucide-react';
 
 interface FeatureItemProps {
   icon: React.ElementType;

@@ -1,11 +1,14 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { cn } from '@/lib/utils';
-import { Eye, TrendingUp, TrendingDown, ArrowRight, BookOpen } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { useRef } from 'react';
+
+import { motion, useInView } from 'framer-motion';
+import { ArrowRight, BookOpen, Eye, TrendingDown, TrendingUp } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
 import type { TopChapter } from '../analytics.types';
 
 interface TopChaptersProps {

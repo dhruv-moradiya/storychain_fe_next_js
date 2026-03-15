@@ -1,5 +1,8 @@
 'use client';
 
+import { motion } from 'framer-motion';
+import { UserPlus } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import {
   Empty,
@@ -9,8 +12,6 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty';
-import { motion } from 'framer-motion';
-import { UserPlus } from 'lucide-react';
 
 interface CollaboratorsEmptyProps {
   onInvite: () => void;

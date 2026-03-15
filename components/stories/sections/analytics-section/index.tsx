@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+
 import { motion } from 'framer-motion';
-import { BarChart3, Download, ChevronDown, Calendar } from 'lucide-react';
+import { BarChart3, Calendar, ChevronDown, Download } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -10,15 +12,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {
-  OverviewStats,
-  ReadsChart,
-  TopChapters,
-  ReadingProgress,
-  BranchingStats,
-} from './components';
+
 import { mockAnalyticsData } from './analytics.data';
 import type { DateRange } from './analytics.types';
+import {
+  BranchingStats,
+  OverviewStats,
+  ReadingProgress,
+  ReadsChart,
+  TopChapters,
+} from './components';
 
 const dateRangeOptions: { value: DateRange; label: string }[] = [
   { value: '7d', label: 'Last 7 days' },

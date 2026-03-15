@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+
 import { Handle, Position } from '@xyflow/react';
+import type { Node, NodeProps } from '@xyflow/react';
 import { ChevronDown, Loader2 } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
-import type { NodeProps, Node } from '@xyflow/react';
 
 export interface LoadMorePlaceholderNodeData extends Record<string, unknown> {
   parentChapterId: string;

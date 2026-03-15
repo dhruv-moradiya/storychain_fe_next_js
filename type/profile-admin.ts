@@ -1,5 +1,6 @@
-import { Clock, Shield, FileText, Users } from 'lucide-react';
-import type { ReportType, ReportReason } from './report.type';
+import { Clock, FileText, Shield, Users } from 'lucide-react';
+
+import type { ReportReason, ReportType } from './report.type';
 
 // Re-export so existing consumers of profile-admin.ts keep working
 export type { ReportType, ReportReason };

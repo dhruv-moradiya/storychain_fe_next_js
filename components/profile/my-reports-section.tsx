@@ -1,5 +1,24 @@
 'use client';
 
+import { useState } from 'react';
+
+import { formatDistanceToNow } from 'date-fns';
+import {
+  BookOpen,
+  CheckCircle,
+  Clock,
+  ExternalLink,
+  Eye,
+  FileText,
+  FileWarning,
+  Flag,
+  Info,
+  MessageSquare,
+  Scale,
+  Users,
+  XCircle,
+} from 'lucide-react';
+
 import AppealDialog from '@/components/common/appeal-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -21,23 +40,6 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
-import { formatDistanceToNow } from 'date-fns';
-import {
-  BookOpen,
-  CheckCircle,
-  Clock,
-  ExternalLink,
-  Eye,
-  FileText,
-  FileWarning,
-  Flag,
-  Info,
-  MessageSquare,
-  Scale,
-  Users,
-  XCircle,
-} from 'lucide-react';
-import { useState } from 'react';
 
 // Types
 type ReportStatus = 'PENDING' | 'REVIEWED' | 'RESOLVED' | 'DISMISSED';

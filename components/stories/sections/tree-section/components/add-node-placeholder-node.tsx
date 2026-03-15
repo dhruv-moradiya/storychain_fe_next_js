@@ -1,10 +1,12 @@
 'use client';
 
-import { Handle, Position } from '@xyflow/react';
-import { Plus } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import type { NodeProps, Node } from '@xyflow/react';
 import { useRouter } from 'next/navigation';
+
+import { Handle, Position } from '@xyflow/react';
+import type { Node, NodeProps } from '@xyflow/react';
+import { Plus } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
 
 export interface AddNodePlaceholderNodeData extends Record<string, unknown> {
   parentChapterSlug: string;

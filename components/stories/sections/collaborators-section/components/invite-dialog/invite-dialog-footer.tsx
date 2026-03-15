@@ -1,6 +1,7 @@
+import { CheckCircle, Mail } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { DialogFooter } from '@/components/ui/dialog';
-import { CheckCircle, Mail } from 'lucide-react';
 
 // ── InvitedCountBadge ─────────────────────────────────────────────────────────
 

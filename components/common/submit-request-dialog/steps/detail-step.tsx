@@ -1,5 +1,10 @@
 'use client';
 
+import { Controller, useFormContext } from 'react-hook-form';
+
+import { motion } from 'framer-motion';
+import { BookOpen } from 'lucide-react';
+
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -10,9 +15,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { motion } from 'framer-motion';
-import { BookOpen } from 'lucide-react';
-import { Controller, useFormContext } from 'react-hook-form';
+
 import { ChapterOption, StoryOption } from '../types/submit-request-dialog.types';
 import { TSubmitRequestFormData } from '../types/submit-request.schema';
 

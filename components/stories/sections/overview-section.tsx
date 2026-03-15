@@ -1,10 +1,13 @@
 'use client';
 
-import { useGetStoryOverview } from '@/services/stories/stories.query';
+import { useParams, useRouter } from 'next/navigation';
+
 import type { IStoryOverview, IStoryOverviewResponse } from '@/type/story';
 import { motion } from 'framer-motion';
 import { FileEdit } from 'lucide-react';
-import { useParams, useRouter } from 'next/navigation';
+
+import { useGetStoryOverview } from '@/services/stories/stories.query';
+
 import {
   ChapterPreview,
   CollaboratorsPreview,

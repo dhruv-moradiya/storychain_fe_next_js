@@ -1,9 +1,10 @@
 'use client';
 
+import type { BillingInterval, Currency } from '@/type/pricing';
+import { DollarSign, IndianRupee } from 'lucide-react';
+
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { IndianRupee, DollarSign } from 'lucide-react';
-import type { BillingInterval, Currency } from '@/type/pricing';
 
 interface BillingToggleProps {
   billingInterval: BillingInterval;

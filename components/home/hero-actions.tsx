@@ -1,9 +1,10 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, LayoutDashboard } from 'lucide-react';
+
 import { storyChainLandingContent } from '@/constants';
+import { motion } from 'framer-motion';
+import { ArrowRight, LayoutDashboard } from 'lucide-react';
 
 interface IHeroActionsProps {
   isSignedIn: boolean;

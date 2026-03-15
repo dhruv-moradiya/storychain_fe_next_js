@@ -1,16 +1,17 @@
-import {
-  BadgeGroup,
-  contentRatingBadge,
-  storyStatusBadge,
-  type BadgeConfig,
-} from '@/components/common/badge';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { formatDistance } from 'date-fns';
-import { ArrowRight, User } from 'lucide-react';
 import Link from 'next/link';
 import { memo, useMemo } from 'react';
 
 import { IUserStories } from '@/type/story/story-response.type';
+import { formatDistance } from 'date-fns';
+import { ArrowRight, User } from 'lucide-react';
+
+import {
+  type BadgeConfig,
+  BadgeGroup,
+  contentRatingBadge,
+  storyStatusBadge,
+} from '@/components/common/badge';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface StoryCardProps {
   story: IUserStories;

@@ -1,8 +1,10 @@
 import * as React from 'react';
+
 import { cn } from '@/lib/utils';
-import type { BadgeConfig } from './types';
+
 import { resolveColorScheme } from './colors';
-import { badgeSizes, badgeShapes, iconSizeMap, getStyleObject } from './variants';
+import type { BadgeConfig } from './types';
+import { badgeShapes, badgeSizes, getStyleObject, iconSizeMap } from './variants';
 
 /**
  * Creates a badge component with the given configuration

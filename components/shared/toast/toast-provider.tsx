@@ -1,7 +1,8 @@
 'use client';
 
 import { Toaster } from 'react-hot-toast';
-import type { ToastProviderProps, ToastPosition } from './types';
+
+import type { ToastPosition, ToastProviderProps } from './types';
 
 // Position mapping for react-hot-toast
 const positionMap: Record<

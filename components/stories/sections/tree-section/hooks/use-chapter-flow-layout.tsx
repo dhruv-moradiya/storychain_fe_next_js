@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
+
 import dagre from '@dagrejs/dagre';
-import type { Node, Position, Edge } from '@xyflow/react';
+import type { Edge, Node, Position } from '@xyflow/react';
+
 import {
   addNodePlaceholderHeight,
   addNodePlaceholderWidth,

@@ -1,11 +1,14 @@
 'use client';
 
+import { Controller, useFormContext } from 'react-hook-form';
+
+import { motion } from 'framer-motion';
+
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
-import { Controller, useFormContext } from 'react-hook-form';
+
 import {
   ChapterOption,
   SR_LABEL_OPTIONS,

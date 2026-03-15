@@ -1,13 +1,19 @@
 'use client';
 
-import { useForm, useWatch } from 'react-hook-form';
 import Link from 'next/link';
-import { Mail, Lock, Eye, EyeOff, KeyRound, CheckCircle2 } from 'lucide-react';
+import { useForm, useWatch } from 'react-hook-form';
+
+import type {
+  ForgotPasswordFormData,
+  ResetPasswordFormData,
+  SignInFormData,
+} from '@/type/auth.types';
+import { CheckCircle2, Eye, EyeOff, KeyRound, Lock, Mail } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { Label } from '@/components/ui/label';
-import { Spinner } from '@/components/ui/spinner';
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
@@ -16,16 +22,11 @@ import {
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
 } from '@/components/ui/responsive-dialog';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
-
-import { GitHubIcon, GoogleIcon, DiscordIcon } from './auth-icons';
-import { MobileLogo } from './auth-branding';
+import { Spinner } from '@/components/ui/spinner';
 import { useSignInLogic } from '@/hooks/auth/use-sign-in';
-import type {
-  SignInFormData,
-  ForgotPasswordFormData,
-  ResetPasswordFormData,
-} from '@/type/auth.types';
+
+import { MobileLogo } from './auth-branding';
+import { DiscordIcon, GitHubIcon, GoogleIcon } from './auth-icons';
 
 export function SignInForm() {
   const {

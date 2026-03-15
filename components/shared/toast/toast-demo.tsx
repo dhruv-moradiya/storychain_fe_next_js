@@ -1,7 +1,8 @@
 'use client';
 
-import { toast } from './toast';
 import { Button } from '@/components/ui/button';
+
+import { toast } from './toast';
 
 export function ToastDemo() {
   return (

@@ -1,8 +1,8 @@
 'use client';
 
-import { useBuilderParams } from '@/hooks/use-builder-params';
-import { cn } from '@/lib/utils';
-import { useGetAutoSaveDraft } from '@/services/auto-save/auto-save.query';
+import { Suspense, useEffect, useMemo, useState } from 'react';
+
+import { useHotkey } from '@tanstack/react-hotkeys';
 import Emoji, { gitHubEmojis } from '@tiptap/extension-emoji';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import Paragraph from '@tiptap/extension-paragraph';
@@ -12,7 +12,6 @@ import { FontSize, TextStyle, TextStyleKit } from '@tiptap/extension-text-style'
 import Underline from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Suspense, useEffect, useMemo, useState } from 'react';
 
 import {
   BuilderCanvas,
@@ -21,7 +20,9 @@ import {
   BuilderToolbar,
   DraftRecoveryBanner,
 } from '@/components/story-builder';
-import { useHotkey } from '@tanstack/react-hotkeys';
+import { useBuilderParams } from '@/hooks/use-builder-params';
+import { cn } from '@/lib/utils';
+import { useGetAutoSaveDraft } from '@/services/auto-save/auto-save.query';
 
 const DEFAULT_CONTENT = `
   <h2>Welcome to StoryChain</h2>

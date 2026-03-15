@@ -1,5 +1,6 @@
-import { api } from '@/lib/api-client';
 import { IBaseResponse } from '@/type/base-response.type';
+
+import { api } from '@/lib/api-client';
 
 export interface ISearchUser {
   clerkId: string;

@@ -1,4 +1,4 @@
-import { ShieldCheck, AlertTriangle, Ban, CheckCircle } from 'lucide-react';
+import { AlertTriangle, Ban, CheckCircle, ShieldCheck } from 'lucide-react';
 
 interface AdminStatsProps {
   stats: {

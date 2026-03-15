@@ -1,6 +1,7 @@
-import CollaboratorSection from '@/components/stories/sections/collaborators-section';
-import { buildStorySubPageMeta } from '@/components/common';
 import type { Metadata } from 'next';
+
+import { buildStorySubPageMeta } from '@/components/common';
+import CollaboratorSection from '@/components/stories/sections/collaborators-section';
 
 export async function generateMetadata({
   params,

@@ -1,18 +1,21 @@
 import type { Metadata } from 'next';
 import {
-  Inter,
-  Lora,
-  Literata,
-  Playfair_Display,
   IBM_Plex_Mono,
+  Inter,
   Libre_Baskerville,
+  Literata,
+  Lora,
+  Playfair_Display,
   Yellowtail,
 } from 'next/font/google';
+
 import { ClerkProvider } from '@clerk/nextjs';
-import { QueryProvider } from '@/components/providers/query-provider';
+
 import { NavigationProgress } from '@/components/common/loader/navigation-progress';
-import ToastProvider from '@/components/shared/toast/toast-provider';
 import { FooterSection } from '@/components/home/footer-section';
+import { QueryProvider } from '@/components/providers/query-provider';
+import ToastProvider from '@/components/shared/toast/toast-provider';
+
 import './globals.css';
 
 const inter = Inter({
@@ -76,9 +79,9 @@ const yellowtail = Yellowtail({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://storychain.app'), // Update with actual domain
+  metadataBase: new URL('https://storychain-fe.vercel.app'),
   title: {
-    default: 'StoryChain - Collaborative Branching Storytelling Platform',
+    default: 'StoryChain — Collaborative Branching Storytelling Platform',
     template: '%s | StoryChain',
   },
   description:
@@ -96,27 +99,29 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://storychain.app',
-    title: 'StoryChain - Collaborative Branching Storytelling Platform',
+    url: 'https://storychain-fe.vercel.app',
+    title: 'StoryChain — Collaborative Branching Storytelling Platform',
     description:
       'Create, collaborate, and explore branching narratives with StoryChain. The ultimate platform for interactive storytelling.',
     siteName: 'StoryChain',
     images: [
       {
-        url: '/og-image.png', // Create this image
+        url: 'https://res.cloudinary.com/dpji4qfnu/image/upload/v1773567206/logo-remove_uy8him.png',
         width: 1200,
         height: 630,
-        alt: 'StoryChain - Collaborative Storytelling',
+        alt: 'StoryChain — Collaborative Storytelling',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'StoryChain - Collaborative Branching Storytelling Platform',
+    title: 'StoryChain — Collaborative Branching Storytelling Platform',
     description:
       'Create, collaborate, and explore branching narratives with StoryChain. The ultimate platform for interactive storytelling.',
-    images: ['/og-image.png'],
-    creator: '@storychain', // Update with actual Twitter handle
+    images: [
+      'https://res.cloudinary.com/dpji4qfnu/image/upload/v1773567206/logo-remove_uy8him.png',
+    ],
+    creator: '@storychain',
   },
   robots: {
     index: true,
@@ -132,6 +137,11 @@ export const metadata: Metadata = {
   verification: {
     // google: 'your-google-verification-code', // Add when available
     // yandex: 'your-yandex-verification-code', // Add when available
+  },
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
   },
 };
 

@@ -1,4 +1,4 @@
-import type { UserSubscription, PaymentHistory, UsageStats } from '@/type/profile-subscription';
+import type { PaymentHistory, UsageStats, UserSubscription } from '@/type/profile-subscription';
 
 // Mock data - replace with actual API calls
 export const mockSubscription: UserSubscription = {

@@ -1,19 +1,20 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
 import Link from 'next/link';
-import { Mail, Lock, Eye, EyeOff, User, ArrowLeft } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+
+import type { SignUpFormData } from '@/type/auth.types';
+import { ArrowLeft, Eye, EyeOff, Lock, Mail, User } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
-
-import { GitHubIcon, GoogleIcon, DiscordIcon } from './auth-icons';
-import { MobileLogo } from './auth-branding';
 import { useSignUpLogic } from '@/hooks/auth/use-sign-up';
-import type { SignUpFormData } from '@/type/auth.types';
+
+import { MobileLogo } from './auth-branding';
+import { DiscordIcon, GitHubIcon, GoogleIcon } from './auth-icons';
 
 export function SignUpForm() {
   const {

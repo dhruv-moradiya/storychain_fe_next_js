@@ -4,8 +4,9 @@ import {
   TAutoSaveContentRequest,
 } from '@/type/auto-save';
 import { IBaseResponse } from '@/type/base-response.type';
-import { useMutation, UseMutationOptions } from '@tanstack/react-query';
+import { UseMutationOptions, useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+
 import { chapterAutoSaveApi } from './auto-save-api';
 
 const useAutoSaveContent = (

@@ -1,5 +1,6 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
+
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
 // Auth routes (sign-in, sign-up) - redirect authenticated users away
 const isAuthRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)']);

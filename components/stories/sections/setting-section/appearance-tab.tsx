@@ -1,6 +1,6 @@
 'use client';
 
-import { SettingCard, ImageRow } from './setting-components';
+import { ImageRow, SettingCard } from './setting-components';
 
 interface AppearanceTabProps {
   cardPreview: string | null;

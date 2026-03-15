@@ -1,8 +1,9 @@
 'use client';
 
+import type { IComment } from '@/type/chapter/chapter-detail.type';
+
 import { CommentTree } from '@/components/common/comment-tree';
 import type { ICommentNode } from '@/components/common/comment-tree';
-import type { IComment } from '@/type/chapter/chapter-detail.type';
 
 interface ChapterCommentsSectionProps {
   comments: IComment[];

@@ -1,9 +1,12 @@
-import { clsx, type ClassValue } from 'clsx';
+import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export const DEFAULT_AVATAR_URL =
+  'https://res.cloudinary.com/dpji4qfnu/image/upload/v1773571744/default_avatar_o7yrkn.jpg';
 
 export const fadeIn = (delay = 0) => ({
   initial: { opacity: 0, y: 12 },

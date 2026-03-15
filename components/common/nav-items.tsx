@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+
+import { motion } from 'framer-motion';
+
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
 
 function NavItem({ to, label, icon }: { to: string; label: string; icon: React.ReactNode }) {
   const pathname = usePathname();

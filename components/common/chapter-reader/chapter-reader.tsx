@@ -1,8 +1,11 @@
+import { forwardRef } from 'react';
+
+import { IChapterDetailExtended } from '@/type';
+import { Clock, Eye, MessageSquare, ThumbsUp } from 'lucide-react';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
-import { cn } from '@/lib/utils';
-import { Clock, Eye, MessageSquare, ThumbsUp } from 'lucide-react';
-import { forwardRef } from 'react';
+import { DEFAULT_AVATAR_URL, cn } from '@/lib/utils';
 
 export interface ChapterAuthor {
   id: string;
@@ -36,7 +39,7 @@ export interface ChapterData {
 }
 
 interface ChapterReaderProps {
-  chapter: ChapterData;
+  chapter: IChapterDetailExtended | ChapterData;
   showHeader?: boolean;
   showStats?: boolean;
   variant?: 'full' | 'compact' | 'preview';
@@ -54,11 +57,39 @@ function getWordCount(content: string): number {
 
 const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
   ({ chapter, showHeader = true, showStats = true, variant = 'full', className }, ref) => {
-    const wordCount = chapter.wordCount || getWordCount(chapter.content);
-    const readTime = chapter.readTime || calculateReadTime(wordCount);
+    const wordCount = getWordCount(chapter.content);
+    const readTime = calculateReadTime(wordCount);
 
     const isCompact = variant === 'compact';
     const isPreview = variant === 'preview';
+
+    // Normalize author data from different possible types
+    const author =
+      'clerkId' in chapter.author
+        ? {
+            username: chapter.author.username,
+            avatarUrl: chapter.author.avatarUrl,
+            displayName: chapter.author.displayName,
+          }
+        : {
+            username: chapter.author.username || chapter.author.name,
+            avatarUrl: chapter.author.avatar,
+            displayName: chapter.author.name,
+          };
+
+    const normalizedStats = chapter.stats
+      ? {
+          reads:
+            'reads' in chapter.stats
+              ? chapter.stats.reads
+              : (chapter.stats as { views?: number }).views || 0,
+          comments: chapter.stats.comments || 0,
+          likes:
+            'votes' in chapter
+              ? chapter.votes.upvotes
+              : (chapter.stats as { likes?: number }).likes || 0,
+        }
+      : null;
 
     return (
       <div ref={ref} className={cn('chapter-reader', className)}>
@@ -89,16 +120,16 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
               <span className="text-border">•</span>
               <div className="flex items-center gap-2">
                 <Avatar className="h-6 w-6">
-                  <AvatarImage src={chapter.author.avatar} alt={chapter.author.name} />
+                  <AvatarImage src={author.avatarUrl || DEFAULT_AVATAR_URL} alt={author.username} />
                   <AvatarFallback className="text-xs">
-                    {chapter.author.name
-                      .split(' ')
+                    {author.username
+                      ?.split(' ')
                       .map((n) => n[0])
                       .join('')
-                      .toUpperCase()}
+                      .toUpperCase() || '?'}
                   </AvatarFallback>
                 </Avatar>
-                <span>{chapter.author.name}</span>
+                <span>{author.displayName || author.username}</span>
               </div>
             </div>
           </header>
@@ -148,28 +179,24 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
         />
 
         {/* Stats Footer */}
-        {showStats && chapter.stats && !isCompact && (
+        {showStats && normalizedStats && !isCompact && (
           <>
             <Separator className="my-6" />
             <div className="text-muted-foreground flex items-center gap-6 text-sm">
-              {chapter.stats.views !== undefined && (
+              {normalizedStats.reads !== undefined && (
                 <div className="flex items-center gap-1.5">
                   <Eye className="h-4 w-4" />
-                  <span>{chapter.stats.views.toLocaleString()} views</span>
+                  <span>{normalizedStats.reads.toLocaleString()} reads</span>
                 </div>
               )}
-              {chapter.stats.likes !== undefined && (
-                <div className="flex items-center gap-1.5">
-                  <ThumbsUp className="h-4 w-4" />
-                  <span>{chapter.stats.likes.toLocaleString()} likes</span>
-                </div>
-              )}
-              {chapter.stats.comments !== undefined && (
-                <div className="flex items-center gap-1.5">
-                  <MessageSquare className="h-4 w-4" />
-                  <span>{chapter.stats.comments.toLocaleString()} comments</span>
-                </div>
-              )}
+              <div className="flex items-center gap-1.5">
+                <ThumbsUp className="h-4 w-4" />
+                <span>{normalizedStats.likes} likes</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <MessageSquare className="h-4 w-4" />
+                <span>{normalizedStats.comments} comments</span>
+              </div>
             </div>
           </>
         )}

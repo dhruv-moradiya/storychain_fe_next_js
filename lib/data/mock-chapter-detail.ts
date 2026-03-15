@@ -7,18 +7,11 @@ export const MOCK_CHAPTER_DETAIL: IChapterDetail = {
   storyTitle: 'The Paper Crane Pact',
 
   parentChapterSlug: null,
-  parentChapterTitle: null,
   ancestorSlugs: [],
   depth: 0,
   branchIndex: 1,
 
   authorId: 'user_001',
-  author: {
-    clerkId: 'user_001',
-    username: 'evelynwrites',
-    avatarUrl: '',
-    displayName: 'Evelyn Hart',
-  },
 
   title: 'The Morning They Left',
   content: `<p>The last origami crane sat on the windowsill like a small, white ghost. Naomi had placed it there three years ago, on the morning her mother had packed a single bag and slipped out before dawn — before the neighborhood woke, before the birds remembered what sound was for.</p>

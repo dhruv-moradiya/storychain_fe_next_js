@@ -1,9 +1,10 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
-import { BookOpen, FileText, GitBranch, Users, TrendingUp } from 'lucide-react';
 import type { UsageStats } from '@/type/profile-subscription';
+import { motion } from 'framer-motion';
+import { BookOpen, FileText, GitBranch, TrendingUp, Users } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
 
 interface UsageStatsCardProps {
   stats: UsageStats;

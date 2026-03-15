@@ -1,5 +1,6 @@
-import apiClient from '@/lib/api-client';
 import type { INotificationResponse } from '@/type/notification';
+
+import apiClient from '@/lib/api-client';
 
 const NotificationApi = {
   getNotifications: async (): Promise<INotificationResponse> => {

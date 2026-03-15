@@ -94,9 +94,9 @@ Empty state component for sections with no data.
 ```tsx
 import {
   DashboardContentLayout,
-  DashboardSection,
-  DashboardGrid,
   DashboardEmptyState,
+  DashboardGrid,
+  DashboardSection,
 } from '@/components/dashboard/layout';
 
 export function DashboardPage() {

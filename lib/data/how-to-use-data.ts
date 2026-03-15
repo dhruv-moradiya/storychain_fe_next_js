@@ -1,17 +1,17 @@
+import type { Section, Step } from '@/type/how-to-use';
 import {
-  BookOpen,
-  PenTool,
-  GitBranch,
-  Users,
-  MessageCircle,
-  Share2,
-  Trophy,
-  Sparkles,
-  Layout,
-  Eye,
   Bell,
+  BookOpen,
+  Eye,
+  GitBranch,
+  Layout,
+  MessageCircle,
+  PenTool,
+  Share2,
+  Sparkles,
+  Trophy,
+  Users,
 } from 'lucide-react';
-import type { Step, Section } from '@/type/how-to-use';
 
 export const gettingStartedSteps: Step[] = [
   {

@@ -1,6 +1,5 @@
 import { DashboardContentLayout, DashboardGrid } from '@/components/dashboard';
 import { ChaptersList } from '@/components/dashboard/sections/my-chapters';
-
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 export default function MyChaptersPage() {

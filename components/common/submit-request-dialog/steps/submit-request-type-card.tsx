@@ -1,5 +1,7 @@
-import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+
 import { SubmitRequestTypeConfig } from '../types/submit-request-dialog.types';
 
 interface SubmitRequestTypeCardProps {

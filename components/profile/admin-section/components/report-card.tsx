@@ -1,8 +1,9 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import type { Report, ReportStatus, ReportType } from '@/type/profile-admin';
 import { formatDistanceToNow } from 'date-fns';
 import { AlertTriangle, CheckCircle, Clock, Eye, FileText, Users } from 'lucide-react';
-import type { Report, ReportStatus, ReportType } from '@/type/profile-admin';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 const reportStatusConfig: Record<
   ReportStatus,

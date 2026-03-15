@@ -1,7 +1,8 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Check, ChevronDown } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 
 interface SelectionSectionProps {

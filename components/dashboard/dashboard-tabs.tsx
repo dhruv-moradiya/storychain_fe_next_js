@@ -1,9 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
+
 import { DASHBOARD_TABS } from '@/constants/content/dashboard/dashboard-tab-list';
+
+import { cn } from '@/lib/utils';
 
 export function DashboardTabs() {
   const pathname = usePathname();

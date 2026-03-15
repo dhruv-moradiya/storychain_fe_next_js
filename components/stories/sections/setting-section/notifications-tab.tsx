@@ -1,8 +1,10 @@
 'use client';
 
-import { Bell, MessageSquare, GitPullRequest, UserPlus, Star } from 'lucide-react';
-import { SettingCard, ToggleRow } from './setting-components';
 import { useState } from 'react';
+
+import { Bell, GitPullRequest, MessageSquare, Star, UserPlus } from 'lucide-react';
+
+import { SettingCard, ToggleRow } from './setting-components';
 
 export function NotificationsTab() {
   // These would typically come from user preferences/settings

@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+
 import { HEADER_SPACING_CLASSES, HeaderSpacingSize } from './constants';
 
 interface DashboardSectionProps {

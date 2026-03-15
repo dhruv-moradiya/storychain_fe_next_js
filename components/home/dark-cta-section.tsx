@@ -1,17 +1,19 @@
 'use client';
 
+import { storyChainLandingContent } from '@/constants';
 import { motion } from 'framer-motion';
 import {
   ArrowRight,
   BookOpen,
-  GitBranch,
-  Users,
-  Sparkles,
-  MessageCircle,
   Feather,
+  GitBranch,
+  MessageCircle,
+  Sparkles,
+  Users,
 } from 'lucide-react';
-import { storyChainLandingContent } from '@/constants';
+
 import { scrollReveal } from '@/lib/utils';
+
 import { FloatingParticles } from './floating-particles';
 
 export const DarkCtaSection = () => {

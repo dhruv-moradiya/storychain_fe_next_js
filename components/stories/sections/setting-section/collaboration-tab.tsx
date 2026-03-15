@@ -1,10 +1,12 @@
 'use client';
 
-import { GitBranch, ShieldCheck, MessageSquare, Star, Users } from 'lucide-react';
-import { SettingCard, ToggleRow } from './setting-components';
-import type { SettingTabProps } from './setting-section.types';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+
+import { GitBranch, MessageSquare, ShieldCheck, Star, Users } from 'lucide-react';
+
+import { SettingCard, ToggleRow } from './setting-components';
+import type { SettingTabProps } from './setting-section.types';
 
 export function CollaborationTab({ settings, onSettingUpdate }: SettingTabProps) {
   const { slug } = useParams();

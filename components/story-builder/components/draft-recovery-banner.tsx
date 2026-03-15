@@ -1,17 +1,19 @@
 'use client';
 
-import { useState } from 'react';
-import { FileText, X, ChevronUp, ChevronDown, Trash2, NotebookPen } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { formatDistanceToNow } from 'date-fns';
-import { cn } from '@/lib/utils';
-import { useGetAutoSaveDraft } from '@/services/auto-save/auto-save.query';
-import { useDeleteAutoSave } from '@/services/auto-save/auto-save.mutation';
+import { useState } from 'react';
+
 import { IChapterAutoSave } from '@/type/auto-save';
+import { formatDistanceToNow } from 'date-fns';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronDown, ChevronUp, FileText, NotebookPen, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
+
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
+import { useDeleteAutoSave } from '@/services/auto-save/auto-save.mutation';
+import { useGetAutoSaveDraft } from '@/services/auto-save/auto-save.query';
 
 // Inline Draft Item Component
 const DraftItem = ({

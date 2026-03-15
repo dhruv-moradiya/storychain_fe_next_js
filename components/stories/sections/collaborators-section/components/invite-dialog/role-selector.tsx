@@ -1,7 +1,8 @@
 import { INVITABLE_ROLES, ROLE_CONFIG } from '@/constants';
-import { cn } from '@/lib/utils';
 import type { TStoryCollaboratorRole } from '@/type/story/story.types';
 import { CheckCircle } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
 
 interface RoleSelectorProps {
   value: TStoryCollaboratorRole;

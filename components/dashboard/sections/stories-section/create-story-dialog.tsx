@@ -1,25 +1,27 @@
 'use client';
 
 import React, { useCallback } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
-import { BookOpen, ArrowRight, ArrowLeft, Send } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, Send } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+
+import { toast } from '@/components/shared/toast/toast';
+import { Button } from '@/components/ui/button';
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
-  ResponsiveDialogHeader,
-  ResponsiveDialogTitle,
   ResponsiveDialogDescription,
   ResponsiveDialogFooter,
+  ResponsiveDialogHeader,
+  ResponsiveDialogTitle,
 } from '@/components/ui/responsive-dialog';
-import { Button } from '@/components/ui/button';
-
+import { getErrorMessage, getFieldErrorMap } from '@/lib/error';
 import { StoryFormSchema, type TStoryFormValues } from '@/lib/schemas/story.schema';
-import { BasicInfoStep, SettingsStep, StepIndicator } from './story-form';
 import { useCreateStory } from '@/services/stories/stories.mutation';
-import { getFieldErrorMap, getErrorMessage } from '@/lib/error';
-import { toast } from '@/components/shared/toast/toast';
-import { Loader2 } from 'lucide-react';
+
+import { BasicInfoStep, SettingsStep, StepIndicator } from './story-form';
 
 interface CreateStoryDialogProps {
   open: boolean;

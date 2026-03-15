@@ -2,14 +2,15 @@
 
 import { motion } from 'framer-motion';
 import {
+  Award,
   BookOpen,
   FileText,
-  Award,
-  Users,
-  Pencil,
-  MessageSquare,
   type LucideIcon,
+  MessageSquare,
+  Pencil,
+  Users,
 } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 
 interface Activity {

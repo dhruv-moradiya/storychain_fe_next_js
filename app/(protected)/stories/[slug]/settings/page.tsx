@@ -1,5 +1,6 @@
-import SettingSection from '@/components/stories/sections/setting-section';
 import type { Metadata } from 'next';
+
+import SettingSection from '@/components/stories/sections/setting-section';
 
 export async function generateMetadata({
   params,

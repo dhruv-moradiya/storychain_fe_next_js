@@ -1,8 +1,9 @@
-import { motion } from 'framer-motion';
-import { BookOpen, Eye, Heart, Users, Star, Calendar, RefreshCw } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { format, formatDistanceToNow } from 'date-fns';
 import type { IStory } from '@/type/story';
+import { format, formatDistanceToNow } from 'date-fns';
+import { motion } from 'framer-motion';
+import { BookOpen, Calendar, Eye, Heart, RefreshCw, Star, Users } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
 
 interface StoryStatsProps {
   story: IStory;

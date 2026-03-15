@@ -1,5 +1,5 @@
 import { IBaseResponse } from '../base-response.type';
-import { IPaginatedAutoSaveDrafts, IConvertedChapter } from './auto-save.types';
+import { IConvertedChapter, IPaginatedAutoSaveDrafts } from './auto-save.types';
 
 export interface IGetAutoSaveDraftResponse extends IBaseResponse<IPaginatedAutoSaveDrafts> {}
 

@@ -1,24 +1,25 @@
 'use client';
 
-import {
-  ArrowRight,
-  BookOpen,
-  Eye,
-  GitBranch,
-  GitPullRequest,
-  MessageSquare,
-  ThumbsUp,
-  Flag,
-  AlertTriangle,
-} from 'lucide-react';
-import { formatDistance } from 'date-fns';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { chapterStatusBadge } from '@/components/common/badge';
-import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 
 // Static chapter type updated to match Schema
 import { IUserChapters } from '@/type/chapter/chapter-response.type';
+import { formatDistance } from 'date-fns';
+import {
+  AlertTriangle,
+  ArrowRight,
+  BookOpen,
+  Eye,
+  Flag,
+  GitBranch,
+  GitPullRequest,
+  MessageSquare,
+  ThumbsUp,
+} from 'lucide-react';
+
+import { chapterStatusBadge } from '@/components/common/badge';
+import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface MyChapterCardProps {
   chapter: IUserChapters;

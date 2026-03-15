@@ -1,5 +1,6 @@
-import { DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { UserPlus } from 'lucide-react';
+
+import { DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 export function InviteDialogHeader() {
   return (

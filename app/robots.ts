@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/dashboard/', '/profile/', '/api/', '/_next/'],
     },
-    sitemap: 'https://storychain.ai/sitemap.xml', // Update to your production domain
+    sitemap: 'https://storychain-fe.vercel.app/sitemap.xml', // Update to your production domain
   };
 }

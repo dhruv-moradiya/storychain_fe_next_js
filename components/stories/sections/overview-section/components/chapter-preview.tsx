@@ -1,10 +1,12 @@
+import Image from 'next/image';
+
+import type { IStoryLatestChapter } from '@/type/story';
+import { formatDistanceToNow } from 'date-fns';
 import { motion } from 'framer-motion';
-import { Eye, MessageSquare, Heart, BookOpen, ArrowRight } from 'lucide-react';
+import { ArrowRight, BookOpen, Eye, Heart, MessageSquare } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { formatDistanceToNow } from 'date-fns';
-import type { IStoryLatestChapter } from '@/type/story';
-import Image from 'next/image';
 
 interface ChapterPreviewProps {
   chapters: IStoryLatestChapter[];

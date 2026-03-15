@@ -1,5 +1,5 @@
-import { Eye, Handshake, PenTool, Shield, type LucideIcon } from 'lucide-react';
 import type { TStoryCollaboratorRole } from '@/type/story/story.types';
+import { Eye, Handshake, type LucideIcon, PenTool, Shield } from 'lucide-react';
 
 // ── Invitable Roles (excludes OWNER) ─────────────────────────────────────────
 export const INVITABLE_ROLES: TStoryCollaboratorRole[] = [

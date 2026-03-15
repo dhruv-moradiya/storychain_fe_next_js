@@ -1,8 +1,10 @@
 'use client';
 
-import { IChapterNodeProps } from '../types/canvas.types';
+import { useRouter } from 'next/navigation';
+
 import { Handle, Position } from '@xyflow/react';
 import {
+  BookOpen,
   Clock,
   Eye,
   Flag,
@@ -11,11 +13,12 @@ import {
   MessageCircle,
   Plus,
   Sparkles,
-  BookOpen,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
+
+import { IChapterNodeProps } from '../types/canvas.types';
 
 // Static preview excerpts for chapters
 const CHAPTER_EXCERPTS = [

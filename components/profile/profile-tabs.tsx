@@ -1,29 +1,31 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { cn } from '@/lib/utils';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useState } from 'react';
+
 import {
-  ResponsiveDialog,
-  ResponsiveDialogContent,
-  ResponsiveDialogTrigger,
-  ResponsiveDialogHeader,
-  ResponsiveDialogTitle,
-} from '@/components/ui/responsive-dialog';
-import { Button } from '@/components/ui/button';
-import {
-  User,
   Award,
   Bell,
+  Check,
+  ChevronDown,
+  CreditCard,
   FileWarning,
   Settings,
   Shield,
-  CreditCard,
-  ChevronDown,
-  Check,
+  User,
 } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import {
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogHeader,
+  ResponsiveDialogTitle,
+  ResponsiveDialogTrigger,
+} from '@/components/ui/responsive-dialog';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
 const baseTabs = [
   { key: 'general', label: 'General', path: '', icon: User },

@@ -62,7 +62,7 @@ export const MOCK_STORIES: StaticStory[] = [
 // Static mock data for chapters
 export const MOCK_CHAPTERS: IUserChapters[] = [
   {
-    id: 'ch1',
+    _id: 'ch1',
     title: 'The Beginning of the End',
     slug: 'the-beginning-of-the-end',
     storyTitle: 'The Midnight Garden',
@@ -77,7 +77,7 @@ export const MOCK_CHAPTERS: IUserChapters[] = [
     isFlagged: false,
   },
   {
-    id: 'ch2',
+    _id: 'ch2',
     title: 'A New Dawn',
     slug: 'a-new-dawn',
     storyTitle: 'Echoes of Tomorrow',
@@ -93,7 +93,7 @@ export const MOCK_CHAPTERS: IUserChapters[] = [
     isFlagged: false,
   },
   {
-    id: 'ch3',
+    _id: 'ch3',
     title: 'The Dark Revelation',
     slug: 'the-dark-revelation',
     storyTitle: 'Whispers in the Dark',
@@ -114,7 +114,7 @@ export const MOCK_CHAPTERS: IUserChapters[] = [
     isFlagged: true,
   },
   {
-    id: 'ch4',
+    _id: 'ch4',
     title: 'Untitled Draft',
     slug: 'untitled-draft',
     storyTitle: 'The Last Summer',

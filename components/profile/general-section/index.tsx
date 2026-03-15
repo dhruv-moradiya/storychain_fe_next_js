@@ -1,10 +1,11 @@
 'use client';
 
 import { User } from 'lucide-react';
+
+import { DangerZoneCard } from './components/danger-zone-card';
 import { ProfileCard } from './components/profile-card';
 import { SecurityCard } from './components/security-card';
 import { SessionsCard } from './components/sessions-card';
-import { DangerZoneCard } from './components/danger-zone-card';
 
 export function GeneralSection() {
   return (

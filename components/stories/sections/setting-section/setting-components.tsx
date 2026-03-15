@@ -1,9 +1,10 @@
 'use client';
 
+import { motion } from 'framer-motion';
+import { Image as ImageIcon, Loader2, Trash2 } from 'lucide-react';
+
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
-import { Image as ImageIcon, Loader2, Trash2 } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 /* ---------------------------------------------
  * Setting Card Container

@@ -1,8 +1,5 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { IChapterDetail } from '@/type/chapter/chapter-detail.type';
 import { formatDistance } from 'date-fns';
 import {
@@ -14,6 +11,10 @@ import {
   User,
   XCircle,
 } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 interface ChapterPRStatusProps {
   chapter: IChapterDetail;

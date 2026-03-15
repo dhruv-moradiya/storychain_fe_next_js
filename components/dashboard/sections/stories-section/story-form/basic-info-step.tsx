@@ -1,13 +1,13 @@
 'use client';
 
-import { memo, useEffect, useState, useCallback, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { X, Hash } from 'lucide-react';
+
+import { Hash, X } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-
 import { type TStoryFormValues } from '@/lib/schemas/story.schema';
 
 export const BasicInfoStep = memo(() => {

@@ -1,5 +1,6 @@
 'use client';
 
+import type { IPullRequest, PRStatus, PRType } from '@/type/pull-request.type';
 import { formatDistanceToNow } from 'date-fns';
 import { motion } from 'framer-motion';
 import {
@@ -11,19 +12,18 @@ import {
   GitMerge,
   GitPullRequest,
   GitPullRequestClosed,
+  type LucideIcon,
   MessageSquare,
   Plus,
   ThumbsDown,
   ThumbsUp,
   Trash2,
-  type LucideIcon,
 } from 'lucide-react';
 
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
-import type { IPullRequest, PRStatus, PRType } from '@/type/pull-request.type';
 
 /* -------------------------------- Config -------------------------------- */
 

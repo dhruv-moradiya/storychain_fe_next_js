@@ -1,6 +1,7 @@
+import { ChevronDown } from 'lucide-react';
+
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { ChevronDown } from 'lucide-react';
 
 interface MessageFieldProps {
   show: boolean;

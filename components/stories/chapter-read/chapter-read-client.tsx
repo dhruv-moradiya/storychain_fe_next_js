@@ -1,23 +1,26 @@
 'use client';
 
-import { ChapterReader, type ChapterData } from '@/components/common/chapter-reader';
-import { ChapterHeader } from './header/chapter-header';
-import { ChapterActionBar } from './actions/chapter-action-bar';
-import { ChapterPagination } from './navigation/chapter-pagination';
-import { useChapterActions } from './hooks/use-chapter-actions';
-import { ChapterCommentsSection } from '@/components/chapter-read';
+import { IChapterDetailExtended } from '@/type';
 import { type IComment } from '@/type/chapter/chapter-detail.type';
 
+import { ChapterCommentsSection } from '@/components/chapter-read';
+import { type ChapterData, ChapterReader } from '@/components/common/chapter-reader';
+
+import { ChapterActionBar } from './actions/chapter-action-bar';
+import { ChapterHeader } from './header/chapter-header';
+import { useChapterActions } from './hooks/use-chapter-actions';
+import { ChapterPagination } from './navigation/chapter-pagination';
+
 interface ChapterReadClientProps {
-  chapter: ChapterData;
-  slug: string;
+  chapter: IChapterDetailExtended;
+  storySlug: string;
   chapterSlug: string;
   comments: IComment[];
 }
 
 export default function ChapterReadClient({
   chapter,
-  slug,
+  storySlug,
   chapterSlug,
   comments,
 }: ChapterReadClientProps) {
@@ -32,18 +35,33 @@ export default function ChapterReadClient({
     handleCreatePR,
     handleBack,
     navigateToChapter,
-  } = useChapterActions(slug, chapterSlug);
+  } = useChapterActions(storySlug, chapterSlug);
 
-  // Mock next chapter for UI demonstration - in a real app, this might come from the server or another hook
-  const nextChapter = {
-    id: 'next-ch',
-    title: 'Chapter 6: Into the Deep',
+  // Map IChapterDetailExtended to ChapterData
+  const chapterObj: ChapterData = {
+    id: chapter._id,
+    title: chapter.title,
+    content: chapter.content,
+    author: {
+      id: chapter.authorId,
+      name: chapter.author.displayName || chapter.author.username,
+      username: chapter.author.username,
+      avatar: chapter.author.avatarUrl,
+    },
+    storyTitle: chapter.storyTitle,
+    chapterNumber: chapter.chapterNumber,
+    createdAt: chapter.createdAt,
+    updatedAt: chapter.updatedAt,
+    stats: {
+      views: chapter.stats.reads,
+      likes: chapter.votes.upvotes,
+      comments: chapter.stats.comments,
+    },
   };
 
   return (
     <div className="bg-bg-cream min-h-screen">
       <ChapterHeader
-        chapter={chapter}
         isBookmarked={isBookmarked}
         onBack={handleBack}
         onShare={handleShare}
@@ -56,15 +74,15 @@ export default function ChapterReadClient({
         <ChapterReader chapter={chapter} variant="full" />
 
         <ChapterActionBar
-          stats={chapter.stats}
+          stats={chapterObj.stats}
           userVote={userVote}
           onVote={handleVote}
           onBranch={handleBranch}
         />
 
         <ChapterPagination
-          parentChapter={chapter.parentChapter}
-          nextChapter={nextChapter}
+          previousChapters={chapter.previousChapters}
+          nextChapters={chapter.nextChapters}
           onNavigate={navigateToChapter}
         />
 
@@ -72,7 +90,7 @@ export default function ChapterReadClient({
           <ChapterCommentsSection
             comments={comments}
             chapterSlug={chapterSlug}
-            totalCount={chapter.stats?.comments}
+            totalCount={chapterObj.stats?.comments}
           />
         </div>
       </main>

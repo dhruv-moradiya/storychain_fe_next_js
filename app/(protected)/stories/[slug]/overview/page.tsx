@@ -1,9 +1,11 @@
-import { cache } from 'react';
 import type { Metadata } from 'next';
+import { cache } from 'react';
+
+import type { IStoryOverview } from '@/type/story';
+
+import { buildStoryMeta } from '@/components/common';
 import OverviewSection from '@/components/stories/sections/overview-section';
 import { getStoryOverviewQueryFn } from '@/services/stories/stories.query';
-import { buildStoryMeta } from '@/components/common';
-import type { IStoryOverview } from '@/type/story';
 
 // React.cache deduplicates this fetch so generateMetadata and the page
 // share a single network request per render cycle.

@@ -1,7 +1,8 @@
-import { cn } from '@/lib/utils';
-import { Lock } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
 import type { BadgeItem } from '@/type/profile-badges';
+import { Lock } from 'lucide-react';
+
+import { Progress } from '@/components/ui/progress';
+import { cn } from '@/lib/utils';
 
 // Rarity configurations using theme colors
 export const rarityConfig = {

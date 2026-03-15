@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import HistoryTimeline from '@/components/stories/sections/history-timeline';
-import { MOCK_HISTORY_EVENTS } from '@/lib/data/mock-history';
+
 import { Grid2X2, List } from 'lucide-react';
+
+import HistoryTimeline from '@/components/stories/sections/history-timeline';
 import { Button } from '@/components/ui/button';
+import { MOCK_HISTORY_EVENTS } from '@/lib/data/mock-history';
 import { cn } from '@/lib/utils';
 
 export default function HistoryPage() {

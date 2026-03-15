@@ -1,7 +1,8 @@
 'use client';
 
-import { Sparkles, Zap, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Shield, Sparkles, Zap } from 'lucide-react';
+
 import { scrollReveal } from '@/lib/utils';
 
 export function PricingHero() {

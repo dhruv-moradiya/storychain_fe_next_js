@@ -1,5 +1,5 @@
-import { BookOpen, Zap, Crown } from 'lucide-react';
-import type { Plan, PlanFeature, FAQ } from '@/type/pricing';
+import type { FAQ, Plan, PlanFeature } from '@/type/pricing';
+import { BookOpen, Crown, Zap } from 'lucide-react';
 
 export const plans: Plan[] = [
   {

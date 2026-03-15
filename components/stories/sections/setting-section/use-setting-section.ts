@@ -1,7 +1,10 @@
+import { useState } from 'react';
+
+import type { IStorySettings } from '@/type/story/story.types';
+
 import { useUpdateStorySettings, useUploadStoryImage } from '@/services/stories/stories.mutation';
 import { useGetStorySettings } from '@/services/stories/stories.query';
-import type { IStorySettings } from '@/type/story/story.types';
-import { useState } from 'react';
+
 import type { SettingTab } from './setting-section.types';
 
 export function useSettingSection(slug: string | undefined) {

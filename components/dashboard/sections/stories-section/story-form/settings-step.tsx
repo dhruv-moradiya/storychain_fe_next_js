@@ -2,7 +2,8 @@
 
 import { memo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Globe, Lock, GitBranch, Shield, MessageSquare, ThumbsUp } from 'lucide-react';
+
+import { GitBranch, Globe, Lock, MessageSquare, Shield, ThumbsUp } from 'lucide-react';
 
 import { Label } from '@/components/ui/label';
 import {
@@ -13,9 +14,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import { CONTENT_RATINGS, type TStoryFormValues } from '@/lib/schemas/story.schema';
 import { cn } from '@/lib/utils';
 
-import { CONTENT_RATINGS, type TStoryFormValues } from '@/lib/schemas/story.schema';
 import { GenrePicker } from './genre-picker';
 
 export const SettingsStep = memo(() => {

@@ -1,8 +1,9 @@
 import { IBaseResponse } from '../base-response.type';
+import { IChapterAuthorDetail, IChapterDetail } from './chapter-detail.type';
 import { TChapterStatus } from './chapter.types';
 
 interface IUserChapters {
-  id: string;
+  _id: string;
   title: string;
   slug: string;
   storyTitle: string;
@@ -48,4 +49,25 @@ interface IChapterSearchItem {
 
 interface IChapterSearchResponse extends IBaseResponse<IChapterSearchItem[]> {}
 
-export type { IUserChapters, IUserChaptersResponse, IChapterSearchItem, IChapterSearchResponse };
+interface IChapterNavInfo {
+  slug: string;
+  title: string;
+}
+
+interface IChapterDetailExtended extends IChapterDetail {
+  author: IChapterAuthorDetail;
+  previousChapters: IChapterNavInfo[];
+  nextChapters: IChapterNavInfo[];
+}
+
+interface IChapterDetailResponse extends IBaseResponse<IChapterDetailExtended> {}
+
+export type {
+  IUserChapters,
+  IUserChaptersResponse,
+  IChapterSearchItem,
+  IChapterSearchResponse,
+  IChapterNavInfo,
+  IChapterDetailExtended,
+  IChapterDetailResponse,
+};

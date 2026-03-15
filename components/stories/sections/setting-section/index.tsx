@@ -1,20 +1,21 @@
 'use client';
 
+import { motion } from 'framer-motion';
+import { AlertTriangle, Bell, Palette, Settings, Users } from 'lucide-react';
+import { toast } from 'sonner';
+
 import SettingSectionLoading from '@/components/common/story/setting-section-loading';
 import StoryNotFound from '@/components/common/story/story-not-found';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { motion } from 'framer-motion';
-import { Settings, Palette, Users, Bell, AlertTriangle } from 'lucide-react';
-import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
-import { GeneralTab } from './general-tab';
 import { AppearanceTab } from './appearance-tab';
 import { CollaborationTab } from './collaboration-tab';
-import { NotificationsTab } from './notifications-tab';
 import { DangerTab } from './danger-tab';
-import { useSettingSection } from './use-setting-section';
+import { GeneralTab } from './general-tab';
+import { NotificationsTab } from './notifications-tab';
 import type { SettingTab } from './setting-section.types';
+import { useSettingSection } from './use-setting-section';
 
 const tabs = [
   { id: 'general' as const, label: 'General', icon: Settings },

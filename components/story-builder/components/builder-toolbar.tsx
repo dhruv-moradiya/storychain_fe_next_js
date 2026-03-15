@@ -1,43 +1,45 @@
-import type { Editor } from '@tiptap/react';
+import { formatForDisplay } from '@tanstack/react-hotkeys';
 import type { Level } from '@tiptap/extension-heading';
+import type { Editor } from '@tiptap/react';
 import { useEditorState } from '@tiptap/react';
 import {
-  Bold,
-  Italic,
-  Underline,
-  Strikethrough,
-  List,
-  ListOrdered,
-  Code,
-  Quote,
-  ChevronDown,
-  Undo,
-  Redo,
-  Link2,
-  Minus,
-  AlignLeft,
   AlignCenter,
-  AlignRight,
   AlignJustify,
+  AlignLeft,
+  AlignRight,
+  Bold,
+  ChevronDown,
+  Code,
   Heading1,
   Heading2,
   Heading3,
+  Italic,
+  Link2,
+  List,
+  ListOrdered,
+  Minus,
   Pilcrow,
+  Quote,
+  Redo,
   RemoveFormatting,
+  Strikethrough,
+  Underline,
+  Undo,
 } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
+
 import { useInitializeToolbarShortcutKey } from '../hooks/useInitializeToolbarShortcutKey';
-import { formatForDisplay } from '@tanstack/react-hotkeys';
 import { ShortcutKeys } from '../types/shortcut-keys.enum';
 
 interface BuilderToolbarProps {

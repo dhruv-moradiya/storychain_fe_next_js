@@ -1,7 +1,7 @@
 import type {
   IAddNodePlaceholderType,
-  IChapterTreeItem,
   IChapterNodeType,
+  IChapterTreeItem,
 } from '../types/canvas.types';
 
 function formatTimeAgo(date: Date): string {

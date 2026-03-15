@@ -1,11 +1,11 @@
 'use client';
 
-import { HowToUseHero } from '@/components/how-to-use/how-to-use-hero';
-import { GettingStarted } from '@/components/how-to-use/getting-started';
-import { FeatureSection } from '@/components/how-to-use/feature-section';
-import { ProTips } from '@/components/how-to-use/pro-tips';
 import { CTASection } from '@/components/how-to-use/cta-section';
-import { gettingStartedSteps, sections, proTips } from '@/lib/data/how-to-use-data';
+import { FeatureSection } from '@/components/how-to-use/feature-section';
+import { GettingStarted } from '@/components/how-to-use/getting-started';
+import { HowToUseHero } from '@/components/how-to-use/how-to-use-hero';
+import { ProTips } from '@/components/how-to-use/pro-tips';
+import { gettingStartedSteps, proTips, sections } from '@/lib/data/how-to-use-data';
 
 // Note: Metadata must be exported from a Server Component
 // Moving this to a layout.tsx for this route group would be better

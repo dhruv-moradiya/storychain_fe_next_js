@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { createBadge } from './badge';
 import type { BadgeConfig } from './types';
 

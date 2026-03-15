@@ -1,10 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { AlertOctagon, RotateCcw, Home } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
+import { motion } from 'framer-motion';
+import { AlertOctagon, Home, RotateCcw } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 
 // Animation variants
 const fadeIn = (delay = 0) => ({

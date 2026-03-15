@@ -1,5 +1,5 @@
-import { AUTO_SAVE_TYPES, CONVERTED_CHAPTER_STATUSES } from './auto-save-enum';
 import type { IPagination } from '../common';
+import { AUTO_SAVE_TYPES, CONVERTED_CHAPTER_STATUSES } from './auto-save-enum';
 
 export type TAutoSaveType = (typeof AUTO_SAVE_TYPES)[number];
 

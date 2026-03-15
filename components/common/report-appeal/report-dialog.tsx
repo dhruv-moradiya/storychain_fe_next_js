@@ -1,3 +1,8 @@
+import { useState } from 'react';
+
+import type { CreateReportData, ReportReason, ReportType } from '@/type/report.type';
+import { AlertTriangle, Loader2 } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -7,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -15,10 +21,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { useState } from 'react';
-import { AlertTriangle, Loader2 } from 'lucide-react';
-import type { ReportType, ReportReason, CreateReportData } from '@/type/report.type';
 
 interface ReportDialogProps {
   open: boolean;

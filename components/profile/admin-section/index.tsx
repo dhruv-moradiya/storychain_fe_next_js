@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
+
+import { Info, Shield, ShieldAlert, Users } from 'lucide-react';
+
 import { Badge } from '@/components/ui/badge';
-import { Shield, Users, ShieldAlert, Info } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const adminTabs = [
   { key: 'users', label: 'Users', path: '', icon: Users },

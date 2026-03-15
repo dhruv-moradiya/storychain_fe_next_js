@@ -6,10 +6,11 @@ import type { Metadata } from 'next';
 
 export const SITE_CONFIG = {
   name: 'StoryChain',
-  url: 'https://storychain.app',
+  url: 'https://storychain-fe.vercel.app',
   description:
     'Create, collaborate, and explore branching narratives with StoryChain. The ultimate platform for interactive storytelling where your choices shape unique narrative journeys.',
-  defaultOgImage: '/og-image.png',
+  defaultOgImage:
+    'https://res.cloudinary.com/dpji4qfnu/image/upload/v1773567206/logo-remove_uy8him.png',
   twitterHandle: '@storychain',
   locale: 'en_US',
 } as const;
@@ -145,14 +146,17 @@ export function buildStoryMeta({
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface ChapterMetaInput {
-  storyTitle: string;
   storySlug: string;
   chapterTitle: string;
   chapterSlug: string;
-  chapterNumber?: string | number;
   description?: string;
-  author?: string;
-  coverImageUrl?: string;
+  author?: {
+    clerkId: string;
+    username: string;
+    avatarUrl?: string;
+    email?: string;
+    displayName?: string;
+  };
 }
 
 /**
@@ -162,44 +166,44 @@ export interface ChapterMetaInput {
  * // app/(protected)/stories/[slug]/chapter/[chapterSlug]/page.tsx
  * export async function generateMetadata({ params }): Promise<Metadata> {
  *   const { slug, chapterSlug } = await params;
- *   const chapter = await getChapter(slug, chapterSlug);
+ *   const response = await chapterApi.getCachedChapterBySlug(chapterSlug);
+ *   const chapter = response.data;
  *   return buildChapterMeta({
- *     storyTitle: chapter.storyTitle,
  *     storySlug: slug,
  *     chapterTitle: chapter.title,
  *     chapterSlug,
- *     chapterNumber: chapter.displayNumber,
- *     description: chapter.summary,
- *     author: chapter.author.username,
- *     coverImageUrl: chapter.coverImage?.url,
+ *     description: chapter.content,
+ *     author: {
+ *       clerkId: chapter.authorId,
+ *       username: chapter.author?.username || 'unknown',
+ *       avatarUrl: chapter.author?.avatarUrl,
+ *     },
  *   });
  * }
  */
 export function buildChapterMeta({
-  storyTitle,
   storySlug,
   chapterTitle,
   chapterSlug,
-  chapterNumber,
   description,
   author,
-  coverImageUrl,
 }: ChapterMetaInput): Metadata {
-  const label = chapterNumber ? `Ch. ${chapterNumber} — ${chapterTitle}` : chapterTitle;
-  const pageTitle = `${label} | ${storyTitle}`;
+  const pageTitle = chapterTitle;
   const metaDescription =
-    description?.substring(0, 160) ??
-    `Read "${chapterTitle}" from "${storyTitle}" on ${SITE_CONFIG.name}.`;
+    description?.substring(0, 160) ?? `Read "${chapterTitle}" on ${SITE_CONFIG.name}.`;
   const canonicalUrl = toCanonicalUrl(`/stories/${storySlug}/chapter/${chapterSlug}`);
 
-  const ogImage = coverImageUrl
-    ? { url: coverImageUrl, width: 1200, height: 630, alt: `${chapterTitle} — ${storyTitle}` }
-    : { url: SITE_CONFIG.defaultOgImage, width: 1200, height: 630, alt: pageTitle };
+  const ogImage = {
+    url: SITE_CONFIG.defaultOgImage,
+    width: 1200,
+    height: 630,
+    alt: pageTitle,
+  };
 
   return {
     title: pageTitle,
     description: metaDescription,
-    authors: author ? [{ name: author }] : undefined,
+    authors: author ? [{ name: author.username }] : undefined,
     alternates: { canonical: canonicalUrl },
     openGraph: {
       type: 'article',

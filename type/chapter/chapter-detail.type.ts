@@ -5,6 +5,7 @@ export interface IChapterAuthorDetail {
   username: string;
   avatarUrl: string;
   displayName: string;
+  email?: string;
 }
 
 export interface IChapterVersion {
@@ -55,15 +56,13 @@ export interface IChapterDetail {
   storyTitle?: string;
 
   // Tree structure
-  parentChapterSlug?: string | null;
-  parentChapterTitle?: string | null;
+  parentChapterSlug: string | null;
   ancestorSlugs: string[];
   depth: number;
   branchIndex: number;
 
   // Author
   authorId: string;
-  author?: IChapterAuthorDetail;
 
   // Content
   content: string;

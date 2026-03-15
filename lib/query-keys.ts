@@ -10,6 +10,7 @@ export const QueryKey = {
 
   chapter: {
     byId: (chapterId: string) => ['chapter', 'detail', chapterId] as const,
+    bySlug: (chapterSlug: string) => ['chapter', 'slug', chapterSlug] as const,
     my: ['chapter', 'my'] as const,
     search: (storySlug: string) => ['chapter', 'search', storySlug] as const,
   },

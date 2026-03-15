@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+
 import { UserApi } from './user-api';
 
 export const useSearchUsers = (username: string) => {

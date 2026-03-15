@@ -6,9 +6,11 @@ import {
   IStoryTreeResponse,
   IUserStoriesResponse,
 } from '@/type/story/story-response.type';
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+
 import { QueryKey } from '@/lib/query-keys';
+
 import { StoryApi } from './stories-api';
 
 // ── Query functions (importable for SSR / prefetch) ───────────────────────────

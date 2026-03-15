@@ -132,9 +132,9 @@ import { DashboardContentLayout, DashboardSection } from '@/components/dashboard
 ```tsx
 import {
   DashboardContentLayout,
-  DashboardSection,
-  DashboardGrid,
   DashboardEmptyState,
+  DashboardGrid,
+  DashboardSection,
 } from '@/components/dashboard/layout';
 ```
 

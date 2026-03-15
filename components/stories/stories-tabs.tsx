@@ -1,15 +1,9 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import {
-  ResponsiveDialog,
-  ResponsiveDialogContent,
-  ResponsiveDialogHeader,
-  ResponsiveDialogTitle,
-  ResponsiveDialogTrigger,
-} from '@/components/ui/responsive-dialog';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { useParams, usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
+
 import {
   AlertTriangle,
   BarChart3,
@@ -23,9 +17,17 @@ import {
   Settings,
   Users,
 } from 'lucide-react';
-import Link from 'next/link';
-import { useParams, usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+
+import { Button } from '@/components/ui/button';
+import {
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogHeader,
+  ResponsiveDialogTitle,
+  ResponsiveDialogTrigger,
+} from '@/components/ui/responsive-dialog';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
 const baseTabs = [
   { key: 'overview', label: 'Overview', path: 'overview', icon: LayoutDashboard },

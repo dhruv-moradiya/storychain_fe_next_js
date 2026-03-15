@@ -1,27 +1,30 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+
+import type { BadgeFilter, BadgeItem } from '@/type/profile-badges';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Award, Sparkles } from 'lucide-react';
 import {
   BookOpen,
-  Star,
-  Users,
-  GitPullRequest,
-  Flame,
-  Target,
-  Zap,
+  Calendar,
   Crown,
+  Flame,
+  GitPullRequest,
   Heart,
   MessageSquare,
-  Calendar,
+  Star,
+  Target,
   TrendingUp,
+  Users,
+  Zap,
 } from 'lucide-react';
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import { BadgeCard } from './badge-types';
 import { BadgesStats } from './badges-stats';
 import { RarityLegend } from './rarity-legend';
-import type { BadgeItem, BadgeFilter } from '@/type/profile-badges';
 
 // Extended mock badges data
 const mockBadges: BadgeItem[] = [

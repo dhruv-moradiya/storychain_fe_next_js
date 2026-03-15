@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Award, Sparkles, Flame, Star, Trophy } from 'lucide-react';
+import { Award, Flame, Sparkles, Star, Trophy } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 
 interface Badge {

@@ -1,5 +1,6 @@
-import { auth } from '@clerk/nextjs/server';
 import dynamic from 'next/dynamic';
+
+import { auth } from '@clerk/nextjs/server';
 
 // Lazy load ALL client components to maintain server/client boundary
 const Navbar = dynamic(() => import('@/components/home/navbar').then((mod) => mod.Navbar), {

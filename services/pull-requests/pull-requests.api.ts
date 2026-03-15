@@ -1,6 +1,7 @@
-import apiClient from '@/lib/api-client';
-import { AxiosResponse } from 'axios';
 import { TSubmitRequestType } from '@/type/submit-reuqest/submit-request.type';
+import { AxiosResponse } from 'axios';
+
+import apiClient from '@/lib/api-client';
 
 export interface ICreatePullRequestRequest {
   title: string;

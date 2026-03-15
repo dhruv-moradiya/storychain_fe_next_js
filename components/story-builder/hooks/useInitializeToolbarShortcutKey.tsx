@@ -1,5 +1,6 @@
 import { useHotkey } from '@tanstack/react-hotkeys';
 import type { Editor } from '@tiptap/react';
+
 import { ShortcutKeys } from '../types/shortcut-keys.enum';
 
 export function useInitializeToolbarShortcutKey(editor: Editor) {

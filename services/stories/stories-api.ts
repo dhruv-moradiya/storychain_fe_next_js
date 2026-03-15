@@ -1,10 +1,9 @@
-import apiClient from '@/lib/api-client';
 import {
   ICloudinarySignatureResponse,
   ICollaboratorListResponse,
+  ICreateStoryResponse,
   IInvitationActionResponse,
   ISendInvitationBody,
-  ICreateStoryResponse,
   IStoryBasicResponse,
   IStoryImageUpdateResponse,
   IStoryOverviewResponse,
@@ -13,8 +12,10 @@ import {
   IUserStoriesResponse,
 } from '@/type/story/story-response.type';
 import { IStorySettings } from '@/type/story/story.types';
-import { TStoryFormValues } from '@/lib/schemas/story.schema';
 import { AxiosResponse } from 'axios';
+
+import apiClient from '@/lib/api-client';
+import { TStoryFormValues } from '@/lib/schemas/story.schema';
 
 const StoryApi = {
   createStory: async (payload: TStoryFormValues): Promise<AxiosResponse<ICreateStoryResponse>> => {

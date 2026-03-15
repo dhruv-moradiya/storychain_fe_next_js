@@ -1,5 +1,6 @@
-import AnalyticsSection from '@/components/stories/sections/analytics-section';
 import type { Metadata } from 'next';
+
+import AnalyticsSection from '@/components/stories/sections/analytics-section';
 
 export async function generateMetadata({
   params,

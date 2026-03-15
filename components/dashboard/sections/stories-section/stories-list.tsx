@@ -1,10 +1,10 @@
 'use client';
 
-import { useGetUserStories } from '@/services/stories/stories.query';
+import { ApiError } from '@/components/common';
 import { StoryCard } from '@/components/dashboard/sections/stories-section';
 import { StoryCardSkeleton } from '@/components/dashboard/sections/stories-section/story-card-skeleton';
-import { ApiError } from '@/components/common';
 import { STALE_TIME } from '@/lib/query-client';
+import { useGetUserStories } from '@/services/stories/stories.query';
 
 export function StoriesList() {
   const { data, isLoading, isError, refetch } = useGetUserStories({
@@ -15,7 +15,7 @@ export function StoriesList() {
   if (isLoading) {
     return (
       <>
-        {Array.from({ length: 6 }).map((_, i) => (
+        {Array.from({ length: 7 }).map((_, i) => (
           <StoryCardSkeleton key={i} />
         ))}
       </>
@@ -30,6 +30,26 @@ export function StoriesList() {
           onRetry={refetch}
         />
       </div>
+    );
+  }
+
+  if (stories.length === 0) {
+    return (
+      <>
+        {Array.from({ length: 7 }).map((_, i) => (
+          <div
+            key={i}
+            className="border-border/20 bg-card/30 flex min-h-[220px] w-full items-center justify-center rounded-xl border shadow-sm transition-colors"
+          >
+            {/* Display text in the middle-ish card (index 3 is the 5th grid cell overall) */}
+            {/* {i === 3 && (
+              <span className="text-sm font-medium text-text-secondary-65">
+                No stories found
+              </span>
+            )} */}
+          </div>
+        ))}
+      </>
     );
   }
 

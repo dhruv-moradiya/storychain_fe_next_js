@@ -1,5 +1,6 @@
-import type { Edge, EdgeProps, Node, NodeProps } from '@xyflow/react';
 import { IChapter } from '@/type/chapter/chapter.types';
+import type { Edge, EdgeProps, Node, NodeProps } from '@xyflow/react';
+
 import { ChapterCardNode, LoadMorePlaceholderNode, LoadingNode } from '../components';
 import AddNodePlaceholderNode from '../components/add-node-placeholder-node';
 import { CanvasEdge } from '../components/canvas-edge';

@@ -1,9 +1,11 @@
-import { motion } from 'framer-motion';
-import { Heart, Share2, Bell, Bookmark, BookOpen } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { storyStatusBadge, contentRatingBadge, genresBadges } from '@/components/common/badge';
-import type { IStory } from '@/type/story';
 import Image from 'next/image';
+
+import type { IStory } from '@/type/story';
+import { motion } from 'framer-motion';
+import { Bell, BookOpen, Bookmark, Heart, Share2 } from 'lucide-react';
+
+import { contentRatingBadge, genresBadges, storyStatusBadge } from '@/components/common/badge';
+import { Button } from '@/components/ui/button';
 
 interface StoryHeroProps {
   story: IStory;

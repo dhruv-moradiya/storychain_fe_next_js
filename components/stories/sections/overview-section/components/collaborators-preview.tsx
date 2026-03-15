@@ -1,11 +1,12 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Crown, PenTool, Shield, Handshake, Eye, type LucideIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import type { IStoryCollaboratorPopulated } from '@/type/story';
 import Image from 'next/image';
+
+import type { IStoryCollaboratorPopulated } from '@/type/story';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Crown, Eye, Handshake, type LucideIcon, PenTool, Shield, Users } from 'lucide-react';
 
 import { createBadge } from '@/components/common/badge';
 import type { BadgeColorKey } from '@/components/common/badge/types';
+import { Button } from '@/components/ui/button';
 
 interface CollaboratorsPreviewProps {
   collaborators: IStoryCollaboratorPopulated[];

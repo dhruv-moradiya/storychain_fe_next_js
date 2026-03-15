@@ -1,9 +1,10 @@
 'use client';
 
-import { cn, scrollReveal } from '@/lib/utils';
-import { Rocket, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
 import type { Step } from '@/type/how-to-use';
+import { motion } from 'framer-motion';
+import { ArrowRight, Rocket } from 'lucide-react';
+
+import { cn, scrollReveal } from '@/lib/utils';
 
 interface GettingStartedProps {
   steps: Step[];

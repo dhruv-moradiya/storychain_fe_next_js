@@ -1,11 +1,14 @@
 'use client';
 
+import { useState } from 'react';
+
+import { AnimatePresence, motion } from 'framer-motion';
+import { MessageSquare } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { AnimatePresence, motion } from 'framer-motion';
-import { MessageSquare } from 'lucide-react';
-import { useState } from 'react';
+
 import { CommentItem } from './comment-item';
 import type { CommentTreeProps } from './comment-tree.types';
 

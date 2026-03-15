@@ -1,9 +1,10 @@
 'use client';
 
 import { Handle, Position } from '@xyflow/react';
+import type { Node, NodeProps } from '@xyflow/react';
 import { Loader2 } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
-import type { NodeProps, Node } from '@xyflow/react';
 
 export interface LoadingNodeData extends Record<string, unknown> {}
 

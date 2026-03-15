@@ -1,9 +1,10 @@
 'use client';
 
-import { ThumbsUp, MessageSquare, GitBranch } from 'lucide-react';
+import { GitBranch, MessageSquare, ThumbsUp } from 'lucide-react';
+
+import type { ChapterData } from '@/components/common/chapter-reader';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import type { ChapterData } from '@/components/common/chapter-reader';
 
 interface ChapterActionBarProps {
   stats: ChapterData['stats'];

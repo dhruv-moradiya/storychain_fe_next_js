@@ -1,10 +1,13 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { LayoutDashboard, Compass } from 'lucide-react';
+
+import { motion } from 'framer-motion';
+import { Compass, LayoutDashboard } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { fadeIn } from '@/lib/utils';
+
 import { StorychainLogo } from '../common/logo/storychain-logo';
 
 interface INavbarProps {

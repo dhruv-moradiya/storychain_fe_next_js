@@ -1,40 +1,53 @@
-import { ChapterReadClient } from '@/components/stories/chapter-read';
-import { MOCK_CHAPTER } from '@/components/stories/chapter-read/mock-data';
-import { MOCK_COMMENTS } from '@/lib/data/mock-chapter-detail';
-import { buildChapterMeta } from '@/components/common';
 import type { Metadata } from 'next';
 
-export async function generateMetadata({
-  params,
-}: {
+import { buildChapterMeta } from '@/components/common';
+import { ChapterReadClient } from '@/components/stories/chapter-read';
+import { MOCK_COMMENTS } from '@/lib/data/mock-chapter-detail';
+import { chapterApi } from '@/services/chapters/chapters-api';
+
+interface IChapterPageProps {
   params: Promise<{ slug: string; chapterSlug: string }>;
-}): Promise<Metadata> {
-  const { slug, chapterSlug } = await params;
-  // TODO: replace with real chapter fetch
-  return buildChapterMeta({
-    storyTitle: slug,
-    storySlug: slug,
-    chapterTitle: chapterSlug,
-    chapterSlug,
-  });
 }
 
-export default async function ChapterPage({
-  params,
-}: {
-  params: Promise<{ slug: string; chapterSlug: string }>;
-}) {
+export async function generateMetadata({ params }: IChapterPageProps): Promise<Metadata> {
   const { slug, chapterSlug } = await params;
 
-  // Simulate server-side fetching
-  const chapter = MOCK_CHAPTER;
+  try {
+    const response = await chapterApi.getCachedChapterBySlug(chapterSlug);
+    const chapter = response.data;
+
+    return buildChapterMeta({
+      storySlug: slug,
+      chapterTitle: chapter.title,
+      chapterSlug,
+      description: chapter.content,
+      author: {
+        clerkId: chapter.authorId,
+        username: chapter.author.username,
+        avatarUrl: chapter.author.avatarUrl,
+        displayName: chapter.author.displayName,
+      },
+    });
+  } catch (_error) {
+    return buildChapterMeta({
+      storySlug: slug,
+      chapterTitle: chapterSlug,
+      chapterSlug,
+    });
+  }
+}
+
+export default async function ChapterPage({ params }: IChapterPageProps) {
+  const { slug: storySlug, chapterSlug } = await params;
+
+  const chapterDetail = await chapterApi.getCachedChapterBySlug(chapterSlug);
 
   const comments = MOCK_COMMENTS;
 
   return (
     <ChapterReadClient
-      chapter={chapter}
-      slug={slug}
+      chapter={chapterDetail.data}
+      storySlug={storySlug}
       chapterSlug={chapterSlug}
       comments={comments}
     />

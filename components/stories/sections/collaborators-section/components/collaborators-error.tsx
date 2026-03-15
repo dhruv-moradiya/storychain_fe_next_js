@@ -2,14 +2,15 @@
 
 import { motion } from 'framer-motion';
 import { AlertTriangle } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import {
   Empty,
+  EmptyContent,
+  EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-  EmptyDescription,
-  EmptyContent,
 } from '@/components/ui/empty';
 
 interface CollaboratorsErrorProps {

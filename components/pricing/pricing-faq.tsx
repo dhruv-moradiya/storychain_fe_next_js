@@ -1,16 +1,17 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import type { FAQ } from '@/type/pricing';
+import { motion } from 'framer-motion';
+import { ArrowRight, HelpCircle, Mail, MessageCircle } from 'lucide-react';
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { HelpCircle, MessageCircle, Mail, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
 import { scrollReveal } from '@/lib/utils';
-import type { FAQ } from '@/type/pricing';
 
 interface PricingFAQProps {
   faqs: FAQ[];

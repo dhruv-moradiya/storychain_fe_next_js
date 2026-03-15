@@ -49,14 +49,15 @@ export async function generateMetadata({ params }): Promise<Metadata> {
   const chapter = await getChapter(slug, chapterSlug);
 
   return buildChapterMeta({
-    storyTitle: chapter.storyTitle,
     storySlug: slug,
     chapterTitle: chapter.title,
     chapterSlug,
-    chapterNumber: chapter.displayNumber, // "Ch. 3 — Title"
-    description: chapter.summary,
-    author: chapter.author.username,
-    coverImageUrl: chapter.coverImage?.url,
+    description: chapter.content,
+    author: {
+      clerkId: chapter.authorId,
+      username: chapter.author?.username || 'unknown',
+      avatarUrl: chapter.author?.avatarUrl,
+    },
   });
 }
 ```
@@ -153,7 +154,7 @@ export const metadata = buildAppPageMeta({
 ## Helpers
 
 ```ts
-import { toMetaDescription, toCanonicalUrl, SITE_CONFIG } from '@/components/common';
+import { SITE_CONFIG, toCanonicalUrl, toMetaDescription } from '@/components/common';
 
 toMetaDescription('<p>HTML text here</p>', 160); // → plain text, max 160 chars
 toCanonicalUrl('/stories/my-story'); // → 'https://storychain.app/stories/my-story'

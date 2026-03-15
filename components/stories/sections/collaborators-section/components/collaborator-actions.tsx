@@ -1,10 +1,11 @@
 'use client';
 
+import { motion } from 'framer-motion';
+import { Crown, Eye, Handshake, PenTool, Plus, Search, Shield, Users } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
-import { Crown, Eye, Handshake, PenTool, Plus, Search, Shield, Users } from 'lucide-react';
 
 // Role filter tabs
 const ROLE_FILTERS = [

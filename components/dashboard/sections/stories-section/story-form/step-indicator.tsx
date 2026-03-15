@@ -1,7 +1,9 @@
 'use client';
 
 import { memo } from 'react';
+
 import { cn } from '@/lib/utils';
+
 import { STEPS } from './story-form.constants';
 
 type StepIndicatorProps = {

@@ -1,11 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+
 import { INVITABLE_ROLES, ROLE_CONFIG } from '@/constants';
-import { cn } from '@/lib/utils';
-import type { TStoryCollaboratorRole } from '@/type/story/story.types';
 import type { IUserBasic } from '@/type/common';
+import type { TStoryCollaboratorRole } from '@/type/story/story.types';
 import { CheckCircle } from 'lucide-react';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -14,8 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { cn } from '@/lib/utils';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 

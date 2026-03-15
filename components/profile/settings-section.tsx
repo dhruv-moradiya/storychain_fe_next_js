@@ -1,8 +1,21 @@
 'use client';
 
 import { useState } from 'react';
+
+import {
+  Download,
+  Eye,
+  FileJson,
+  Globe,
+  Keyboard,
+  Palette,
+  Settings,
+  Type,
+  Upload,
+} from 'lucide-react';
+import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -12,18 +25,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import {
-  Palette,
-  Globe,
-  Type,
-  Eye,
-  Keyboard,
-  Download,
-  Upload,
-  FileJson,
-  Settings,
-} from 'lucide-react';
-import { toast } from 'sonner';
+import { Switch } from '@/components/ui/switch';
 
 export function SettingsSection() {
   const [settings, setSettings] = useState({

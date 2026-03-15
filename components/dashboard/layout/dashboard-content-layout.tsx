@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+
 import {
   MAX_WIDTH_CLASSES,
   MaxWidthVariant,

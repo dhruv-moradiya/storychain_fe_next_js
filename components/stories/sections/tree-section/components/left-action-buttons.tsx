@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
-import { FoldVertical, Plus, SquareMousePointer, ZoomIn, ZoomOut, Hand } from 'lucide-react';
+import { FoldVertical, Hand, Plus, SquareMousePointer, ZoomIn, ZoomOut } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
+
 import type { LayoutDirection } from '../hooks/use-chapter-flow-layout';
 
 interface LeftActionButtonsProps {

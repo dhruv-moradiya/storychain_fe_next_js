@@ -1,5 +1,7 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ChevronDown, Search, XCircle } from 'lucide-react';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
 import type { ISearchUser } from './invite-dialog.types';
 
 // ── SearchSkeletonRow ─────────────────────────────────────────────────────────

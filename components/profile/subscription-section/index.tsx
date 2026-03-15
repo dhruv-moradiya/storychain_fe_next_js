@@ -1,14 +1,16 @@
 'use client';
 
 import { CreditCard } from 'lucide-react';
-import { CurrentPlanCard } from './components/current-plan-card';
-import { UsageStatsCard } from './components/usage-stats-card';
-import { PaymentHistoryCard } from './components/payment-history-card';
+
 import {
-  mockSubscription,
   mockPaymentHistory,
+  mockSubscription,
   mockUsageStats,
 } from '@/lib/data/profile-subscription';
+
+import { CurrentPlanCard } from './components/current-plan-card';
+import { PaymentHistoryCard } from './components/payment-history-card';
+import { UsageStatsCard } from './components/usage-stats-card';
 
 export function SubscriptionSection() {
   // In real app, fetch these from API

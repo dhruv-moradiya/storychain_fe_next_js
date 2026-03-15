@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@clerk/nextjs';
+
 import { AuthBranding } from './auth-branding';
 import { AuthLoading } from './auth-loading';
 

@@ -1,9 +1,10 @@
 'use client';
 
+import Image from 'next/image';
+import Link from 'next/link';
+
 import { motion } from 'framer-motion';
 import { ArrowRight, BookOpen, Eye, Star } from 'lucide-react';
-import Link from 'next/link';
-import Image from 'next/image';
 
 interface Story {
   id: string;

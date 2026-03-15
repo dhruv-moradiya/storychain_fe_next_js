@@ -1,5 +1,6 @@
-import StoryBuilderClient from '@/components/story-builder/components/story-builder-client';
 import type { Metadata } from 'next';
+
+import StoryBuilderClient from '@/components/story-builder/components/story-builder-client';
 
 export const metadata: Metadata = {
   title: 'Story Builder | StoryChain',

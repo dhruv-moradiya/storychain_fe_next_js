@@ -1,22 +1,16 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { useMemo, useState } from 'react';
+
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
+  type ExpandedState,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   getExpandedRowModel,
   useReactTable,
-  type ExpandedState,
 } from '@tanstack/react-table';
+import { motion } from 'framer-motion';
 import {
   AlertTriangle,
   ArrowDown,
@@ -37,10 +31,17 @@ import {
   XCircle,
 } from 'lucide-react';
 
-import { fadeIn } from '@/lib/utils';
-import { motion } from 'framer-motion';
-import { useMemo, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import type { IMockChapter } from '@/lib/data/mock-chapters';
+import { fadeIn } from '@/lib/utils';
 
 const columnHelper = createColumnHelper<IMockChapter>();
 

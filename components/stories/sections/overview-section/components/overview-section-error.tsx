@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { AlertTriangle, ArrowLeft } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { fadeIn } from '@/lib/utils';
 

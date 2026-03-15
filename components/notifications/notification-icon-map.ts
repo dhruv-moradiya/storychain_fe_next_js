@@ -1,15 +1,15 @@
-import {
-  BookOpen,
-  Bell,
-  GitPullRequest,
-  Star,
-  MessageSquare,
-  Users,
-  Check,
-  Award,
-  type LucideIcon,
-} from 'lucide-react';
 import type { TNotificationType } from '@/type/notification';
+import {
+  Award,
+  Bell,
+  BookOpen,
+  Check,
+  GitPullRequest,
+  type LucideIcon,
+  MessageSquare,
+  Star,
+  Users,
+} from 'lucide-react';
 
 export const NOTIFICATION_ICONS: Record<TNotificationType, LucideIcon> = {
   collab_invitation: BookOpen,

@@ -1,9 +1,12 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { BookOpen, Check, Search, Loader2 } from 'lucide-react';
+import { useMemo, useState } from 'react';
+
+import { BookOpen, Check, Loader2, Search } from 'lucide-react';
+
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+
 import { StoryOption } from '../../types/submit-request-dialog.types';
 
 interface StorySelectionProps {

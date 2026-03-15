@@ -1,4 +1,5 @@
-import { QueryClient, dehydrate, QueryKey, QueryFunction } from '@tanstack/react-query';
+import { QueryClient, QueryFunction, QueryKey, dehydrate } from '@tanstack/react-query';
+
 import { makeQueryClient } from './query-client';
 
 /**

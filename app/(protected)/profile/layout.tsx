@@ -1,5 +1,6 @@
-import { ProfileTabs } from '@/components/profile/profile-tabs';
 import type { Metadata } from 'next';
+
+import { ProfileTabs } from '@/components/profile/profile-tabs';
 
 export const metadata: Metadata = {
   title: 'Profile - StoryChain',

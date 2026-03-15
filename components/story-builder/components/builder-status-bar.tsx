@@ -1,7 +1,9 @@
-import { Clock, FileText, Type, Check } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { ShortcutKeysDialog } from './shortcut-key-dialog';
 import { Editor, useEditorState } from '@tiptap/react';
+import { Check, Clock, FileText, Type } from 'lucide-react';
+
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+
+import { ShortcutKeysDialog } from './shortcut-key-dialog';
 
 interface BuilderStatusBarProps {
   editor: Editor | null;

@@ -1,5 +1,9 @@
 'use client';
 
+import { IChapterVersion } from '@/type/chapter/chapter-detail.type';
+import { formatDistance } from 'date-fns';
+import { CheckCircle2, Clock, GitMerge, History, Pencil } from 'lucide-react';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -20,9 +24,6 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
-import { IChapterVersion } from '@/type/chapter/chapter-detail.type';
-import { formatDistance } from 'date-fns';
-import { CheckCircle2, Clock, GitMerge, History, Pencil } from 'lucide-react';
 
 interface VersionHistoryDialogProps {
   versions: IChapterVersion[];

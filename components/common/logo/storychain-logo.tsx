@@ -47,12 +47,11 @@ export function StorychainLogo({
       <text
         x="48"
         y={25 + fontSize * 0.35}
-        fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        fontFamily="var(--font-playfair), 'Playfair Display', serif"
         fontSize={fontSize}
         fontWeight="600"
         fill="currentColor"
         letterSpacing="-0.5"
-        className="text-(--font-playfair)"
       >
         Storychain
       </text>

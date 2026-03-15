@@ -1,11 +1,14 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import * as React from 'react';
+import { type Toast as HotToast, toast as hotToast } from 'react-hot-toast';
+
 import { motion } from 'framer-motion';
 import { AlertTriangle, Bell, CheckCircle, Info, Loader2, X, XCircle } from 'lucide-react';
-import * as React from 'react';
-import { toast as hotToast, type Toast as HotToast } from 'react-hot-toast';
+
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
 import { getToastStyle } from './styles';
 import type { ToastOptions, ToastVariant } from './types';
 

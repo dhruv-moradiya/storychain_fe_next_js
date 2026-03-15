@@ -1,8 +1,8 @@
+import { Metadata } from 'next';
+
 import { DashboardContentLayout, DashboardGrid } from '@/components/dashboard';
 import { CreateStoryButton, StoriesList } from '@/components/dashboard/sections/stories-section';
 import { TooltipProvider } from '@/components/ui/tooltip';
-
-import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'My Stories | Support',

@@ -1,14 +1,15 @@
 import { IChapterTreeItem } from '@/components/stories/sections/tree-section/types/canvas.types';
+
 import {
-  IStoryStats,
-  IStorySettings,
-  TStoryContentRating,
-  TStoryStatus,
   IStory,
   IStoryCollaboratorPopulated,
   IStoryLatestChapter,
+  IStorySettings,
+  IStoryStats,
   TStoryCollaboratorRole,
   TStoryCollaboratorStatus,
+  TStoryContentRating,
+  TStoryStatus,
 } from '.';
 import { IBaseResponse } from '../base-response.type';
 import { IImageAsset, IUserBasic } from '../common';

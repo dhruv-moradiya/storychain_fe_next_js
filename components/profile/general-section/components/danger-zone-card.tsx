@@ -1,6 +1,7 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { AlertTriangle, Trash2 } from 'lucide-react';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,7 +13,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { AlertTriangle, Trash2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export function DangerZoneCard() {
   return (

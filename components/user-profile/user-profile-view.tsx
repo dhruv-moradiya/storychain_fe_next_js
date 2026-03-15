@@ -1,5 +1,7 @@
 'use client';
 
+import { motion } from 'framer-motion';
+
 import {
   UserProfileAchievements,
   UserProfileActivity,
@@ -8,7 +10,6 @@ import {
   UserProfileStats,
   UserProfileStories,
 } from '@/components/user-profile';
-import { motion } from 'framer-motion';
 
 // Static mock user data
 const mockUser = {

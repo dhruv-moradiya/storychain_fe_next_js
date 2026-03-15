@@ -1,9 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { BookOpen, Check, Search, Loader2 } from 'lucide-react';
+
+import { BookOpen, Check, Loader2, Search } from 'lucide-react';
+
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+
 import { ChapterOption } from '../../types/submit-request-dialog.types';
 
 interface ChapterSelectionProps {

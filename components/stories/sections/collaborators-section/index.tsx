@@ -1,16 +1,18 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { useGetCollaborators } from '@/services/stories/stories.query';
+
 import type { ICollaboratorRecord } from '@/type/story/story-response.type';
 import type { TStoryCollaboratorRole } from '@/type/story/story.types';
 
+import { useGetCollaborators } from '@/services/stories/stories.query';
+
 import {
   CollaboratorActions,
+  CollaboratorTable,
   CollaboratorsEmpty,
   CollaboratorsError,
   CollaboratorsSkeleton,
-  CollaboratorTable,
   InviteDialog,
 } from './components';
 

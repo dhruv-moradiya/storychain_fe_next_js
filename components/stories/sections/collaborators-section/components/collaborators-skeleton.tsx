@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+
 import { fadeIn } from '@/lib/utils';
 
 export default function CollaboratorsSkeleton() {

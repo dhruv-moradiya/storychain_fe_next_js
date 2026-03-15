@@ -1,4 +1,5 @@
 import { cva } from 'class-variance-authority';
+
 import type { BadgeStyle, ColorScheme } from './types';
 
 // Badge size variants

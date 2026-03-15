@@ -1,7 +1,9 @@
 'use client';
 
-import { FileText, Clock, Check, Loader2 } from 'lucide-react';
+import { Check, Clock, FileText, Loader2 } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
+
 import { DraftOption } from '../../types/submit-request-dialog.types';
 
 interface DraftSelectionProps {

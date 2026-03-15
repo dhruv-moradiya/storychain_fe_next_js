@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { GitPullRequest, RefreshCw, AlertCircle } from 'lucide-react';
+import { AlertCircle, GitPullRequest, RefreshCw } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 

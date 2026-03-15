@@ -1,4 +1,5 @@
 import { Check } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 
 export type StepName = 'Type' | 'Select' | 'Details' | 'Preview' | 'Review';

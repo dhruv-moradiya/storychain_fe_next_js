@@ -1,14 +1,17 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+
+import type { BillingInterval, Currency, PaymentState, Plan } from '@/type/pricing';
+import { motion } from 'framer-motion';
+import { ArrowRight, Check, DollarSign, IndianRupee, Sparkles } from 'lucide-react';
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn, scrollReveal } from '@/lib/utils';
-import { Check, Sparkles, ArrowRight, IndianRupee, DollarSign } from 'lucide-react';
+
 import { PaymentModal } from './payment-modal';
-import type { Plan, BillingInterval, Currency, PaymentState } from '@/type/pricing';
-import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
 
 interface PlanCardProps {
   plan: Plan;

@@ -1,13 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+
 import { useUser } from '@clerk/nextjs';
+import { Camera, Pencil, Save, X } from 'lucide-react';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Camera, Pencil, Save, X } from 'lucide-react';
 
 export function ProfileCard() {
   const { user } = useUser();

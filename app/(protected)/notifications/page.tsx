@@ -1,5 +1,6 @@
-import NotificationsPageContent from '@/components/notifications/notifications-page';
 import { Metadata } from 'next';
+
+import NotificationsPageContent from '@/components/notifications/notifications-page';
 
 export const metadata: Metadata = {
   title: 'Notifications | StoryChain',

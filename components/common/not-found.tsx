@@ -1,9 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { SearchX, ArrowLeft, Home } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+
+import { motion } from 'framer-motion';
+import { ArrowLeft, Home, SearchX } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 
 // Animation variants
 const fadeIn = (delay = 0) => ({
