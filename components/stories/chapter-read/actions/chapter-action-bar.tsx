@@ -1,21 +1,19 @@
 'use client';
 
+import { IChapterStats } from '@/type';
 import { GitBranch, MessageSquare, ThumbsUp } from 'lucide-react';
 
-import type { ChapterData } from '@/components/common/chapter-reader';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface ChapterActionBarProps {
-  stats: ChapterData['stats'];
+  stats: IChapterStats;
   userVote: 'up' | 'down' | null;
   onVote: (vote: 'up' | 'down') => void;
   onBranch: () => void;
 }
 
 export function ChapterActionBar({ stats, userVote, onVote, onBranch }: ChapterActionBarProps) {
-  const likesCount = (stats?.likes || 0) + (userVote === 'up' ? 1 : 0);
-
   return (
     <div className="mt-12 flex items-center justify-center gap-4">
       <Button
@@ -28,12 +26,12 @@ export function ChapterActionBar({ stats, userVote, onVote, onBranch }: ChapterA
         )}
       >
         <ThumbsUp className={cn('h-4 w-4', userVote === 'up' && 'fill-current')} />
-        <span>{likesCount}</span>
+        <span>{stats.engagementScore}</span>
       </Button>
 
       <Button variant="ghost" size="sm" className="h-9 gap-2 rounded-full px-4">
         <MessageSquare className="h-4 w-4" />
-        <span>{stats?.comments || 0}</span>
+        <span>{stats.comments || 0}</span>
       </Button>
 
       <Button

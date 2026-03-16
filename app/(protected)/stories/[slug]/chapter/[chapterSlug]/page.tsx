@@ -46,7 +46,7 @@ export default async function ChapterPage({ params }: IChapterPageProps) {
 
   return (
     <ChapterReadClient
-      chapter={chapterDetail.data}
+      initialData={chapterDetail.data}
       storySlug={storySlug}
       chapterSlug={chapterSlug}
       comments={comments}

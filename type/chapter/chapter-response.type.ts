@@ -49,6 +49,8 @@ interface IChapterSearchItem {
 
 interface IChapterSearchResponse extends IBaseResponse<IChapterSearchItem[]> {}
 
+// For chapter details page
+
 interface IChapterNavInfo {
   slug: string;
   title: string;
@@ -62,6 +64,12 @@ interface IChapterDetailExtended extends IChapterDetail {
 
 interface IChapterDetailResponse extends IBaseResponse<IChapterDetailExtended> {}
 
+// For chapter details page, reading sesstions
+
+interface IChapterStartReadingSessionResponse extends IBaseResponse<null> {}
+
+interface IChapterRecordReadingSessionResponse extends IBaseResponse<null> {}
+
 export type {
   IUserChapters,
   IUserChaptersResponse,
@@ -70,4 +78,6 @@ export type {
   IChapterNavInfo,
   IChapterDetailExtended,
   IChapterDetailResponse,
+  IChapterStartReadingSessionResponse,
+  IChapterRecordReadingSessionResponse,
 };
