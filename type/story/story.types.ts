@@ -117,24 +117,25 @@ type IStoryCollaboratorWithUser = Omit<IStoryCollaborator, 'userId' | 'invitedBy
 
 // ── Populated Collaborator (used in Overview) ──────────────────────────────────
 interface IStoryCollaboratorPopulated {
-  _id: string;
+  username: string;
+  avatar: string;
+  email: string;
+  clerkId: string;
   role: TStoryCollaboratorRole;
   status: TStoryCollaboratorStatus;
-  details: ICollaboratorUser;
 }
 
 // ── Latest Chapter Summary (used in Overview) ─────────────────────────────────
 interface IStoryLatestChapter {
-  _id: string;
   storySlug: string;
   slug: string;
   title: string;
+
   stats: IChapterStats;
   votes: IVotes;
-  displayNumber: string;
   author: ICollaboratorUser;
-  createdAt: Date;
-  updatedAt: Date;
+  // createdAt: Date;
+  // updatedAt: Date;
 }
 
 // ── Chapter Tree ──────────────────────────────────────────────────────────────

@@ -47,16 +47,16 @@ export function CollaboratorsPreview({
       {/* Owner Card */}
       {owner && (
         <div
-          onClick={() => onOwnerClick(owner.details.clerkId)}
+          onClick={() => onOwnerClick(owner.clerkId)}
           className="border-border/50 hover:border-brand-pink-500/50 flex cursor-pointer items-center gap-3 rounded-xl border p-3 transition sm:gap-4 sm:p-4"
         >
           <div className="relative h-10 w-10 sm:h-12 sm:w-12">
             <Image
               src={
-                owner.details.avatarUrl ||
+                owner.avatar ||
                 'https://i.pinimg.com/736x/62/2e/06/622e06c0d2544aebe627158a6776ab2a.jpg'
               }
-              alt={owner.details.username}
+              alt={owner.username}
               fill
               className="rounded-full border-2 border-yellow-500/50 object-cover"
             />
@@ -68,12 +68,12 @@ export function CollaboratorsPreview({
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <span className="text-text-primary truncate text-sm font-medium sm:text-base">
-                @{owner.details.username}
+                @{owner.username}
               </span>
               {createBadge({
-                label: ROLE_DISPLAY['owner']?.label ?? 'Owner',
-                icon: ROLE_DISPLAY['owner']?.icon ?? Crown,
-                color: ROLE_DISPLAY['owner']?.color ?? 'orange',
+                label: ROLE_DISPLAY[owner.role]?.label ?? 'Owner',
+                icon: ROLE_DISPLAY[owner.role]?.icon ?? Crown,
+                color: ROLE_DISPLAY[owner.role]?.color ?? 'orange',
                 size: 'xs',
                 shape: 'pill',
                 style: 'soft',
@@ -105,24 +105,24 @@ export function CollaboratorsPreview({
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.2, delay: 0.4 + index * 0.05 }}
-                key={collab.details.clerkId}
-                onClick={() => onCollaboratorClick(collab.details.clerkId)}
+                key={collab.clerkId}
+                onClick={() => onCollaboratorClick(collab.clerkId)}
                 className="border-border/50 hover:border-brand-pink-500/50 min-w-[120px] cursor-pointer rounded-xl border p-2.5 shadow-sm transition-all hover:shadow-md sm:min-w-[140px] sm:p-3"
               >
                 <div className="flex items-center gap-2">
                   <div className="relative h-7 w-7 sm:h-8 sm:w-8">
                     <Image
                       src={
-                        collab.details.avatarUrl ||
+                        collab.avatar ||
                         'https://i.pinimg.com/736x/ab/41/40/ab4140adebd1a3420ef2969ab775664f.jpg'
                       }
-                      alt={collab.details.username}
+                      alt={collab.username}
                       fill
                       className="rounded-full border-2 border-transparent object-cover"
                     />
                   </div>
                   <span className="text-text-primary truncate text-xs font-medium sm:text-sm">
-                    @{collab.details.username}
+                    @{collab.username}
                   </span>
                 </div>
                 <div className="mt-2.5 flex items-center justify-start">

@@ -73,7 +73,10 @@ export const StoryCard = memo(function StoryCard({ story }: StoryCardProps) {
           <div className="mt-auto">
             <div className="mb-2 flex items-center gap-2 text-xs">
               <span className="text-muted-foreground font-medium">Rating:</span>
-              {contentRatingBadge(story.contentRating, { size: 'xs', className: 'uppercase' })}
+              {contentRatingBadge(story.settings.contentRating, {
+                size: 'xs',
+                className: 'uppercase',
+              })}
             </div>
 
             {story.tags && story.tags.length > 0 && (

@@ -1,49 +1,27 @@
 'use client';
 
-import { useState } from 'react';
-
-import type { BillingInterval, Currency } from '@/type/pricing';
-
-import { BillingToggle } from '@/components/pricing/billing-toggle';
-import { FeatureComparison } from '@/components/pricing/feature-comparison';
-import { PaymentMethods } from '@/components/pricing/payment-methods';
-import { PlanCard } from '@/components/pricing/plan-card';
+import { CoinPacksSection } from '@/components/pricing/coin-packs-section';
+import { CoinUsageSection } from '@/components/pricing/coin-usage-section';
 import { PricingFAQ } from '@/components/pricing/pricing-faq';
 import { PricingHero } from '@/components/pricing/pricing-hero';
-import { faqs, featureComparison, plans } from '@/lib/data/pricing-data';
+import { RewardsSection } from '@/components/pricing/rewards-section';
+import { coinPacks, coinUsageFeatures, storyRoles } from '@/lib/data/coins-data';
+import { faqs } from '@/lib/data/pricing-data';
 
 export default function PricingPage() {
-  const [billingInterval, setBillingInterval] = useState<BillingInterval>('monthly');
-  const [currency, setCurrency] = useState<Currency>('INR');
-
   return (
     <div className="bg-bg-cream min-h-screen">
       <PricingHero />
 
-      <BillingToggle
-        billingInterval={billingInterval}
-        setBillingInterval={setBillingInterval}
-        currency={currency}
-        setCurrency={setCurrency}
-      />
+      {/* ── Coin Packs ─────────────────────────────────── */}
+      <CoinPacksSection packs={coinPacks} />
 
-      {/* Pricing Cards */}
-      <section className="px-6 pb-16">
-        <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-3">
-          {plans.map((plan, index) => (
-            <PlanCard
-              key={plan.id}
-              plan={plan}
-              billingInterval={billingInterval}
-              currency={currency}
-              index={index}
-            />
-          ))}
-        </div>
-      </section>
+      {/* ── Coin Usage Guide ───────────────────────────── */}
+      <CoinUsageSection features={coinUsageFeatures} />
 
-      <FeatureComparison features={featureComparison} />
-      <PaymentMethods />
+      {/* ── Creator Rewards ────────────────────────────── */}
+      <RewardsSection roles={storyRoles} />
+
       <PricingFAQ faqs={faqs} />
     </div>
   );

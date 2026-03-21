@@ -34,10 +34,9 @@ interface IUserStories {
   creatorId: string;
 
   stats: IStoryStats;
+  settings: IStorySettings;
 
   tags: string[];
-  genres: string[];
-  contentRating: TStoryContentRating;
 
   status: TStoryStatus;
 

@@ -45,7 +45,7 @@ export function PricingHero() {
         >
           <Sparkles className="text-brand-pink-500 h-4 w-4" />
           <span className="text-brand-pink-500 text-sm font-medium">
-            Simple, transparent pricing
+            Coin-based. Pay for what you use.
           </span>
         </motion.div>
 
@@ -55,9 +55,9 @@ export function PricingHero() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="font-libre-baskerville text-text-tertiary mb-5 text-4xl leading-tight tracking-tight sm:text-5xl lg:text-6xl"
         >
-          Choose the perfect plan
+          Unlock stories,
           <br />
-          <span className="text-brand-pink-500">for your stories</span>
+          <span className="text-brand-pink-500">earn from yours</span>
         </motion.h1>
 
         <motion.p
@@ -66,8 +66,8 @@ export function PricingHero() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-text-secondary-65 mx-auto mb-8 max-w-2xl text-base leading-relaxed"
         >
-          Start free and scale as you grow. All plans include our core features. Upgrade anytime to
-          unlock more creative possibilities.
+          Buy coins once and spend them your way — unlock chapters, publish stories, use AI tools,
+          and earn rewards when readers love your work.
         </motion.p>
 
         {/* Trust badges */}

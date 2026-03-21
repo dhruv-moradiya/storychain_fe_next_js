@@ -3,6 +3,7 @@
 import { useParams, useRouter } from 'next/navigation';
 
 import type { IStoryOverview, IStoryOverviewResponse } from '@/type/story';
+import { formatDate } from 'date-fns';
 import { motion } from 'framer-motion';
 import { FileEdit } from 'lucide-react';
 
@@ -81,9 +82,7 @@ const OverviewSection = ({ initialData }: OverviewSectionProps) => {
         className="border-border/30 text-text-secondary-65 flex items-center gap-2 border-t pt-4 text-xs"
       >
         <FileEdit size={14} />
-        <span>
-          {/* Last updated {format(new Date(story.lastActivityAt || Date.now()), 'MMM dd, yyyy')} */}
-        </span>
+        <span>Last updated {formatDate(story.lastActivityAt, 'MMM dd, yyyy')}</span>
       </motion.footer>
     </motion.div>
   );

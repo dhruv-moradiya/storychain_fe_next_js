@@ -49,7 +49,7 @@ export function ChapterPreview({
       {/* Chapters List */}
       <div className="space-y-2 sm:space-y-3">
         {chapters.map((chapter) => (
-          <ChapterCard key={chapter._id} chapter={chapter} />
+          <ChapterCard key={chapter.slug} chapter={chapter} />
         ))}
       </div>
 
@@ -79,10 +79,10 @@ export function ChapterPreview({
 }
 
 function ChapterCard({ chapter }: { chapter: IStoryLatestChapter }) {
-  const { title, stats, author, createdAt } = chapter;
+  const { title, stats, author } = chapter;
 
   // eslint-disable-next-line react-hooks/purity
-  const dateFormatted = formatDistanceToNow(new Date(createdAt || Date.now()), { addSuffix: true });
+  const dateFormatted = formatDistanceToNow(new Date(Date.now()), { addSuffix: true });
 
   return (
     <div

@@ -4,3 +4,6 @@ export { PlanCard } from './plan-card';
 export { FeatureComparison } from './feature-comparison';
 export { PaymentMethods } from './payment-methods';
 export { PricingFAQ } from './pricing-faq';
+export { CoinPacksSection } from './coin-packs-section';
+export { CoinUsageSection } from './coin-usage-section';
+export { RewardsSection } from './rewards-section';

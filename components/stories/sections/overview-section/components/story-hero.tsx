@@ -13,7 +13,7 @@ interface StoryHeroProps {
 }
 
 export function StoryHero({ story, onBack }: StoryHeroProps) {
-  const { title, slug, status, contentRating, genres, coverImage, cardImage, stats } = story;
+  const { title, slug, status, contentRating, settings, coverImage, cardImage, stats } = story;
 
   return (
     <div className="space-y-6">
@@ -126,8 +126,8 @@ export function StoryHero({ story, onBack }: StoryHeroProps) {
           {contentRatingBadge(contentRating)}
         </div>
 
-        {genres.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 sm:gap-2">{genresBadges(genres)}</div>
+        {settings.genres.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">{genresBadges(settings.genres)}</div>
         )}
       </motion.header>
     </div>
