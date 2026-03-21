@@ -1,4 +1,4 @@
-import type { IStory } from '@/type/story';
+import type { IStoryOverview } from '@/type/story';
 import { format, formatDistanceToNow } from 'date-fns';
 import { motion } from 'framer-motion';
 import { BookOpen, Calendar, Eye, Heart, RefreshCw, Star, Users } from 'lucide-react';
@@ -6,14 +6,14 @@ import { BookOpen, Calendar, Eye, Heart, RefreshCw, Star, Users } from 'lucide-r
 import { cn } from '@/lib/utils';
 
 interface StoryStatsProps {
-  story: IStory;
+  story: IStoryOverview;
 }
 
 export function StoryStats({ story }: StoryStatsProps) {
-  const { description, stats, status, createdAt, lastActivityAt } = story;
+  const { description, stats, status, publishedAt, lastActivityAt } = story;
   // Formatting dates using date-fns
   // eslint-disable-next-line react-hooks/purity
-  const startedAt = format(new Date(createdAt || Date.now()), 'MMM yyyy');
+  const startedAt = format(new Date(publishedAt || Date.now()), 'MMM yyyy');
   const updatedAgo = formatDistanceToNow(new Date(lastActivityAt), { addSuffix: true });
 
   // Progress logic (placeholders for now if not in API)

@@ -14,6 +14,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { NavigationProgress } from '@/components/common/loader/navigation-progress';
 import { FooterSection } from '@/components/home/footer-section';
 import { QueryProvider } from '@/components/providers/query-provider';
+import { ThemeProvider } from '@/components/providers/theme-provider';
 import ToastProvider from '@/components/shared/toast/toast-provider';
 
 import './globals.css';
@@ -156,15 +157,22 @@ export default function RootLayout({
         <body
           className={`${inter.variable} ${lora.variable} ${yellowtail.variable} ${playfair.variable} ${libreBaskerville.variable} ${ibmPlexMono.variable} ${literata.variable} antialiased`}
         >
-          <QueryProvider>
-            <main>
-              <NavigationProgress />
-              <ToastProvider>
-                {children}
-                <FooterSection />
-              </ToastProvider>
-            </main>
-          </QueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <QueryProvider>
+              <main>
+                <NavigationProgress />
+                <ToastProvider>
+                  {children}
+                  <FooterSection />
+                </ToastProvider>
+              </main>
+            </QueryProvider>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

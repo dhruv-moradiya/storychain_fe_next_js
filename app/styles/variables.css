@@ -156,12 +156,130 @@
 }
 
 .dark {
-  --sidebar: hsl(240 5.9% 10%);
-  --sidebar-foreground: hsl(240 4.8% 95.9%);
-  --sidebar-primary: hsl(224.3 76.3% 48%);
-  --sidebar-primary-foreground: hsl(0 0% 100%);
-  --sidebar-accent: hsl(240 3.7% 15.9%);
-  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
-  --sidebar-border: hsl(240 3.7% 15.9%);
-  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  /* ===========================================
+     Base Theme Colors (shadcn/ui) — Dark Mode
+     =========================================== */
+  --background: oklch(0.145 0.012 256.82);
+  --foreground: oklch(0.925 0.006 264.53);
+  --card: oklch(0.178 0.014 256.82);
+  --card-foreground: oklch(0.925 0.006 264.53);
+  --popover: oklch(0.178 0.014 256.82);
+  --popover-foreground: oklch(0.925 0.006 264.53);
+  --primary: oklch(0.7116 0.1812 22.8389);
+  --primary-foreground: oklch(0.145 0.012 256.82);
+  --secondary: oklch(0.8803 0.1348 86.0616);
+  --secondary-foreground: oklch(0.145 0.012 256.82);
+  --muted: oklch(0.22 0.012 256.82);
+  --muted-foreground: oklch(0.65 0.015 264.53);
+  --accent: oklch(0.24 0.02 256.82);
+  --accent-foreground: oklch(0.925 0.006 264.53);
+  --destructive: oklch(0.55 0.2 25.56);
+  --destructive-foreground: oklch(0.96 0.005 0);
+  --border: oklch(0.26 0.015 256.82);
+  --input: oklch(0.26 0.015 256.82);
+  --ring: oklch(0.7116 0.1812 22.8389);
+
+  /* Chart Colors — Dark Mode */
+  --chart-1: oklch(0.75 0.18 22.84);
+  --chart-2: oklch(0.82 0.14 86.06);
+  --chart-3: oklch(0.72 0.16 166.57);
+  --chart-4: oklch(0.65 0.12 227.97);
+  --chart-5: oklch(0.7 0.2 11.07);
+
+  /* Sidebar Colors — Dark Mode */
+  --sidebar: oklch(0.13 0.012 256.82);
+  --sidebar-foreground: oklch(0.925 0.006 264.53);
+  --sidebar-primary: oklch(0.7116 0.1812 22.8389);
+  --sidebar-primary-foreground: oklch(0.96 0.005 0);
+  --sidebar-accent: oklch(0.2 0.015 256.82);
+  --sidebar-accent-foreground: oklch(0.925 0.006 264.53);
+  --sidebar-border: oklch(0.24 0.012 256.82);
+  --sidebar-ring: oklch(0.7116 0.1812 22.8389);
+
+  /* ===========================================
+     StoryChain Color Palette — Dark Mode
+     =========================================== */
+
+  /* Hero Gradient Colors — Moody/Deep */
+  --hero-gradient-from: #2a3570;
+  --hero-gradient-via1: #4a2a6e;
+  --hero-gradient-via2: #6e2a4e;
+  --hero-gradient-via3: #7a3a2a;
+  --hero-gradient-to: #1a1520;
+  --hero-overlay-white10: rgba(255, 255, 255, 0.04);
+  --hero-overlay-purple5: rgba(168, 85, 247, 0.12);
+
+  /* Background Colors — Dark Mode */
+  --bg-cream: #0b0b10;
+  --bg-cream-light: #0e0e15;
+  --bg-cream-blend: #0d0d14;
+  --bg-dark: #050508;
+
+  /* Text Colors — Dark Mode */
+  --text-primary: #e8e6f0;
+  --text-secondary: #c4c2d6;
+  --text-tertiary: #d4d2e4;
+  --text-light: #f5f5f7;
+  --text-dark-accent: #f6c36a;
+  --text-secondary-75: rgba(196, 194, 214, 0.75);
+  --text-secondary-70: rgba(196, 194, 214, 0.7);
+  --text-secondary-65: rgba(196, 194, 214, 0.65);
+
+  /* Brand Colors — Dark Mode (slightly brightened for dark bg contrast) */
+  --brand-pink-400: #f78cc4;
+  --brand-pink-500: #f06aaf;
+  --brand-pink-600: #e0408e;
+  --brand-pink-shadow25: rgba(240, 106, 175, 0.25);
+  --brand-pink-shadow35: rgba(240, 106, 175, 0.35);
+  --brand-pink-ring30: rgba(240, 106, 175, 0.3);
+  --brand-blue: #7e8eff;
+  --brand-blue-alt: #6d7eff;
+  --brand-orange: #ffad7e;
+
+  /* Cream Opacity Variants — remapped to dark surface tones */
+  --cream-95: rgba(11, 11, 16, 0.95);
+  --cream-90: rgba(11, 11, 16, 0.9);
+  --cream-85: rgba(11, 11, 16, 0.85);
+  --cream-80: rgba(11, 11, 16, 0.8);
+  --cream-75: rgba(11, 11, 16, 0.75);
+  --cream-70: rgba(11, 11, 16, 0.7);
+  --cream-60: rgba(11, 11, 16, 0.6);
+  --cream-50: rgba(11, 11, 16, 0.5);
+  --cream-40: rgba(11, 11, 16, 0.4);
+  --cream-30: rgba(11, 11, 16, 0.3);
+  --cream-20: rgba(11, 11, 16, 0.2);
+  --cream-blend-60: rgba(13, 13, 20, 0.6);
+  --cream-blend-50: rgba(13, 13, 20, 0.5);
+
+  /* Dark Opacity Variants — inverted to light tones for dark mode */
+  --dark-95: rgba(245, 245, 247, 0.95);
+  --dark-90: rgba(245, 245, 247, 0.9);
+  --dark-75: rgba(245, 245, 247, 0.75);
+  --dark-70: rgba(245, 245, 247, 0.7);
+  --dark-60: rgba(245, 245, 247, 0.6);
+  --dark-50: rgba(245, 245, 247, 0.5);
+  --dark-40: rgba(245, 245, 247, 0.4);
+
+  /* White Opacity Variants — adjusted for dark mode */
+  --white-95: rgba(255, 255, 255, 0.92);
+  --white-75: rgba(255, 255, 255, 0.7);
+  --white-60: rgba(255, 255, 255, 0.55);
+  --white-50: rgba(255, 255, 255, 0.45);
+  --white-40: rgba(255, 255, 255, 0.35);
+  --white-5: rgba(255, 255, 255, 0.08);
+  --white-4: rgba(255, 255, 255, 0.06);
+
+  /* ===========================================
+     Shadows — Dark Mode (darker, more diffused)
+     =========================================== */
+  --shadow-color: #000000;
+  --shadow-opacity: 0.35;
+  --shadow-2xs: 0px 4px 16px -6px rgba(0, 0, 0, 0.2);
+  --shadow-xs: 0px 4px 16px -6px rgba(0, 0, 0, 0.25);
+  --shadow-sm: 0px 4px 16px -6px rgba(0, 0, 0, 0.35), 0px 1px 3px -1px rgba(0, 0, 0, 0.3);
+  --shadow: 0px 6px 20px -6px rgba(0, 0, 0, 0.4), 0px 1px 3px -1px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0px 8px 24px -6px rgba(0, 0, 0, 0.45), 0px 2px 6px -1px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0px 12px 32px -8px rgba(0, 0, 0, 0.5), 0px 4px 8px -2px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0px 16px 40px -8px rgba(0, 0, 0, 0.55), 0px 8px 12px -4px rgba(0, 0, 0, 0.4);
+  --shadow-2xl: 0px 20px 48px -10px rgba(0, 0, 0, 0.65);
 }

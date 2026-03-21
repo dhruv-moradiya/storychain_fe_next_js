@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const DEFAULT_AVATAR_URL =
-  'https://res.cloudinary.com/dpji4qfnu/image/upload/v1773571744/default_avatar_o7yrkn.jpg';
+  'https://i.pinimg.com/736x/15/7e/59/157e59bbf90bb9942734a34aef0529a4.jpg';
 
 export const fadeIn = (delay = 0) => ({
   initial: { opacity: 0, y: 12 },

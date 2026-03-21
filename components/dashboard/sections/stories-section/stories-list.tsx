@@ -11,6 +11,7 @@ export function StoriesList() {
     staleTime: STALE_TIME.LONG,
   });
   const stories = data?.data || [];
+  console.log('stories', stories);
 
   if (isLoading) {
     return (
@@ -56,7 +57,7 @@ export function StoriesList() {
   return (
     <>
       {stories.map((story) => (
-        <StoryCard key={story._id} story={story} />
+        <StoryCard key={story.slug} story={story} />
       ))}
     </>
   );

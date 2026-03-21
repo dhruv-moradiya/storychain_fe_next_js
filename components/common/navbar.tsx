@@ -42,6 +42,7 @@ import { useGetNotifications } from '@/services/notifications/notifications.quer
 
 import { NotificationMessage } from '../shared/notification-message';
 import { StorychainLogo } from './logo/storychain-logo';
+import { ThemeToggle } from './theme-toggle';
 
 const mobileNavItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -275,7 +276,8 @@ export default function Navbar() {
         )}
 
         {/* RIGHT */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
+          <ThemeToggle />
           {isSignedIn && (
             <Popover open={isNotificationOpen} onOpenChange={setIsNotificationOpen}>
               <PopoverTrigger asChild>

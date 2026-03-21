@@ -109,7 +109,7 @@ export default function ChapterReadClient({
         onCreatePR={handleCreatePR}
       />
 
-      <main className="mx-auto max-w-2xl px-6 py-12 sm:px-8 lg:py-16">
+      <main className="mx-auto max-w-4xl px-5 py-10 sm:px-8 md:px-10 lg:px-12 lg:py-16">
         <ChapterReader chapter={chapter} variant="full" />
 
         <ChapterActionBar

@@ -17,7 +17,7 @@ interface StoryCardProps {
   story: IUserStories;
 }
 
-export const StoryCard = memo(function StoryCard({ story }: StoryCardProps) {
+export const StoryCard = memo(({ story }: StoryCardProps) => {
   // Convert tags to badge configs
   const tagBadges: BadgeConfig[] = useMemo(() => {
     return story.tags.map((tag) => ({
@@ -73,7 +73,7 @@ export const StoryCard = memo(function StoryCard({ story }: StoryCardProps) {
           <div className="mt-auto">
             <div className="mb-2 flex items-center gap-2 text-xs">
               <span className="text-muted-foreground font-medium">Rating:</span>
-              {contentRatingBadge(story.settings.contentRating, {
+              {contentRatingBadge(story.contentRating, {
                 size: 'xs',
                 className: 'uppercase',
               })}
@@ -99,5 +99,7 @@ export const StoryCard = memo(function StoryCard({ story }: StoryCardProps) {
     </Link>
   );
 });
+
+StoryCard.displayName = 'StoryCard';
 
 export default StoryCard;

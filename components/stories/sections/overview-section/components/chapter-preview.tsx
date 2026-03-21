@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import type { IStoryLatestChapter } from '@/type/story';
+import type { ILatestChaptersResponse } from '@/type/story';
 import { formatDistanceToNow } from 'date-fns';
 import { motion } from 'framer-motion';
 import { ArrowRight, BookOpen, Eye, Heart, MessageSquare } from 'lucide-react';
@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface ChapterPreviewProps {
-  chapters: IStoryLatestChapter[];
+  chapters: ILatestChaptersResponse[];
   onViewAll: () => void;
   onStartReading: () => void;
   onContinueReading?: () => void;
@@ -49,7 +49,7 @@ export function ChapterPreview({
       {/* Chapters List */}
       <div className="space-y-2 sm:space-y-3">
         {chapters.map((chapter) => (
-          <ChapterCard key={chapter.slug} chapter={chapter} />
+          <ChapterCard key={chapter.chapterSlug} chapter={chapter} />
         ))}
       </div>
 
@@ -78,7 +78,7 @@ export function ChapterPreview({
   );
 }
 
-function ChapterCard({ chapter }: { chapter: IStoryLatestChapter }) {
+function ChapterCard({ chapter }: { chapter: ILatestChaptersResponse }) {
   const { title, stats, author } = chapter;
 
   // eslint-disable-next-line react-hooks/purity
@@ -95,7 +95,7 @@ function ChapterCard({ chapter }: { chapter: IStoryLatestChapter }) {
       <div className="flex items-center gap-2 sm:gap-3">
         <div className="relative h-7 w-7 sm:h-8 sm:w-8">
           <Image
-            src={author.avatarUrl}
+            src={author.avatar}
             alt={author.username}
             fill
             className="border-brand-pink-500/20 rounded-full border object-cover"

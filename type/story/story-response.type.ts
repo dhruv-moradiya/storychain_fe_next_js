@@ -2,58 +2,66 @@ import { IChapterTreeItem } from '@/components/stories/sections/tree-section/typ
 
 import {
   IStory,
-  IStoryCollaboratorPopulated,
-  IStoryLatestChapter,
   IStorySettings,
-  IStoryStats,
   TStoryCollaboratorRole,
   TStoryCollaboratorStatus,
   TStoryContentRating,
+  TStoryGenres,
   TStoryStatus,
 } from '.';
 import { IBaseResponse } from '../base-response.type';
+import { IChapter } from '../chapter';
 import { IImageAsset, IUserBasic } from '../common';
+import { IUserPreviewWithEmail } from '../user/user.type';
 
-// ── Basic Story (fields select) ──────────────────────────────────────────────
+interface IStoryCreator extends Omit<IUserPreviewWithEmail, 'email'> {}
+
 interface IStoryBasic {
   _id: string;
   title: string;
   slug: string;
 }
 
-// ── User Stories (dashboard list item) ───────────────────────────────────────
 interface IUserStories {
-  _id: string;
   title: string;
   slug: string;
-  description: string;
-
-  coverImage?: IImageAsset;
-  cardImage?: IImageAsset;
-
   creatorId: string;
-
-  stats: IStoryStats;
-  settings: IStorySettings;
-
-  tags: string[];
-
   status: TStoryStatus;
-
+  tags: string[];
   trendingScore: number;
-  lastActivityAt: Date;
+  contentRating: TStoryContentRating;
+  genre: TStoryGenres[];
   publishedAt: Date;
-
   createdAt: Date;
   updatedAt: Date;
 }
 
-// ── Story Overview (full detail page) ────────────────────────────────────────
-interface IStoryOverview extends IStory {
-  collaborators: IStoryCollaboratorPopulated[];
-  latestChapters: IStoryLatestChapter[];
+interface IStoryCollaboratorOverview {
+  clerkId: string;
+  username: string;
+  avatar: string;
+  email: string;
+  role: TStoryCollaboratorRole;
+  status: TStoryCollaboratorStatus;
 }
 
+export interface ILatestChaptersResponse {
+  storySlug: string;
+  chapterSlug: string;
+  title: string;
+  stats: IChapter['stats'];
+  author: IUserPreviewWithEmail;
+  updatedAt: Date;
+}
+
+interface IStoryOverview extends Omit<
+  IStory,
+  '_id' | 'creatorId' | 'collaboratorIds' | 'createdAt' | 'updatedAt'
+> {
+  creator: IStoryCreator;
+  collaborators: IStoryCollaboratorOverview[];
+  latestChapters: ILatestChaptersResponse[];
+}
 // ── Response Wrappers ─────────────────────────────────────────────────────────
 interface IStoryBasicResponse extends IBaseResponse<IStoryBasic> {}
 
@@ -127,20 +135,20 @@ interface ICreateStoryResponse extends IBaseResponse<{
 }> {}
 
 export type {
-  IStoryBasic,
-  IStoryBasicResponse,
-  IUserStories,
-  IUserStoriesResponse,
-  IStoryTreeResponse,
-  IStorySettingsResponse,
-  IStoryOverview,
-  IStoryOverviewResponse,
-  ICollaboratorRecord,
-  ICollaboratorListResponse,
+  ICloudinarySignatureResponse,
   ICollaboratorActionData,
+  ICollaboratorListResponse,
+  ICollaboratorRecord,
+  ICreateStoryResponse,
   IInvitationActionResponse,
   ISendInvitationBody,
-  ICloudinarySignatureResponse,
+  IStoryBasic,
+  IStoryBasicResponse,
   IStoryImageUpdateResponse,
-  ICreateStoryResponse,
+  IStoryOverview,
+  IStoryOverviewResponse,
+  IStorySettingsResponse,
+  IStoryTreeResponse,
+  IUserStories,
+  IUserStoriesResponse,
 };

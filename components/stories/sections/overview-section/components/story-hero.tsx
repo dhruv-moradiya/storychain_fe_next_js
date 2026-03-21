@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import type { IStory } from '@/type/story';
+import type { IStoryOverview } from '@/type/story';
 import { motion } from 'framer-motion';
 import { Bell, BookOpen, Bookmark, Heart, Share2 } from 'lucide-react';
 
@@ -8,12 +8,12 @@ import { contentRatingBadge, genresBadges, storyStatusBadge } from '@/components
 import { Button } from '@/components/ui/button';
 
 interface StoryHeroProps {
-  story: IStory;
+  story: IStoryOverview;
   onBack: () => void;
 }
 
 export function StoryHero({ story, onBack }: StoryHeroProps) {
-  const { title, slug, status, contentRating, settings, coverImage, cardImage, stats } = story;
+  const { title, slug, status, settings, coverImage, cardImage, stats } = story;
 
   return (
     <div className="space-y-6">
@@ -123,7 +123,7 @@ export function StoryHero({ story, onBack }: StoryHeroProps) {
 
         <div className="flex flex-wrap gap-1.5 sm:gap-2">
           {storyStatusBadge(status)}
-          {contentRatingBadge(contentRating)}
+          {contentRatingBadge(settings.contentRating)}
         </div>
 
         {settings.genres.length > 0 && (

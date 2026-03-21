@@ -16,7 +16,6 @@ type TStoryCollaboratorStatus = (typeof STORY_COLLABORATOR_STATUSES)[number];
 type TStoryGenres = (typeof STORY_GENRES)[number];
 type TStoryContentRating = (typeof STORY_CONTENT_RATINGS)[number];
 
-// ── Story Settings ────────────────────────────────────────────────────────────
 interface IStorySettings {
   isPublic: boolean;
   allowBranching: boolean;
@@ -27,7 +26,6 @@ interface IStorySettings {
   contentRating: TStoryContentRating;
 }
 
-// ── Story Stats ───────────────────────────────────────────────────────────────
 interface IStoryStats {
   totalChapters: number;
   totalBranches: number;
@@ -40,7 +38,6 @@ interface IStoryStats {
   averageRating: number;
 }
 
-// ── Story Creator ─────────────────────────────────────────────────────────────
 interface IStoryCreator {
   clerkId: string;
   email: string;
@@ -48,21 +45,16 @@ interface IStoryCreator {
   avatar: string;
 }
 
-// ── Story Collaborator Info (for display badges etc.) ─────────────────────────
-interface IStoryCollaboratorInfo {
+interface IStoryCollaboratorPreview {
   clerkId: string;
   username: string;
+  email: string;
   avatarUrl: string;
   role: TStoryCollaboratorRole;
 }
 
-/**
- * Minimal user shape returned in populated/nested API fields.
- * Alias of IUserBasic — prefer importing IUserBasic from '@/type/common' for new code.
- */
-type ICollaboratorUser = IUserBasic;
+type ICollaboratorUser = Omit<IStoryCollaboratorPreview, 'role'>;
 
-// ── Main Story Interface ──────────────────────────────────────────────────────
 interface IStory {
   _id: string;
   title: string;
@@ -91,7 +83,6 @@ interface IStory {
   updatedAt: Date;
 }
 
-// ── Story Collaborator (raw DB shape) ─────────────────────────────────────────
 interface IStoryCollaborator {
   _id: string;
   storyId: string;
@@ -105,7 +96,6 @@ interface IStoryCollaborator {
   updatedAt?: Date;
 }
 
-// ── Story Collaborator with populated User ────────────────────────────────────
 type IStoryCollaboratorWithUser = Omit<IStoryCollaborator, 'userId' | 'invitedBy'> & {
   role: TStoryCollaboratorRole;
   status: TStoryCollaboratorStatus;
@@ -115,7 +105,6 @@ type IStoryCollaboratorWithUser = Omit<IStoryCollaborator, 'userId' | 'invitedBy
   updatedAt: Date;
 };
 
-// ── Populated Collaborator (used in Overview) ──────────────────────────────────
 interface IStoryCollaboratorPopulated {
   username: string;
   avatar: string;
@@ -125,7 +114,6 @@ interface IStoryCollaboratorPopulated {
   status: TStoryCollaboratorStatus;
 }
 
-// ── Latest Chapter Summary (used in Overview) ─────────────────────────────────
 interface IStoryLatestChapter {
   storySlug: string;
   slug: string;
@@ -138,7 +126,6 @@ interface IStoryLatestChapter {
   // updatedAt: Date;
 }
 
-// ── Chapter Tree ──────────────────────────────────────────────────────────────
 interface IChapterTree extends IChapter {
   children: IChapterNodeData[];
 }
@@ -148,7 +135,7 @@ export type {
   ICollaboratorUser,
   IStory,
   IStoryCollaborator,
-  IStoryCollaboratorInfo,
+  IStoryCollaboratorPreview,
   IStoryCollaboratorWithUser,
   IStoryCollaboratorPopulated,
   IStoryLatestChapter,
