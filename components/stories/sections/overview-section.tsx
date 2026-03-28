@@ -66,13 +66,7 @@ const OverviewSection = ({ initialData }: OverviewSectionProps) => {
       />
 
       {/* Chapters Section */}
-      <ChapterPreview
-        chapters={story.latestChapters}
-        onViewAll={() => router.push(`/stories/${story.slug}/chapters`)}
-        onStartReading={() => router.push(`/stories/${story.slug}/chapter/1`)}
-        onContinueReading={() => router.push(`/stories/${story.slug}/chapter/23`)}
-        continueChapter="Ch. 23: The Escape"
-      />
+      <ChapterPreview chapters={story.latestChapters} continueChapter="Ch. 23: The Escape" />
 
       {/* Footer */}
       <motion.footer

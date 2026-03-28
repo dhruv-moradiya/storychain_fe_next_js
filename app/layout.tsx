@@ -107,7 +107,7 @@ export const metadata: Metadata = {
     siteName: 'StoryChain',
     images: [
       {
-        url: 'https://res.cloudinary.com/dpji4qfnu/image/upload/v1773567206/logo-remove_uy8him.png',
+        url: 'https://res.cloudinary.com/dpji4qfnu/image/upload/v1774158510/storychain-logo-raw-removebg-preview_mhethr.png',
         width: 1200,
         height: 630,
         alt: 'StoryChain — Collaborative Storytelling',
@@ -120,7 +120,7 @@ export const metadata: Metadata = {
     description:
       'Create, collaborate, and explore branching narratives with StoryChain. The ultimate platform for interactive storytelling.',
     images: [
-      'https://res.cloudinary.com/dpji4qfnu/image/upload/v1773567206/logo-remove_uy8him.png',
+      'https://res.cloudinary.com/dpji4qfnu/image/upload/v1774158510/storychain-logo-raw-removebg-preview_mhethr.png',
     ],
     creator: '@storychain',
   },

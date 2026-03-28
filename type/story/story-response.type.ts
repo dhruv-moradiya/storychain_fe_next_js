@@ -47,7 +47,7 @@ interface IStoryCollaboratorOverview {
 
 export interface ILatestChaptersResponse {
   storySlug: string;
-  chapterSlug: string;
+  slug: string;
   title: string;
   stats: IChapter['stats'];
   author: IUserPreviewWithEmail;

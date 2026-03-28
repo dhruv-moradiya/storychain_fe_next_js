@@ -1,28 +1,20 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 import type { ILatestChaptersResponse } from '@/type/story';
 import { formatDistanceToNow } from 'date-fns';
 import { motion } from 'framer-motion';
-import { ArrowRight, BookOpen, Eye, Heart, MessageSquare } from 'lucide-react';
+import { ArrowRight, BookOpen, ChartNoAxesColumn, Eye, MessageSquare } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface ChapterPreviewProps {
   chapters: ILatestChaptersResponse[];
-  onViewAll: () => void;
-  onStartReading: () => void;
-  onContinueReading?: () => void;
   continueChapter?: string;
 }
 
-export function ChapterPreview({
-  chapters,
-  onViewAll,
-  onStartReading,
-  onContinueReading,
-  continueChapter,
-}: ChapterPreviewProps) {
+export function ChapterPreview({ chapters }: ChapterPreviewProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -39,7 +31,7 @@ export function ChapterPreview({
           variant="ghost"
           size="sm"
           className="text-brand-pink-500 hover:bg-brand-pink-500/10 gap-1 text-xs sm:text-sm"
-          onClick={onViewAll}
+          // onClick={onViewAll}
         >
           View All
           <ArrowRight size={14} />
@@ -49,20 +41,17 @@ export function ChapterPreview({
       {/* Chapters List */}
       <div className="space-y-2 sm:space-y-3">
         {chapters.map((chapter) => (
-          <ChapterCard key={chapter.chapterSlug} chapter={chapter} />
+          <ChapterCard key={chapter.slug} chapter={chapter} />
         ))}
       </div>
 
       {/* CTA Buttons */}
       <div className="flex flex-col gap-2 pt-3 sm:flex-row sm:gap-3 sm:pt-4">
-        <Button
-          onClick={onStartReading}
-          className="from-brand-pink-500 to-brand-orange flex-1 gap-2 bg-linear-to-r text-sm text-white hover:opacity-90 sm:text-base"
-        >
+        <Button className="from-brand-pink-500 to-brand-orange flex-1 gap-2 bg-linear-to-r text-sm text-white hover:opacity-90 sm:text-base">
           <BookOpen size={16} className="sm:h-[18px] sm:w-[18px]" />
           Start Reading
         </Button>
-
+        {/* 
         {onContinueReading && continueChapter && (
           <Button
             variant="outline"
@@ -72,22 +61,26 @@ export function ChapterPreview({
             <ArrowRight size={16} className="sm:h-[18px] sm:w-[18px]" />
             <span className="truncate">Continue: {continueChapter}</span>
           </Button>
-        )}
+        )} */}
       </div>
     </motion.div>
   );
 }
 
-function ChapterCard({ chapter }: { chapter: ILatestChaptersResponse }) {
-  const { title, stats, author } = chapter;
+interface IChapterCardProps {
+  chapter: ILatestChaptersResponse;
+}
 
-  // eslint-disable-next-line react-hooks/purity
-  const dateFormatted = formatDistanceToNow(new Date(Date.now()), { addSuffix: true });
+function ChapterCard({ chapter }: IChapterCardProps) {
+  const { title, stats, author, storySlug, updatedAt } = chapter;
+
+  const dateFormatted = formatDistanceToNow(new Date(updatedAt), { addSuffix: true });
 
   return (
-    <div
+    <Link
+      href={`/stories/${storySlug}/chapter/${chapter.slug}`}
       className={cn(
-        'border-border/50 relative cursor-pointer rounded-xl border p-3 sm:p-4',
+        'border-border/50 relative block w-full cursor-pointer rounded-xl border p-3 sm:p-4',
         'hover:border-brand-pink-500/50 transition'
       )}
     >
@@ -126,10 +119,10 @@ function ChapterCard({ chapter }: { chapter: ILatestChaptersResponse }) {
           {stats.comments}
         </span>
         <span className="flex items-center gap-1">
-          <Heart size={12} className="text-red-500 sm:h-3.5 sm:w-3.5" />
-          {/* {votes.score.toLocaleString()} */}
+          <ChartNoAxesColumn size={12} className="text-blue-500 sm:h-3.5 sm:w-3.5" />
+          {stats.engagementScore}
         </span>
       </div>
-    </div>
+    </Link>
   );
 }
