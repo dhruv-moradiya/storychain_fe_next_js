@@ -396,10 +396,7 @@ export default function Navbar() {
                 </motion.div>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent
-                align="end"
-                className="border-border/50 bg-cream-95 w-56 rounded-xl border p-1 shadow-xl backdrop-blur-xl"
-              >
+              <DropdownMenuContent align="end">
                 <DropdownMenuItem className="cursor-default select-none">
                   <div className="flex flex-col">
                     <span className="text-text-primary font-medium">

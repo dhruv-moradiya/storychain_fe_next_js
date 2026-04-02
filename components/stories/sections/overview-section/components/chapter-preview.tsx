@@ -27,11 +27,11 @@ export function ChapterPreview({ chapters }: ChapterPreviewProps) {
           <BookOpen size={16} className="text-brand-pink-500 sm:h-[18px] sm:w-[18px]" />
           Latest Chapters
         </h2>
+
         <Button
           variant="ghost"
           size="sm"
           className="text-brand-pink-500 hover:bg-brand-pink-500/10 gap-1 text-xs sm:text-sm"
-          // onClick={onViewAll}
         >
           View All
           <ArrowRight size={14} />
@@ -45,23 +45,12 @@ export function ChapterPreview({ chapters }: ChapterPreviewProps) {
         ))}
       </div>
 
-      {/* CTA Buttons */}
+      {/* CTA */}
       <div className="flex flex-col gap-2 pt-3 sm:flex-row sm:gap-3 sm:pt-4">
         <Button className="from-brand-pink-500 to-brand-orange flex-1 gap-2 bg-linear-to-r text-sm text-white hover:opacity-90 sm:text-base">
           <BookOpen size={16} className="sm:h-[18px] sm:w-[18px]" />
           Start Reading
         </Button>
-        {/* 
-        {onContinueReading && continueChapter && (
-          <Button
-            variant="outline"
-            onClick={onContinueReading}
-            className="border-brand-pink-500/30 text-brand-pink-500 hover:bg-brand-pink-500/10 flex-1 gap-2 text-sm sm:text-base"
-          >
-            <ArrowRight size={16} className="sm:h-[18px] sm:w-[18px]" />
-            <span className="truncate">Continue: {continueChapter}</span>
-          </Button>
-        )} */}
       </div>
     </motion.div>
   );
@@ -80,20 +69,24 @@ function ChapterCard({ chapter }: IChapterCardProps) {
     <Link
       href={`/stories/${storySlug}/chapter/${chapter.slug}`}
       className={cn(
-        'border-border/50 relative block w-full cursor-pointer rounded-xl border p-3 sm:p-4',
-        'hover:border-brand-pink-500/50 transition'
+        'border-soft relative block w-full cursor-pointer rounded-xl border p-3 sm:p-4',
+        'hover:border-brand-pink-500/50 transition-all hover:shadow-sm'
       )}
     >
-      {/* Author Info */}
+      {/* Author */}
       <div className="flex items-center gap-2 sm:gap-3">
-        <div className="relative h-7 w-7 sm:h-8 sm:w-8">
+        <div className="relative h-8 w-8">
           <Image
-            src={author.avatar}
+            src={
+              author.avatar ||
+              'https://i.pinimg.com/736x/ab/41/40/ab4140adebd1a3420ef2969ab775664f.jpg'
+            }
             alt={author.username}
             fill
-            className="border-brand-pink-500/20 rounded-full border object-cover"
+            className="border-brand-pink-500/30 rounded-full border object-cover"
           />
         </div>
+
         <div className="min-w-0 flex-1">
           <span className="text-text-primary text-xs font-medium sm:text-sm">
             {author.username}
@@ -102,11 +95,16 @@ function ChapterCard({ chapter }: IChapterCardProps) {
             • Author
           </span>
         </div>
-        <span className="text-text-secondary-65 text-[10px] sm:text-xs">{dateFormatted}</span>
+
+        <span className="text-text-secondary-65 text-[10px] whitespace-nowrap sm:text-xs">
+          {dateFormatted}
+        </span>
       </div>
 
-      {/* Chapter Title */}
-      <h3 className="text-text-primary mt-2 text-sm font-semibold sm:mt-3 sm:text-base">{title}</h3>
+      {/* Title */}
+      <h3 className="text-text-primary mt-2 text-sm leading-snug font-semibold sm:mt-3 sm:text-base">
+        {title}
+      </h3>
 
       {/* Stats */}
       <div className="text-text-secondary-65 mt-2 flex items-center gap-3 text-[10px] sm:mt-3 sm:gap-4 sm:text-xs">
@@ -114,12 +112,14 @@ function ChapterCard({ chapter }: IChapterCardProps) {
           <Eye size={12} className="text-blue-500 sm:h-3.5 sm:w-3.5" />
           {stats.reads.toLocaleString()}
         </span>
+
         <span className="flex items-center gap-1">
           <MessageSquare size={12} className="text-green-500 sm:h-3.5 sm:w-3.5" />
           {stats.comments}
         </span>
+
         <span className="flex items-center gap-1">
-          <ChartNoAxesColumn size={12} className="text-blue-500 sm:h-3.5 sm:w-3.5" />
+          <ChartNoAxesColumn size={12} className="text-purple-500 sm:h-3.5 sm:w-3.5" />
           {stats.engagementScore}
         </span>
       </div>

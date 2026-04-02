@@ -14,7 +14,7 @@ import {
 import { cn } from '@/lib/utils';
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme: _theme, setTheme } = useTheme();
 
   return (
     <DropdownMenu>
@@ -30,36 +30,24 @@ export function ThemeToggle() {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        className="border-border/50 bg-cream-95 min-w-32 rounded-xl border p-1 shadow-xl backdrop-blur-xl"
-      >
+      <DropdownMenuContent align="end">
         <DropdownMenuItem
           onClick={() => setTheme('light')}
-          className={cn(
-            'text-text-secondary hover:text-text-primary gap-2',
-            theme === 'light' && 'text-brand-pink-500 font-medium'
-          )}
+          className={cn('text-text-secondary hover:text-text-primary gap-2')}
         >
           <Sun className="h-4 w-4" />
           Light
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setTheme('dark')}
-          className={cn(
-            'text-text-secondary hover:text-text-primary gap-2',
-            theme === 'dark' && 'text-brand-pink-500 font-medium'
-          )}
+          className={cn('text-text-secondary hover:text-text-primary gap-2')}
         >
           <Moon className="h-4 w-4" />
           Dark
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setTheme('system')}
-          className={cn(
-            'text-text-secondary hover:text-text-primary gap-2',
-            theme === 'system' && 'text-brand-pink-500 font-medium'
-          )}
+          className={cn('text-text-secondary hover:text-text-primary gap-2')}
         >
           <Monitor className="h-4 w-4" />
           System

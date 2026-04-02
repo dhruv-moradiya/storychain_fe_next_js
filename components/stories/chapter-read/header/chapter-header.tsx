@@ -10,7 +10,6 @@ import {
   Share2,
 } from 'lucide-react';
 
-import type { ChapterData } from '@/components/common/chapter-reader';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,

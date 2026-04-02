@@ -6,7 +6,6 @@ import { Crown, Eye, Handshake, type LucideIcon, PenTool, Shield, Users } from '
 
 import { createBadge } from '@/components/common/badge';
 import type { BadgeColorKey } from '@/components/common/badge/types';
-import { Button } from '@/components/ui/button';
 
 interface CollaboratorsPreviewProps {
   collaborators: IStoryCollaboratorPopulated[];
@@ -44,32 +43,36 @@ export function CollaboratorsPreview({
         Creators & Collaborators
       </h2>
 
-      {/* Owner Card */}
-      {owner && (
-        <div
-          onClick={() => onOwnerClick(owner.clerkId)}
-          className="border-border/50 hover:border-brand-pink-500/50 flex cursor-pointer items-center gap-3 rounded-xl border p-3 transition sm:gap-4 sm:p-4"
-        >
-          <div className="relative h-10 w-10 sm:h-12 sm:w-12">
-            <Image
-              src={
-                owner.avatar ||
-                'https://i.pinimg.com/736x/62/2e/06/622e06c0d2544aebe627158a6776ab2a.jpg'
-              }
-              alt={owner.username}
-              fill
-              className="rounded-full border-2 border-yellow-500/50 object-cover"
-            />
-            <div className="absolute -right-1 -bottom-1 z-10 flex h-4 w-4 items-center justify-center rounded-full bg-yellow-500 shadow-sm sm:h-5 sm:w-5">
-              <Crown size={10} className="text-white sm:h-3 sm:w-3" />
-            </div>
-          </div>
+      <AnimatePresence>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {/* Owner */}
+          {owner && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => onOwnerClick(owner.clerkId)}
+              className="border-soft hover:border-brand-pink-500/50 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border p-3 text-center transition"
+            >
+              <div className="relative h-12 w-12">
+                <Image
+                  src={
+                    owner.avatar ||
+                    'https://i.pinimg.com/736x/62/2e/06/622e06c0d2544aebe627158a6776ab2a.jpg'
+                  }
+                  alt={owner.username}
+                  fill
+                  className="rounded-full border-[2px] border-yellow-500/70 object-cover"
+                />
+                <div className="absolute -right-1 -bottom-1 z-10 flex h-4 w-4 items-center justify-center rounded-full bg-yellow-500 shadow-sm">
+                  <Crown size={10} className="text-white" />
+                </div>
+              </div>
 
-          <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-              <span className="text-text-primary truncate text-sm font-medium sm:text-base">
+              <span className="text-text-primary truncate text-sm font-medium">
                 @{owner.username}
               </span>
+
               {createBadge({
                 label: ROLE_DISPLAY[owner.role]?.label ?? 'Owner',
                 icon: ROLE_DISPLAY[owner.role]?.icon ?? Crown,
@@ -78,82 +81,66 @@ export function CollaboratorsPreview({
                 shape: 'pill',
                 style: 'soft',
               })}
-            </div>
-            <p className="text-text-secondary-65 hidden text-xs sm:block">
-              Building worlds one chapter at a time
-            </p>
-          </div>
+            </motion.div>
+          )}
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="border-brand-pink-500/30 text-brand-pink-500 hover:bg-brand-pink-500/10 hidden text-xs sm:inline-flex"
-          >
-            Following ✓
-          </Button>
-        </div>
-      )}
-
-      {/* Collaborators Grid */}
-      <AnimatePresence>
-        <div className="scrollbar-hide -mx-3 flex gap-2 overflow-x-auto px-3 pb-2 sm:mx-0 sm:gap-3 sm:px-0">
+          {/* Collaborators */}
           {otherCollaborators.slice(0, 3).map((collab, index) => {
             const config = ROLE_DISPLAY[collab.role] || ROLE_DISPLAY.contributor;
 
             return (
               <motion.div
+                key={collab.clerkId}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.2, delay: 0.4 + index * 0.05 }}
-                key={collab.clerkId}
+                transition={{ duration: 0.2, delay: 0.1 + index * 0.05 }}
                 onClick={() => onCollaboratorClick(collab.clerkId)}
-                className="border-border/50 hover:border-brand-pink-500/50 min-w-[120px] cursor-pointer rounded-xl border p-2.5 shadow-sm transition-all hover:shadow-md sm:min-w-[140px] sm:p-3"
+                className="border-soft hover:border-brand-pink-500/50 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border p-3 text-center shadow-sm transition hover:shadow-md"
               >
-                <div className="flex items-center gap-2">
-                  <div className="relative h-7 w-7 sm:h-8 sm:w-8">
-                    <Image
-                      src={
-                        collab.avatar ||
-                        'https://i.pinimg.com/736x/ab/41/40/ab4140adebd1a3420ef2969ab775664f.jpg'
-                      }
-                      alt={collab.username}
-                      fill
-                      className="rounded-full border-2 border-transparent object-cover"
-                    />
-                  </div>
-                  <span className="text-text-primary truncate text-xs font-medium sm:text-sm">
-                    @{collab.username}
-                  </span>
+                <div className="relative h-10 w-10">
+                  <Image
+                    src={
+                      collab.avatar ||
+                      'https://i.pinimg.com/736x/ab/41/40/ab4140adebd1a3420ef2969ab775664f.jpg'
+                    }
+                    alt={collab.username}
+                    fill
+                    className="border-border rounded-full border object-cover"
+                  />
                 </div>
-                <div className="mt-2.5 flex items-center justify-start">
-                  {createBadge({
-                    label: config.label,
-                    icon: config.icon,
-                    color: config.color,
-                    size: 'xs',
-                    shape: 'pill',
-                    style: 'soft',
-                  })}
-                </div>
+
+                <span className="text-text-primary truncate text-xs font-medium sm:text-sm">
+                  @{collab.username}
+                </span>
+
+                {createBadge({
+                  label: config.label,
+                  icon: config.icon,
+                  color: config.color,
+                  size: 'xs',
+                  shape: 'pill',
+                  style: 'soft',
+                })}
               </motion.div>
             );
           })}
 
+          {/* View More */}
           {otherCollaborators.length > 3 && (
-            <motion.button
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               whileTap={{ scale: 0.95 }}
               onClick={onViewAll}
-              className="border-brand-pink-500/30 bg-brand-pink-500/5 text-brand-pink-500 hover:border-brand-pink-500/50 hover:bg-brand-pink-500/10 flex min-w-[80px] flex-col items-center justify-center gap-1 rounded-xl border border-dashed p-2.5 transition-colors sm:min-w-[100px] sm:p-3"
+              className="border-brand-pink-500/30 bg-brand-pink-500/5 text-brand-pink-500 hover:border-brand-pink-500/50 hover:bg-brand-pink-500/10 flex cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-dashed p-3 transition-colors"
             >
-              <span className="font-ibm-plex-mono text-base font-bold sm:text-lg">
+              <span className="font-ibm-plex-mono text-base font-bold">
                 +{otherCollaborators.length - 3}
               </span>
-              <span className="text-muted-foreground/80 font-ibm-plex-mono text-[10px] font-semibold tracking-wider uppercase sm:text-xs">
+              <span className="text-muted-foreground/80 font-ibm-plex-mono text-[10px] font-semibold tracking-wider uppercase">
                 more
               </span>
-            </motion.button>
+            </motion.div>
           )}
         </div>
       </AnimatePresence>

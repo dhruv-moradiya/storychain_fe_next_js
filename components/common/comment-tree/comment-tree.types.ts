@@ -41,6 +41,8 @@ export interface CommentTreeProps {
   totalCount?: number;
   /** Whether to show the new-comment composer at the top */
   showComposer?: boolean;
+  /** Whether to show the reply button on each comment (default: true) */
+  showReplyButton?: boolean;
   className?: string;
 }
 
@@ -48,6 +50,8 @@ export interface CommentItemProps {
   comment: ICommentNode;
   depth: number;
   maxDepth: number;
+  /** Whether to show the reply button */
+  showReplyButton?: boolean;
   onReply?: (parentId: string, content: string) => void;
   onUpvote?: (commentId: string) => void;
   onDownvote?: (commentId: string) => void;

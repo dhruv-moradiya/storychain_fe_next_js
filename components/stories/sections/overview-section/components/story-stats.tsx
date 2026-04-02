@@ -1,7 +1,7 @@
 import type { IStoryOverview } from '@/type/story';
 import { format, formatDistanceToNow } from 'date-fns';
 import { motion } from 'framer-motion';
-import { BookOpen, Calendar, Eye, Heart, RefreshCw, Star, Users } from 'lucide-react';
+import { BookOpen, Calendar, Eye, GitBranch, Heart, RefreshCw, Star, Users } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
@@ -16,10 +16,6 @@ export function StoryStats({ story }: StoryStatsProps) {
   const startedAt = format(new Date(publishedAt || Date.now()), 'MMM yyyy');
   const updatedAgo = formatDistanceToNow(new Date(lastActivityAt), { addSuffix: true });
 
-  // Progress logic (placeholders for now if not in API)
-  const progressPercent = 0;
-  const estimatedChapters = 0;
-
   return (
     <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
       {/* About Section */}
@@ -27,7 +23,7 @@ export function StoryStats({ story }: StoryStatsProps) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="border-border/50 space-y-3 rounded-xl border p-4 sm:space-y-4 sm:p-5"
+        className="border-soft space-y-3 rounded-xl border p-4 sm:space-y-4 sm:p-5"
       >
         <h2 className="text-text-primary flex items-center gap-2 text-sm font-semibold sm:text-base">
           <BookOpen size={16} className="text-brand-pink-500 sm:h-[18px] sm:w-[18px]" />
@@ -35,7 +31,7 @@ export function StoryStats({ story }: StoryStatsProps) {
         </h2>
 
         <div
-          className="text-text-secondary font-serif text-[15px] leading-[1.75] tracking-[0.01em] sm:text-base sm:leading-[1.8]"
+          className="text-text-secondary text-justify font-serif text-[15px] leading-[1.75] tracking-[0.01em] sm:text-base sm:leading-[1.8]"
           dangerouslySetInnerHTML={{ __html: description }}
         />
 
@@ -60,62 +56,50 @@ export function StoryStats({ story }: StoryStatsProps) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25 }}
-        className="border-border/50 space-y-3 rounded-xl border p-4 sm:space-y-4 sm:p-5"
+        className="border-soft space-y-3 rounded-xl border p-4 sm:space-y-4 sm:p-5"
       >
         <h2 className="text-text-primary flex items-center gap-2 text-sm font-semibold sm:text-base">
           <Star size={16} className="text-brand-orange sm:h-[18px] sm:w-[18px]" />
           Statistics
         </h2>
 
-        <div className="grid grid-cols-2 gap-2 sm:gap-3">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4">
           <StatCard
-            icon={<BookOpen size={16} />}
+            icon={<BookOpen size={15} />}
             label="Chapters"
             value={stats.totalChapters}
             color="pink"
           />
           <StatCard
-            icon={<Eye size={16} />}
+            icon={<Eye size={15} />}
             label="Reads"
             value={stats.totalReads.toLocaleString()}
             color="blue"
           />
           <StatCard
-            icon={<Heart size={16} />}
+            icon={<Heart size={15} />}
             label="Votes"
             value={stats.totalVotes.toLocaleString()}
-            color="red"
+            color="pink"
           />
           <StatCard
-            icon={<Users size={16} />}
-            label="Contributors"
-            value={stats.uniqueContributors}
-            color="purple"
+            icon={<GitBranch size={15} />}
+            label="Branches"
+            value={stats.totalBranches}
+            color="blue"
           />
-        </div>
-
-        {/* Rating */}
-        <div className="text-text-secondary-65 flex items-center gap-2 text-sm">
-          <span className="text-yellow-500">⭐</span>
-          <span>
-            Rating: <strong className="text-text-primary">{stats.averageRating.toFixed(1)}</strong>{' '}
-            ({stats.totalVotes.toLocaleString()} votes)
-          </span>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="space-y-2">
-          <div className="bg-muted/50 h-2 w-full overflow-hidden rounded-full">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${progressPercent}%` }}
-              transition={{ duration: 1, delay: 0.5, ease: 'easeOut' }}
-              className="from-brand-pink-500 to-brand-orange h-full bg-linear-to-r"
-            />
-          </div>
-          <p className="text-text-secondary-65 text-xs">
-            Progress: {progressPercent}% (Est. {estimatedChapters} chapters)
-          </p>
+          <StatCard
+            icon={<Star size={15} />}
+            label="Rating"
+            value={stats.averageRating.toFixed(1)}
+            color="orange"
+          />
+          <StatCard
+            icon={<Users size={15} />}
+            label="Collaborators"
+            value={stats.uniqueContributors}
+            color="pink"
+          />
         </div>
       </motion.div>
     </div>
@@ -126,35 +110,34 @@ function StatCard({
   icon,
   label,
   value,
-  color,
+  color = 'pink',
 }: {
   icon: React.ReactNode;
   label: string;
   value: React.ReactNode;
-  color: 'pink' | 'blue' | 'red' | 'purple';
+  color?: 'pink' | 'blue' | 'orange' | 'purple';
 }) {
   const colorStyles = {
-    pink: 'text-brand-pink-500 border-brand-pink-500/30',
-    blue: 'text-blue-500 border-blue-500/30',
-    red: 'text-red-500 border-red-500/30',
-    purple: 'text-purple-500 border-purple-500/30',
+    pink: 'text-brand-pink-500',
+    blue: 'text-brand-blue',
+    orange: 'text-brand-orange',
+    purple: 'text-purple-500',
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      whileHover={{ scale: 1.02 }}
-      className={cn(
-        'flex items-center justify-between rounded-lg border p-2 sm:p-3',
-        colorStyles[color]
-      )}
-    >
-      <div className="text-text-secondary-65 flex items-center gap-1.5 text-[11px] sm:gap-2 sm:text-xs">
-        <span className={cn(colorStyles[color].split(' ')[0])}>{icon}</span>
-        {label}
+    <div className="group border-border/50 bg-muted/30 hover:bg-muted/50 flex items-center gap-3 rounded-md border px-3 py-2.5 transition-all">
+      {/* Icon */}
+      <div
+        className={cn('flex h-8 w-8 items-center justify-center rounded-lg', colorStyles[color])}
+      >
+        {icon}
       </div>
-      <span className="text-text-primary text-xs font-bold sm:text-sm">{value}</span>
-    </motion.div>
+
+      {/* Text */}
+      <div className="flex flex-col leading-tight">
+        <span className="text-text-primary text-sm font-semibold">{value}</span>
+        <span className="text-text-secondary-65 text-[11px]">{label}</span>
+      </div>
+    </div>
   );
 }

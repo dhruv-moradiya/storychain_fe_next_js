@@ -3,15 +3,7 @@
 import { useState } from 'react';
 
 import { formatForDisplay } from '@tanstack/react-hotkeys';
-import {
-  AlignCenter,
-  Keyboard,
-  Link as LinkIcon,
-  ListOrdered,
-  Save,
-  Type,
-  Undo2,
-} from 'lucide-react';
+import { Keyboard } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {

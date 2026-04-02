@@ -40,20 +40,18 @@ function DropdownMenuContent({
         className={cn(
           // Layout & shape
           'z-50 min-w-32 overflow-x-hidden overflow-y-auto p-1',
-          'rounded-lg border',
-          // Theme — matches the app cream/glass feel
-          'bg-bg-cream text-text-primary',
-          'border-border/50',
+          'rounded-md border',
+          // Theme — more premium glass feel
+          'bg-popover/95 text-text-primary',
+          'border-soft',
           // Shadow
-          'shadow-[0_4px_24px_-4px_rgba(0,0,0,0.10),0_1px_4px_-1px_rgba(0,0,0,0.06)]',
+          'shadow',
           // Animation
           'data-[state=open]:animate-in data-[state=closed]:animate-out',
           'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
           'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
           'data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2',
           'data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
-          'origin-(--radix-dropdown-menu-content-transform-origin)',
-          'max-h-(--radix-dropdown-menu-content-available-height)',
           'duration-150',
           className
         )}
@@ -88,24 +86,24 @@ function DropdownMenuItem({
       className={cn(
         // Base layout
         'relative flex cursor-pointer items-center gap-2 rounded-md px-2.5 py-1.5',
-        'text-sm font-medium outline-hidden select-none',
+        'text-sm outline-hidden select-none',
         'transition-colors duration-100',
         // Icon sizing
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         "[&_svg:not([class*='text-'])]:text-text-secondary-65",
         // Disabled
-        'data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40',
+        'data-disabled:cursor-not-allowed data-disabled:opacity-40',
         // Default focus/hover
         'data-[variant=default]:text-text-primary',
         'data-[variant=default]:hover:bg-brand-pink-500/8 data-[variant=default]:focus:bg-brand-pink-500/8',
         'data-[variant=default]:hover:text-text-primary data-[variant=default]:focus:text-text-primary',
         // Destructive focus/hover
-        'data-[variant=destructive]:text-red-600',
-        'data-[variant=destructive]:hover:bg-red-50 data-[variant=destructive]:focus:bg-red-50',
-        'data-[variant=destructive]:hover:text-red-700 data-[variant=destructive]:focus:text-red-700',
-        'data-[variant=destructive]:*:[svg]:!text-red-600 data-[variant=destructive]:*:[svg]:text-red-600!',
+        'data-[variant=destructive]:text-red-500',
+        'data-[variant=destructive]:hover:bg-destructive/15 data-[variant=destructive]:focus:bg-destructive/15',
+        'data-[variant=destructive]:hover:text-red-600 data-[variant=destructive]:focus:text-red-600',
+        '`data-[variant=destructive]:*:[svg]:text-red-500! data-[variant=destructive]:*:[svg]:text-red-500!',
         // Inset
-        'data-[inset]:pl-8',
+        'data-inset:pl-8',
         className
       )}
       {...props}
@@ -278,8 +276,8 @@ function DropdownMenuSubContent({
       data-slot="dropdown-menu-sub-content"
       className={cn(
         'z-50 min-w-[8rem] overflow-hidden rounded-lg border p-1',
-        'bg-bg-cream text-text-primary',
-        'border-border/50',
+        'bg-popover/95 text-text-primary backdrop-blur-xl',
+        'border-soft',
         'shadow-[0_4px_24px_-4px_rgba(0,0,0,0.10),0_1px_4px_-1px_rgba(0,0,0,0.06)]',
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
         'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',

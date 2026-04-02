@@ -8,15 +8,22 @@ import {
   ChevronDown,
   ChevronUp,
   CornerDownRight,
+  Heart,
+  MessageCircle,
   MessageSquareDashed,
   Pencil,
-  ThumbsDown,
-  ThumbsUp,
 } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
+import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field';
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupText,
+  InputGroupTextarea,
+} from '@/components/ui/input-group';
 import { cn } from '@/lib/utils';
 
 import type { CommentItemProps } from './comment-tree.types';
@@ -30,6 +37,19 @@ function getInitials(name: string): string {
     .join('')
     .toUpperCase()
     .slice(0, 2);
+}
+
+// depth-based accent colors (cycles through brand palette)
+const DEPTH_ACCENT_COLORS = [
+  'var(--brand-pink-500)',
+  'var(--brand-blue)',
+  'var(--brand-orange)',
+  'var(--brand-pink-600)',
+  'var(--brand-blue-alt)',
+];
+
+function getDepthAccent(depth: number): string {
+  return DEPTH_ACCENT_COLORS[depth % DEPTH_ACCENT_COLORS.length];
 }
 
 // ─── Reply Box ────────────────────────────────────────────────────────────────
@@ -61,33 +81,48 @@ function ReplyBox({ authorName, onSubmit, onCancel }: ReplyBoxProps) {
       animate={{ opacity: 1, height: 'auto' }}
       exit={{ opacity: 0, height: 0 }}
       transition={{ duration: 0.22, ease: 'easeOut' }}
-      className="mt-4 overflow-hidden"
+      className="mt-3 overflow-hidden"
     >
-      <div className="bg-muted/30 border-brand-pink-500/10 space-y-3 rounded-2xl border p-4 backdrop-blur-sm">
-        <p className="font-ibm-plex-mono text-muted-foreground/60 text-[10px] font-bold tracking-widest uppercase">
-          Replying to <span className="text-brand-pink-600">@{authorName}</span>
+      <div className="ct-reply-box space-y-3 rounded-xl p-4">
+        <p className="font-ibm-plex-mono ct-meta-text text-[10px] font-bold tracking-widest uppercase">
+          Replying to <span className="text-brand-pink-500">@{authorName}</span>
         </p>
-        <Textarea
+        {/* <Textarea
           autoFocus
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Write your reply..."
-          className="placeholder:text-muted-foreground/30 text-text-primary font-lora min-h-[90px] resize-none border-0 bg-transparent p-0 text-[15px] leading-relaxed shadow-none focus-visible:ring-0"
+          className="ct-reply-textarea font-lora min-h-[80px] resize-none border-0 bg-transparent p-0 text-[15px] leading-relaxed shadow-none focus-visible:ring-0"
           maxLength={2000}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleSubmit();
             if (e.key === 'Escape') onCancel();
           }}
-        />
-        <div className="border-border/20 flex items-center justify-between border-t pt-3">
-          <span className="font-ibm-plex-mono text-muted-foreground/40 text-[9px] font-bold">
+        /> */}
+        <FieldGroup className="max-w-sm">
+          <Field>
+            <FieldLabel htmlFor="block-end-textarea">Textarea</FieldLabel>
+            <InputGroup>
+              <InputGroupTextarea id="block-end-textarea" placeholder="Write a comment..." />
+              <InputGroupAddon align="block-end">
+                <InputGroupText>0/280</InputGroupText>
+                <InputGroupButton variant="default" size="sm" className="ml-auto">
+                  Post
+                </InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
+            <FieldDescription>Footer positioned below the textarea.</FieldDescription>
+          </Field>
+        </FieldGroup>
+        <div className="ct-reply-footer flex items-center justify-between pt-2">
+          <span className="font-ibm-plex-mono ct-meta-text text-[9px] font-bold">
             {text.length} / 2000
           </span>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <Button
               variant="ghost"
               size="sm"
-              className="hover:bg-muted h-8 rounded-full px-4 text-[11px] font-bold uppercase transition-all"
+              className="ct-btn-ghost h-8 rounded-full px-4 text-[11px] font-bold uppercase transition-all"
               onClick={onCancel}
             >
               Cancel
@@ -107,69 +142,37 @@ function ReplyBox({ authorName, onSubmit, onCancel }: ReplyBoxProps) {
   );
 }
 
-// ─── Vote Pill ──────────────────────────────────────────────────────────────
+// ─── Like Button ────────────────────────────────────────────────────────────
 
-interface VotePillProps {
-  upvotes: number;
-  downvotes: number;
-  userVote: 'up' | 'down' | null;
-  onUpvote: () => void;
-  onDownvote: () => void;
+interface LikeButtonProps {
+  likes: number;
+  isLiked: boolean;
+  onToggle: () => void;
 }
 
-function VotePill({ upvotes, downvotes, userVote, onUpvote, onDownvote }: VotePillProps) {
-  const score = upvotes - downvotes;
-
-  const scoreColor =
-    score > 0 ? 'text-brand-pink-600' : score < 0 ? 'text-destructive' : 'text-muted-foreground/80';
-
+function LikeButton({ likes, isLiked, onToggle }: LikeButtonProps) {
   return (
-    <div className="bg-card border-brand-pink-500/10 inline-flex items-center rounded-full border shadow-sm backdrop-blur-sm transition-all hover:shadow-md">
-      <motion.button
-        whileTap={{ scale: 0.9 }}
-        onClick={onUpvote}
+    <motion.button
+      whileTap={{ scale: 0.88 }}
+      onClick={onToggle}
+      className={cn(
+        'ct-action-btn flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold transition-all',
+        isLiked && 'ct-action-btn--active'
+      )}
+      aria-label={isLiked ? 'Unlike comment' : 'Like comment'}
+    >
+      <Heart
+        size={13}
+        strokeWidth={isLiked ? 0 : 2}
         className={cn(
-          'flex h-7 items-center justify-center rounded-l-full px-2.5 transition-colors',
-          userVote === 'up'
-            ? 'bg-brand-pink-500/15 text-brand-pink-600'
-            : 'text-muted-foreground hover:bg-muted/50 hover:text-brand-pink-500'
+          'transition-all duration-200',
+          isLiked ? 'fill-brand-pink-500 text-brand-pink-500' : ''
         )}
-        aria-label="Upvote comment"
-      >
-        <ThumbsUp
-          size={13}
-          strokeWidth={userVote === 'up' ? 2.5 : 2}
-          className={cn('transition-transform', userVote === 'up' && 'fill-brand-pink-500')}
-        />
-      </motion.button>
-
-      <span
-        className={cn(
-          'font-ibm-plex-mono min-w-[28px] text-center text-[11px] font-bold',
-          scoreColor
-        )}
-      >
-        {score > 0 ? `+${score}` : score}
-      </span>
-
-      <motion.button
-        whileTap={{ scale: 0.9 }}
-        onClick={onDownvote}
-        className={cn(
-          'flex h-7 items-center justify-center rounded-r-full px-2.5 transition-colors',
-          userVote === 'down'
-            ? 'bg-red-500/15 text-red-600'
-            : 'text-muted-foreground hover:bg-muted/50 hover:text-red-500'
-        )}
-        aria-label="Downvote comment"
-      >
-        <ThumbsDown
-          size={13}
-          strokeWidth={userVote === 'down' ? 2.5 : 2}
-          className={cn('transition-transform', userVote === 'down' && 'fill-red-500')}
-        />
-      </motion.button>
-    </div>
+      />
+      {likes > 0 && (
+        <span className={cn('font-ibm-plex-mono', isLiked && 'text-brand-pink-500')}>{likes}</span>
+      )}
+    </motion.button>
   );
 }
 
@@ -179,14 +182,15 @@ export function CommentItem({
   comment,
   depth,
   maxDepth,
+  showReplyButton = true,
   onReply,
   onUpvote,
   onDownvote,
 }: CommentItemProps) {
   const [showReply, setShowReply] = useState(false);
   const [showReplies, setShowReplies] = useState(depth < 1);
-  const [userVote, setUserVote] = useState<'up' | 'down' | null>(null);
-  const [votes, setVotes] = useState({ ...comment.votes });
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(comment.votes.upvotes);
 
   if (comment.isDeleted) {
     return (
@@ -194,14 +198,12 @@ export function CommentItem({
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
-        className="flex gap-3 py-2"
+        className="ct-comment-deleted flex items-center gap-3 rounded-lg px-3 py-2.5"
       >
-        <div className="border-border/60 mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-dashed">
-          <MessageSquareDashed size={11} className="text-muted-foreground/40" />
+        <div className="ct-deleted-icon flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+          <MessageSquareDashed size={11} className="opacity-50" />
         </div>
-        <p className="font-ibm-plex-mono text-muted-foreground/50 pt-1 text-xs italic">
-          [Comment deleted]
-        </p>
+        <p className="font-ibm-plex-mono ct-meta-text text-xs italic">[Comment removed]</p>
       </motion.div>
     );
   }
@@ -211,132 +213,136 @@ export function CommentItem({
   const hasReplies = (comment.replies?.length ?? 0) > 0;
   const replyCount = comment.replies?.length ?? 0;
   const canNestDeeper = depth < maxDepth;
+  const depthAccent = getDepthAccent(depth);
 
-  function handleUpvote() {
-    if (userVote === 'up') {
-      setUserVote(null);
-      setVotes((v) => ({ ...v, upvotes: v.upvotes - 1 }));
+  function handleLikeToggle() {
+    if (isLiked) {
+      setIsLiked(false);
+      setLikeCount((c) => c - 1);
+      onDownvote?.(comment.id);
     } else {
-      setVotes((v) => ({
-        upvotes: v.upvotes + 1,
-        downvotes: userVote === 'down' ? v.downvotes - 1 : v.downvotes,
-      }));
-      setUserVote('up');
+      setIsLiked(true);
+      setLikeCount((c) => c + 1);
+      onUpvote?.(comment.id);
     }
-    onUpvote?.(comment.id);
   }
 
-  function handleDownvote() {
-    if (userVote === 'down') {
-      setUserVote(null);
-      setVotes((v) => ({ ...v, downvotes: v.downvotes - 1 }));
-    } else {
-      setVotes((v) => ({
-        downvotes: v.downvotes + 1,
-        upvotes: userVote === 'up' ? v.upvotes - 1 : v.upvotes,
-      }));
-      setUserVote('down');
-    }
-    onDownvote?.(comment.id);
-  }
+  // Indentation: each depth adds padding (no border lines)
+  const indentPadding = depth > 0 ? `${depth * 20}px` : '0px';
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}
-      className="group relative"
+      className="ct-comment-node group relative"
+      style={{ paddingLeft: indentPadding }}
     >
-      <div className="flex gap-3">
-        {/* ── Avatar column with thread line ── */}
-        <div className="flex flex-col items-center">
-          <Avatar className="border-border/60 h-7 w-7 shrink-0 border shadow-xs">
+      {/* Depth accent indicator — subtle dot instead of border */}
+      {depth > 0 && (
+        <div
+          className="ct-depth-indicator absolute top-4"
+          style={{
+            left: `${depth * 20 - 10}px`,
+            backgroundColor: depthAccent,
+          }}
+        />
+      )}
+
+      <div className="ct-comment-card rounded-xl p-3 transition-all sm:p-4">
+        {/* ── Avatar + Content Row ── */}
+        <div className="flex gap-3">
+          {/* Avatar */}
+          <Avatar className="ct-avatar h-8 w-8 shrink-0 sm:h-9 sm:w-9">
             <AvatarImage src={comment.author.avatarUrl} alt={comment.author.displayName} />
-            <AvatarFallback className="bg-accent text-accent-foreground font-ibm-plex-mono text-[10px] font-semibold">
+            <AvatarFallback
+              className="font-ibm-plex-mono text-[10px] font-semibold"
+              style={{
+                background: `linear-gradient(135deg, ${depthAccent}22, ${depthAccent}44)`,
+                color: depthAccent,
+              }}
+            >
               {initials}
             </AvatarFallback>
           </Avatar>
 
-          {/* Vertical thread connector line — refined style */}
-          {(hasReplies && showReplies) || showReply ? (
-            <div className="bg-brand-pink-500/20 mt-2 w-[2px] flex-1 rounded-full shadow-sm" />
-          ) : null}
-        </div>
-
-        {/* ── Content ── */}
-        <div className="min-w-0 flex-1 pb-1">
-          {/* Author header */}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="font-libre-baskerville text-text-primary text-[13px] leading-snug font-semibold">
-              {comment.author.displayName}
-            </span>
-            {comment.author.username && (
-              <span className="font-ibm-plex-mono text-muted-foreground text-[11px]">
-                @{comment.author.username}
+          {/* Content Column */}
+          <div className="min-w-0 flex-1">
+            {/* Author header — row with name, username, time */}
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+              <span className="font-libre-baskerville ct-author-name text-[13px] leading-snug font-semibold">
+                {comment.author.displayName}
               </span>
-            )}
-            <span className="font-ibm-plex-mono text-muted-foreground/50 ml-auto text-[11px]">
-              {timeAgo}
-            </span>
-            {comment.isEdited && (
-              <span className="font-ibm-plex-mono text-muted-foreground/40 flex items-center gap-0.5 text-[10px] italic">
-                <Pencil size={9} />
-                edited
-              </span>
-            )}
+              {comment.author.username && (
+                <span className="font-ibm-plex-mono ct-username text-[11px]">
+                  @{comment.author.username}
+                </span>
+              )}
+              <span className="font-ibm-plex-mono ct-timestamp text-[11px]">{timeAgo}</span>
+              {comment.isEdited && (
+                <span className="font-ibm-plex-mono ct-edited flex items-center gap-0.5 text-[10px] italic">
+                  <Pencil size={9} />
+                  edited
+                </span>
+              )}
+            </div>
+
+            {/* Body text */}
+            <p className="ct-comment-body font-lora mt-1.5 text-[14px] leading-relaxed whitespace-pre-wrap antialiased sm:text-[15px]">
+              {comment.content}
+            </p>
+
+            {/* Action row — like, reply count, reply button */}
+            <div className="mt-2.5 flex items-center gap-1.5 sm:gap-2">
+              <LikeButton likes={likeCount} isLiked={isLiked} onToggle={handleLikeToggle} />
+
+              {/* Reply count indicator */}
+              {replyCount > 0 && (
+                <span className="ct-reply-count font-ibm-plex-mono flex items-center gap-1 text-[11px] font-medium">
+                  <MessageCircle size={12} />
+                  {replyCount}
+                </span>
+              )}
+
+              {/* Reply button */}
+              {showReplyButton && canNestDeeper && (
+                <button
+                  onClick={() => setShowReply((p) => !p)}
+                  className="ct-action-btn font-ibm-plex-mono ml-auto flex h-7 items-center gap-1.5 rounded-full px-3 text-[11px] font-semibold transition-all"
+                  aria-label="Reply to this comment"
+                >
+                  <CornerDownRight size={12} strokeWidth={2.5} />
+                  <span className="hidden sm:inline">Reply</span>
+                </button>
+              )}
+            </div>
+
+            {/* Inline reply composer */}
+            <AnimatePresence>
+              {showReply && (
+                <ReplyBox
+                  commentId={comment.id}
+                  authorName={comment.author.username ?? comment.author.displayName}
+                  onSubmit={(content) => {
+                    onReply?.(comment.id, content);
+                  }}
+                  onCancel={() => setShowReply(false)}
+                />
+              )}
+            </AnimatePresence>
           </div>
-
-          {/* Body text styling updated to look more like story text */}
-          <p className="text-text-primary/90 font-lora mt-2 text-[15px] leading-relaxed whitespace-pre-wrap antialiased">
-            {comment.content}
-          </p>
-
-          {/* Action row */}
-          <div className="mt-3 flex items-center gap-3">
-            <VotePill
-              upvotes={votes.upvotes}
-              downvotes={votes.downvotes}
-              userVote={userVote}
-              onUpvote={handleUpvote}
-              onDownvote={handleDownvote}
-            />
-
-            {canNestDeeper && (
-              <button
-                onClick={() => setShowReply((p) => !p)}
-                className="font-ibm-plex-mono text-muted-foreground hover:bg-muted/50 hover:text-text-primary ml-1 flex h-7 items-center gap-1.5 rounded-full px-3 text-[11px] font-semibold transition-all hover:shadow-sm"
-                aria-label="Reply to this comment"
-              >
-                <CornerDownRight size={12} strokeWidth={2.5} />
-                Reply
-              </button>
-            )}
-          </div>
-
-          {/* Inline reply composer */}
-          <AnimatePresence>
-            {showReply && (
-              <ReplyBox
-                commentId={comment.id}
-                authorName={comment.author.username ?? comment.author.displayName}
-                onSubmit={(content) => {
-                  onReply?.(comment.id, content);
-                }}
-                onCancel={() => setShowReply(false)}
-              />
-            )}
-          </AnimatePresence>
         </div>
       </div>
 
       {/* ── Nested replies ── */}
       {hasReplies && (
-        <div className="mt-1 ml-3.5">
+        <div className="mt-1">
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => setShowReplies((p) => !p)}
-            className="font-ibm-plex-mono text-muted-foreground hover:bg-muted hover:text-primary mb-1.5 flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] transition-colors"
+            className="ct-toggle-replies font-ibm-plex-mono mb-1 flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold transition-all"
             aria-expanded={showReplies}
+            style={{ marginLeft: `${(depth + 1) * 20 + 12}px` }}
           >
             {showReplies ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
             {showReplies ? 'Hide' : 'Show'} {replyCount} {replyCount === 1 ? 'reply' : 'replies'}
@@ -351,13 +357,14 @@ export function CommentItem({
                 transition={{ duration: 0.24, ease: 'easeOut' }}
                 className="overflow-hidden"
               >
-                <div className="border-brand-pink-500/20 ml-6 space-y-4 border-l-2 pt-2 pl-6">
+                <div className="space-y-1 pt-1">
                   {comment.replies!.map((reply) => (
                     <CommentItem
                       key={reply.id}
                       comment={reply}
                       depth={depth + 1}
                       maxDepth={maxDepth}
+                      showReplyButton={showReplyButton}
                       onReply={onReply}
                       onUpvote={onUpvote}
                       onDownvote={onDownvote}

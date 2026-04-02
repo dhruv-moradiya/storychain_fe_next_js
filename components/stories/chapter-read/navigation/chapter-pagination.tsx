@@ -1,7 +1,7 @@
 'use client';
 
 import { IChapterNavInfo } from '@/type/chapter/chapter-response.type';
-import { Layers } from 'lucide-react';
+import { Layers, MoveLeft } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -38,7 +38,10 @@ export function ChapterPagination({
               className="border-border/50 hover:border-brand-pink-500/30 group flex h-auto flex-col items-start gap-1 rounded-xl border p-4 text-left transition-colors"
             >
               <div className="flex w-full items-center justify-between">
-                <span className="text-text-secondary-65 text-xs">← Previous</span>
+                <span className="text-text-secondary-65 flex items-center gap-2 text-xs">
+                  <MoveLeft />
+                  Previous
+                </span>
                 <Layers className="text-brand-pink-500/40 group-hover:text-brand-pink-500 size-3.5 transition-colors" />
               </div>
               <span className="text-text-primary line-clamp-1 font-medium">Multiple Paths</span>
