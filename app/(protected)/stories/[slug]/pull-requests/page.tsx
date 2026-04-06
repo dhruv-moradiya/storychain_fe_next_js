@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import { buildStorySubPageMeta } from '@/components/common';
-import SubmitRequestsSection from '@/components/stories/submit-requests/submit-requests-section';
+import SubmitRequestsSection from '@/components/stories/pull-requests/submit-requests-section';
 
 export async function generateMetadata({
   params,

@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { storyChainLandingContent } from '@/constants';
 import { motion } from 'framer-motion';
-import { ArrowRight, BookOpen, LayoutDashboard, PenTool, Sparkles } from 'lucide-react';
+import { ArrowRight, BookOpen, PenTool, Sparkles } from 'lucide-react';
 
 import { fadeIn } from '@/lib/utils';
 
@@ -99,14 +99,14 @@ export const HeroSection = ({ isSignedIn }: IHeroSectionProps) => {
         className="mb-8 flex flex-wrap items-center justify-center gap-4"
       >
         {isSignedIn ? (
-          <Link href="/dashboard">
+          <Link href="/stories">
             <motion.button
               className="group bg-brand-pink-500 shadow-brand-pink-shadow25 flex items-center gap-2 rounded-[6px] px-7 py-2.5 text-sm font-medium text-white shadow-md"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
             >
-              <LayoutDashboard size={16} />
-              Go to Dashboard
+              <BookOpen size={16} />
+              Go to Stories
               <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
             </motion.button>
           </Link>

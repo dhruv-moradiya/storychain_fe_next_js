@@ -61,7 +61,7 @@ export function CTASection() {
                 asChild
                 className="bg-brand-pink-500 hover:bg-brand-pink-600 gap-2 text-white"
               >
-                <Link href="/dashboard">
+                <Link href="/stories">
                   <BookOpen className="h-4 w-4" />
                   Start Writing
                   <ArrowRight className="h-4 w-4" />

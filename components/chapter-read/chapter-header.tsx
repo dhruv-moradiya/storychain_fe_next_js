@@ -1,7 +1,6 @@
 'use client';
 
 import { IChapterDetailExtended } from '@/type';
-import { IChapterDetail } from '@/type/chapter/chapter-detail.type';
 import { formatDistance } from 'date-fns';
 import { Clock, Flag, GitMerge, GitPullRequest } from 'lucide-react';
 

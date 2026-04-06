@@ -35,14 +35,11 @@ export const StoryCard = memo(({ story }: StoryCardProps) => {
 
   return (
     <Link href={`/stories/${story.slug}/overview`} className="block" prefetch={false}>
-      <div className="group/story-card bg-card/50 relative cursor-pointer overflow-hidden rounded-[14px] p-1.5 transition-all duration-300">
-        {/* ✨ HOVER GRADIENT OVERLAY */}
-        <div className="from-primary/5 via-secondary/10 to-primary/10 pointer-events-none absolute inset-0 bg-linear-to-br opacity-0 transition-opacity duration-500 group-hover/story-card:opacity-100" />
-
+      <div className="group/story-card bg-card relative cursor-pointer overflow-hidden rounded-[14px] p-1.5 transition-all duration-300">
         {/* ================= CARD CONTENT ================= */}
         <div className="relative flex flex-1 flex-col justify-between gap-2 rounded-[12px] border p-3 shadow">
           {/* TOP ACCENT */}
-          <div className="bg-secondary absolute inset-x-16 top-0 h-[2px] rounded-b-full" />
+          <div className="bg-brand-orange absolute inset-x-16 top-0 h-[2px] rounded-b-full" />
 
           {/* USER + SLUG */}
           <div className="mb-3 flex items-center gap-2">

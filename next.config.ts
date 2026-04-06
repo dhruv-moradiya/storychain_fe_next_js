@@ -44,6 +44,21 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  async redirects() {
+    return [
+      {
+        source: '/dashboard',
+        destination: '/stories',
+        permanent: true,
+      },
+      {
+        source: '/dashboard/my-chapters',
+        destination: '/chapters',
+        permanent: true,
+      },
+    ];
+  },
+
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [

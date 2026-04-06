@@ -9,7 +9,7 @@ import {
   SpacingSize,
 } from './constants';
 
-interface DashboardContentLayoutProps {
+interface ContentLayoutProps {
   children: React.ReactNode;
   /**
    * Maximum width of the content area
@@ -48,12 +48,12 @@ interface DashboardContentLayoutProps {
  *
  * @example
  * ```tsx
- * <DashboardContentLayout maxWidth="5xl" paddingSize="lg">
+ * <ContentLayout maxWidth="5xl" paddingSize="lg">
  *   <h1>Dashboard Content</h1>
- * </DashboardContentLayout>
+ * </ContentLayout>
  * ```
  */
-export function DashboardContentLayout({
+export function ContentLayout({
   children,
   maxWidth = '7xl',
   className,
@@ -61,7 +61,7 @@ export function DashboardContentLayout({
   spacingSize = 'md',
   paddingSize = 'md',
   centered = true,
-}: DashboardContentLayoutProps) {
+}: ContentLayoutProps) {
   return (
     <div
       className={cn(

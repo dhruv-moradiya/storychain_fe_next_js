@@ -10,12 +10,12 @@ import { useClerk, useUser } from '@clerk/nextjs';
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import {
   Bell,
+  BookOpen,
   Check,
   CoinsIcon,
   Compass,
   Feather,
   HandHeart,
-  LayoutDashboard,
   LogOut,
   Menu,
   Settings,
@@ -45,7 +45,7 @@ import { StorychainLogo } from './logo/storychain-logo';
 import { ThemeToggle } from './theme-toggle';
 
 const mobileNavItems = [
-  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/stories', label: 'Stories', icon: BookOpen },
   { to: '/explore', label: 'Explore', icon: Compass },
   { to: '/builder', label: 'Builder', icon: Feather },
   { to: '/pricing', label: 'Pricing', icon: CoinsIcon },
@@ -267,7 +267,7 @@ export default function Navbar() {
         {/* Desktop Nav Items */}
         {isSignedIn && (
           <ul className="hidden items-center gap-2 md:flex">
-            <NavItem to="/dashboard" label="Dashboard" icon={<LayoutDashboard size={16} />} />
+            <NavItem to="/stories" label="Stories" icon={<BookOpen size={16} />} />
             <NavItem to="/explore" label="Explore" icon={<Compass size={16} />} />
             <NavItem to="/builder" label="Builder" icon={<Feather size={16} />} />
             <NavItem to="/pricing" label="Pricing" icon={<CoinsIcon size={16} />} />
@@ -396,10 +396,7 @@ export default function Navbar() {
                 </motion.div>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent
-                align="end"
-                className="border-border/50 bg-cream-95 w-56 rounded-xl border p-1 shadow-xl backdrop-blur-xl"
-              >
+              <DropdownMenuContent align="end">
                 <DropdownMenuItem className="cursor-default select-none">
                   <div className="flex flex-col">
                     <span className="text-text-primary font-medium">

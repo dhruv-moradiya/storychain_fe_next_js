@@ -48,3 +48,247 @@
   outline: none !important;
   box-shadow: none !important;
 }
+
+/* ===========================================
+   Comment Tree Component Styles
+   =========================================== */
+
+/* ── Section wrapper ── */
+.ct-section {
+  --ct-bg: var(--bg-cream);
+  --ct-card-bg: var(--cream-40);
+  --ct-card-hover: var(--cream-60);
+  --ct-border: var(--border);
+  --ct-text: var(--text-primary);
+  --ct-text-secondary: var(--text-secondary-65);
+  --ct-meta: var(--text-secondary-70);
+  --ct-surface: var(--cream-30);
+  --ct-surface-hover: var(--cream-50);
+}
+
+.dark .ct-section {
+  --ct-bg: var(--bg-dark);
+  --ct-card-bg: rgba(30, 30, 42, 0.5);
+  --ct-card-hover: rgba(35, 35, 50, 0.6);
+  --ct-border: var(--border);
+  --ct-text: var(--text-primary);
+  --ct-text-secondary: var(--text-secondary-65);
+  --ct-meta: var(--text-secondary-70);
+  --ct-surface: rgba(25, 25, 38, 0.5);
+  --ct-surface-hover: rgba(35, 35, 50, 0.6);
+}
+
+/* ── Heading & Header ── */
+.ct-heading {
+  color: var(--ct-text);
+}
+
+.ct-header-icon {
+  background: rgba(236, 72, 153, 0.08);
+}
+
+.dark .ct-header-icon {
+  background: rgba(240, 106, 175, 0.1);
+}
+
+.ct-thread-badge {
+  background: var(--ct-surface);
+  border: 1px solid var(--ct-border);
+  color: var(--ct-meta);
+}
+
+.ct-thread-count {
+  color: var(--ct-text);
+}
+
+/* ── Composer ── */
+.ct-composer {
+  background: var(--ct-card-bg);
+  border: 1px solid var(--ct-border);
+  backdrop-filter: blur(8px);
+}
+
+.ct-composer--focused {
+  border-color: var(--brand-pink-500);
+  box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.06);
+}
+
+.dark .ct-composer--focused {
+  box-shadow: 0 0 0 3px rgba(240, 106, 175, 0.08);
+}
+
+.ct-composer-textarea {
+  color: var(--ct-text);
+}
+
+.ct-composer-textarea::placeholder {
+  color: var(--ct-text-secondary);
+}
+
+.ct-composer-footer {
+  border-top: 1px solid var(--ct-border);
+}
+
+/* ── Meta Text ── */
+.ct-meta-text {
+  color: var(--ct-meta);
+}
+
+/* ── Comment Card ── */
+.ct-comment-card {
+  background: transparent;
+}
+
+.ct-comment-card:hover {
+  background: var(--ct-card-bg);
+}
+
+/* ── Author & Text ── */
+.ct-author-name {
+  color: var(--ct-text);
+}
+
+.ct-username {
+  color: var(--ct-meta);
+}
+
+.ct-timestamp {
+  color: var(--ct-text-secondary);
+  margin-left: auto;
+}
+
+@media (max-width: 639px) {
+  .ct-timestamp {
+    margin-left: 0;
+    width: 100%;
+    font-size: 10px;
+  }
+}
+
+.ct-edited {
+  color: var(--ct-text-secondary);
+}
+
+.ct-comment-body {
+  color: var(--ct-text);
+  opacity: 0.92;
+}
+
+/* ── Depth Indicator (dot) ── */
+.ct-depth-indicator {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.ct-comment-node:hover > .ct-depth-indicator {
+  opacity: 0.8;
+}
+
+/* ── Avatar ── */
+.ct-avatar {
+  border: 1.5px solid var(--ct-border);
+  box-shadow: var(--shadow-xs);
+}
+
+/* ── Action Button (like, reply) ── */
+.ct-action-btn {
+  color: var(--ct-meta);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.ct-action-btn:hover {
+  color: var(--ct-text);
+  background: var(--ct-surface);
+}
+
+.ct-action-btn--active {
+  background: rgba(236, 72, 153, 0.08);
+}
+
+.dark .ct-action-btn--active {
+  background: rgba(240, 106, 175, 0.1);
+}
+
+.ct-action-btn--active:hover {
+  background: rgba(236, 72, 153, 0.14);
+}
+
+.dark .ct-action-btn--active:hover {
+  background: rgba(240, 106, 175, 0.16);
+}
+
+/* ── Reply Count ── */
+.ct-reply-count {
+  color: var(--ct-meta);
+}
+
+/* ── Ghost Button ── */
+.ct-btn-ghost {
+  color: var(--ct-meta);
+}
+
+.ct-btn-ghost:hover {
+  color: var(--ct-text);
+  background: var(--ct-surface);
+}
+
+/* ── Toggle Replies ── */
+.ct-toggle-replies {
+  color: var(--brand-pink-500);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.ct-toggle-replies:hover {
+  background: var(--ct-surface);
+}
+
+/* ── Reply Box ── */
+.ct-reply-box {
+  background: var(--ct-surface);
+  border: 1px solid var(--ct-border);
+  backdrop-filter: blur(6px);
+}
+
+.ct-reply-textarea {
+  color: var(--ct-text);
+}
+
+.ct-reply-textarea::placeholder {
+  color: var(--ct-text-secondary);
+}
+
+.ct-reply-footer {
+  border-top: 1px solid var(--ct-border);
+}
+
+/* ── Deleted Comment ── */
+.ct-comment-deleted {
+  background: var(--ct-surface);
+  opacity: 0.6;
+}
+
+.ct-deleted-icon {
+  border: 1px dashed var(--ct-border);
+  color: var(--ct-meta);
+}
+
+/* ── Empty State ── */
+.ct-empty {
+  background: var(--ct-surface);
+  border: 1px dashed var(--ct-border);
+}
+
+.ct-empty-icon {
+  background: rgba(236, 72, 153, 0.05);
+}
+
+.dark .ct-empty-icon {
+  background: rgba(240, 106, 175, 0.06);
+}

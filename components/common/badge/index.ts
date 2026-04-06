@@ -43,6 +43,8 @@ export { textBadge, iconBadge, statusBadge, countBadge } from './utils';
 export {
   storyStatusBadge,
   contentRatingBadge,
+  tagBadge,
+  tagsBadges,
   collaboratorRoleBadge,
   collaboratorStatusBadge,
   genreBadge,
@@ -50,3 +52,12 @@ export {
   genresToBadgeConfigs,
   chapterStatusBadge,
 } from './story-badges';
+
+// PR-specific badges
+export {
+  prLabelBadge,
+  prLabelsBadges,
+  prStatusBadge,
+  prTypeBadge,
+  prTimelineActionBadge,
+} from './pr-badges';

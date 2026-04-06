@@ -4,10 +4,11 @@ import Link from 'next/link';
 
 import { storyChainLandingContent } from '@/constants';
 import { motion } from 'framer-motion';
-import { ArrowRight, LayoutDashboard, Sparkles } from 'lucide-react';
+import { ArrowRight, BookOpen, Sparkles } from 'lucide-react';
 
 import { fadeIn } from '@/lib/utils';
 
+import { Button } from '../ui/button';
 import { HeroFlow } from './hero-flow';
 
 interface INewHeroSectionProps {
@@ -64,15 +65,11 @@ export const NewHeroSection = ({ isSignedIn }: INewHeroSectionProps) => {
           {/* CTAs */}
           <motion.div {...fadeIn(0.4)} className="flex flex-wrap items-center gap-3">
             {isSignedIn ? (
-              <Link href="/dashboard">
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="shadow-brand-pink-shadow25 group bg-brand-pink-500 flex items-center gap-2 rounded-lg px-7 py-3 text-sm font-semibold text-white shadow-sm transition-all"
-                >
-                  <LayoutDashboard size={16} />
-                  Go to Dashboard
-                </motion.button>
+              <Link href="/stories">
+                <Button className="cursor-pointer rounded-sm">
+                  <BookOpen size={16} />
+                  Go to Stories
+                </Button>
               </Link>
             ) : (
               <>

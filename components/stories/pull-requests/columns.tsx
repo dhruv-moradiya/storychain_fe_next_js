@@ -27,27 +27,22 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 // --- Config ---
 
 const STATUS: Record<PRStatus, { icon: LucideIcon; color: BadgeColorKey; label: string }> = {
-  OPEN: {
+  [PRStatus.OPEN]: {
     icon: GitPullRequest,
     color: 'success',
     label: 'Open',
   },
-  APPROVED: {
+  [PRStatus.APPROVED]: {
     icon: Check,
     color: 'blue',
     label: 'Approved',
   },
-  MERGED: {
+  [PRStatus.MERGED]: {
     icon: GitMerge,
     color: 'purple',
     label: 'Merged',
   },
-  REJECTED: {
-    icon: GitPullRequestClosed,
-    color: 'error',
-    label: 'Rejected',
-  },
-  CLOSED: {
+  [PRStatus.CLOSED]: {
     icon: GitPullRequestClosed,
     color: 'slate',
     label: 'Closed',
@@ -55,9 +50,9 @@ const STATUS: Record<PRStatus, { icon: LucideIcon; color: BadgeColorKey; label: 
 };
 
 const TYPE_ICON: Record<PRType, LucideIcon> = {
-  NEW_CHAPTER: Plus,
-  EDIT_CHAPTER: FileEdit,
-  DELETE_CHAPTER: Trash2,
+  [PRType.NEW_BRANCH]: Plus,
+  [PRType.CONTINUATION]: FileEdit,
+  [PRType.EDIT]: Trash2,
 };
 
 // --- Columns ---
@@ -66,9 +61,8 @@ export const columns: ColumnDef<IPullRequest>[] = [
   {
     accessorKey: 'status',
     header: 'Status',
-    cell: ({ row }) => {
-      const status = row.getValue('status') as PRStatus;
-      const config = STATUS[status];
+    cell: ({}) => {
+      const config = STATUS['approved'];
 
       return (
         <div className="flex items-center gap-2">
@@ -101,10 +95,10 @@ export const columns: ColumnDef<IPullRequest>[] = [
             <span className="text-text-secondary-65 text-xs">#{pr._id.slice(-4)}</span>
           </div>
           <div className="text-text-secondary-65 flex items-center gap-1.5 text-xs">
-            <span className="font-playfair">{pr.author?.displayName || pr.author?.username}</span>
+            <span className="font-playfair">Gojo Satoru</span>
             <span>•</span>
-            <span className="text-text-primary font-playfair max-w-[150px] truncate font-medium">
-              {pr.chapter?.title}
+            <span className="text-text-primary font-playfair max-w-37.5 truncate font-medium">
+              Chapter 5: Jujutsu Kaisen
             </span>
           </div>
         </div>
@@ -135,18 +129,18 @@ export const columns: ColumnDef<IPullRequest>[] = [
     accessorKey: 'changes',
     header: 'Changes',
     cell: ({ row }) => {
-      const changes = row.original.changes;
+      const changes = row.original.content;
       return (
         <div className="grid grid-cols-2 gap-1">
           {Badge({
-            label: `+${changes.additionsCount}`,
+            label: `+${changes?.proposed || ''}`,
             color: 'emerald',
             size: 'sm',
             style: 'soft',
             mono: true,
           })}
           {Badge({
-            label: `-${changes.deletionsCount || 0}`,
+            label: `-${changes.wordCount || 0}`,
             color: 'rose',
             size: 'sm',
             style: 'soft',

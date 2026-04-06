@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
+import { cn, fadeIn } from '@/lib/utils';
 
 interface DangerTabProps {
   storyTitle?: string;
@@ -57,15 +57,13 @@ function DangerAction({
 }: DangerActionProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay }}
+      {...fadeIn(delay)}
       className={cn('border-border/50 rounded-xl border p-5', cardClass)}
     >
       <div className="flex items-start gap-4">
         <div
           className={cn(
-            'flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg',
+            'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg',
             iconBgClass
           )}
         >
@@ -125,11 +123,10 @@ export function DangerTab({
       <div className="space-y-4">
         {/* Warning Banner */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          {...fadeIn(0)}
           className="flex items-start gap-3 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4"
         >
-          <AlertTriangle className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-600" />
+          <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
           <div>
             <h4 className="font-medium text-amber-800 dark:text-amber-400">Proceed with caution</h4>
             <p className="mt-1 text-sm text-amber-700 dark:text-amber-500">
@@ -159,7 +156,7 @@ export function DangerTab({
           buttonText="Transfer Ownership"
           buttonClass="border-purple-500/50 text-purple-600 hover:bg-purple-500/10"
           onClick={() => setOpenDialog('transfer')}
-          delay={0.2}
+          delay={0.3}
         />
 
         {/* Delete Story */}
@@ -178,7 +175,7 @@ export function DangerTab({
           buttonVariant="destructive"
           onClick={() => setOpenDialog('delete')}
           cardClass="border-destructive/30 bg-destructive/5"
-          delay={0.3}
+          delay={0.5}
         />
       </div>
 

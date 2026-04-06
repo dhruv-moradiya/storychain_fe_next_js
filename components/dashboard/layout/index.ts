@@ -5,7 +5,7 @@
  * All components are designed to work together while remaining independently composable.
  */
 
-export { DashboardContentLayout } from './dashboard-content-layout';
+export { ContentLayout } from './content-layout';
 export { DashboardSection } from './dashboard-section';
 export { DashboardGrid } from './dashboard-grid';
 export { DashboardEmptyState } from './dashboard-empty-state';

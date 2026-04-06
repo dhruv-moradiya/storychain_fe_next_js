@@ -26,6 +26,7 @@ export function NotificationsTab() {
       <SettingCard
         title="Activity Notifications"
         description="Get notified about activity on your story"
+        index={0.1}
       >
         <ToggleRow
           icon={<MessageSquare size={18} />}
@@ -61,7 +62,7 @@ export function NotificationsTab() {
       </SettingCard>
 
       {/* Email Digest */}
-      <SettingCard title="Email Preferences">
+      <SettingCard title="Email Preferences" index={0.3}>
         <ToggleRow
           icon={<Bell size={18} />}
           label="Weekly Digest"

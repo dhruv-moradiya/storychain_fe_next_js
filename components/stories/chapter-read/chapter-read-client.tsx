@@ -16,7 +16,6 @@ import {
   useStartReadingSession,
 } from '@/services/chapters/chapters.mutation';
 
-import { ChapterActionBar } from './actions/chapter-action-bar';
 import { ChapterHeader } from './header/chapter-header';
 import { useChapterActions } from './hooks/use-chapter-actions';
 import { ChapterPagination } from './navigation/chapter-pagination';
@@ -48,11 +47,8 @@ export default function ChapterReadClient({
 
   const {
     isBookmarked,
-    userVote,
     handleShare,
     handleBookmark,
-    handleVote,
-    handleBranch,
     handleEdit,
     handleCreatePR,
     handleBack,
@@ -112,12 +108,12 @@ export default function ChapterReadClient({
       <main className="mx-auto max-w-4xl px-5 py-10 sm:px-8 md:px-10 lg:px-12 lg:py-16">
         <ChapterReader chapter={chapter} variant="full" />
 
-        <ChapterActionBar
+        {/* <ChapterActionBar
           stats={chapter.stats}
           userVote={userVote}
           onVote={handleVote}
           onBranch={handleBranch}
-        />
+        /> */}
 
         <ChapterPagination
           previousChapters={chapter.previousChapters}

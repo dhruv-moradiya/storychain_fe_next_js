@@ -2,71 +2,105 @@
 
 // ── Pull Request Types ────────────────────────────────────────────────────────
 
-export type PRType = 'NEW_CHAPTER' | 'EDIT_CHAPTER' | 'DELETE_CHAPTER';
+enum PRType {
+  NEW_BRANCH = 'new_branch',
+  CONTINUATION = 'continuation',
+  EDIT = 'edit',
+}
 
-export type PRStatus = 'OPEN' | 'APPROVED' | 'REJECTED' | 'CLOSED' | 'MERGED';
+const PR_TYPES = ['new_branch', 'continuation', 'edit'] as const;
 
-export type PRLabel = 'NEEDS_REVIEW' | 'QUALITY_ISSUE' | 'GRAMMAR' | 'PLOT_HOLE' | 'GOOD_FIRST_PR';
+enum PRStatus {
+  OPEN = 'open',
+  APPROVED = 'approved',
+  CLOSED = 'closed',
+  MERGED = 'merged',
+}
 
-export type TimelineAction =
-  | 'CREATED'
-  | 'REVIEW_REQUESTED'
-  | 'REVIEW_SUBMITTED'
-  | 'APPROVED'
-  | 'CHANGES_REQUESTED'
-  | 'VOTED'
-  | 'AUTO_APPROVED'
-  | 'MERGED'
-  | 'CLOSED'
-  | 'REOPENED'
-  | 'MARKED_DRAFT'
-  | 'READY_FOR_REVIEW';
+const PR_STATUSES = ['open', 'approved', 'closed', 'merged'] as const;
+
+enum PRLabel {
+  NEEDS_REVIEW = 'needs_review',
+  QUALITY_ISSUE = 'quality_issue',
+  GRAMMAR = 'grammar',
+  PLOT_HOLE = 'plot_hole',
+  LORE_INCONSISTENCY = 'lore_inconsistency',
+  CONFLICT = 'conflict',
+  DUPLICATE = 'duplicate',
+  CHANGES_REQUESTED = 'changes_requested',
+  APPROVED = 'approved',
+  GOOD_FIRST_PR = 'good_first_pr',
+}
+
+const PR_LABELS = [
+  'needs_review',
+  'quality_issue',
+  'grammar',
+  'plot_hole',
+  'lore_inconsistency',
+  'conflict',
+  'duplicate',
+  'changes_requested',
+  'approved',
+  'good_first_pr',
+] as const;
+
+enum PRTimelineAction {
+  SUBMITTED = 'submitted',
+  REVIEW_REQUESTED = 'review_requested',
+  REVIEW_SUBMITTED = 'review_submitted',
+  APPROVED = 'approved',
+  CHANGES_REQUESTED = 'changes_requested',
+  VOTED = 'voted',
+  AUTO_APPROVED = 'auto_approved',
+  MERGED = 'merged',
+  CLOSED = 'closed',
+  REOPENED = 'reopened',
+  MARKED_DRAFT = 'marked_draft',
+  READY_FOR_REVIEW = 'ready_for_review',
+  LABEL_ADDED = 'label_added',
+  LABEL_REMOVED = 'label_removed',
+}
+
+const PR_TIMELINE_ACTIONS = [
+  'submitted',
+  'review_requested',
+  'review_submitted',
+  'approved',
+  'changes_requested',
+  'voted',
+  'auto_approved',
+  'merged',
+  'closed',
+  'reopened',
+  'marked_draft',
+  'ready_for_review',
+  'label_added',
+  'label_removed',
+] as const;
+
+export {
+  PRType,
+  PR_TYPES,
+  PRStatus,
+  PR_STATUSES,
+  PRLabel,
+  PR_LABELS,
+  PRTimelineAction,
+  PR_TIMELINE_ACTIONS,
+};
+
+// Derived types (mirrors BE `typeof ARRAY[number]` pattern)
+export type TPRType = (typeof PR_TYPES)[number];
+export type TPRStatus = (typeof PR_STATUSES)[number];
+export type TPRLabel = (typeof PR_LABELS)[number];
+export type TPRTimelineAction = (typeof PR_TIMELINE_ACTIONS)[number];
 
 export interface ITimelineEntry {
-  action: TimelineAction;
+  action: PRTimelineAction;
   performedBy: string | null; // null if system-generated
   performedAt: string;
   metadata?: Record<string, unknown>;
-}
-
-export interface IPRChanges {
-  original?: string;
-  proposed: string;
-  diff?: string;
-  lineCount?: number;
-  additionsCount?: number;
-  deletionsCount?: number;
-}
-
-export interface IPRVotes {
-  upvotes: number;
-  downvotes: number;
-  score: number;
-}
-
-export interface IAutoApprove {
-  enabled: boolean;
-  threshold: number;
-  timeWindow: number;
-  qualifiedAt?: string;
-  autoApprovedAt?: string;
-}
-
-export interface IPRStats {
-  views: number;
-  discussions: number;
-  reviewsReceived: number;
-  timeToMerge?: number;
-  avgReviewTime?: number;
-}
-
-export interface IApprovalsStatus {
-  required: number;
-  received: number;
-  pending: number;
-  approvers: string[];
-  blockers: string[];
-  canMerge: boolean;
 }
 
 export interface IPullRequest {
@@ -74,64 +108,76 @@ export interface IPullRequest {
   title: string;
   description: string;
 
-  // References
-  storyId: string;
-  chapterId: string;
-  parentChapterId: string;
+  // Story/Chapter References (slug-based, mirrors BE)
+  storySlug: string;
+  chapterSlug: string;
+  parentChapterSlug: string;
   authorId: string;
 
-  // Author info (populated)
-  author?: {
-    _id: string;
-    username: string;
-    displayName?: string;
-    avatar?: string;
+  // PR Type
+  prType: TPRType;
+
+  // Content
+  content: {
+    proposed: string;
+    wordCount: number;
+    readingMinutes: number;
   };
 
-  // Story info (populated)
-  story?: {
-    _id: string;
-    title: string;
-    slug: string;
+  // Status
+  status: TPRStatus;
+
+  // Voting aggregate (counts only; actual votes live in PRVote collection)
+  votes: {
+    upvotes: number;
+    downvotes: number;
+    score: number;
   };
 
-  // Chapter info (populated)
-  chapter?: {
-    _id: string;
-    title: string;
-    slug?: string;
-  };
-
-  prType: PRType;
-  changes: IPRChanges;
-  status: PRStatus;
-  votes: IPRVotes;
+  // Comment count (actual comments live in PRComment collection)
   commentCount: number;
-  autoApprove: IAutoApprove;
-  labels: PRLabel[];
+
+  // Auto-approve config
+  autoApprove: {
+    enabled: boolean;
+    threshold: number; // votes needed
+    timeWindow: number; // days
+    qualifiedAt?: string; // when score first passed threshold
+    autoApprovedAt?: string; // when auto-approval fired
+  };
+
+  // Labels
+  labels: TPRLabel[];
 
   // Merge info
   mergedAt?: string;
   mergedBy?: string;
+
   closedAt?: string;
   closedBy?: string;
   closeReason?: string;
 
   // Draft
   isDraft: boolean;
-  draftReason?: string;
-  draftedAt?: string;
+  draftReason: string;
+  draftedAt: string;
 
-  // Timeline & Stats
-  timeline: ITimelineEntry[];
-  stats: IPRStats;
-  approvalsStatus: IApprovalsStatus;
+  // Approvals
+  approvalsStatus: {
+    required: number;
+    received: number;
+    pending: number;
+    approvers: string[];
+    blockers: string[];
+    canMerge: boolean;
+  };
 
-  // Moderation
-  requiresModeration: boolean;
-  flaggedForReview: boolean;
-  moderationNotes?: string;
-  reportIds: string[];
+  // Stats
+  stats: {
+    views: number;
+    discussions: number;
+    reviewsReceived: number;
+  };
 
   createdAt: string;
   updatedAt: string;

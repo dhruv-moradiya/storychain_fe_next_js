@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Image as ImageIcon, Loader2, Trash2 } from 'lucide-react';
 
 import { Switch } from '@/components/ui/switch';
-import { cn } from '@/lib/utils';
+import { cn, fadeIn } from '@/lib/utils';
 
 /* ---------------------------------------------
  * Setting Card Container
@@ -13,16 +13,14 @@ export const SettingCard = ({
   title,
   description,
   children,
+  index,
 }: {
   title?: string;
   description?: string;
   children: React.ReactNode;
+  index: number;
 }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 1, y: 0 }}
-    className="border-border/50 rounded-xl border"
-  >
+  <motion.div {...fadeIn(index)} className="border-border/50 rounded-xl border">
     {(title || description) && (
       <div className="border-border/30 border-b px-5 py-4">
         {title && <h3 className="text-text-primary font-semibold">{title}</h3>}

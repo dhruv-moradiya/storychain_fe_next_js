@@ -11,7 +11,6 @@ import {
 
 import { ClerkProvider } from '@clerk/nextjs';
 
-import { NavigationProgress } from '@/components/common/loader/navigation-progress';
 import { FooterSection } from '@/components/home/footer-section';
 import { QueryProvider } from '@/components/providers/query-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
@@ -165,7 +164,7 @@ export default function RootLayout({
           >
             <QueryProvider>
               <main>
-                <NavigationProgress />
+                {/* <NavigationProgress /> */}
                 <ToastProvider>
                   {children}
                   <FooterSection />

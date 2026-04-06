@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, Send } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -30,6 +30,7 @@ interface ComposerProps {
 function Composer({ onSubmit }: ComposerProps) {
   const [text, setText] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const maxLen = 2000;
 
   async function handleSubmit() {
@@ -39,74 +40,98 @@ function Composer({ onSubmit }: ComposerProps) {
     await Promise.resolve(onSubmit(trimmed));
     setText('');
     setSubmitting(false);
+    setIsFocused(false);
   }
 
   const pct = Math.min(text.length / maxLen, 1);
-  const circumference = 2 * Math.PI * 9; // r=9
+  const circumference = 2 * Math.PI * 9;
 
   return (
-    <div className="bg-card/40 border-border/40 focus-within:border-brand-pink-500/30 focus-within:ring-brand-pink-500/5 space-y-3 rounded-2xl border p-5 shadow-xs backdrop-blur-sm transition-all focus-within:ring-4">
+    <div
+      className={cn(
+        'ct-composer rounded-2xl p-4 transition-all duration-300 sm:p-5',
+        isFocused && 'ct-composer--focused'
+      )}
+    >
       <Textarea
         id="comment-composer"
         value={text}
         onChange={(e) => setText(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => !text && setIsFocused(false)}
         placeholder="Share your thoughts…"
-        className="text-text-primary placeholder:text-muted-foreground/40 font-lora min-h-[100px] resize-none border-0 bg-transparent p-0 text-[16px] leading-relaxed shadow-none focus-visible:ring-0"
+        className="ct-composer-textarea font-lora min-h-[60px] resize-none border-0 bg-transparent p-0 text-[15px] leading-relaxed shadow-none transition-all focus-visible:ring-0 sm:text-[16px]"
+        style={{ minHeight: isFocused ? '100px' : '60px' }}
         maxLength={maxLen}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleSubmit();
         }}
       />
-      <div className="border-border/40 flex items-center justify-between border-t pt-4">
-        {/* Character ring */}
-        <div className="flex items-center gap-2.5">
-          <div className="relative flex items-center justify-center">
-            <svg width="24" height="24" className="-rotate-90">
-              <circle
-                cx="12"
-                cy="12"
-                r="9"
-                fill="none"
-                stroke="var(--border)"
-                strokeWidth="2.5"
-                className="opacity-40"
-              />
-              <circle
-                cx="12"
-                cy="12"
-                r="9"
-                fill="none"
-                stroke={pct > 0.9 ? 'var(--destructive)' : 'var(--brand-pink-500)'}
-                strokeWidth="2.5"
-                strokeDasharray={circumference}
-                strokeDashoffset={circumference * (1 - pct)}
-                strokeLinecap="round"
-                className="transition-all duration-300"
-              />
-            </svg>
-            <span className="font-ibm-plex-mono absolute text-[8px] font-bold">
-              {Math.round(pct * 100)}%
-            </span>
-          </div>
-          <span className="font-ibm-plex-mono text-muted-foreground/60 text-[10px] font-bold tracking-tight">
-            {maxLen - text.length} chars remaining
-          </span>
-        </div>
 
-        <div className="flex items-center gap-4">
-          <span className="font-ibm-plex-mono text-muted-foreground/40 hidden text-[10px] font-bold tracking-widest uppercase sm:inline">
-            ⌘ + Enter to post
-          </span>
-          <Button
-            size="sm"
-            className="bg-brand-pink-500 hover:bg-brand-pink-600 h-9 rounded-full px-6 text-xs font-bold shadow-sm transition-all active:scale-95 disabled:opacity-50"
-            onClick={handleSubmit}
-            disabled={!text.trim() || submitting || text.length > maxLen}
+      {/* Footer - only visible when focused or has text */}
+      <AnimatePresence>
+        {(isFocused || text.length > 0) && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
           >
-            {submitting ? 'Posting…' : 'Post Comment'}
-          </Button>
-        </div>
-      </div>
+            <div className="ct-composer-footer flex items-center justify-between pt-3">
+              {/* Character ring */}
+              <div className="flex items-center gap-2.5">
+                <div className="relative flex items-center justify-center">
+                  <svg width="22" height="22" className="-rotate-90">
+                    <circle
+                      cx="11"
+                      cy="11"
+                      r="9"
+                      fill="none"
+                      stroke="var(--border)"
+                      strokeWidth="2"
+                      className="opacity-30"
+                    />
+                    <circle
+                      cx="11"
+                      cy="11"
+                      r="9"
+                      fill="none"
+                      stroke={pct > 0.9 ? 'var(--destructive)' : 'var(--brand-pink-500)'}
+                      strokeWidth="2"
+                      strokeDasharray={circumference}
+                      strokeDashoffset={circumference * (1 - pct)}
+                      strokeLinecap="round"
+                      className="transition-all duration-300"
+                    />
+                  </svg>
+                </div>
+                <span className="font-ibm-plex-mono ct-meta-text text-[10px] font-bold tracking-tight">
+                  {maxLen - text.length}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="font-ibm-plex-mono ct-meta-text hidden text-[10px] font-bold tracking-widest uppercase sm:inline">
+                  ⌘ + Enter
+                </span>
+                <Button
+                  size="sm"
+                  className="bg-brand-pink-500 hover:bg-brand-pink-600 group/btn h-9 rounded-full px-5 text-xs font-bold shadow-sm transition-all active:scale-95 disabled:opacity-40"
+                  onClick={handleSubmit}
+                  disabled={!text.trim() || submitting || text.length > maxLen}
+                >
+                  <Send
+                    size={14}
+                    className="mr-1.5 transition-transform group-hover/btn:translate-x-0.5"
+                  />
+                  {submitting ? 'Posting…' : 'Post'}
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -122,26 +147,27 @@ export function CommentTree({
   onDownvote,
   totalCount,
   showComposer = true,
+  showReplyButton = true,
   className,
 }: CommentTreeProps) {
   const topLevel = comments.filter((c) => !c.isDeleted || (c.replies ?? []).length > 0);
   const count = totalCount ?? topLevel.length;
 
   return (
-    <section className={cn('space-y-8', className)} aria-label="Comments section">
+    <section className={cn('ct-section space-y-6', className)} aria-label="Comments section">
       {/* ─── Header ─── */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="bg-brand-pink-500/10 flex h-9 w-9 items-center justify-center rounded-xl">
+          <div className="ct-header-icon flex h-9 w-9 items-center justify-center rounded-xl">
             <MessageSquare size={18} className="text-brand-pink-500" />
           </div>
-          <h2 className="font-libre-baskerville text-text-primary text-xl font-bold">
+          <h2 className="font-libre-baskerville ct-heading text-lg font-bold sm:text-xl">
             Discussions
           </h2>
         </div>
         {count > 0 && (
-          <div className="bg-muted/50 border-border/40 font-ibm-plex-mono text-muted-foreground flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11px] font-bold tracking-tight">
-            <span className="text-text-primary">{count}</span>
+          <div className="ct-thread-badge font-ibm-plex-mono flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold tracking-tight">
+            <span className="ct-thread-count">{count}</span>
             <span className="opacity-50">Threads</span>
           </div>
         )}
@@ -156,7 +182,7 @@ export function CommentTree({
           variants={listVariants}
           initial="hidden"
           animate="visible"
-          className="space-y-8"
+          className="space-y-2"
         >
           <AnimatePresence initial={false}>
             {topLevel.map((comment) => (
@@ -165,6 +191,7 @@ export function CommentTree({
                   comment={comment}
                   depth={0}
                   maxDepth={maxDepth}
+                  showReplyButton={showReplyButton}
                   onReply={onSubmitReply}
                   onUpvote={onUpvote}
                   onDownvote={onDownvote}
@@ -178,16 +205,16 @@ export function CommentTree({
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="bg-card/20 border-border/40 flex flex-col items-center gap-4 rounded-3xl border border-dashed py-16 text-center"
+          className="ct-empty flex flex-col items-center gap-4 rounded-2xl py-14 text-center sm:py-16"
         >
-          <div className="bg-brand-pink-500/5 flex h-16 w-16 items-center justify-center rounded-2xl">
-            <MessageSquare size={28} className="text-brand-pink-500/30" />
+          <div className="ct-empty-icon flex h-14 w-14 items-center justify-center rounded-2xl sm:h-16 sm:w-16">
+            <MessageSquare size={26} className="text-brand-pink-500/30" />
           </div>
           <div className="space-y-1">
-            <p className="font-libre-baskerville text-text-primary text-base font-bold">
+            <p className="font-libre-baskerville ct-heading text-base font-bold">
               Quiet in the archives...
             </p>
-            <p className="text-muted-foreground mx-auto max-w-[240px] font-sans text-xs leading-relaxed">
+            <p className="ct-meta-text mx-auto max-w-[240px] font-sans text-xs leading-relaxed">
               Be the first to leave a mark on this chapter. Your thoughts help shape the story.
             </p>
           </div>

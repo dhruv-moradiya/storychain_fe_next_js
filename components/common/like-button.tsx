@@ -1,134 +1,225 @@
-import { useMemo } from 'react';
+'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { useRef, useState } from 'react';
 
-type LikeButtonProps = {
-  liked: boolean;
-  onChange: (liked: boolean) => void;
-  size?: number;
-  color?: string;
-  particleCount?: number;
-  disabled?: boolean;
+import NumberFlow from '@number-flow/react';
+import { motion } from 'framer-motion';
+
+const CircleAnimation = () => {
+  const CIRCLE_RADIUS = 20;
+
+  return (
+    <svg
+      className="pointer-events-none absolute -top-3 -left-3"
+      style={{
+        width: CIRCLE_RADIUS * 2,
+        height: CIRCLE_RADIUS * 2,
+      }}
+    >
+      <motion.circle
+        cx={CIRCLE_RADIUS}
+        cy={CIRCLE_RADIUS}
+        r={CIRCLE_RADIUS - 2}
+        fill="none"
+        initial={{
+          scale: 0,
+          stroke: '#E5214A',
+          strokeWidth: CIRCLE_RADIUS * 2,
+        }}
+        animate={{
+          scale: 1,
+          stroke: '#CC8EF5',
+          strokeWidth: 0,
+        }}
+        transition={{
+          duration: 0.4,
+          ease: [0.33, 1, 0.68, 1], // cubic-out
+        }}
+      />
+    </svg>
+  );
 };
 
-export default function LikeButton({
-  liked,
-  onChange,
-  size = 56,
-  color = '#ff4d6d',
-  particleCount = 10,
-  disabled = false,
-}: LikeButtonProps) {
-  const particles = useMemo(
-    () =>
-      Array.from({ length: particleCount }).map((_, i) => {
-        const angle = (i * (360 / particleCount) * Math.PI) / 180;
-        return {
-          x: Math.cos(angle) * (size * 0.7),
-          y: Math.sin(angle) * (size * 0.7),
-          // eslint-disable-next-line react-hooks/purity
-          scale: 0.5 + Math.random(),
-        };
-      }),
-    [particleCount, size]
+// Burst animation with particles
+const BurstAnimation = () => {
+  // Colors for particles with from/to transitions
+  const colorPairs = [
+    { from: '#9EC9F5', to: '#9ED8C6' },
+    { from: '#91D3F7', to: '#9AE4CF' },
+    { from: '#DC93CF', to: '#E3D36B' },
+    { from: '#CF8EEF', to: '#CBEB98' },
+    { from: '#87E9C6', to: '#1FCC93' },
+    { from: '#A7ECD0', to: '#9AE4CF' },
+    { from: '#87E9C6', to: '#A635D9' },
+    { from: '#D58EB3', to: '#E0B6F5' },
+    { from: '#F48BA2', to: '#CF8EEF' },
+    { from: '#91D3F7', to: '#A635D9' },
+    { from: '#CF8EEF', to: '#CBEB98' },
+    { from: '#87E9C6', to: '#A635D9' },
+    { from: '#9EC9F5', to: '#9ED8C6' },
+    { from: '#91D3F7', to: '#9AE4CF' },
+  ];
+
+  return (
+    <div className="pointer-events-none absolute -top-3 -left-3 grid size-10 place-items-center">
+      {colorPairs.map((colors, index) => (
+        <Particle
+          key={index}
+          fromColor={colors.from}
+          toColor={colors.to}
+          index={index}
+          totalParticles={colorPairs.length}
+        />
+      ))}
+    </div>
   );
+};
+
+const BURST_RADIUS = 32;
+const START_RADIUS = 4;
+const PATH_SCALE_FACTOR = 0.8;
+
+// Particle component for burst animation
+const Particle = ({
+  fromColor,
+  toColor,
+  index,
+  totalParticles,
+}: {
+  fromColor: string;
+  toColor: string;
+  index: number;
+  totalParticles: number;
+}) => {
+  // Calculate angle based on index with 45 degree offset
+  const angle = (index / totalParticles) * 360 + 45;
+  const radians = (angle * Math.PI) / 180;
+
+  // Add randomness to the burst distance (±15%)
+  // eslint-disable-next-line react-hooks/purity
+  const randomFactor = 0.85 + Math.random() * 0.3;
+  const burstDistance = BURST_RADIUS * randomFactor;
+
+  // Randomize duration between 500-700ms
+  // eslint-disable-next-line react-hooks/purity
+  const duration = 500 + Math.random() * 200;
+
+  // Calculate the degree shift (13 degrees in radians)
+  const degreeShift = (13 * Math.PI) / 180;
+
+  return (
+    <motion.div
+      className="pointer-events-none absolute size-1.5 rounded-full"
+      style={{ backgroundColor: fromColor, opacity: 0 }}
+      initial={{
+        opacity: 0,
+        scale: 1,
+        x: Math.cos(radians) * START_RADIUS * PATH_SCALE_FACTOR,
+        y: Math.sin(radians) * START_RADIUS * PATH_SCALE_FACTOR,
+        backgroundColor: fromColor,
+      }}
+      animate={{
+        opacity: [0, 1, 1, 0],
+        x: Math.cos(radians + degreeShift) * burstDistance * PATH_SCALE_FACTOR,
+        y: Math.sin(radians + degreeShift) * burstDistance * PATH_SCALE_FACTOR,
+        scale: 0,
+        backgroundColor: toColor,
+      }}
+      transition={{
+        opacity: {
+          times: [0, 0.01, 0.99, 1],
+          duration: duration / 1000,
+          delay: 0.4,
+        },
+        x: {
+          duration: duration / 1000,
+          ease: [0.23, 1, 0.32, 1], // quint.out for movement
+          delay: 0.3,
+        },
+        y: {
+          duration: duration / 1000,
+          ease: [0.23, 1, 0.32, 1], // quint.out for movement
+          delay: 0.3,
+        },
+        scale: {
+          duration: duration / 1000,
+          ease: [0.55, 0.085, 0.68, 0.53], // quad.in for scaling
+          delay: 0.3,
+        },
+        backgroundColor: {
+          duration: duration / 1000,
+          delay: 0.3,
+        },
+      }}
+    />
+  );
+};
+
+export const LikeButton = () => {
+  const [likeCount, setLikeCount] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const iconButtonRef = useRef<null | HTMLButtonElement>(null);
+
+  const toggleLike = () => {
+    if (isLiked) {
+      setLikeCount(likeCount - 1);
+      setIsLiked(false);
+    } else {
+      setLikeCount(likeCount + 1);
+      setIsLiked(true);
+      setIsAnimating(true);
+    }
+  };
 
   return (
     <button
-      onClick={() => !disabled && onChange(!liked)}
-      disabled={disabled}
-      style={{
-        background: 'none',
-        border: 'none',
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        position: 'relative',
-        width: size * 1.6,
-        height: size * 1.6,
-        padding: 0,
-      }}
+      ref={iconButtonRef}
+      type="button"
+      className="relative flex h-8 cursor-pointer items-center gap-1.5 rounded-lg px-2 transition sm:h-9 sm:px-3"
+      onClick={toggleLike}
     >
-      {/* Particles */}
-      <AnimatePresence>
-        {liked &&
-          particles.map((p, i) => (
-            <motion.span
-              key={i}
-              initial={{
-                opacity: 1,
-                x: 0,
-                y: 0,
-                scale: 1,
-              }}
-              animate={{
-                opacity: 0,
-                x: p.x,
-                y: p.y,
-                scale: p.scale,
-              }}
-              exit={{ opacity: 0 }}
-              transition={{
-                duration: 0.55,
-                delay: i * 0.015,
-                ease: 'easeOut',
-              }}
-              style={{
-                position: 'absolute',
-                left: '50%',
-                top: '50%',
-                width: size * 0.08,
-                height: size * 0.08,
-                borderRadius: '50%',
-                background: color,
-              }}
-            />
-          ))}
-      </AnimatePresence>
-
-      {/* Heart */}
-      <motion.svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
-        animate={{
-          scale: liked ? [1, 0.9, 1.25, 1] : 1,
-        }}
-        transition={{
-          duration: 0.45,
-          ease: [0.34, 1.56, 0.64, 1],
-        }}
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      >
-        <motion.path
-          d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
-             2 5.42 4.42 3 7.5 3 
-             c1.74 0 3.41 0.81 4.5 2.09 
-             C13.09 3.81 14.76 3 16.5 3 
-             19.58 3 22 5.42 22 8.5 
-             c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-          stroke={color}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          initial={false}
-          animate={{
-            fill: liked ? color : 'rgba(255,255,255,0)',
-            strokeWidth: liked ? 1.5 : 1,
-          }}
-          transition={{
-            fill: {
-              delay: 0.12,
-              duration: 0.25,
-            },
-            strokeWidth: {
-              duration: 0.2,
-            },
-          }}
-        />
-      </motion.svg>
+      <div className="relative">
+        {isAnimating && <CircleAnimation />}
+        {isAnimating && <BurstAnimation />}
+        {isAnimating ? (
+          <motion.svg
+            key="animating-heart"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{
+              type: 'spring',
+              stiffness: 300,
+              damping: 10,
+              delay: 0.3,
+            }}
+            onAnimationComplete={() => setIsAnimating(false)}
+            className="text-red-500"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            fill="currentColor"
+          >
+            <path d="m18.199 2.04c-2.606-.284-4.262.961-6.199 3.008-2.045-2.047-3.593-3.292-6.199-3.008-3.544.388-6.321 4.43-5.718 7.96.966 5.659 5.944 9 11.917 12 5.973-3 10.951-6.341 11.917-12 .603-3.53-2.174-7.572-5.718-7.96z" />
+          </motion.svg>
+        ) : (
+          <svg
+            className={`${isLiked ? 'text-red-500' : ''}`}
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            fill="currentColor"
+          >
+            <path d="m18.199 2.04c-2.606-.284-4.262.961-6.199 3.008-2.045-2.047-3.593-3.292-6.199-3.008-3.544.388-6.321 4.43-5.718 7.96.966 5.659 5.944 9 11.917 12 5.973-3 10.951-6.341 11.917-12 .603-3.53-2.174-7.572-5.718-7.96z" />
+          </svg>
+        )}
+      </div>
+      <span className="min-w-3">
+        <NumberFlow value={likeCount} />
+        <span className="sr-only"> likes, click to {isLiked ? 'unlike' : 'like'}</span>
+      </span>
     </button>
   );
-}
+};

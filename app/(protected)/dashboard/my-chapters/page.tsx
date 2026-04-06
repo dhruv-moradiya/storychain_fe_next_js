@@ -1,15 +1,5 @@
-import { DashboardContentLayout, DashboardGrid } from '@/components/dashboard';
-import { ChaptersList } from '@/components/dashboard/sections/my-chapters';
-import { TooltipProvider } from '@/components/ui/tooltip';
+import { redirect } from 'next/navigation';
 
-export default function MyChaptersPage() {
-  return (
-    <TooltipProvider>
-      <DashboardContentLayout maxWidth="7xl" paddingSize="none">
-        <DashboardGrid minItemWidth={250} gap="md">
-          <ChaptersList />
-        </DashboardGrid>
-      </DashboardContentLayout>
-    </TooltipProvider>
-  );
+export default function LegacyMyChaptersPage() {
+  redirect('/chapters');
 }

@@ -4,13 +4,13 @@ const DASHBOARD_TABS = [
   {
     key: 'stories',
     label: 'Stories',
-    path: '/dashboard',
+    path: '/stories',
     icon: BookOpen,
   },
   {
-    key: 'my-chapters',
-    label: 'My Chapters',
-    path: '/dashboard/my-chapters',
+    key: 'chapters',
+    label: 'Chapters',
+    path: '/chapters',
     icon: PenTool,
   },
 ];

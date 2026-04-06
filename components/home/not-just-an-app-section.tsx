@@ -10,7 +10,7 @@ export const NotJustAnAppSection = () => {
   return (
     <section className="bg-bg-cream relative z-10 px-6 pt-6 pb-8 sm:pb-20">
       <div className="mx-auto max-w-6xl">
-        <div className="relative overflow-hidden rounded-[20px] px-4 py-12 shadow-sm backdrop-blur-sm sm:rounded-[28px] sm:px-6 sm:py-24">
+        <div className="relative overflow-hidden rounded-[20px] px-4 py-12 sm:px-6 sm:py-24">
           <div
             className="pointer-events-none absolute inset-0 rounded-[28px]"
             style={{
