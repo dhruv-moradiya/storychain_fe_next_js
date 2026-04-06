@@ -28,31 +28,25 @@ import { cn } from '@/lib/utils';
 /* -------------------------------- Config -------------------------------- */
 
 const STATUS: Record<PRStatus, { icon: LucideIcon; color: string; bg: string; label: string }> = {
-  OPEN: {
+  open: {
     icon: GitPullRequest,
     color: 'text-green-600',
     bg: 'bg-green-500/10',
     label: 'Open',
   },
-  APPROVED: {
+  approved: {
     icon: Check,
     color: 'text-blue-600',
     bg: 'bg-blue-500/10',
     label: 'Approved',
   },
-  MERGED: {
+  merged: {
     icon: GitMerge,
     color: 'text-purple-600',
     bg: 'bg-purple-500/10',
     label: 'Merged',
   },
-  REJECTED: {
-    icon: GitPullRequestClosed,
-    color: 'text-red-600',
-    bg: 'bg-red-500/10',
-    label: 'Rejected',
-  },
-  CLOSED: {
+  closed: {
     icon: GitPullRequestClosed,
     color: 'text-slate-500',
     bg: 'bg-slate-500/10',
@@ -61,9 +55,9 @@ const STATUS: Record<PRStatus, { icon: LucideIcon; color: string; bg: string; la
 };
 
 const TYPE_ICON: Record<PRType, LucideIcon> = {
-  NEW_CHAPTER: Plus,
-  EDIT_CHAPTER: FileEdit,
-  DELETE_CHAPTER: Trash2,
+  new_branch: Plus,
+  edit: FileEdit,
+  continuation: Trash2,
 };
 
 /* -------------------------------- Component -------------------------------- */
@@ -110,7 +104,7 @@ export function PRCard({ pullRequest, onClick }: PRCardProps) {
                     #{pullRequest._id.slice(-4)}
                   </span>
                   <span>•</span>
-                  <span>{pullRequest.author?.displayName || pullRequest.author?.username}</span>
+                  <span>Pr Author Name</span>
                   <span>•</span>
                   <span>
                     {formatDistanceToNow(new Date(pullRequest.createdAt), {
@@ -136,10 +130,10 @@ export function PRCard({ pullRequest, onClick }: PRCardProps) {
             {/* Context: Story & Chapter */}
             <div className="text-text-secondary-65 flex items-center gap-2 text-xs">
               <BookOpen className="h-3.5 w-3.5" />
-              <span className="max-w-[150px] truncate font-medium">{pullRequest.story?.title}</span>
+              <span className="max-w-37.5 truncate font-medium">Pr Story Title</span>
               <ArrowRight className="text-text-secondary-65/50 h-3 w-3" />
-              <span className="text-text-primary max-w-[150px] truncate font-medium">
-                {pullRequest.chapter?.title}
+              <span className="text-text-primary max-w-37.5 truncate font-medium">
+                Pr Chapter Title
               </span>
             </div>
 
@@ -155,12 +149,8 @@ export function PRCard({ pullRequest, onClick }: PRCardProps) {
                 </div>
 
                 <div className="flex items-center gap-2 text-xs font-medium">
-                  <span className="rounded bg-green-500/5 px-1.5 py-0.5 text-green-600">
-                    +{pullRequest.changes.additionsCount}
-                  </span>
-                  <span className="rounded bg-red-500/5 px-1.5 py-0.5 text-red-600">
-                    -{pullRequest.changes.deletionsCount || 0}
-                  </span>
+                  <span className="rounded bg-green-500/5 px-1.5 py-0.5 text-green-600">+12</span>
+                  <span className="rounded bg-red-500/5 px-1.5 py-0.5 text-red-600">-0</span>
                 </div>
               </div>
 

@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/dashboard/', '/profile/', '/api/', '/_next/'],
+      disallow: ['/profile/', '/api/', '/_next/'],
     },
     sitemap: 'https://storychain-fe.vercel.app/sitemap.xml', // Update to your production domain
   };

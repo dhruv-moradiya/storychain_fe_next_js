@@ -14,7 +14,7 @@ export function CreateStoryButton() {
 
   return (
     <>
-      <div className="border-border/50 bg-card/40 hover:bg-card/60 col-span-1 flex min-h-[220px] w-full flex-col gap-3 rounded-xl border p-5 shadow-sm transition-all duration-300 hover:shadow-md">
+      <div className="border-border bg-card hover:bg-card/60 col-span-1 flex min-h-[220px] w-full flex-col gap-3 rounded-xl border p-5 shadow-sm transition-all duration-300 hover:shadow-md">
         <span className="text-text-secondary-65 mb-2 text-xs font-semibold tracking-wider">
           CREATE STORY
         </span>

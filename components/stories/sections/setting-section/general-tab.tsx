@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { BookOpen, Globe, Lock, Star } from 'lucide-react';
 
 import { contentRatingBadge, genresBadges } from '@/components/common/badge';
@@ -9,9 +10,13 @@ import type { SettingTabProps } from './setting-section.types';
 
 export function GeneralTab({ settings, onSettingUpdate }: SettingTabProps) {
   return (
-    <div className="space-y-4">
+    <motion.div className="space-y-4">
       {/* Story Info */}
-      <SettingCard title="Story Information" description="Basic details about your story">
+      <SettingCard
+        title="Story Information"
+        description="Basic details about your story"
+        index={0.1}
+      >
         <BadgeRow icon={<BookOpen size={18} />} label="Genre">
           {genresBadges(settings.genres, { size: 'sm' })}
         </BadgeRow>
@@ -24,6 +29,7 @@ export function GeneralTab({ settings, onSettingUpdate }: SettingTabProps) {
       <SettingCard
         title="Visibility & Access"
         description="Control who can see and interact with your story"
+        index={0.3}
       >
         <ToggleRow
           icon={settings.isPublic ? <Globe size={18} /> : <Lock size={18} />}
@@ -37,6 +43,6 @@ export function GeneralTab({ settings, onSettingUpdate }: SettingTabProps) {
           onChange={(v) => onSettingUpdate('isPublic', v)}
         />
       </SettingCard>
-    </div>
+    </motion.div>
   );
 }

@@ -4,7 +4,7 @@ A collection of reusable, composable layout components for building consistent a
 
 ## Components
 
-### DashboardContentLayout
+### ContentLayout
 
 Main layout wrapper that provides consistent spacing, max-width constraints, and padding.
 
@@ -20,9 +20,9 @@ Main layout wrapper that provides consistent spacing, max-width constraints, and
 **Example:**
 
 ```tsx
-<DashboardContentLayout maxWidth="5xl" paddingSize="lg">
+<ContentLayout maxWidth="5xl" paddingSize="lg">
   <h1>Dashboard Content</h1>
-</DashboardContentLayout>
+</ContentLayout>
 ```
 
 ### DashboardSection
@@ -93,7 +93,7 @@ Empty state component for sections with no data.
 
 ```tsx
 import {
-  DashboardContentLayout,
+  ContentLayout,
   DashboardEmptyState,
   DashboardGrid,
   DashboardSection,
@@ -101,7 +101,7 @@ import {
 
 export function DashboardPage() {
   return (
-    <DashboardContentLayout maxWidth="7xl" paddingSize="lg">
+    <ContentLayout maxWidth="7xl" paddingSize="lg">
       <DashboardSection title="Your Stories" headerAction={<CreateStoryButton />}>
         {stories.length > 0 ? (
           <DashboardGrid minItemWidth={280} gap="md">
@@ -117,7 +117,7 @@ export function DashboardPage() {
           />
         )}
       </DashboardSection>
-    </DashboardContentLayout>
+    </ContentLayout>
   );
 }
 ```
@@ -125,7 +125,7 @@ export function DashboardPage() {
 ### Nested Sections
 
 ```tsx
-<DashboardContentLayout>
+<ContentLayout>
   <DashboardSection title="Overview">
     <StatsCards />
   </DashboardSection>
@@ -140,7 +140,7 @@ export function DashboardPage() {
       <StoryCard />
     </DashboardGrid>
   </DashboardSection>
-</DashboardContentLayout>
+</ContentLayout>
 ```
 
 ## Design Principles
@@ -156,7 +156,7 @@ export function DashboardPage() {
 ```
 components/dashboard/layout/
 ├── constants.ts                    # Shared constants and types
-├── dashboard-content-layout.tsx    # Main layout wrapper
+├── content-layout.tsx    # Main layout wrapper
 ├── dashboard-section.tsx           # Section wrapper
 ├── dashboard-grid.tsx              # Responsive grid
 ├── dashboard-empty-state.tsx       # Empty state display
@@ -166,21 +166,18 @@ components/dashboard/layout/
 
 ## Migration Guide
 
-If you're migrating from the old `dashboard-content-layout.tsx` file:
+If you're migrating from the older dashboard layout wrapper:
 
 **Before:**
 
 ```tsx
-import {
-  DashboardContentLayout,
-  DashboardSection,
-} from '@/components/dashboard/dashboard-content-layout';
+import { ContentLayout, DashboardSection } from '@/components/dashboard/content-layout';
 ```
 
 **After:**
 
 ```tsx
-import { DashboardContentLayout, DashboardSection } from '@/components/dashboard/layout';
+import { ContentLayout, DashboardSection } from '@/components/dashboard/layout';
 ```
 
 All component APIs remain the same, so no other changes are required.

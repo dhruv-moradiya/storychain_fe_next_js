@@ -17,6 +17,7 @@ export function CollaborationTab({ settings, onSettingUpdate }: SettingTabProps)
       <SettingCard
         title="Contribution Settings"
         description="Control how others can contribute to your story"
+        index={0.1}
       >
         <ToggleRow
           icon={<GitBranch size={18} />}
@@ -47,6 +48,7 @@ export function CollaborationTab({ settings, onSettingUpdate }: SettingTabProps)
       <SettingCard
         title="Community Features"
         description="Enable or disable community interactions"
+        index={0.3}
       >
         <ToggleRow
           icon={<MessageSquare size={18} />}
@@ -74,7 +76,7 @@ export function CollaborationTab({ settings, onSettingUpdate }: SettingTabProps)
       </SettingCard>
 
       {/* Collaborators Info */}
-      <SettingCard title="Team Management">
+      <SettingCard title="Team Management" index={0.5}>
         <div className="flex items-center gap-3 px-5 py-3">
           <div className="bg-brand-pink-500/10 flex h-9 w-9 items-center justify-center rounded-lg">
             <Users size={18} className="text-brand-pink-500" />

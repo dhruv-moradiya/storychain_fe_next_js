@@ -3,15 +3,14 @@
 import { useRouter } from 'next/navigation';
 
 import { motion } from 'framer-motion';
-import { ArrowLeft, Home, SearchX } from 'lucide-react';
+import { ArrowLeft, Compass, Home } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-// Animation variants
-const fadeIn = (delay = 0) => ({
-  initial: { opacity: 0, y: 8 },
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 16 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.3, delay, ease: [0.25, 0.1, 0.25, 1] as const },
+  transition: { duration: 0.45, delay, ease: [0.22, 1, 0.36, 1] as const },
 });
 
 interface NotFoundProps {
@@ -32,52 +31,93 @@ export function NotFound({
   const router = useRouter();
 
   return (
-    <div className="bg-bg-cream min-h-screen">
-      <div className="container mx-auto flex min-h-screen max-w-md items-center justify-center px-4 py-16">
+    <div className="bg-background flex min-h-screen items-center justify-center px-4 py-16 transition-colors duration-500">
+      {/* Ambient glow orbs */}
+      <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
+        <div className="glow-404-top absolute -top-24 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full" />
+        <div className="glow-404-bottom absolute right-0 -bottom-24 h-[360px] w-[360px] rounded-full" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-md">
+        {/* Card */}
         <motion.div
-          {...fadeIn()}
-          className="w-full overflow-hidden rounded-2xl border border-black/5 bg-white/80 p-8 text-center shadow-sm"
+          {...fadeUp()}
+          className="bg-card border-border shadow-secondary/5 rounded-2xl border p-8 text-center shadow-lg backdrop-blur-sm"
         >
-          {/* Icon */}
+          {/* Animated icon */}
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
+            initial={{ scale: 0.7, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="bg-brand-blue/10 mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full"
+            transition={{ type: 'spring', stiffness: 200, damping: 18, delay: 0.05 }}
+            className="relative mx-auto mb-8 flex h-24 w-24 items-center justify-center"
           >
-            {icon || (
-              <motion.div
-                animate={{ y: [0, -4, 0] }}
-                transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-              >
-                <SearchX className="text-brand-blue h-12 w-12" />
-              </motion.div>
-            )}
+            {/* Orbit ring */}
+            <motion.span
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 8, ease: 'linear' }}
+              className="border-secondary/25 absolute inset-0 rounded-full border border-dashed"
+            />
+            <span className="bg-secondary/10 flex h-[72px] w-[72px] items-center justify-center rounded-full">
+              {icon || (
+                <motion.div
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
+                >
+                  <Compass className="text-secondary h-10 w-10" />
+                </motion.div>
+              )}
+            </span>
           </motion.div>
 
-          {/* 404 Number */}
+          {/* 404 number */}
           <motion.div
-            {...fadeIn(0.1)}
-            className="text-brand-pink-500 font-ibm-plex-mono mb-2 text-6xl font-bold"
+            {...fadeUp(0.1)}
+            className="from-primary to-secondary font-ibm-plex-mono bg-linear-to-br bg-clip-text text-7xl leading-none font-bold text-transparent"
           >
             404
           </motion.div>
 
-          {/* Text */}
-          <motion.div {...fadeIn(0.15)} className="space-y-2">
-            <h1 className="text-primary font-playfair text-2xl font-bold">{title}</h1>
-            <p className="text-text-secondary-65 font-ibm-plex-mono text-sm">{message}</p>
+          {/* Heading + sub */}
+          <motion.div {...fadeUp(0.15)} className="mt-4 space-y-2">
+            <h1 className="text-foreground font-serif text-2xl font-bold">{title}</h1>
+            <p className="text-muted-foreground font-ibm-plex-mono text-sm leading-relaxed">
+              {message}
+            </p>
           </motion.div>
 
-          {/* Action Buttons */}
+          {/* Quick links */}
           <motion.div
-            {...fadeIn(0.25)}
-            className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center"
+            {...fadeUp(0.2)}
+            className="border-soft bg-secondary/4 mt-6 rounded-xl border px-4 py-3 text-left"
+          >
+            <p className="text-muted-foreground font-ibm-plex-mono mb-2 text-[11px] font-semibold tracking-wider uppercase">
+              You might be looking for
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {['Browse Stories', 'Explore Genres', 'Create Story'].map((label) => (
+                <button
+                  key={label}
+                  onClick={() => router.push(`/${label.toLowerCase().replace(/\s+/g, '-')}`)}
+                  className="text-foreground border-border bg-muted font-ibm-plex-mono hover:bg-muted/80 rounded-lg border px-3 py-1.5 text-xs transition-all hover:opacity-80"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Divider */}
+          <motion.div {...fadeUp(0.22)} className="bg-border my-6 h-px" />
+
+          {/* Actions */}
+          <motion.div
+            {...fadeUp(0.25)}
+            className="flex flex-col gap-3 sm:flex-row sm:justify-center"
           >
             {showHomeButton && (
               <Button
                 onClick={() => router.push('/')}
-                className="bg-brand-pink-500 hover:bg-brand-pink-600 font-ibm-plex-mono gap-2 text-sm text-white"
+                className="bg-primary text-primary-foreground font-ibm-plex-mono hover:bg-primary/90 gap-2 text-sm shadow-sm"
               >
                 <Home className="h-4 w-4" />
                 Go Home
@@ -87,7 +127,7 @@ export function NotFound({
               <Button
                 variant="outline"
                 onClick={() => router.back()}
-                className="font-ibm-plex-mono gap-2 border-black/10 text-sm hover:bg-black/5"
+                className="text-foreground border-strong font-ibm-plex-mono hover:bg-muted gap-2 bg-transparent text-sm"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Go Back
@@ -95,6 +135,20 @@ export function NotFound({
             )}
           </motion.div>
         </motion.div>
+
+        {/* Bottom hint */}
+        <motion.p
+          {...fadeUp(0.3)}
+          className="text-muted-foreground font-ibm-plex-mono mt-6 text-center text-xs"
+        >
+          Lost?{' '}
+          <a
+            href="mailto:support@storychain.app"
+            className="text-primary underline underline-offset-2 transition-opacity hover:opacity-70"
+          >
+            We can help.
+          </a>
+        </motion.p>
       </div>
     </div>
   );

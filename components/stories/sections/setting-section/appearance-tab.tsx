@@ -33,6 +33,7 @@ export function AppearanceTab({
       <SettingCard
         title="Card Image"
         description="Used in story cards, search results, and recommendations"
+        index={0.1}
       >
         <ImageRow
           label="Portrait Image"
@@ -50,6 +51,7 @@ export function AppearanceTab({
       <SettingCard
         title="Cover Image"
         description="Displayed as banner on your story overview page"
+        index={0.3}
       >
         <ImageRow
           label="Wide Banner"

@@ -4,16 +4,11 @@
  * This file exists for backward compatibility only and will be removed in a future version.
  *
  * Migration:
- * Before: import { DashboardContentLayout } from '@/components/dashboard/dashboard-content-layout';
- * After:  import { DashboardContentLayout } from '@/components/dashboard/layout';
+ * Before: import { ContentLayout } from '@/components/dashboard/content-layout';
+ * After:  import { ContentLayout } from '@/components/dashboard/layout';
  */
 
-export {
-  DashboardContentLayout,
-  DashboardSection,
-  DashboardGrid,
-  DashboardEmptyState,
-} from './layout';
+export { ContentLayout, DashboardSection, DashboardGrid, DashboardEmptyState } from './layout';
 
 export type {
   MaxWidthVariant,

@@ -11,8 +11,8 @@ export function DashboardTabs() {
   const pathname = usePathname();
 
   const getIsActive = (tabPath: string) => {
-    if (tabPath === '/dashboard') {
-      return pathname === '/dashboard';
+    if (tabPath === '/stories') {
+      return pathname === '/stories';
     }
     return pathname?.startsWith(tabPath) ?? false;
   };

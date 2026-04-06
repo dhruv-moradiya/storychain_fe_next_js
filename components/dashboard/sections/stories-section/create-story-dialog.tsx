@@ -21,7 +21,9 @@ import { getErrorMessage, getFieldErrorMap } from '@/lib/error';
 import { StoryFormSchema, type TStoryFormValues } from '@/lib/schemas/story.schema';
 import { useCreateStory } from '@/services/stories/stories.mutation';
 
-import { BasicInfoStep, SettingsStep, StepIndicator } from './story-form';
+import { BasicInfoStep } from './story-form/basic-info-step';
+import { SettingsStep } from './story-form/settings-step';
+import { StepIndicator } from './story-form/step-indicator';
 
 interface CreateStoryDialogProps {
   open: boolean;
@@ -146,7 +148,7 @@ function CreateStoryDialogContent({
   return (
     <>
       {/* Header */}
-      <ResponsiveDialogHeader className="border-border/50 relative space-y-4 rounded-t-2xl border-b bg-white/50 px-6 py-5">
+      <ResponsiveDialogHeader className="border-border/50 relative space-y-4 rounded-t-2xl border-b px-6 py-5">
         <div className="flex items-center gap-3">
           <div className="bg-brand-pink-500/10 flex h-11 w-11 items-center justify-center rounded-xl">
             <BookOpen className="text-brand-pink-500 h-5 w-5" />
@@ -164,12 +166,12 @@ function CreateStoryDialogContent({
       </ResponsiveDialogHeader>
 
       {/* Body */}
-      <div className="flex-1 overflow-y-auto px-6 py-4">
+      <div className="max-h-[60vh] flex-1 overflow-y-auto px-6 py-4">
         {step === 1 ? <BasicInfoStep /> : <SettingsStep />}
       </div>
 
       {/* Footer */}
-      <ResponsiveDialogFooter className="border-border/50 gap-3 rounded-b-2xl border-t bg-white/50 px-6 py-4">
+      <ResponsiveDialogFooter className="border-border/50 gap-3 rounded-b-2xl border-t px-6 py-4">
         {step === 1 ? (
           <>
             <Button

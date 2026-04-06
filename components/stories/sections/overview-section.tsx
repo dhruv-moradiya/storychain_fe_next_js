@@ -28,8 +28,6 @@ const OverviewSection = ({ initialData }: OverviewSectionProps) => {
   const params = useParams();
   const slug = params?.slug as string;
 
-  // If initialData is provided (from server prefetch), TanStack Query uses it
-  // immediately — no loading state, no extra network request on first render.
   const tanstackInitialData: IStoryOverviewResponse | undefined = initialData
     ? { data: initialData, success: true, message: '', code: '' }
     : undefined;
@@ -52,7 +50,7 @@ const OverviewSection = ({ initialData }: OverviewSectionProps) => {
       className="mx-auto w-full max-w-4xl space-y-6 px-3 pb-14 sm:space-y-8 sm:px-4"
     >
       {/* Hero Section */}
-      <StoryHero story={story} onBack={() => router.push('/')} />
+      <StoryHero story={story} onBack={() => router.back()} />
 
       {/* Stats Section */}
       <StoryStats story={story} />

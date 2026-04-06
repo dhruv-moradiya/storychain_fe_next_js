@@ -73,7 +73,7 @@
   --color-brand-pink-ring30: var(--brand-pink-ring30);
   --color-brand-blue: var(--brand-blue);
   --color-brand-blue-alt: var(--brand-blue-alt);
-  --color-brand-orange: var(--brand-orange);
+  --color-brand-teal: var(--brand-teal);
 
   /* Badge Colors */
   --color-badge-success: #10b981;
@@ -257,6 +257,30 @@
 
 @utility radial-gradient-orb-orange {
   background-image: radial-gradient(circle, var(--brand-orange) 0%, transparent 70%);
+}
+
+@utility glow-error-top {
+  background-image: radial-gradient(circle, var(--destructive) 0%, transparent 70%);
+  opacity: 0.12;
+  filter: blur(48px);
+}
+
+@utility glow-error-bottom {
+  background-image: radial-gradient(circle, var(--brand-pink-500) 0%, transparent 70%);
+  opacity: 0.08;
+  filter: blur(56px);
+}
+
+@utility glow-404-top {
+  background-image: radial-gradient(circle, var(--brand-blue) 0%, transparent 70%);
+  opacity: 0.1;
+  filter: blur(56px);
+}
+
+@utility glow-404-bottom {
+  background-image: radial-gradient(circle, var(--brand-pink-500) 0%, transparent 70%);
+  opacity: 0.08;
+  filter: blur(60px);
 }
 
 /* Hero Background Utilities */

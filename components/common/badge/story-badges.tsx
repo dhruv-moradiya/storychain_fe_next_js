@@ -75,6 +75,17 @@ export function contentRatingBadge(rating: TStoryContentRating, options?: Partia
   return iconBadge(config.label, config.icon, config.color, options);
 }
 
+export function tagBadge(tag: string, options?: Partial<BadgeConfig>) {
+  return textBadge(tag, 'pink', {
+    shape: 'pill',
+    ...options,
+  });
+}
+
+export function tagsBadges(tags: string[], options?: Partial<BadgeConfig>) {
+  return tags.map((tag) => tagBadge(tag, options));
+}
+
 // ============================================
 // COLLABORATOR ROLE BADGES
 // ============================================

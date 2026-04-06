@@ -2,9 +2,14 @@ import Image from 'next/image';
 
 import type { IStoryOverview } from '@/type/story';
 import { motion } from 'framer-motion';
-import { Bell, BookOpen, Bookmark, Heart, Share2 } from 'lucide-react';
+import { ArrowLeft, Bell, BookOpen, Bookmark, Heart, Share2 } from 'lucide-react';
 
-import { contentRatingBadge, genresBadges, storyStatusBadge } from '@/components/common/badge';
+import {
+  contentRatingBadge,
+  genresBadges,
+  storyStatusBadge,
+  tagsBadges,
+} from '@/components/common/badge';
 import { Button } from '@/components/ui/button';
 
 interface StoryHeroProps {
@@ -14,7 +19,7 @@ interface StoryHeroProps {
 
 export function StoryHero({ story, onBack }: StoryHeroProps) {
   const { title, slug, status, settings, cardImage, stats } = story;
-
+  console.log('story', story);
   return (
     <div className="space-y-6">
       {/* Top Actions */}
@@ -24,12 +29,13 @@ export function StoryHero({ story, onBack }: StoryHeroProps) {
         className="flex items-center justify-between gap-2"
       >
         <Button
-          variant="outline"
+          variant="ghost"
           size="sm"
-          className="border-border/50 hover:border-brand-pink-500/50 hover:bg-brand-pink-500/10 gap-2"
+          className="border-border/50 hover:border-brand-pink-500/50 hover:bg-brand-pink-500/10! text-text-secondary-65 hover:text-brand-pink-500 gap-2"
           onClick={onBack}
         >
-          ← Back
+          <ArrowLeft size={14} />
+          Back
         </Button>
 
         <div className="flex items-center gap-1.5 sm:gap-3">
@@ -41,6 +47,7 @@ export function StoryHero({ story, onBack }: StoryHeroProps) {
             <Heart size={14} />
             <span className="text-xs sm:text-sm">{stats?.totalVotes?.toLocaleString() || 0}</span>
           </motion.button>
+          {/* <LikeButton /> */}
 
           <motion.button className="border-border/50 text-text-secondary-65 hover:border-brand-pink-500/50 hover:text-brand-pink-500 flex h-8 w-8 items-center justify-center rounded-lg border transition sm:h-9 sm:w-9">
             <Bookmark size={16} />
@@ -82,6 +89,10 @@ export function StoryHero({ story, onBack }: StoryHeroProps) {
 
           {settings.genres.length > 0 && (
             <div className="flex flex-wrap gap-1.5">{genresBadges(settings.genres)}</div>
+          )}
+
+          {story.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">{tagsBadges(story.tags)}</div>
           )}
         </div>
       </div>

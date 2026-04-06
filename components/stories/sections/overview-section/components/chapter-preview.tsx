@@ -24,15 +24,11 @@ export function ChapterPreview({ chapters }: ChapterPreviewProps) {
     >
       <div className="flex items-center justify-between">
         <h2 className="text-text-primary flex items-center gap-2 text-sm font-semibold sm:text-base">
-          <BookOpen size={16} className="text-brand-pink-500 sm:h-[18px] sm:w-[18px]" />
+          <BookOpen size={16} className="text-brand-pink-500 sm:h-4.5 sm:w-4.5" />
           Latest Chapters
         </h2>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          className="text-brand-pink-500 hover:bg-brand-pink-500/10 gap-1 text-xs sm:text-sm"
-        >
+        <Button variant="ghost" size="sm">
           View All
           <ArrowRight size={14} />
         </Button>
@@ -48,7 +44,7 @@ export function ChapterPreview({ chapters }: ChapterPreviewProps) {
       {/* CTA */}
       <div className="flex flex-col gap-2 pt-3 sm:flex-row sm:gap-3 sm:pt-4">
         <Button className="from-brand-pink-500 to-brand-orange flex-1 gap-2 bg-linear-to-r text-sm text-white hover:opacity-90 sm:text-base">
-          <BookOpen size={16} className="sm:h-[18px] sm:w-[18px]" />
+          <BookOpen size={16} className="sm:h-4.5 sm:w-4.5" />
           Start Reading
         </Button>
       </div>
@@ -83,6 +79,7 @@ function ChapterCard({ chapter }: IChapterCardProps) {
             }
             alt={author.username}
             fill
+            sizes={'32px'}
             className="border-brand-pink-500/30 rounded-full border object-cover"
           />
         </div>

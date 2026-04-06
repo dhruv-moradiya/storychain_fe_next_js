@@ -47,7 +47,7 @@ export function MyChapterCard({ chapter }: MyChapterCardProps) {
   return (
     <TooltipProvider>
       <Link
-        href={`/stories/${chapter.storySlug}/chapters/${chapter.slug}`}
+        href={`/stories/${chapter.storySlug}/chapter/${chapter.slug}`}
         className="block h-full"
         prefetch={false}
       >

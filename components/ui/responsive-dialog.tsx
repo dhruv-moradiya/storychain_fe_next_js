@@ -170,7 +170,7 @@ function ResponsiveDialogContent({
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay
         className={cn(
-          'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 bg-dark-50 fixed inset-0 z-50',
+          'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50',
           overlayClassName
         )}
       />
@@ -274,7 +274,7 @@ function SheetContent({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className={cn('bg-dark-50 fixed inset-0 z-50', overlayClassName)}
+                className={cn('fixed inset-0 z-50', overlayClassName)}
               />
             </DialogPrimitive.Overlay>
 

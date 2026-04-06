@@ -194,7 +194,7 @@ function SuccessContent({
             onClick={onGoToDashboard}
             className="bg-brand-pink-500 hover:bg-brand-pink-600 w-full text-white"
           >
-            Go to Dashboard
+            View Subscription
           </Button>
           <p className="text-text-secondary-65 text-xs">
             A confirmation email has been sent to your registered email address.

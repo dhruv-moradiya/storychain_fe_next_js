@@ -1,17 +1,19 @@
 'use client';
 
 import { ApiError } from '@/components/common';
-import { StoryCard } from '@/components/dashboard/sections/stories-section';
 import { StoryCardSkeleton } from '@/components/dashboard/sections/stories-section/story-card-skeleton';
 import { STALE_TIME } from '@/lib/query-client';
 import { useGetUserStories } from '@/services/stories/stories.query';
 
+import StoryCard from './story-card';
+
 export function StoriesList() {
-  const { data, isLoading, isError, refetch } = useGetUserStories({
+  console.log('Stories list component render.');
+  const { data, isLoading, isError, refetch, error } = useGetUserStories({
     staleTime: STALE_TIME.LONG,
   });
+  console.log('data', error);
   const stories = data?.data || [];
-  console.log('stories', stories);
 
   if (isLoading) {
     return (
@@ -41,14 +43,7 @@ export function StoriesList() {
           <div
             key={i}
             className="border-border/20 bg-card/30 flex min-h-[220px] w-full items-center justify-center rounded-xl border shadow-sm transition-colors"
-          >
-            {/* Display text in the middle-ish card (index 3 is the 5th grid cell overall) */}
-            {/* {i === 3 && (
-              <span className="text-sm font-medium text-text-secondary-65">
-                No stories found
-              </span>
-            )} */}
-          </div>
+          ></div>
         ))}
       </>
     );

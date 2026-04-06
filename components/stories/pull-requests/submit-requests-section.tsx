@@ -33,8 +33,8 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { mockPullRequests } from '@/lib/data/pull-requests';
 import { cn, fadeIn } from '@/lib/utils';
 
-import { CreatePRDialog, PRListEmpty, PRListError, PRListLoading } from '.';
 import { columns } from './columns';
+import { PRListEmpty, PRListError, PRListLoading } from './pr-states';
 
 type FilterStatus = PRStatus | 'all';
 type FilterType = PRType | 'all';
@@ -53,9 +53,6 @@ export default function SubmitRequestsSection({ slug }: SubmitRequestsSectionPro
   const [statusFilter, setStatusFilter] = useState<FilterStatus>('all');
   const [typeFilter, setTypeFilter] = useState<FilterType>('all');
 
-  // Dialog states
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-
   // Filter pull requests
   const filteredPRs = useMemo(() => {
     return pullRequests.filter((pr) => {
@@ -64,7 +61,7 @@ export default function SubmitRequestsSection({ slug }: SubmitRequestsSectionPro
       const matchesSearch =
         !searchQuery ||
         pr.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        pr.author?.username.toLowerCase().includes(searchQuery.toLowerCase());
+        `#${pr._id}`.includes(searchQuery.toLowerCase());
       return matchesStatus && matchesType && matchesSearch;
     });
   }, [statusFilter, typeFilter, searchQuery, pullRequests]);
@@ -73,11 +70,10 @@ export default function SubmitRequestsSection({ slug }: SubmitRequestsSectionPro
   const stats = useMemo(() => {
     return {
       total: pullRequests.length,
-      open: pullRequests.filter((pr) => pr.status === 'OPEN').length,
-      approved: pullRequests.filter((pr) => pr.status === 'APPROVED').length,
-      merged: pullRequests.filter((pr) => pr.status === 'MERGED').length,
-      rejected: pullRequests.filter((pr) => pr.status === 'REJECTED').length,
-      closed: pullRequests.filter((pr) => pr.status === 'CLOSED').length,
+      open: pullRequests.filter((pr) => pr.status === 'open').length,
+      approved: pullRequests.filter((pr) => pr.status === 'approved').length,
+      merged: pullRequests.filter((pr) => pr.status === 'merged').length,
+      closed: pullRequests.filter((pr) => pr.status === 'closed').length,
     };
   }, [pullRequests]);
 
@@ -104,10 +100,7 @@ export default function SubmitRequestsSection({ slug }: SubmitRequestsSectionPro
             </div>
           </div>
 
-          <Button
-            className="bg-brand-pink-500 hover:bg-brand-pink-600 gap-2 text-white shadow-sm"
-            onClick={() => setIsCreateDialogOpen(true)}
-          >
+          <Button className="bg-brand-pink-500 hover:bg-brand-pink-600 gap-2 text-white shadow-sm">
             <Plus className="h-4 w-4" />
             New Request
           </Button>
@@ -147,13 +140,6 @@ export default function SubmitRequestsSection({ slug }: SubmitRequestsSectionPro
             icon: GitMerge,
             color: 'text-purple-600',
             bg: 'bg-purple-500/10',
-          },
-          {
-            label: 'Rejected',
-            value: stats.rejected,
-            icon: XCircle,
-            color: 'text-red-600',
-            bg: 'bg-red-500/10',
           },
           {
             label: 'Closed',
@@ -247,7 +233,7 @@ export default function SubmitRequestsSection({ slug }: SubmitRequestsSectionPro
           </div>
 
           <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v as FilterType)}>
-            <SelectTrigger className="border-border/50 bg-cream-95 focus:ring-brand-pink-500 w-full sm:w-[180px]">
+            <SelectTrigger className="border-border/50 bg-cream-95 focus:ring-brand-pink-500 w-full sm:w-45">
               <Filter className="text-text-secondary-65 mr-2 h-4 w-4" />
               <SelectValue placeholder="Type" />
             </SelectTrigger>
@@ -297,13 +283,6 @@ export default function SubmitRequestsSection({ slug }: SubmitRequestsSectionPro
           <DataTable columns={columns} data={filteredPRs} onRowClick={handlePRClick} />
         )}
       </motion.div>
-
-      {/* Create PR Dialog */}
-      <CreatePRDialog
-        open={isCreateDialogOpen}
-        onOpenChange={setIsCreateDialogOpen}
-        storyTitle="The Jujutsu Legacy"
-      />
     </div>
   );
 }

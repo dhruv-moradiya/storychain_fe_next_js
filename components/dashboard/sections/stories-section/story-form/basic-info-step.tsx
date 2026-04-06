@@ -1,25 +1,25 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
-import { Hash, X } from 'lucide-react';
+import { Hash } from 'lucide-react';
 
+import { TagBadge } from '@/components/common/badge';
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroupTextarea,
+} from '@/components/ui/input-group';
 import { type TStoryFormValues } from '@/lib/schemas/story.schema';
 
 export const BasicInfoStep = memo(() => {
-  const {
-    register,
-    setValue,
-    getValues,
-    formState: { errors },
-  } = useFormContext<TStoryFormValues>();
+  const { control, setValue, getValues } = useFormContext<TStoryFormValues>();
 
   const title = useWatch({ name: 'title' });
-  const description = useWatch({ name: 'description' }) || '';
   const slug = useWatch({ name: 'slug' });
   const tags = useWatch({ name: 'tags' }) || [];
 
@@ -96,77 +96,97 @@ export const BasicInfoStep = memo(() => {
   }, [tagInput, handleAddTag]);
 
   return (
-    <div className="space-y-5">
+    <FieldGroup className="space-y-5">
       {/* Story Title */}
-      <div className="space-y-2">
-        <Label className="text-text-primary text-sm font-medium">Story Title</Label>
-        <Input
-          placeholder="Enter your story title..."
-          className="bg-cream-95/50 focus:border-brand-pink-500 focus:ring-brand-pink-500/20 h-10 border-black/10 focus:bg-white"
-          {...register('title')}
-        />
-        {errors.title && <p className="text-xs text-red-500">{errors.title.message}</p>}
-        {slug && (
-          <p className="text-text-secondary-65 text-xs">
-            URL: <span className="text-brand-pink-500 font-ibm-plex-mono">/stories/{slug}</span>
-          </p>
+      <Controller
+        name="title"
+        control={control}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel htmlFor="title">Story Title</FieldLabel>
+            <Input
+              {...field}
+              id="title"
+              aria-invalid={fieldState.invalid}
+              placeholder="Enter your story title..."
+            />
+            {slug && (
+              <FieldDescription>
+                URL: <span className="text-brand-pink-500 font-ibm-plex-mono">/stories/{slug}</span>
+              </FieldDescription>
+            )}
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
         )}
-      </div>
+      />
 
       {/* Description */}
-      <div className="space-y-2">
-        <Label className="text-text-primary text-sm font-medium">Description</Label>
-        <Textarea
-          placeholder="Write a compelling description for your story..."
-          className="bg-cream-95/50 focus:border-brand-pink-500 focus:ring-brand-pink-500/20 min-h-[100px] resize-none border-black/10 text-sm focus:bg-white"
-          {...register('description')}
-        />
-        {errors.description && <p className="text-xs text-red-500">{errors.description.message}</p>}
-        <p className="text-text-secondary-65 text-right text-xs">{description.length}/2000</p>
-      </div>
+      <Controller
+        name="description"
+        control={control}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel htmlFor="description">Description</FieldLabel>
+            <InputGroup>
+              <InputGroupTextarea
+                {...field}
+                value={field.value || ''}
+                id="description"
+                placeholder="Write a compelling description for your story..."
+                className="min-h-24 resize-none"
+                aria-invalid={fieldState.invalid}
+              />
+              <InputGroupAddon align="block-end">
+                <InputGroupText className="tabular-nums">
+                  {field.value?.length || 0}/2000
+                </InputGroupText>
+              </InputGroupAddon>
+            </InputGroup>
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )}
+      />
 
       {/* Tags */}
-      <div className="space-y-2">
-        <Label className="text-text-primary text-sm font-medium">
-          Tags <span className="text-text-secondary-65 font-normal">(optional)</span>
-        </Label>
-        <div
-          className="focus-within:border-brand-pink-500 focus-within:ring-brand-pink-500/20 bg-cream-95/50 flex min-h-[44px] cursor-text flex-wrap items-center gap-2 rounded-lg border border-black/10 px-3 py-2 transition-colors focus-within:bg-white focus-within:ring-1"
-          onClick={() => tagInputRef.current?.focus()}
-        >
-          {tags.map((tag: string) => (
-            <span
-              key={tag}
-              className="bg-brand-pink-500/10 text-brand-pink-700 inline-flex items-center gap-1.5 rounded-full py-1 pr-2 pl-2.5 text-xs font-medium"
+      <Controller
+        name="tags"
+        control={control}
+        render={({ fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel htmlFor="tags">
+              Tags <span className="text-text-secondary-65 font-normal">(optional)</span>
+            </FieldLabel>
+            <div
+              className="border-input focus-within:border-ring focus-within:ring-ring/50 dark:bg-input/30 flex w-full cursor-text flex-wrap items-center gap-2 rounded-md border bg-transparent px-3 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-within:ring-[3px]"
+              onClick={() => tagInputRef.current?.focus()}
             >
-              <Hash className="h-3 w-3 opacity-60" />
-              {tag}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleRemoveTag(tag);
-                }}
-                className="hover:bg-brand-pink-500/20 -mr-0.5 rounded-full p-0.5 transition-colors"
-              >
-                <X className="h-3 w-3" />
-              </button>
-            </span>
-          ))}
-          <input
-            ref={tagInputRef}
-            type="text"
-            value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={handleTagKeyDown}
-            onBlur={handleTagInputBlur}
-            placeholder={tags.length === 0 ? 'Add tags...' : ''}
-            className="min-w-[80px] flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400"
-          />
-        </div>
-        <p className="text-text-secondary-65 text-xs">Press Enter, Space, or Comma to add a tag</p>
-      </div>
-    </div>
+              {tags.map((tag: string) => (
+                <TagBadge
+                  key={tag}
+                  label={tag}
+                  icon={Hash}
+                  color="pink"
+                  onRemove={() => handleRemoveTag(tag)}
+                />
+              ))}
+              <Input
+                ref={tagInputRef}
+                id="tags"
+                type="text"
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+                onKeyDown={handleTagKeyDown}
+                onBlur={handleTagInputBlur}
+                placeholder={tags.length === 0 ? 'Add tags...' : ''}
+                className="min-w-[80px] flex-1 border-0 bg-transparent px-0 text-sm shadow-none placeholder:text-gray-400 focus-visible:ring-0"
+              />
+            </div>
+            <FieldDescription>Press Enter, Space, or Comma to add a tag</FieldDescription>
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )}
+      />
+    </FieldGroup>
   );
 });
 

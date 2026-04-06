@@ -1,11 +1,11 @@
 'use client';
 
 import { memo } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import { GitBranch, Globe, Lock, MessageSquare, Shield, ThumbsUp } from 'lucide-react';
 
-import { Label } from '@/components/ui/label';
+import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import {
   Select,
   SelectContent,
@@ -20,131 +20,155 @@ import { cn } from '@/lib/utils';
 import { GenrePicker } from './genre-picker';
 
 export const SettingsStep = memo(() => {
-  const {
-    setValue,
-    formState: { errors },
-  } = useFormContext<TStoryFormValues>();
-
-  const settings = useWatch({ name: 'settings' });
-
-  const isPublic = settings?.isPublic ?? true;
-  const allowBranching = settings?.allowBranching ?? true;
-  const requireApproval = settings?.requireApproval ?? false;
-  const allowComments = settings?.allowComments ?? true;
-  const allowVoting = settings?.allowVoting ?? true;
-  const genres = settings?.genres ?? [];
-  const contentRating = settings?.contentRating ?? 'general';
-
-  const updateSetting = (key: string, value: unknown) => {
-    setValue(`settings.${key}` as keyof TStoryFormValues, value as never, { shouldValidate: true });
-  };
+  const { control } = useFormContext<TStoryFormValues>();
 
   return (
-    <div className="space-y-5">
+    <FieldGroup className="space-y-5">
       {/* Genre Multi-Select */}
-      <div className="space-y-2">
-        <Label className="text-text-primary text-sm font-medium">
-          Genres <span className="text-text-secondary-65 font-normal">(up to 5)</span>
-        </Label>
-        <GenrePicker
-          value={genres}
-          onChange={(newGenres) => updateSetting('genres', newGenres as typeof genres)}
-          maxSelections={5}
-          error={errors.settings?.genres?.message}
-        />
-      </div>
+      <Controller
+        name="settings.genres"
+        control={control}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel>
+              Genres <span className="text-text-secondary-65 font-normal">(up to 5)</span>
+            </FieldLabel>
+            <GenrePicker
+              value={field.value}
+              onChange={field.onChange}
+              maxSelections={5}
+              error={fieldState.error?.message}
+            />
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )}
+      />
 
       {/* Content Rating & Visibility */}
       <div className="grid grid-cols-2 gap-4">
         {/* Content Rating Select */}
-        <div className="space-y-2">
-          <Label className="text-text-primary text-sm font-medium">Content Rating</Label>
-          <Select
-            value={contentRating}
-            onValueChange={(v) => updateSetting('contentRating', v as typeof contentRating)}
-          >
-            <SelectTrigger className="bg-cream-95/50 focus:border-brand-pink-500 focus:ring-brand-pink-500/20 h-10 border-black/10 focus:bg-white">
-              <SelectValue placeholder="Select rating" />
-            </SelectTrigger>
-            <SelectContent>
-              {CONTENT_RATINGS.map((r) => (
-                <SelectItem key={r.value} value={r.value}>
-                  <span>{r.label}</span>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {errors.settings?.contentRating && (
-            <p className="text-xs text-red-500">{errors.settings.contentRating.message}</p>
+        <Controller
+          name="settings.contentRating"
+          control={control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel>Content Rating</FieldLabel>
+              <Select value={field.value || 'general'} onValueChange={field.onChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select rating" />
+                </SelectTrigger>
+                <SelectContent>
+                  {CONTENT_RATINGS.map((r) => (
+                    <SelectItem key={r.value} value={r.value}>
+                      <span>{r.label}</span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
           )}
-        </div>
+        />
 
         {/* Visibility */}
-        <div className="space-y-2">
-          <Label className="text-text-primary text-sm font-medium">Visibility</Label>
-          <Select
-            value={isPublic ? 'public' : 'private'}
-            onValueChange={(v) => updateSetting('isPublic', v === 'public')}
-          >
-            <SelectTrigger className="bg-cream-95/50 focus:border-brand-pink-500 focus:ring-brand-pink-500/20 h-10 border-black/10 focus:bg-white">
-              <SelectValue placeholder="Visibility" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="public">
-                <div className="flex items-center gap-2">
-                  <Globe className="h-3.5 w-3.5" />
-                  <span>Public</span>
-                </div>
-              </SelectItem>
-              <SelectItem value="private">
-                <div className="flex items-center gap-2">
-                  <Lock className="h-3.5 w-3.5" />
-                  <span>Private</span>
-                </div>
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <Controller
+          name="settings.isPublic"
+          control={control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel>Visibility</FieldLabel>
+              <Select
+                value={field.value !== false ? 'public' : 'private'}
+                onValueChange={(v) => field.onChange(v === 'public')}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Visibility" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="public">
+                    <div className="flex items-center gap-2">
+                      <Globe className="h-3.5 w-3.5" />
+                      <span>Public</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="private">
+                    <div className="flex items-center gap-2">
+                      <Lock className="h-3.5 w-3.5" />
+                      <span>Private</span>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
       </div>
 
       {/* Toggle Settings */}
       <div className="space-y-1">
-        <Label className="text-text-primary mb-2 block text-sm font-medium">Story Settings</Label>
+        <FieldLabel className="text-text-primary mb-2 block text-sm font-medium">
+          Story Settings
+        </FieldLabel>
         <div className="bg-cream-95/30 divide-y divide-black/5 rounded-xl border border-black/10">
-          <SettingToggle
-            icon={GitBranch}
-            label="Allow Branching"
-            description="Let readers create alternate story paths"
-            checked={allowBranching}
-            onCheckedChange={(v) => updateSetting('allowBranching', v)}
+          <Controller
+            name="settings.allowBranching"
+            control={control}
+            render={({ field }) => (
+              <SettingToggle
+                icon={GitBranch}
+                label="Allow Branching"
+                description="Let readers create alternate story paths"
+                checked={field.value !== false}
+                onCheckedChange={field.onChange}
+              />
+            )}
           />
 
-          <SettingToggle
-            icon={Shield}
-            label="Require Approval"
-            description="Review contributions before publishing"
-            checked={requireApproval}
-            onCheckedChange={(v) => updateSetting('requireApproval', v)}
+          <Controller
+            name="settings.requireApproval"
+            control={control}
+            render={({ field }) => (
+              <SettingToggle
+                icon={Shield}
+                label="Require Approval"
+                description="Review contributions before publishing"
+                checked={field.value || false}
+                onCheckedChange={field.onChange}
+              />
+            )}
           />
 
-          <SettingToggle
-            icon={MessageSquare}
-            label="Allow Comments"
-            description="Allow readers to discuss chapters"
-            checked={allowComments}
-            onCheckedChange={(v) => updateSetting('allowComments', v)}
+          <Controller
+            name="settings.allowComments"
+            control={control}
+            render={({ field }) => (
+              <SettingToggle
+                icon={MessageSquare}
+                label="Allow Comments"
+                description="Allow readers to discuss chapters"
+                checked={field.value !== false}
+                onCheckedChange={field.onChange}
+              />
+            )}
           />
 
-          <SettingToggle
-            icon={ThumbsUp}
-            label="Allow Voting"
-            description="Let readers vote on chapters"
-            checked={allowVoting}
-            onCheckedChange={(v) => updateSetting('allowVoting', v)}
+          <Controller
+            name="settings.allowVoting"
+            control={control}
+            render={({ field }) => (
+              <SettingToggle
+                icon={ThumbsUp}
+                label="Allow Voting"
+                description="Let readers vote on chapters"
+                checked={field.value !== false}
+                onCheckedChange={field.onChange}
+              />
+            )}
           />
         </div>
       </div>
-    </div>
+    </FieldGroup>
   );
 });
 

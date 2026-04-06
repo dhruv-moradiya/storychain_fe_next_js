@@ -3,7 +3,7 @@
 import Link from 'next/link';
 
 import { motion } from 'framer-motion';
-import { Compass, LayoutDashboard } from 'lucide-react';
+import { BookOpen, Compass } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { fadeIn } from '@/lib/utils';
@@ -35,17 +35,17 @@ export const Navbar = ({ isSignedIn }: INavbarProps) => {
           <>
             <Button
               variant="ghost"
-              className="font-ibm-plex-mono font-semibold hover:bg-white/10"
+              className="font-ibm-plex-mono hover:text-brand-pink-500! font-semibold hover:bg-transparent!"
               asChild
             >
-              <Link href="/dashboard" className="flex items-center gap-2">
-                <LayoutDashboard size={16} />
-                Dashboard
+              <Link href="/stories" className="flex items-center gap-2">
+                <BookOpen size={16} />
+                Stories
               </Link>
             </Button>
             <Button
               variant="ghost"
-              className="font-ibm-plex-mono font-semibold hover:bg-white/10"
+              className="font-ibm-plex-mono hover:text-brand-pink-500! font-semibold hover:bg-transparent!"
               asChild
             >
               <Link href="/explore" className="item s-center flex gap-2">
