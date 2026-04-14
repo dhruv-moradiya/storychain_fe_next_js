@@ -10,7 +10,7 @@ import { faqs } from '@/lib/data/pricing-data';
 
 export default function PricingPage() {
   return (
-    <div className="bg-bg-cream min-h-screen">
+    <div className="bg-background min-h-screen">
       <PricingHero />
 
       {/* ── Coin Packs ─────────────────────────────────── */}

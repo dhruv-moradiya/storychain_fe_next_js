@@ -6,6 +6,9 @@ import { formatDistanceToNow } from 'date-fns';
 import {
   AlertCircle,
   Check,
+  ChevronDownCircleIcon,
+  ChevronRightIcon,
+  Clock,
   FileEdit,
   GitMerge,
   GitPullRequest,
@@ -57,7 +60,32 @@ const TYPE_ICON: Record<PRType, LucideIcon> = {
 
 // --- Columns ---
 
-export const columns: ColumnDef<IPullRequest>[] = [
+export const getColumns = (): ColumnDef<IPullRequest>[] => [
+  {
+    header: '',
+    id: 'expander',
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="hover:bg-primary/5 h-8 w-8 p-0"
+            onClick={(e) => {
+              e.stopPropagation();
+              row.toggleExpanded();
+            }}
+          >
+            {row.getIsExpanded() ? (
+              <ChevronDownCircleIcon className="text-primary h-4 w-4 transition-transform" />
+            ) : (
+              <ChevronRightIcon className="text-muted-foreground h-4 w-4 transition-transform" />
+            )}
+          </Button>
+        </div>
+      );
+    },
+  },
   {
     accessorKey: 'status',
     header: 'Status',
@@ -75,7 +103,7 @@ export const columns: ColumnDef<IPullRequest>[] = [
             style: 'soft',
             uppercase: true,
             mono: true,
-            className: 'min-w-[80px] capitalize  !bg-transparent text-start',
+            className: 'min-w-[80px] capitalize !bg-transparent text-start',
           })}
         </div>
       );
@@ -87,17 +115,15 @@ export const columns: ColumnDef<IPullRequest>[] = [
     cell: ({ row }) => {
       const pr = row.original;
       return (
-        <div className="space-y-1">
+        <div className="max-w-[280px] space-y-1">
           <div className="flex items-center gap-2">
-            <span className="text-text-primary font-playfair line-clamp-1 text-sm font-medium">
-              {pr.title}
-            </span>
-            <span className="text-text-secondary-65 text-xs">#{pr._id.slice(-4)}</span>
+            <span className="text-foreground line-clamp-1 text-sm font-medium">{pr.title}</span>
+            <span className="text-muted-foreground shrink-0 text-xs">#{pr._id.slice(-4)}</span>
           </div>
-          <div className="text-text-secondary-65 flex items-center gap-1.5 text-xs">
-            <span className="font-playfair">Gojo Satoru</span>
+          <div className="text-muted-foreground line-clamp-1 flex items-center gap-1.5 text-xs">
+            <span className="">Gojo Satoru</span>
             <span>•</span>
-            <span className="text-text-primary font-playfair max-w-37.5 truncate font-medium">
+            <span className="text-foreground max-w-37.5 truncate font-medium">
               Chapter 5: Jujutsu Kaisen
             </span>
           </div>
@@ -119,7 +145,7 @@ export const columns: ColumnDef<IPullRequest>[] = [
             color: 'gray',
             size: 'sm',
             style: 'ghost',
-            className: 'capitalize text-text-secondary-65 font-normal',
+            className: 'capitalize text-muted-foreground font-normal',
           })}
         </div>
       );
@@ -127,25 +153,17 @@ export const columns: ColumnDef<IPullRequest>[] = [
   },
   {
     accessorKey: 'changes',
-    header: 'Changes',
+    header: 'Summary',
     cell: ({ row }) => {
-      const changes = row.original.content;
+      const changes = row.original.content || {};
       return (
-        <div className="grid grid-cols-2 gap-1">
-          {Badge({
-            label: `+${changes?.proposed || ''}`,
-            color: 'emerald',
-            size: 'sm',
-            style: 'soft',
-            mono: true,
-          })}
-          {Badge({
-            label: `-${changes.wordCount || 0}`,
-            color: 'rose',
-            size: 'sm',
-            style: 'soft',
-            mono: true,
-          })}
+        <div className="flex flex-col items-start gap-0.5">
+          <span className="text-foreground text-xs font-medium">
+            {changes.wordCount || 0} words
+          </span>
+          <span className="text-muted-foreground text-xs">
+            {changes.readingMinutes || 0} min read
+          </span>
         </div>
       );
     },
@@ -157,34 +175,50 @@ export const columns: ColumnDef<IPullRequest>[] = [
       const pr = row.original;
       return (
         <TooltipProvider>
-          <div className="text-text-secondary-65 flex items-center gap-3 text-xs">
+          <div className="text-muted-foreground flex flex-wrap items-center gap-3 text-xs">
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="hover:text-brand-blue flex items-center gap-1 transition-colors">
+                <div className="hover:text-secondary flex items-center gap-1 transition-colors">
                   <ThumbsUp className="h-3.5 w-3.5" />
-                  <span>{pr.votes.upvotes}</span>
+                  <span>{pr.votes?.upvotes || 0}</span>
                 </div>
               </TooltipTrigger>
               <TooltipContent>Upvotes</TooltipContent>
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="flex items-center gap-1 transition-colors hover:text-red-500">
+                <div className="hover:text-destructive flex items-center gap-1 transition-colors">
                   <ThumbsDown className="h-3.5 w-3.5" />
-                  <span>{pr.votes.downvotes}</span>
+                  <span>{pr.votes?.downvotes || 0}</span>
                 </div>
               </TooltipTrigger>
               <TooltipContent>Downvotes</TooltipContent>
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="hover:text-brand-pink-500 flex items-center gap-1 transition-colors">
+                <div className="hover:text-primary flex items-center gap-1 transition-colors">
                   <MessageSquare className="h-3.5 w-3.5" />
-                  <span>{pr.commentCount}</span>
+                  <span>{pr.commentCount || 0}</span>
                 </div>
               </TooltipTrigger>
               <TooltipContent>Comments</TooltipContent>
             </Tooltip>
+            {pr.autoApprove && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="hover:text-accent flex items-center gap-1 transition-colors">
+                    <Clock className="h-3.5 w-3.5" />
+                    <span>
+                      {pr.autoApprove.threshold || 0} / {pr.autoApprove.timeWindow || 0}d
+                    </span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  Auto-Approve: {pr.autoApprove.threshold} votes within {pr.autoApprove.timeWindow}{' '}
+                  days
+                </TooltipContent>
+              </Tooltip>
+            )}
           </div>
         </TooltipProvider>
       );
@@ -201,7 +235,7 @@ export const columns: ColumnDef<IPullRequest>[] = [
             {pr.approvalsStatus.approvers.slice(0, 3).map((_, i) => (
               <Tooltip key={i}>
                 <TooltipTrigger asChild>
-                  <Avatar className="border-bg-cream ring-border/10 h-6 w-6 cursor-help border-2 ring-1 transition-transform hover:z-10 hover:scale-110">
+                  <Avatar className="border-card ring-border/10 h-6 w-6 cursor-help border-2 ring-1 transition-transform hover:z-10 hover:scale-110">
                     <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`} />
                   </Avatar>
                 </TooltipTrigger>
@@ -211,8 +245,8 @@ export const columns: ColumnDef<IPullRequest>[] = [
             {pr.approvalsStatus.blockers.length > 0 && (
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div className="bg-bg-cream relative z-10 flex h-6 w-6 items-center justify-center rounded-full border-2 border-red-100 shadow-sm">
-                    <AlertCircle className="h-3.5 w-3.5 text-red-500" />
+                  <div className="bg-card border-destructive/20 relative z-10 flex h-6 w-6 items-center justify-center rounded-full border-2 shadow-sm">
+                    <AlertCircle className="text-destructive h-3.5 w-3.5" />
                   </div>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -222,7 +256,7 @@ export const columns: ColumnDef<IPullRequest>[] = [
             )}
             {pr.approvalsStatus.approvers.length === 0 &&
               pr.approvalsStatus.blockers.length === 0 && (
-                <span className="text-text-secondary-65 text-xs">-</span>
+                <span className="text-muted-foreground text-xs">-</span>
               )}
           </div>
         </TooltipProvider>
@@ -234,7 +268,7 @@ export const columns: ColumnDef<IPullRequest>[] = [
     header: 'Created',
     cell: ({ row }) => {
       return (
-        <span className="text-text-secondary-65 text-xs whitespace-nowrap">
+        <span className="text-muted-foreground text-xs whitespace-nowrap">
           {formatDistanceToNow(new Date(row.original.createdAt), { addSuffix: true })}
         </span>
       );
@@ -247,7 +281,7 @@ export const columns: ColumnDef<IPullRequest>[] = [
         <Button
           variant="ghost"
           size="sm"
-          className="text-brand-pink-500 hover:text-brand-pink-600 hover:bg-brand-pink-500/5 h-8 px-2 text-xs"
+          className="text-primary hover:text-primary/80 hover:bg-primary/5 h-8 px-2 text-xs font-medium"
         >
           View
         </Button>

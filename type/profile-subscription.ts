@@ -1,33 +1,30 @@
-export type PlanType = 'FREE' | 'PRO' | 'PREMIUM';
 export type PaymentStatus = 'SUCCESS' | 'FAILED' | 'PENDING' | 'REFUNDED';
 export type PaymentMethod = 'UPI' | 'CARD' | 'NET_BANKING' | 'WALLET';
 
-export interface UserSubscription {
-  id: string;
-  planType: PlanType;
-  status: 'ACTIVE' | 'PAUSED' | 'CANCELLED' | 'EXPIRED';
-  startDate: Date;
-  endDate: Date;
-  autoRenew: boolean;
-  billingCycle: 'MONTHLY' | 'YEARLY';
-  currency: 'INR' | 'USD';
-  amount: number; // in paise/cents
+export interface CoinWallet {
+  balance: number;
+  totalEarned: number;
+  totalSpent: number;
+  lifetimePurchased: number;
 }
 
-export interface PaymentHistory {
+export interface CoinTransaction {
   id: string;
   date: Date;
-  amount: number; // in paise/cents
-  currency: 'INR' | 'USD';
-  status: PaymentStatus;
-  method: PaymentMethod;
+  type: 'PURCHASE' | 'SPEND' | 'EARN' | 'BONUS';
+  coins: number;
   description: string;
+  status: PaymentStatus;
+  method?: PaymentMethod;
+  amountPaid?: number; // in paise/cents (only for purchases)
+  currency?: 'INR' | 'USD';
   invoiceUrl?: string;
 }
 
-export interface UsageStats {
-  stories: { used: number; limit: number | null };
-  chapters: { used: number; limit: number | null };
-  branches: { used: number; limit: number | null };
-  collaborators: { used: number; limit: number | null };
+export interface CoinSpendBreakdown {
+  category: string;
+  coinsSpent: number;
+  icon: string; // icon key
+  color: string;
+  bgColor: string;
 }

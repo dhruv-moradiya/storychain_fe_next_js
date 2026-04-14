@@ -2,7 +2,16 @@
 
 import type { StoryRole } from '@/type/coins';
 import { motion } from 'framer-motion';
-import { Gift, IndianRupee, Percent, Sparkles, TrendingUp, Users } from 'lucide-react';
+import {
+  ArrowRight,
+  Banknote,
+  BookOpenCheck,
+  Gift,
+  Percent,
+  PieChart,
+  Sparkles,
+  Users,
+} from 'lucide-react';
 
 import { cn, scrollReveal } from '@/lib/utils';
 
@@ -16,7 +25,7 @@ export function RewardsSection({ roles }: RewardsSectionProps) {
 
   return (
     <section className="px-6 pb-20">
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-6xl">
         {/* ── Section header ────────────────────────── */}
         <div className="mb-10 text-center">
           <motion.div
@@ -24,96 +33,124 @@ export function RewardsSection({ roles }: RewardsSectionProps) {
             className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/8 px-4 py-1.5"
           >
             <Gift className="h-4 w-4 text-emerald-500" />
-            <span className="text-sm font-medium text-emerald-600">Creator Rewards Program</span>
+            <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+              Creator Rewards Program
+            </span>
           </motion.div>
 
           <motion.h2
             {...scrollReveal.heading}
-            className="font-libre-baskerville text-text-tertiary mb-3 text-3xl tracking-tight sm:text-4xl"
+            className="font-libre-baskerville text-foreground mb-3 text-3xl tracking-tight sm:text-4xl"
           >
             Earn from your stories
           </motion.h2>
 
           <motion.p
             {...scrollReveal.paragraph}
-            className="text-text-secondary-65 mx-auto max-w-xl text-sm leading-relaxed"
+            className="text-muted-foreground mx-auto max-w-xl text-sm leading-relaxed"
           >
             Every time a reader unlocks a chapter in your story, the revenue is shared between the
             platform and all contributors — automatically, transparently, via Razorpay Payouts.
           </motion.p>
         </div>
 
-        {/* ── Revenue split ─────────────────────────── */}
+        {/* ── Revenue split — Donut visual ─────────────────────────── */}
         <motion.div
           {...scrollReveal.card(0)}
-          className="border-border/50 from-bg-cream to-bg-cream-blend mb-8 overflow-hidden rounded-2xl border bg-linear-to-br p-6"
+          className="border-border/50 bg-card mb-8 overflow-hidden rounded-2xl border p-6"
         >
-          <p className="text-text-secondary-65 mb-5 text-center text-xs font-medium tracking-widest uppercase">
+          <p className="text-muted-foreground mb-6 text-center text-xs font-medium tracking-widest uppercase">
             Chapter Unlock Revenue Split
           </p>
 
-          {/* Animated bar */}
-          <div className="mb-6 flex h-10 overflow-hidden rounded-xl">
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: `${appShare}%` }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, ease: 'easeOut' }}
-              className="from-text-secondary/30 to-text-secondary/50 text-cream-80 flex items-center justify-center bg-linear-to-r text-xs font-bold"
-            >
-              {appShare}% App
-            </motion.div>
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: `${creatorShare}%` }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, ease: 'easeOut', delay: 0.12 }}
-              className="from-brand-pink-500 to-brand-orange text-cream-95 flex items-center justify-center bg-linear-to-r text-xs font-bold"
-            >
-              {creatorShare}% Creators
-            </motion.div>
-          </div>
-
-          {/* Two columns */}
-          <div className="grid gap-4 sm:grid-cols-2">
-            {/* Platform card */}
-            <div className="from-text-secondary/5 to-text-secondary/10 rounded-xl bg-linear-to-br p-4">
-              <div className="mb-2 flex items-center gap-2">
-                <div className="bg-text-secondary-65/10 flex h-8 w-8 items-center justify-center rounded-lg">
-                  <TrendingUp className="text-text-secondary-65 h-4 w-4" />
-                </div>
-                <div>
-                  <p className="text-text-primary text-sm font-semibold">StoryChain Platform</p>
-                  <p className="text-text-secondary-65 text-xs">Infrastructure &amp; Growth</p>
-                </div>
+          <div className="flex flex-col items-center gap-8 sm:flex-row sm:justify-center">
+            {/* Donut Chart */}
+            <div className="relative flex h-44 w-44 shrink-0 items-center justify-center">
+              <svg viewBox="0 0 120 120" className="h-44 w-44 -rotate-90">
+                <circle
+                  cx="60"
+                  cy="60"
+                  r="50"
+                  fill="none"
+                  strokeWidth="16"
+                  className="stroke-muted/40"
+                />
+                <motion.circle
+                  cx="60"
+                  cy="60"
+                  r="50"
+                  fill="none"
+                  strokeWidth="16"
+                  strokeLinecap="round"
+                  className="stroke-muted-foreground/40"
+                  strokeDasharray={`${(appShare / 100) * 314.16} 314.16`}
+                  initial={{ strokeDashoffset: 314.16 }}
+                  whileInView={{ strokeDashoffset: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1, ease: 'easeOut' }}
+                />
+                <motion.circle
+                  cx="60"
+                  cy="60"
+                  r="50"
+                  fill="none"
+                  strokeWidth="16"
+                  strokeLinecap="round"
+                  className="stroke-primary"
+                  strokeDasharray={`${(creatorShare / 100) * 314.16} 314.16`}
+                  strokeDashoffset={`-${(appShare / 100) * 314.16}`}
+                  initial={{ strokeDashoffset: 314.16 }}
+                  whileInView={{ strokeDashoffset: `-${(appShare / 100) * 314.16}` }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-foreground font-libre-baskerville text-2xl font-bold">
+                  {creatorShare}%
+                </span>
+                <span className="text-muted-foreground text-xs">Creators</span>
               </div>
-              <p className="font-libre-baskerville text-text-primary text-3xl font-bold">
-                {appShare}
-                <span className="text-lg font-medium">%</span>
-              </p>
-              <p className="text-text-secondary-65 mt-1 text-xs">
-                Covers servers, AI, payments, and platform development.
-              </p>
             </div>
 
-            {/* Creator card */}
-            <div className="from-brand-pink-500/8 to-brand-orange/8 rounded-xl bg-linear-to-br p-4">
-              <div className="mb-2 flex items-center gap-2">
-                <div className="bg-brand-pink-500/12 flex h-8 w-8 items-center justify-center rounded-lg">
-                  <Users className="text-brand-pink-500 h-4 w-4" />
+            {/* Split detail cards */}
+            <div className="grid flex-1 gap-4 sm:grid-cols-2">
+              <div className="bg-muted/30 rounded-xl p-4">
+                <div className="mb-2 flex items-center gap-2">
+                  <div className="bg-muted-foreground/10 flex h-8 w-8 items-center justify-center rounded-lg">
+                    <Sparkles className="text-muted-foreground h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-foreground text-sm font-semibold">StoryChain Platform</p>
+                    <p className="text-muted-foreground text-xs">Infrastructure & Growth</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-text-primary text-sm font-semibold">Story Contributors</p>
-                  <p className="text-brand-pink-500 text-xs">Distributed by role</p>
-                </div>
+                <p className="font-libre-baskerville text-foreground text-3xl font-bold">
+                  {appShare}
+                  <span className="text-lg font-medium">%</span>
+                </p>
+                <p className="text-muted-foreground mt-1 text-xs">
+                  Covers servers, AI, payments, and platform development.
+                </p>
               </div>
-              <p className="text-brand-pink-500 font-libre-baskerville text-3xl font-bold">
-                {creatorShare}
-                <span className="text-lg font-medium">%</span>
-              </p>
-              <p className="text-text-secondary-65 mt-1 text-xs">
-                Split among all contributors based on their story role and contribution.
-              </p>
+              <div className="bg-primary/5 rounded-xl p-4">
+                <div className="mb-2 flex items-center gap-2">
+                  <div className="bg-primary/12 flex h-8 w-8 items-center justify-center rounded-lg">
+                    <Users className="text-primary h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-foreground text-sm font-semibold">Story Contributors</p>
+                    <p className="text-primary text-xs">Distributed by role</p>
+                  </div>
+                </div>
+                <p className="text-primary font-libre-baskerville text-3xl font-bold">
+                  {creatorShare}
+                  <span className="text-lg font-medium">%</span>
+                </p>
+                <p className="text-muted-foreground mt-1 text-xs">
+                  Split among all contributors based on their story role and contribution.
+                </p>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -121,23 +158,20 @@ export function RewardsSection({ roles }: RewardsSectionProps) {
         {/* ── Role reward breakdown ──────────────────── */}
         <motion.div
           {...scrollReveal.card(1)}
-          className="border-border/50 from-bg-cream to-bg-cream-blend mb-8 rounded-2xl border bg-linear-to-br p-6"
+          className="border-border/50 bg-card mb-8 rounded-2xl border p-6"
         >
           <div className="mb-2 flex items-center gap-2">
-            <Percent className="text-brand-blue h-5 w-5" />
-            <h3 className="text-text-primary font-semibold">Role-Based Reward Distribution</h3>
+            <Percent className="text-secondary h-5 w-5" />
+            <h3 className="text-foreground font-semibold">Role-Based Reward Distribution</h3>
           </div>
-          <p className="text-text-secondary-65 mb-6 text-sm">
-            The{' '}
-            <span className="text-brand-pink-500 font-medium">{creatorShare}% creator share</span>{' '}
-            is split proportionally among contributors based on their role.
+          <p className="text-muted-foreground mb-6 text-sm">
+            The <span className="text-primary font-medium">{creatorShare}% creator share</span> is
+            split proportionally among contributors based on their role.
           </p>
 
           <div className="space-y-2">
             {roles.map((role, index) => {
               const Icon = role.icon;
-              const shareOfTotal = (role.rewardShare / 100) * creatorShare;
-
               return (
                 <motion.div
                   key={role.id}
@@ -147,10 +181,9 @@ export function RewardsSection({ roles }: RewardsSectionProps) {
                   transition={{ delay: index * 0.07 }}
                   className={cn(
                     'group flex items-center gap-4 rounded-xl border border-transparent p-3 transition-all duration-200',
-                    'hover:border-border/60 hover:bg-bg-cream-blend/60'
+                    'hover:border-border/60 hover:bg-muted/30'
                   )}
                 >
-                  {/* Role icon */}
                   <div
                     className={cn(
                       'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-transform duration-200 group-hover:scale-105',
@@ -159,11 +192,9 @@ export function RewardsSection({ roles }: RewardsSectionProps) {
                   >
                     <Icon className={cn('h-5 w-5', role.color)} />
                   </div>
-
-                  {/* Role name + desc */}
                   <div className="min-w-0 flex-1">
                     <div className="mb-0.5 flex flex-wrap items-center gap-2">
-                      <p className="text-text-primary text-sm font-semibold">{role.role}</p>
+                      <p className="text-foreground text-sm font-semibold">{role.role}</p>
                       <span
                         className={cn(
                           'rounded-full px-2 py-0.5 text-xs font-medium',
@@ -174,14 +205,12 @@ export function RewardsSection({ roles }: RewardsSectionProps) {
                         {role.rewardShare}% of creator pool
                       </span>
                     </div>
-                    <p className="text-text-secondary-65 text-xs leading-relaxed">
+                    <p className="text-muted-foreground text-xs leading-relaxed">
                       {role.description}
                     </p>
                   </div>
-
-                  {/* Progress bar */}
                   <div className="hidden w-28 shrink-0 sm:block">
-                    <div className="border-border/30 h-1.5 overflow-hidden rounded-full border bg-black/5">
+                    <div className="border-border/30 bg-muted/30 h-1.5 overflow-hidden rounded-full border">
                       <motion.div
                         initial={{ width: 0 }}
                         whileInView={{ width: `${(role.rewardShare / 40) * 100}%` }}
@@ -191,12 +220,9 @@ export function RewardsSection({ roles }: RewardsSectionProps) {
                       />
                     </div>
                   </div>
-
-                  {/* ₹ share badge */}
-                  <div className="flex shrink-0 items-center gap-0.5">
-                    <IndianRupee className={cn('h-3 w-3', role.color)} />
+                  <div className="flex shrink-0 items-center">
                     <span className={cn('font-libre-baskerville text-sm font-bold', role.color)}>
-                      {shareOfTotal.toFixed(1)}%
+                      {role.rewardShare}%
                     </span>
                   </div>
                 </motion.div>
@@ -205,38 +231,52 @@ export function RewardsSection({ roles }: RewardsSectionProps) {
           </div>
         </motion.div>
 
-        {/* ── How payouts work ──────────────────────── */}
+        {/* ── How Payouts Work — Card-based flow ──────────────────────── */}
         <motion.div
           {...scrollReveal.card(2)}
-          className="border-brand-blue/20 from-brand-blue/6 via-brand-pink-500/5 to-brand-orange/6 rounded-2xl border bg-linear-to-br p-6"
+          className="border-border/50 bg-card rounded-2xl border p-6 sm:p-8"
         >
-          <div className="mb-6 flex items-center gap-2">
-            <Sparkles className="text-brand-blue h-5 w-5" />
-            <h3 className="text-text-primary font-semibold">How Payouts Work</h3>
+          <div className="mb-8 flex items-center gap-3">
+            <div className="bg-secondary/10 flex h-10 w-10 items-center justify-center rounded-xl">
+              <Sparkles className="text-secondary h-5 w-5" />
+            </div>
+            <div>
+              <h3 className="text-foreground font-libre-baskerville text-lg font-semibold">
+                How Payouts Work
+              </h3>
+              <p className="text-muted-foreground text-sm">Simple, transparent, and automatic</p>
+            </div>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-3">
+          {/* Steps */}
+          <div className="grid gap-4 sm:grid-cols-3">
             {[
               {
-                step: '01',
+                step: 1,
+                icon: BookOpenCheck,
                 title: 'Reader Unlocks Chapter',
-                desc: 'A reader spends coins to unlock a premium chapter in your story.',
-                color: 'text-brand-blue',
-                bg: 'bg-brand-blue/10',
+                desc: 'A reader spends coins to unlock a premium chapter in your story. The transaction is instant and secure.',
+                color: 'text-secondary',
+                bg: 'bg-secondary/10',
+                borderColor: 'border-secondary/20',
               },
               {
-                step: '02',
+                step: 2,
+                icon: PieChart,
                 title: 'Revenue is Split',
-                desc: '40% goes to StoryChain. 60% is divided among story contributors by role.',
-                color: 'text-brand-pink-500',
-                bg: 'bg-brand-pink-500/10',
+                desc: '40% goes to StoryChain for infrastructure. 60% is automatically divided among story contributors based on role.',
+                color: 'text-primary',
+                bg: 'bg-primary/10',
+                borderColor: 'border-primary/20',
               },
               {
-                step: '03',
-                title: 'Razorpay Payout',
-                desc: 'Your earnings are automatically transferred to your bank via Razorpay Payouts.',
-                color: 'text-brand-orange',
-                bg: 'bg-brand-orange/10',
+                step: 3,
+                icon: Banknote,
+                title: 'Earnings Deposited',
+                desc: 'Your share is transferred directly to your linked bank account via Razorpay Payouts. No manual action needed.',
+                color: 'text-emerald-500 dark:text-emerald-400',
+                bg: 'bg-emerald-500/10',
+                borderColor: 'border-emerald-500/20',
               },
             ].map((item, i) => (
               <motion.div
@@ -245,20 +285,61 @@ export function RewardsSection({ roles }: RewardsSectionProps) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="flex flex-col gap-3"
+                className="relative"
               >
+                {/* Arrow connector (between cards on sm+) */}
+                {i < 2 && (
+                  <div className="text-muted-foreground/40 absolute top-1/2 -right-2.5 z-10 hidden -translate-y-1/2 sm:block">
+                    <ArrowRight className="h-5 w-5" />
+                  </div>
+                )}
+
                 <div
-                  className={cn('flex h-10 w-10 items-center justify-center rounded-xl', item.bg)}
+                  className={cn(
+                    'relative h-full rounded-xl border p-5 transition-all duration-200 hover:shadow-sm',
+                    item.borderColor,
+                    'bg-muted/10 hover:bg-muted/20'
+                  )}
                 >
-                  <span className={cn('font-libre-baskerville text-sm font-bold', item.color)}>
-                    {item.step}
-                  </span>
-                </div>
-                <div>
-                  <p className="text-text-primary mb-1 text-sm font-semibold">{item.title}</p>
-                  <p className="text-text-secondary-65 text-xs leading-relaxed">{item.desc}</p>
+                  {/* Step number + icon row */}
+                  <div className="mb-4 flex items-center gap-3">
+                    <div
+                      className={cn(
+                        'flex h-10 w-10 items-center justify-center rounded-xl',
+                        item.bg
+                      )}
+                    >
+                      <item.icon className={cn('h-5 w-5', item.color)} />
+                    </div>
+                    <span
+                      className={cn(
+                        'font-libre-baskerville text-2xl font-bold opacity-20',
+                        item.color
+                      )}
+                    >
+                      0{item.step}
+                    </span>
+                  </div>
+
+                  <h4 className="text-foreground mb-2 text-sm font-semibold">{item.title}</h4>
+                  <p className="text-muted-foreground text-xs leading-relaxed">{item.desc}</p>
                 </div>
               </motion.div>
+            ))}
+          </div>
+
+          {/* Bottom highlight bar */}
+          <div className="bg-muted/20 mt-6 flex flex-wrap items-center justify-center gap-6 rounded-xl px-6 py-4">
+            {[
+              { label: 'Automatic', desc: 'No manual claims' },
+              { label: 'Transparent', desc: 'Track every payout' },
+              { label: 'Instant', desc: 'Via Razorpay' },
+            ].map((item) => (
+              <div key={item.label} className="flex items-center gap-2 text-sm">
+                <div className="bg-primary h-1.5 w-1.5 rounded-full" />
+                <span className="text-foreground font-medium">{item.label}</span>
+                <span className="text-muted-foreground text-xs">— {item.desc}</span>
+              </div>
             ))}
           </div>
         </motion.div>

@@ -1,44 +1,56 @@
 'use client';
 
-import { CreditCard } from 'lucide-react';
+import { Coins } from 'lucide-react';
 
-import {
-  mockPaymentHistory,
-  mockSubscription,
-  mockUsageStats,
-} from '@/lib/data/profile-subscription';
+import { mockUserPayoutInfo, mockUserPayouts } from '@/lib/data/payout-data';
+import { mockCoinTransactions, mockCoinWallet } from '@/lib/data/profile-subscription';
 
-import { CurrentPlanCard } from './components/current-plan-card';
-import { PaymentHistoryCard } from './components/payment-history-card';
-import { UsageStatsCard } from './components/usage-stats-card';
+import { CoinSpendingCard } from './components/coin-spending-card';
+import { CoinTransactionHistory } from './components/coin-transaction-history';
+import { CoinWalletCard } from './components/coin-wallet-card';
+import { PayoutSection } from './components/payout-section';
 
 export function SubscriptionSection() {
   // In real app, fetch these from API
-  const subscription = mockSubscription;
-  const payments = mockPaymentHistory;
-  const usage = mockUsageStats;
+  const wallet = mockCoinWallet;
+  const transactions = mockCoinTransactions;
+  const payoutInfo = mockUserPayoutInfo;
+  const payouts = mockUserPayouts;
 
   return (
     <section className="space-y-6">
       {/* Page Header */}
       <div className="flex items-center gap-3">
-        <div className="from-brand-pink-500/20 to-brand-orange/20 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br">
-          <CreditCard className="text-brand-pink-500 h-5 w-5" />
+        <div className="from-primary/20 to-accent/20 flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br">
+          <Coins className="text-primary h-5 w-5" />
         </div>
         <div>
-          <h2 className="text-text-primary text-lg font-semibold">Subscription & Billing</h2>
-          <p className="text-text-secondary-65 text-sm">Manage your plan and payment methods</p>
+          <h2 className="text-foreground text-lg font-semibold">Coin Wallet</h2>
+          <p className="text-muted-foreground text-sm">
+            Manage your coins, payouts, and transactions
+          </p>
         </div>
       </div>
 
-      {/* Current Plan */}
-      <CurrentPlanCard subscription={subscription} />
+      {/* Coin Wallet Balance */}
+      <CoinWalletCard wallet={wallet} />
 
-      {/* Usage Stats */}
-      <UsageStatsCard stats={usage} />
+      {/* Payout Requests */}
+      <PayoutSection
+        payoutInfo={payoutInfo}
+        payouts={payouts}
+        availableEarnings={wallet.totalEarned}
+      />
 
-      {/* Payment History */}
-      <PaymentHistoryCard payments={payments} />
+      {/* Spending Breakdown + Transaction History side by side */}
+      <div className="grid gap-6 lg:grid-cols-5">
+        <div className="lg:col-span-2">
+          <CoinSpendingCard transactions={transactions} />
+        </div>
+        <div className="lg:col-span-3">
+          <CoinTransactionHistory transactions={transactions} />
+        </div>
+      </div>
     </section>
   );
 }

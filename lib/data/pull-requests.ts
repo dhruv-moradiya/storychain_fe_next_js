@@ -107,6 +107,92 @@ export const mockPullRequests: IPullRequest[] = [
     // mergedAt: null,
     // mergedBy: null,
   },
+  {
+    _id: '69ddfdaa93989f35ff2b7d77',
+    title: 'Benevolentia talio cena nam arcus accusator adsuesco',
+    description: '',
+    storySlug: 'merchant-of-forbidden-seas',
+    chapterSlug: 'the-tattered-ledger-266a31',
+    parentChapterSlug: 'the-weight-of-shadows-79aff7',
+    authorId: 'user_35fzdqhSi93wmi7Xze3xBkwtJBD',
+    prType: 'new_branch' as const,
+    content: {
+      proposed:
+        'Cui conor vulticulus commodo doloremque alii vere tergeo. Surculus contabesco cado audacia ulciscor acquiro cetera. Compello circumvenio abstergo sum aranea vulticulus sublime ascisco.\n\nStrenuus deporto terga tutamen copia mollitia tamdiu vero spargo socius. Turba ipsa blanditiis aeger impedit arbitro uterque. Canonicus est conatus caries atrocitas demitto solio adflicto.\n\nDebeo solio in vulgaris spiritus paulatim minus absum substantia. Aranea cilicium stipes patria vix iusto pecus. Comitatus suadeo ipsum tabesco.\n\nTerrito voco decipio tremo denego aetas dignissimos vinco. Pecco vulgo suspendo. Animi carpo tonsor creber quibusdam concedo.\n\nVomer conor absconditus paulatim vicinus argentum coerceo. Possimus id theca. Adamo barba corrigo possimus pectus desparatus administratio patior ultio.\n\nAttonbitus speciosus argentum ulciscor admitto baiulus adsuesco conculco thesis cauda. Sollicito tres ascit video. Candidus patria porro ocer turbo aegre tandem corporis sol.\n\nUnus decretum crur cognatus nihil unde cohors denuo decor. Statim arbor illo ars decens ustilo cattus angustus benigne. Argumentum vindico addo voco pecto suscipit succedo suasoria.',
+      wordCount: 153,
+      readingMinutes: 1,
+    },
+    status: 'open' as const,
+    votes: {
+      upvotes: 0,
+      downvotes: 0,
+      score: 0,
+    },
+    commentCount: 27,
+    autoApprove: {
+      enabled: false,
+      threshold: 20,
+      timeWindow: 9,
+    },
+    labels: [],
+    isDraft: true,
+    approvalsStatus: {
+      required: 2,
+      received: 3,
+      pending: 0,
+      approvers: [
+        'user_37Sbu5bOsSQ2a3FfUfTcpMSZ8U9',
+        'user_37SzOisEwiHWupJu3VU82CXQHd4',
+        'user_38TzxSDUatNLlJx6GHvnpEKPYKV',
+      ],
+      blockers: [],
+      canMerge: true,
+    },
+    draftReason: '',
+    draftedAt: '2025-11-14T11:24:56.331Z',
+    stats: {
+      views: 268,
+      discussions: 0,
+      reviewsReceived: 3,
+    },
+    author: {
+      clerkId: 'user_35fzdqhSi93wmi7Xze3xBkwtJBD',
+      username: 'dhruv',
+      avatarUrl: '',
+    },
+    story: {
+      title: 'Merchant of Forbidden Seas',
+      slug: 'merchant-of-forbidden-seas',
+    },
+    chapter: {
+      title: 'The Tattered Ledger',
+      slug: 'the-tattered-ledger-266a31',
+      parentChapter: {
+        title: 'The Weight of Shadows',
+        slug: 'the-weight-of-shadows-79aff7',
+      },
+    },
+    approvers: [
+      {
+        clerkId: 'user_37Sbu5bOsSQ2a3FfUfTcpMSZ8U9',
+        username: 'gojo',
+        avatarUrl: '',
+      },
+      {
+        clerkId: 'user_37SzOisEwiHWupJu3VU82CXQHd4',
+        username: 'wixogih',
+        avatarUrl: '',
+      },
+      {
+        clerkId: 'user_38TzxSDUatNLlJx6GHvnpEKPYKV',
+        username: 'pileb',
+        avatarUrl: '',
+      },
+    ],
+    blockers: [],
+    createdAt: '2025-11-14T11:24:56.331Z',
+    updatedAt: '2026-04-14T08:41:16.236Z',
+  } as const,
 ];
 
 // ==================== MOCK PR COMMENTS ====================

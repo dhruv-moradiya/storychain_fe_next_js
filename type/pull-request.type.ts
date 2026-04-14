@@ -114,6 +114,39 @@ export interface IPullRequest {
   parentChapterSlug: string;
   authorId: string;
 
+  // Populated objects
+  story?: {
+    title: string;
+    slug: string;
+  };
+  chapter?: {
+    title: string;
+    slug: string;
+    parentChapter?: {
+      title: string;
+      slug: string;
+    };
+  };
+  approvers?: {
+    clerkId: string;
+    username: string;
+    avatarUrl: string;
+  }[];
+  blockers?: {
+    clerkId: string;
+    username: string;
+    avatarUrl: string;
+  }[];
+
+  // Populated author data
+  author?: {
+    clerkId?: string;
+    username?: string;
+    avatarUrl?: string;
+    avatar?: string;
+    displayName?: string;
+  };
+
   // PR Type
   prType: TPRType;
 

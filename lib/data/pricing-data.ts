@@ -91,33 +91,43 @@ export const featureComparison: PlanFeature[] = [
 
 export const faqs: FAQ[] = [
   {
-    question: 'Can I cancel my subscription anytime?',
+    question: 'What are coins and how do they work?',
     answer:
-      'Yes, you can cancel your subscription at any time. Your access will continue until the end of your billing period. No hidden fees or cancellation charges.',
+      "Coins are StoryChain's in-app currency. You buy them once with real money (INR via Razorpay) and spend them across the platform — unlock premium chapters, create stories, use AI tools, boost visibility, and more. Coins never expire and are credited instantly to your wallet.",
   },
   {
-    question: 'What happens to my stories if I downgrade?',
+    question: 'How much does it cost to unlock a chapter?',
     answer:
-      "Your stories are never deleted. You'll still have read access, but some features may be limited based on your new plan. Existing content beyond limits will be preserved but you won't be able to create new ones.",
+      'Unlocking a single premium chapter costs 10 coins. If you prefer to binge-read, you can grab an Unlimited Read Pass for 75 coins, which unlocks every chapter in a story for 7 days.',
   },
   {
-    question: 'Do you offer refunds?',
+    question: 'How do creators earn from their stories?',
     answer:
-      "We offer a 7-day money-back guarantee for all paid plans. If you're not satisfied, contact support within 7 days of your purchase for a full refund.",
+      'Every time a reader unlocks a chapter, 60% of the coin revenue goes to story contributors. The split is based on role — Authors get the largest share (40% of the creator pool), followed by Co-Authors, Collaborators, Reviewers, and Moderators. Payouts happen automatically via Razorpay.',
   },
   {
-    question: 'What payment methods do you accept?',
+    question: 'What coin packs are available?',
     answer:
-      'We accept UPI, all major credit/debit cards (Visa, Mastercard, RuPay), net banking from 50+ banks, and popular wallets like Paytm, PhonePe, and Google Pay.',
+      'We offer five packs: 100 coins (₹100), 500 coins + 25 bonus (₹500), 1,000 coins + 100 bonus (₹1,000 — best value), 5,000 coins + 750 bonus (₹5,000), and 10,000 coins + 2,000 bonus (₹10,000). The more you buy, the more bonus coins you receive.',
   },
   {
-    question: "Can I pay in USD if I'm outside India?",
+    question: 'Do coins expire?',
     answer:
-      'Yes! We support international payments in USD. Simply toggle to USD on the pricing page to see prices and pay in dollars using international cards.',
+      'No. Coins never expire. Once purchased, they stay in your wallet until you spend them. You can also stack multiple packs at any time to top up your balance.',
   },
   {
-    question: 'Can I pause my subscription?',
+    question: 'What payment methods are supported?',
     answer:
-      "Yes, you can pause your subscription at any time from your profile settings. Your billing will be paused and you can resume whenever you're ready.",
+      'We accept UPI, all major credit/debit cards (Visa, Mastercard, RuPay), net banking from 50+ banks, and popular wallets like Paytm, PhonePe, and Google Pay — all powered securely by Razorpay.',
+  },
+  {
+    question: 'How does role-based reward distribution work?',
+    answer:
+      'The 60% creator share is divided by role: Author receives 40% of the pool, Co-Author 25%, Collaborator 20%, Reviewer 10%, and Moderator 5%. Every role receives payouts automatically when readers unlock chapters.',
+  },
+  {
+    question: 'Can I use AI features with coins?',
+    answer:
+      'Yes. AI Voice Narration costs 5 coins per chapter, AI Writing Assist costs 20 coins per session, and AI Story Cover generation costs 40 coins per image. These are one-time charges — no subscriptions needed.',
   },
 ];
