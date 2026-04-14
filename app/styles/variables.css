@@ -50,14 +50,51 @@
   --chart-5: oklch(0.543 0.213 267); /* blue-alt */
 
   /* Sidebar Colors — StoryChain themed */
-  --sidebar: oklch(0.974 0.022 86);
-  --sidebar-foreground: oklch(0.248 0.104 265);
-  --sidebar-primary: oklch(0.588 0.214 350);
+  --sidebar: oklch(0.969 0.018 80); /* warm beige surface #f0e6d3 area */
+  --sidebar-foreground: oklch(0.22 0.06 30); /* dark brown #2c1810 */
+  --sidebar-primary: oklch(0.63 0.13 30); /* terracotta #e8927c */
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.974 0.022 86 / 0.8);
-  --sidebar-accent-foreground: oklch(0.248 0.104 265);
-  --sidebar-border: oklch(0.262 0.099 265 / 0.12);
-  --sidebar-ring: oklch(0.588 0.214 350 / 0.3);
+  --sidebar-accent: oklch(0.969 0.018 80 / 0.7); /* beige hover */
+  --sidebar-accent-foreground: oklch(0.22 0.06 30);
+  --sidebar-border: oklch(0.22 0.06 30 / 0.1);
+  --sidebar-ring: oklch(0.63 0.13 30 / 0.25);
+
+  /* ===========================================
+     Editorial Brand Palette — Warm Palette
+     Cream #FAF7F2 | Terracotta #E8927C
+     Dusty Purple #9B8BB4 | Dark Brown #2C1810
+     Warm Beige #F0E6D3 | Muted Rose #D4A5A5
+     =========================================== */
+
+  /* Cream */
+  --brand-cream: oklch(0.978 0.012 84); /* #FAF7F2 */
+
+  /* Terracotta Pink */
+  --brand-terracotta: oklch(0.63 0.13 30); /* #E8927C */
+  --brand-terracotta-hover: oklch(0.56 0.13 30);
+  --brand-terracotta-subtle: oklch(0.63 0.13 30 / 0.12);
+  --brand-terracotta-border: oklch(0.63 0.13 30 / 0.28);
+
+  /* Dusty Purple */
+  --brand-dusty-purple: oklch(0.6 0.08 300); /* #9B8BB4 */
+  --brand-dusty-purple-hover: oklch(0.53 0.08 300);
+  --brand-dusty-purple-subtle: oklch(0.6 0.08 300 / 0.12);
+  --brand-dusty-purple-border: oklch(0.6 0.08 300 / 0.28);
+
+  /* Dark Brown */
+  --brand-dark-brown: oklch(0.22 0.06 30); /* #2C1810 */
+  --brand-dark-brown-75: oklch(0.22 0.06 30 / 0.75);
+  --brand-dark-brown-50: oklch(0.22 0.06 30 / 0.5);
+  --brand-dark-brown-30: oklch(0.22 0.06 30 / 0.3);
+
+  /* Warm Beige */
+  --brand-warm-beige: oklch(0.923 0.026 80); /* #F0E6D3 */
+  --brand-warm-beige-hover: oklch(0.893 0.026 80);
+
+  /* Muted Rose */
+  --brand-muted-rose: oklch(0.73 0.06 15); /* #D4A5A5 */
+  --brand-muted-rose-subtle: oklch(0.73 0.06 15 / 0.14);
+  --brand-muted-rose-border: oklch(0.73 0.06 15 / 0.3);
 
   /* ===========================================
      StoryChain Color Palette
@@ -221,15 +258,35 @@
   --chart-4: oklch(0.712 0.181 350); /* pink-400 dark */
   --chart-5: oklch(0.577 0.2 267); /* blue-alt dark */
 
-  /* Sidebar Colors — deeper surface for visual separation */
-  --sidebar: oklch(0.125 0.022 268); /* slightly deeper than page bg */
-  --sidebar-foreground: oklch(0.925 0.018 280);
-  --sidebar-primary: oklch(0.641 0.199 349);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.165 0.026 270 / 0.8);
-  --sidebar-accent-foreground: oklch(0.925 0.018 280);
-  --sidebar-border: oklch(0.793 0.038 286 / 0.12);
-  --sidebar-ring: oklch(0.641 0.199 349 / 0.3);
+  /* Sidebar Colors — deeper warm-dark surface */
+  --sidebar: oklch(0.14 0.022 30); /* very dark warm brown */
+  --sidebar-foreground: oklch(0.923 0.026 80); /* warm beige text */
+  --sidebar-primary: oklch(0.7 0.12 30); /* terracotta brightened */
+  --sidebar-primary-foreground: oklch(0.14 0.022 30);
+  --sidebar-accent: oklch(0.2 0.02 30 / 0.8); /* lifted dark surface */
+  --sidebar-accent-foreground: oklch(0.923 0.026 80);
+  --sidebar-border: oklch(0.923 0.026 80 / 0.1);
+  --sidebar-ring: oklch(0.7 0.12 30 / 0.3);
+
+  /* Editorial Brand Palette — Dark Mode overrides */
+  --brand-cream: oklch(0.14 0.022 30); /* remapped to dark base */
+  --brand-terracotta: oklch(0.7 0.12 30); /* brightened terracotta */
+  --brand-terracotta-hover: oklch(0.78 0.1 30);
+  --brand-terracotta-subtle: oklch(0.7 0.12 30 / 0.15);
+  --brand-terracotta-border: oklch(0.7 0.12 30 / 0.3);
+  --brand-dusty-purple: oklch(0.68 0.08 300); /* brightened for dark */
+  --brand-dusty-purple-hover: oklch(0.76 0.08 300);
+  --brand-dusty-purple-subtle: oklch(0.68 0.08 300 / 0.15);
+  --brand-dusty-purple-border: oklch(0.68 0.08 300 / 0.3);
+  --brand-dark-brown: oklch(0.923 0.026 80); /* flipped — beige as text */
+  --brand-dark-brown-75: oklch(0.923 0.026 80 / 0.75);
+  --brand-dark-brown-50: oklch(0.923 0.026 80 / 0.5);
+  --brand-dark-brown-30: oklch(0.923 0.026 80 / 0.3);
+  --brand-warm-beige: oklch(0.2 0.022 30); /* dark card surface */
+  --brand-warm-beige-hover: oklch(0.25 0.022 30);
+  --brand-muted-rose: oklch(0.78 0.06 15); /* brightened rose */
+  --brand-muted-rose-subtle: oklch(0.78 0.06 15 / 0.14);
+  --brand-muted-rose-border: oklch(0.78 0.06 15 / 0.28);
 
   /* ===========================================
      StoryChain Color Palette — Dark Mode

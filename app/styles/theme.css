@@ -75,6 +75,26 @@
   --color-brand-blue-alt: var(--brand-blue-alt);
   --color-brand-teal: var(--brand-teal);
 
+  /* StoryChain Editorial Palette — Tailwind utilities */
+  --color-brand-cream: var(--brand-cream);
+  --color-brand-terracotta: var(--brand-terracotta);
+  --color-brand-terracotta-hover: var(--brand-terracotta-hover);
+  --color-brand-terracotta-subtle: var(--brand-terracotta-subtle);
+  --color-brand-terracotta-border: var(--brand-terracotta-border);
+  --color-brand-dusty-purple: var(--brand-dusty-purple);
+  --color-brand-dusty-purple-hover: var(--brand-dusty-purple-hover);
+  --color-brand-dusty-purple-subtle: var(--brand-dusty-purple-subtle);
+  --color-brand-dusty-purple-border: var(--brand-dusty-purple-border);
+  --color-brand-dark-brown: var(--brand-dark-brown);
+  --color-brand-dark-brown-75: var(--brand-dark-brown-75);
+  --color-brand-dark-brown-50: var(--brand-dark-brown-50);
+  --color-brand-dark-brown-30: var(--brand-dark-brown-30);
+  --color-brand-warm-beige: var(--brand-warm-beige);
+  --color-brand-warm-beige-hover: var(--brand-warm-beige-hover);
+  --color-brand-muted-rose: var(--brand-muted-rose);
+  --color-brand-muted-rose-subtle: var(--brand-muted-rose-subtle);
+  --color-brand-muted-rose-border: var(--brand-muted-rose-border);
+
   /* Badge Colors */
   --color-badge-success: #10b981;
   --color-badge-success-bg: rgba(16, 185, 129, 0.08);
