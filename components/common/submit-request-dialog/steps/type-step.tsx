@@ -4,12 +4,12 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { motion } from 'framer-motion';
 
-import { SUBMIT_REQUEST_TYPES } from '../types/submit-request-dialog.types';
+import { PULL_REQUEST_TYPES } from '../types/submit-request-dialog.types';
 import { TSubmitRequestFormData } from '../types/submit-request.schema';
-import { SubmitRequestTypeCard } from './submit-request-type-card';
+import { PullRequestTypeCard } from './submit-request-type-card';
 
 /**
- * Step 1 — Type
+ * Step 1 - Type
  * The user picks whether this SR is a new chapter, an edit, or a deletion.
  */
 export function TypeStep() {
@@ -17,7 +17,7 @@ export function TypeStep() {
 
   return (
     <Controller
-      name="submitRequestType"
+      name="PullRequestType"
       control={control}
       render={({ field }) => (
         <motion.div
@@ -31,8 +31,8 @@ export function TypeStep() {
           <p className="text-text-secondary-65 font-mono text-sm">
             Select the type of submit request
           </p>
-          {SUBMIT_REQUEST_TYPES.map((type) => (
-            <SubmitRequestTypeCard
+          {PULL_REQUEST_TYPES.map((type) => (
+            <PullRequestTypeCard
               key={type.value}
               type={type}
               isSelected={field.value === type.value}

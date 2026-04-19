@@ -33,9 +33,9 @@ export function SelectionStep({
   const { watch, control, setValue } = useFormContext<TSubmitRequestFormData>();
   const formData = watch();
 
-  const isNewChapter = formData.submitRequestType === 'new_chapter';
+  const isNewChapter = formData.PullRequestType === 'new_chapter';
   // new_chapter and edit_chapter both need a draft
-  const needsDraft = isNewChapter || formData.submitRequestType === 'edit_chapter';
+  const needsDraft = isNewChapter || formData.PullRequestType === 'edit_chapter';
 
   // Determine the currently active sub-step
   const currentSubStep = ((): SelectionSubStep => {

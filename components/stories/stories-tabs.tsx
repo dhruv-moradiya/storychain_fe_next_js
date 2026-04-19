@@ -41,7 +41,7 @@ const baseTabs = [
   { key: 'analytics', label: 'Analytics', path: 'analytics', icon: BarChart3 },
   { key: 'history', label: 'History', path: 'history', icon: History },
   { key: 'settings', label: 'Settings', path: 'settings', icon: Settings },
-  { key: 'submit-requests', label: 'Submit Requests', path: 'submit-requests', icon: Send },
+  { key: 'submit-requests', label: 'Submit Requests', path: 'pull-requests', icon: Send },
 ];
 
 export const StoryTabs = () => {

@@ -11,7 +11,7 @@ import {
 } from '.';
 import { IBaseResponse } from '../base-response.type';
 import { IChapter } from '../chapter';
-import { IImageAsset, IUserBasic } from '../common';
+import { IImageAsset, IUserBasic, IUserBasicWithEmail } from '../common';
 import { IUserPreviewWithEmail } from '../user/user.type';
 
 interface IStoryCreator extends Omit<IUserPreviewWithEmail, 'email'> {}
@@ -82,7 +82,7 @@ interface IStoryOverviewResponse extends IBaseResponse<IStoryOverview> {}
 /**
  * Shape of a single collaborator record returned by
  * GET /slug/:slug/collaborators.
- * Intentionally explicit — avoid coupling to canvas/tree types.
+ * Intentionally explicit - avoid coupling to canvas/tree types.
  */
 interface ICollaboratorRecord {
   _id: string;
@@ -90,7 +90,7 @@ interface ICollaboratorRecord {
   status: TStoryCollaboratorStatus;
   invitedAt: Date;
   invitedBy: IUserBasic | null;
-  user: IUserBasic;
+  user: IUserBasicWithEmail;
 }
 
 /** GET /slug/:slug/collaborators */

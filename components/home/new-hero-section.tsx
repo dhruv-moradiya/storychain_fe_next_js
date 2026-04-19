@@ -35,7 +35,7 @@ export const NewHeroSection = ({ isSignedIn }: INewHeroSectionProps) => {
             {storyChainLandingContent.hero.eyebrow}
           </motion.span>
 
-          {/* Main heading — clean, no gradient */}
+          {/* Main heading - clean, no gradient */}
           <motion.h1
             {...fadeIn(0.2)}
             className="font-libre-baskerville text-text-primary mb-5 text-4xl leading-[1.15] sm:text-5xl md:text-6xl"
@@ -116,7 +116,7 @@ export const NewHeroSection = ({ isSignedIn }: INewHeroSectionProps) => {
           </motion.div>
         </div>
 
-        {/* ─── Right Side: React Flow — no border, no box, blends into bg ─── */}
+        {/* ─── Right Side: React Flow - no border, no box, blends into bg ─── */}
         <motion.div {...fadeIn(0.4)} className="relative h-[440px] w-full lg:h-[530px]">
           <HeroFlow />
         </motion.div>

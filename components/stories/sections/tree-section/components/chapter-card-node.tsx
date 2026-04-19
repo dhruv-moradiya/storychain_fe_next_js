@@ -120,7 +120,7 @@ export const ChapterCardNode = ({ id, data, selected }: IChapterNodeProps) => {
               </div>
             )}
 
-            {/* Quick-add child chapter — only visible on hover */}
+            {/* Quick-add child chapter - only visible on hover */}
             {!data.isEnding && (
               <button
                 type="button"

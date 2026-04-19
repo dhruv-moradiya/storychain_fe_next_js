@@ -98,7 +98,7 @@ const FlowCanvas = () => {
    * ---------------------------------- */
   const handleNodeButtonClick = (nodeId: string) => {
     setOpenPanel('comments');
-    // Suppress unused variable warning — nodeId used for future panel targeting
+    // Suppress unused variable warning - nodeId used for future panel targeting
     void nodeId;
   };
 

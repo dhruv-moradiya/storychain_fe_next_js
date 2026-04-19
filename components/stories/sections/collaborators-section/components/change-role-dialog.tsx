@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { INVITABLE_ROLES, ROLE_CONFIG } from '@/constants';
-import type { IUserBasic } from '@/type/common';
+import type { IUserBasicWithEmail } from '@/type/common';
 import type { TStoryCollaboratorRole } from '@/type/story/story.types';
 import { CheckCircle } from 'lucide-react';
 
@@ -26,7 +26,7 @@ interface ChangeRoleDialogProps {
   onOpenChange: (open: boolean) => void;
   collaborator: {
     _id: string;
-    user: IUserBasic;
+    user: IUserBasicWithEmail;
     currentRole: TStoryCollaboratorRole;
   } | null;
   onConfirm: (collaboratorId: string, newRole: TStoryCollaboratorRole) => void;

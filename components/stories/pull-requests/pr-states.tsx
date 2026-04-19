@@ -18,9 +18,9 @@ export function PRListLoading({ count = 5 }: PRListLoadingProps) {
       {/* Header Skeleton */}
       <div className="bg-cream-90/50 border-border/50 flex items-center justify-between border-b px-4 py-3">
         <div className="flex items-center gap-4">
-          <Skeleton className="h-5 w-20 bg-gray-200 dark:bg-gray-800" />
-          <Skeleton className="h-5 w-20 bg-gray-200 dark:bg-gray-800" />
-          <Skeleton className="h-5 w-20 bg-gray-200 dark:bg-gray-800" />
+          <Skeleton className="h-5 w-20" />
+          <Skeleton className="h-5 w-20" />
+          <Skeleton className="h-5 w-20" />
         </div>
       </div>
 
@@ -28,23 +28,23 @@ export function PRListLoading({ count = 5 }: PRListLoadingProps) {
       <div className="divide-border/40 divide-y">
         {Array.from({ length: count }).map((_, idx) => (
           <div key={idx} className="flex items-start gap-3 px-4 py-3">
-            <Skeleton className="h-5 w-5 rounded-full bg-gray-200 dark:bg-gray-800" />
+            <Skeleton className="h-5 w-5 rounded-full" />
             <div className="flex-1 space-y-2">
               <div className="flex items-center gap-2">
-                <Skeleton className="h-5 w-48 bg-gray-200 dark:bg-gray-800" />
-                <Skeleton className="h-5 w-24 bg-gray-200 dark:bg-gray-800" />
+                <Skeleton className="h-5 w-48" />
+                <Skeleton className="h-5 w-24" />
               </div>
-              <Skeleton className="h-4 w-72 bg-gray-200 dark:bg-gray-800" />
-              <Skeleton className="h-4 w-full max-w-md bg-gray-200 dark:bg-gray-800" />
+              <Skeleton className="h-4 w-72" />
+              <Skeleton className="h-4 w-full max-w-md" />
               <div className="flex items-center gap-4">
-                <Skeleton className="h-4 w-16 bg-gray-200 dark:bg-gray-800" />
-                <Skeleton className="h-4 w-16 bg-gray-200 dark:bg-gray-800" />
-                <Skeleton className="h-4 w-16 bg-gray-200 dark:bg-gray-800" />
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 w-16" />
               </div>
             </div>
             <div className="flex -space-x-2">
-              <Skeleton className="h-6 w-6 rounded-full bg-gray-200 dark:bg-gray-800" />
-              <Skeleton className="h-6 w-6 rounded-full bg-gray-200 dark:bg-gray-800" />
+              <Skeleton className="h-6 w-6 rounded-full" />
+              <Skeleton className="h-6 w-6 rounded-full" />
             </div>
           </div>
         ))}

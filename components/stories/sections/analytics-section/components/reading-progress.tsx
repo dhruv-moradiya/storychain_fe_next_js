@@ -15,11 +15,11 @@ interface ReadingProgressProps {
 }
 
 const COLORS = [
-  'hsl(var(--brand-pink-500))',
-  'hsl(var(--brand-blue))',
-  'hsl(var(--brand-orange))',
-  '#22c55e',
-  '#8b5cf6',
+  'var(--brand-pink-500)',
+  'var(--brand-blue)',
+  'var(--brand-orange)',
+  'var(--chart-4)',
+  'var(--chart-5)',
 ];
 
 const chartConfig = {
@@ -44,7 +44,7 @@ export function ReadingProgress({ data }: ReadingProgressProps) {
     >
       <div className="mb-3 flex items-center justify-between">
         <h3 className="text-text-primary flex items-center gap-2 text-sm font-semibold tracking-wide uppercase">
-          <div className="h-1 w-1 rounded-full bg-purple-500" />
+          <div className="bg-brand-pink-500 h-1 w-1 rounded-full" />
           Reading Progress
         </h3>
         <BookOpen className="text-text-secondary-65 h-4 w-4" />

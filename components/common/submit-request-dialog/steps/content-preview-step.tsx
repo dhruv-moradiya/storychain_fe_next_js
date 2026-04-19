@@ -21,14 +21,14 @@ const MOTION_PROPS = {
 };
 
 /**
- * Step 4 — Preview
- * Shows a preview of what will change based on the submitRequestType.
+ * Step 4 - Preview
+ * Shows a preview of what will change based on the PullRequestType.
  */
 export function ContentPreviewStep({ chapters, drafts }: ContentPreviewStepProps) {
   const { watch } = useFormContext<TSubmitRequestFormData>();
-  const { submitRequestType, parentChapterSlug, chapterSlug, draftId } = watch();
+  const { PullRequestType, parentChapterSlug, chapterSlug, draftId } = watch();
 
-  const isNewChapter = submitRequestType === 'new_chapter';
+  const isNewChapter = PullRequestType === 'new_chapter';
   const activeChapterSlug = isNewChapter ? parentChapterSlug : chapterSlug;
 
   const selectedChapter = chapters.find((c) => c.slug === activeChapterSlug);
@@ -38,7 +38,7 @@ export function ContentPreviewStep({ chapters, drafts }: ContentPreviewStepProps
   const selectedDraft = drafts.find((d) => d.id === draftId);
 
   // ── Delete ─────────────────────────────────────────────────────────────────
-  if (submitRequestType === 'delete_chapter') {
+  if (PullRequestType === 'delete_chapter') {
     return (
       <motion.div key="content-delete" {...MOTION_PROPS} className="space-y-4">
         <div className="rounded-xl border border-red-200 bg-red-50/50 p-5">

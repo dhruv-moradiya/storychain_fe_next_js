@@ -89,7 +89,7 @@ export default function Error({
               <div className="border-destructive/15 flex items-center gap-2 border-b px-4 py-2">
                 <Terminal className="text-destructive h-3.5 w-3.5" />
                 <p className="text-destructive font-ibm-plex-mono text-xs font-semibold">
-                  Dev — Error Details
+                  Dev - Error Details
                 </p>
               </div>
               <div className="scrollbar-thin scrollbar-thumb-destructive/20 max-h-40 overflow-y-auto p-4">

@@ -11,11 +11,11 @@ import { cn } from '@/lib/utils';
 
 import {
   ChapterOption,
+  PULL_REQUEST_TYPES,
   SR_LABEL_OPTIONS,
-  SUBMIT_REQUEST_TYPES,
   StoryOption,
 } from '../types/submit-request-dialog.types';
-import { TSubmitRequestFormData, TSubmitRequestLabel } from '../types/submit-request.schema';
+import { TPullRequestLabel, TSubmitRequestFormData } from '../types/submit-request.schema';
 
 interface ReviewStepProps {
   stories: StoryOption[];
@@ -23,17 +23,17 @@ interface ReviewStepProps {
 }
 
 /**
- * Step 5 — Review
+ * Step 5 - Review
  * Labels, SR options (draft / auto-approve), and a final summary.
  */
 export function ReviewStep({ stories, chapters }: ReviewStepProps) {
   const { watch, setValue, control } = useFormContext<TSubmitRequestFormData>();
   const formData = watch();
 
-  const toggleLabel = (label: TSubmitRequestLabel) => {
+  const toggleLabel = (label: TPullRequestLabel) => {
     const current = formData.labels ?? [];
     const isSelected = current.includes(label);
-    const next: TSubmitRequestLabel[] = isSelected
+    const next: TPullRequestLabel[] = isSelected
       ? current.filter((l) => l !== label)
       : [...current, label];
     setValue('labels', next);
@@ -41,7 +41,7 @@ export function ReviewStep({ stories, chapters }: ReviewStepProps) {
 
   // Derive display info
   const storyTitle = stories.find((s) => s.slug === formData.storySlug)?.title;
-  const isNewChapter = formData.submitRequestType === 'new_chapter';
+  const isNewChapter = formData.PullRequestType === 'new_chapter';
   const activeChapterSlug = isNewChapter ? formData.parentChapterSlug : formData.chapterSlug;
   const targetChapterTitle =
     activeChapterSlug === 'root'
@@ -128,7 +128,7 @@ export function ReviewStep({ stories, chapters }: ReviewStepProps) {
           <div className="flex items-center justify-between font-mono text-sm">
             <span className="text-text-secondary-65">Type</span>
             <span className="text-text-primary">
-              {SUBMIT_REQUEST_TYPES.find((t) => t.value === formData.submitRequestType)?.label}
+              {PULL_REQUEST_TYPES.find((t) => t.value === formData.PullRequestType)?.label}
             </span>
           </div>
           <div className="flex items-center justify-between font-mono text-sm">

@@ -203,7 +203,7 @@ export function CoinUsageSection({ features }: CoinUsageSectionProps) {
             {...scrollReveal.paragraph}
             className="text-muted-foreground mx-auto max-w-xl text-sm leading-relaxed"
           >
-            Spend your coins on a wide range of features — from unlocking chapters and creating
+            Spend your coins on a wide range of features - from unlocking chapters and creating
             stories to AI-powered tools and community boosts.
           </motion.p>
         </div>

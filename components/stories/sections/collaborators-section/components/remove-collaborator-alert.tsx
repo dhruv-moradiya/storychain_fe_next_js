@@ -1,6 +1,6 @@
 'use client';
 
-import type { IUserBasic } from '@/type/common';
+import type { IUserBasicWithEmail } from '@/type/common';
 import { AlertTriangle } from 'lucide-react';
 
 import {
@@ -22,7 +22,7 @@ interface RemoveCollaboratorAlertProps {
   onOpenChange: (open: boolean) => void;
   collaborator: {
     _id: string;
-    user: IUserBasic;
+    user: IUserBasicWithEmail;
   } | null;
   onConfirm: (collaboratorId: string) => void;
   isPending?: boolean;

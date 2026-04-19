@@ -32,7 +32,7 @@ export function toCanonicalUrl(path: string): string {
   return `${SITE_CONFIG.url}${path.startsWith('/') ? path : `/${path}`}`;
 }
 
-/** Shared robots config — used across all public pages */
+/** Shared robots config - used across all public pages */
 const DEFAULT_ROBOTS: Metadata['robots'] = {
   index: true,
   follow: true,
@@ -59,7 +59,7 @@ export interface StoryMetaInput {
   title: string;
   description: string;
   slug: string;
-  /** Raw HTML description — will be stripped & truncated automatically */
+  /** Raw HTML description - will be stripped & truncated automatically */
   rawDescription?: string;
   coverImageUrl?: string;
   author?: string;
@@ -97,7 +97,7 @@ export function buildStoryMeta({
   pageLabel,
 }: StoryMetaInput): Metadata {
   const metaDescription = toMetaDescription(rawDescription ?? description);
-  const pageTitle = pageLabel ? `${title} — ${pageLabel}` : title;
+  const pageTitle = pageLabel ? `${title} - ${pageLabel}` : title;
   const canonicalUrl = toCanonicalUrl(
     `/stories/${slug}${pageLabel ? `/${pageLabel.toLowerCase().replace(/\s+/g, '-')}` : ''}`
   );
@@ -262,7 +262,7 @@ export function buildProfileMeta({
   pageLabel,
 }: ProfileMetaInput): Metadata {
   const name = displayName ?? `@${username}`;
-  const pageTitle = pageLabel ? `${name} — ${pageLabel}` : name;
+  const pageTitle = pageLabel ? `${name} - ${pageLabel}` : name;
   const metaDescription =
     bio?.substring(0, 160) ?? `View ${name}'s stories and contributions on ${SITE_CONFIG.name}.`;
   const canonicalUrl = toCanonicalUrl(`/profile/${username}`);
@@ -291,7 +291,7 @@ export function buildProfileMeta({
       images: [ogImage.url],
       creator: SITE_CONFIG.twitterHandle,
     },
-    robots: NO_INDEX_ROBOTS, // Profile pages are auth-protected — no indexing
+    robots: NO_INDEX_ROBOTS, // Profile pages are auth-protected - no indexing
   };
 }
 
@@ -339,12 +339,12 @@ export function buildStorySubPageMeta(
   const canonicalUrl = toCanonicalUrl(`/stories/${slug}/${urlSlug}`);
 
   return {
-    title: `${subPage} — ${title}`,
+    title: `${subPage} - ${title}`,
     description,
     alternates: { canonical: canonicalUrl },
     openGraph: {
       type: 'website',
-      title: `${subPage} — ${title}`,
+      title: `${subPage} - ${title}`,
       description,
       url: canonicalUrl,
       siteName: SITE_CONFIG.name,
@@ -353,11 +353,11 @@ export function buildStorySubPageMeta(
     },
     twitter: {
       card: 'summary',
-      title: `${subPage} — ${title}`,
+      title: `${subPage} - ${title}`,
       description,
       creator: SITE_CONFIG.twitterHandle,
     },
-    robots: NO_INDEX_ROBOTS, // Protected story management pages — don't index
+    robots: NO_INDEX_ROBOTS, // Protected story management pages - don't index
   };
 }
 
@@ -444,7 +444,7 @@ export interface AppPageMetaInput {
 export function buildAppPageMeta({ title, description }: AppPageMetaInput): Metadata {
   return {
     title,
-    description: description ?? `${title} — ${SITE_CONFIG.name}`,
+    description: description ?? `${title} - ${SITE_CONFIG.name}`,
     robots: NO_INDEX_ROBOTS,
   };
 }

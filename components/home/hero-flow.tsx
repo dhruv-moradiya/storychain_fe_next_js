@@ -84,7 +84,7 @@ const initialEdges = [
 export const HeroFlow = () => {
   return (
     <div className="relative h-full w-full">
-      {/* Subtle radial glow on top-left of the flow — not a visible shape, just diffused light */}
+      {/* Subtle radial glow on top-left of the flow - not a visible shape, just diffused light */}
       <div className="pointer-events-none absolute -top-8 -left-8 z-10 h-full w-full" />
 
       <ReactFlow

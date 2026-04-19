@@ -201,7 +201,7 @@ export default function ChaptersSection({ initialData }: ChaptersSectionProps) {
         cell: ({ row }) => {
           const pr = row.original.pullRequest;
 
-          if (!pr.isPR) return <span className="text-muted-foreground text-xs">—</span>;
+          if (!pr.isPR) return <span className="text-muted-foreground text-xs">-</span>;
 
           const icon =
             pr.status === 'approved' ? (

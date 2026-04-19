@@ -66,7 +66,7 @@ export function PricingHero() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-muted-foreground mx-auto mb-8 max-w-2xl text-base leading-relaxed"
         >
-          Buy coins once and spend them your way — unlock chapters, publish stories, use AI tools,
+          Buy coins once and spend them your way - unlock chapters, publish stories, use AI tools,
           and earn rewards when readers love your work.
         </motion.p>
 

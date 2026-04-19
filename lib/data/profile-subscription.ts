@@ -25,7 +25,7 @@ export const mockCoinTransactions: CoinTransaction[] = [
     date: new Date('2024-12-30'),
     type: 'SPEND',
     coins: 50,
-    description: 'Created new story — "The Lost Kingdom"',
+    description: 'Created new story - "The Lost Kingdom"',
     status: 'SUCCESS',
   },
   {
@@ -33,7 +33,7 @@ export const mockCoinTransactions: CoinTransaction[] = [
     date: new Date('2025-01-02'),
     type: 'SPEND',
     coins: 100,
-    description: 'Boosted story visibility — "The Lost Kingdom"',
+    description: 'Boosted story visibility - "The Lost Kingdom"',
     status: 'SUCCESS',
   },
   {
@@ -41,7 +41,7 @@ export const mockCoinTransactions: CoinTransaction[] = [
     date: new Date('2025-01-05'),
     type: 'EARN',
     coins: 120,
-    description: 'Chapter unlock earnings — "Echoes of War"',
+    description: 'Chapter unlock earnings - "Echoes of War"',
     status: 'SUCCESS',
   },
   {
@@ -57,7 +57,7 @@ export const mockCoinTransactions: CoinTransaction[] = [
     date: new Date('2025-01-12'),
     type: 'SPEND',
     coins: 10,
-    description: 'Unlocked Chapter 7 — "Midnight Chronicles"',
+    description: 'Unlocked Chapter 7 - "Midnight Chronicles"',
     status: 'SUCCESS',
   },
   {
@@ -65,7 +65,7 @@ export const mockCoinTransactions: CoinTransaction[] = [
     date: new Date('2025-01-15'),
     type: 'EARN',
     coins: 85,
-    description: 'Chapter unlock earnings — "The Lost Kingdom"',
+    description: 'Chapter unlock earnings - "The Lost Kingdom"',
     status: 'SUCCESS',
   },
   {
@@ -93,7 +93,7 @@ export const mockCoinTransactions: CoinTransaction[] = [
     date: new Date('2025-01-22'),
     type: 'EARN',
     coins: 275,
-    description: 'Chapter unlock earnings — "Echoes of War"',
+    description: 'Chapter unlock earnings - "Echoes of War"',
     status: 'SUCCESS',
   },
   {
@@ -101,7 +101,7 @@ export const mockCoinTransactions: CoinTransaction[] = [
     date: new Date('2025-01-25'),
     type: 'SPEND',
     coins: 420,
-    description: 'Multiple chapter unlocks — "Jujutsu Kaisen"',
+    description: 'Multiple chapter unlocks - "Jujutsu Kaisen"',
     status: 'SUCCESS',
   },
   {
@@ -109,7 +109,7 @@ export const mockCoinTransactions: CoinTransaction[] = [
     date: new Date('2025-01-28'),
     type: 'BONUS',
     coins: 50,
-    description: 'Welcome bonus — first story published',
+    description: 'Welcome bonus - first story published',
     status: 'SUCCESS',
   },
 ];

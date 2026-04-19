@@ -43,13 +43,13 @@ const DraftItem = ({
         animate={{ opacity: 1, x: 0 }}
         className="border-border/50 bg-cream-95 hover:bg-cream-90 flex items-center gap-2 rounded-lg border p-2.5 transition-colors"
       >
-        <div className="bg-brand-orange/15 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
+        <div className="to-primary/30 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-linear-to-br from-orange-500/30">
           <FileText className="text-brand-orange h-4 w-4" />
         </div>
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <div className="max-w-[140px] min-w-0 flex-1 overflow-hidden">
+            <div className="max-w-35 min-w-0 flex-1 overflow-hidden">
               <p className="text-text-primary font-ibm-plex-mono line-clamp-1 text-xs font-medium">
                 {draft.title || 'Untitled Draft'}
               </p>
@@ -58,7 +58,7 @@ const DraftItem = ({
               </p>
             </div>
           </TooltipTrigger>
-          <TooltipContent side="top" className="max-w-[200px]">
+          <TooltipContent side="top" className="max-w-50">
             <p className="text-xs font-medium wrap-break-word">{draft.title || 'Untitled Draft'}</p>
             <p className="text-muted-foreground text-[10px]">
               Saved {formatDistanceToNow(new Date(draft.lastSavedAt), { addSuffix: true })}
@@ -186,15 +186,15 @@ export const DraftRecoveryBanner = () => {
           'fixed right-4 bottom-4 z-50 overflow-hidden rounded-xl',
           'border-border/50 bg-cream-95 border shadow-2xl backdrop-blur-sm',
           isExpanded ? 'block' : 'hidden md:block',
-          'w-[calc(100vw-2rem)] max-w-[340px] sm:w-[380px]'
+          'w-[calc(100vw-2rem)] max-w-85 sm:w-95'
         )}
       >
         <div
-          className="from-brand-orange/15 to-brand-pink-500/10 flex cursor-pointer items-center justify-between bg-linear-to-r px-4 py-3"
+          className="flex cursor-pointer items-center justify-between bg-linear-to-r px-4 py-3"
           onClick={handleToggleExpand}
         >
           <div className="flex items-center gap-3">
-            <div className="from-brand-orange/25 to-brand-pink-500/15 flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br">
+            <div className="to-primary/30 flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-orange-500/30">
               <FileText className="text-brand-orange h-4 w-4" />
             </div>
             <div>
@@ -248,7 +248,7 @@ export const DraftRecoveryBanner = () => {
                 <p className="text-text-secondary-65 font-ibm-plex-mono mb-2 text-[10px]">
                   {count} draft{count !== 1 ? 's' : ''} available
                 </p>
-                <div className="max-h-[300px] space-y-2 overflow-y-auto pr-2 md:max-h-[500px]">
+                <div className="max-h-75 space-y-2 overflow-y-auto pr-2 md:max-h-125">
                   {draftList.map((draft, index) => (
                     <motion.div
                       key={draft._id}

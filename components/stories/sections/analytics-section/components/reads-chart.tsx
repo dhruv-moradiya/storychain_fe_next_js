@@ -23,11 +23,11 @@ interface ReadsChartProps {
 const chartConfig = {
   reads: {
     label: 'Reads',
-    color: 'hsl(var(--brand-pink-500))',
+    color: 'var(--brand-pink-500)',
   },
   uniqueVisitors: {
     label: 'Unique Visitors',
-    color: 'hsl(var(--brand-blue))',
+    color: 'var(--brand-blue)',
   },
 };
 
@@ -60,18 +60,18 @@ export function ReadsChart({ data }: ReadsChartProps) {
           <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id={`fillReads-${id}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="hsl(var(--brand-pink-500))" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="hsl(var(--brand-pink-500))" stopOpacity={0.1} />
+                <stop offset="5%" stopColor="var(--color-reads)" stopOpacity={0.35} />
+                <stop offset="95%" stopColor="var(--color-reads)" stopOpacity={0.05} />
               </linearGradient>
               <linearGradient id={`fillVisitors-${id}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="hsl(var(--brand-blue))" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="hsl(var(--brand-blue))" stopOpacity={0.1} />
+                <stop offset="5%" stopColor="var(--color-uniqueVisitors)" stopOpacity={0.35} />
+                <stop offset="95%" stopColor="var(--color-uniqueVisitors)" stopOpacity={0.05} />
               </linearGradient>
             </defs>
             <CartesianGrid
               strokeDasharray="3 3"
               vertical={false}
-              stroke="hsl(var(--border))"
+              stroke="var(--border-soft)"
               opacity={0.5}
             />
             <XAxis
@@ -80,14 +80,14 @@ export function ReadsChart({ data }: ReadsChartProps) {
               axisLine={false}
               tickMargin={8}
               fontSize={12}
-              stroke="hsl(var(--text-secondary-65))"
+              stroke="var(--text-secondary-65)"
             />
             <YAxis
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               fontSize={12}
-              stroke="hsl(var(--text-secondary-65))"
+              stroke="var(--text-secondary-65)"
               tickFormatter={(value) => (value >= 1000 ? `${(value / 1000).toFixed(1)}K` : value)}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
@@ -95,7 +95,7 @@ export function ReadsChart({ data }: ReadsChartProps) {
               dataKey="uniqueVisitors"
               type="monotone"
               fill={`url(#fillVisitors-${id})`}
-              stroke="hsl(var(--brand-blue))"
+              stroke="var(--color-uniqueVisitors)"
               strokeWidth={2}
               stackId="a"
             />
@@ -103,7 +103,7 @@ export function ReadsChart({ data }: ReadsChartProps) {
               dataKey="reads"
               type="monotone"
               fill={`url(#fillReads-${id})`}
-              stroke="hsl(var(--brand-pink-500))"
+              stroke="var(--color-reads)"
               strokeWidth={2}
               stackId="b"
             />

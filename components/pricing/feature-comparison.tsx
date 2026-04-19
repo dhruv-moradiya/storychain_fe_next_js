@@ -105,7 +105,7 @@ function FeatureValue({ value, highlight }: { value: string | boolean; highlight
         className={cn('mx-auto h-5 w-5', highlight ? 'text-brand-pink-500' : 'text-green-500')}
       />
     ) : (
-      <span className="text-text-secondary-65 text-sm">—</span>
+      <span className="text-text-secondary-65 text-sm">-</span>
     );
   }
 

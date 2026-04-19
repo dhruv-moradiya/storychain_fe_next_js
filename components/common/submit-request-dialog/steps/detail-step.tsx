@@ -20,14 +20,14 @@ import { ChapterOption, StoryOption } from '../types/submit-request-dialog.types
 import { TSubmitRequestFormData } from '../types/submit-request.schema';
 
 interface DetailStepProps {
-  /** When true the story/chapter fields were pre-filled via props — show them as read-only info */
+  /** When true the story/chapter fields were pre-filled via props - show them as read-only info */
   hasContext: boolean;
   chapters: ChapterOption[];
   stories: StoryOption[];
 }
 
 /**
- * Step 3 — Details
+ * Step 3 - Details
  * Title, description, and (when hasContext=true) a chapter picker.
  */
 export function DetailStep({ hasContext, chapters, stories }: DetailStepProps) {
@@ -38,8 +38,8 @@ export function DetailStep({ hasContext, chapters, stories }: DetailStepProps) {
     watch,
   } = useFormContext<TSubmitRequestFormData>();
 
-  const submitRequestType = watch('submitRequestType');
-  const isNewChapter = submitRequestType === 'new_chapter';
+  const PullRequestType = watch('PullRequestType');
+  const isNewChapter = PullRequestType === 'new_chapter';
 
   const storySlug = watch('storySlug');
   const parentChapterSlug = watch('parentChapterSlug');
@@ -129,7 +129,7 @@ export function DetailStep({ hasContext, chapters, stories }: DetailStepProps) {
       )}
 
       {/*
-       * When hasContext=false the chapter came from the SelectionStep — show it
+       * When hasContext=false the chapter came from the SelectionStep - show it
        * as a read-only summary card.
        */}
       {!hasContext && targetChapterTitle && (

@@ -93,7 +93,7 @@ export const faqs: FAQ[] = [
   {
     question: 'What are coins and how do they work?',
     answer:
-      "Coins are StoryChain's in-app currency. You buy them once with real money (INR via Razorpay) and spend them across the platform — unlock premium chapters, create stories, use AI tools, boost visibility, and more. Coins never expire and are credited instantly to your wallet.",
+      "Coins are StoryChain's in-app currency. You buy them once with real money (INR via Razorpay) and spend them across the platform - unlock premium chapters, create stories, use AI tools, boost visibility, and more. Coins never expire and are credited instantly to your wallet.",
   },
   {
     question: 'How much does it cost to unlock a chapter?',
@@ -103,12 +103,12 @@ export const faqs: FAQ[] = [
   {
     question: 'How do creators earn from their stories?',
     answer:
-      'Every time a reader unlocks a chapter, 60% of the coin revenue goes to story contributors. The split is based on role — Authors get the largest share (40% of the creator pool), followed by Co-Authors, Collaborators, Reviewers, and Moderators. Payouts happen automatically via Razorpay.',
+      'Every time a reader unlocks a chapter, 60% of the coin revenue goes to story contributors. The split is based on role - Authors get the largest share (40% of the creator pool), followed by Co-Authors, Collaborators, Reviewers, and Moderators. Payouts happen automatically via Razorpay.',
   },
   {
     question: 'What coin packs are available?',
     answer:
-      'We offer five packs: 100 coins (₹100), 500 coins + 25 bonus (₹500), 1,000 coins + 100 bonus (₹1,000 — best value), 5,000 coins + 750 bonus (₹5,000), and 10,000 coins + 2,000 bonus (₹10,000). The more you buy, the more bonus coins you receive.',
+      'We offer five packs: 100 coins (₹100), 500 coins + 25 bonus (₹500), 1,000 coins + 100 bonus (₹1,000 - best value), 5,000 coins + 750 bonus (₹5,000), and 10,000 coins + 2,000 bonus (₹10,000). The more you buy, the more bonus coins you receive.',
   },
   {
     question: 'Do coins expire?',
@@ -118,7 +118,7 @@ export const faqs: FAQ[] = [
   {
     question: 'What payment methods are supported?',
     answer:
-      'We accept UPI, all major credit/debit cards (Visa, Mastercard, RuPay), net banking from 50+ banks, and popular wallets like Paytm, PhonePe, and Google Pay — all powered securely by Razorpay.',
+      'We accept UPI, all major credit/debit cards (Visa, Mastercard, RuPay), net banking from 50+ banks, and popular wallets like Paytm, PhonePe, and Google Pay - all powered securely by Razorpay.',
   },
   {
     question: 'How does role-based reward distribution work?',
@@ -128,6 +128,6 @@ export const faqs: FAQ[] = [
   {
     question: 'Can I use AI features with coins?',
     answer:
-      'Yes. AI Voice Narration costs 5 coins per chapter, AI Writing Assist costs 20 coins per session, and AI Story Cover generation costs 40 coins per image. These are one-time charges — no subscriptions needed.',
+      'Yes. AI Voice Narration costs 5 coins per chapter, AI Writing Assist costs 20 coins per session, and AI Story Cover generation costs 40 coins per image. These are one-time charges - no subscriptions needed.',
   },
 ];

@@ -73,9 +73,10 @@
   --color-brand-pink-ring30: var(--brand-pink-ring30);
   --color-brand-blue: var(--brand-blue);
   --color-brand-blue-alt: var(--brand-blue-alt);
+  --color-brand-orange: var(--brand-orange);
   --color-brand-teal: var(--brand-teal);
 
-  /* StoryChain Editorial Palette — Tailwind utilities */
+  /* StoryChain Editorial Palette - Tailwind utilities */
   --color-brand-cream: var(--brand-cream);
   --color-brand-terracotta: var(--brand-terracotta);
   --color-brand-terracotta-hover: var(--brand-terracotta-hover);

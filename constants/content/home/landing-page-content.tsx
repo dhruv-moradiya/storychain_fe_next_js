@@ -19,7 +19,7 @@ export const storyChainLandingContent = {
       "It's a world that grows with you.",
     ],
     description:
-      'Story Chain lets writers and readers build living narratives together — branching stories, shared imagination, and worlds that never stop evolving.',
+      'Story Chain lets writers and readers build living narratives together - branching stories, shared imagination, and worlds that never stop evolving.',
     icons: [
       <BookOpen key="book" className="h-6 w-6 text-[#ff9f68]" />,
       <Sparkles key="sparkles" className="h-6 w-6 text-[#6b7cff]" />,
@@ -42,7 +42,7 @@ export const storyChainLandingContent = {
     smallTitle: 'Ownership',
     title: ['What you create', 'belongs to you.'],
     description:
-      'Your stories are yours — their shape, their voice, their future. Choose who enters, who writes, and how far the branches may grow.',
+      'Your stories are yours - their shape, their voice, their future. Choose who enters, who writes, and how far the branches may grow.',
     points: [
       'Open a story to the world, or keep it sacred',
       'Invite voices you trust',
@@ -163,7 +163,7 @@ export const storyChainLandingContent = {
     eyebrow: 'Discover',
     title: ['Follow stories', 'wherever they choose to go.'],
     description:
-      'Every story has many futures. Explore worlds shaped by countless hands — and choose the path that feels right to you.',
+      'Every story has many futures. Explore worlds shaped by countless hands - and choose the path that feels right to you.',
     cta: 'Explore Living Stories',
   },
 
@@ -233,7 +233,7 @@ export const storyChainLandingContent = {
     eyebrow: 'Our belief',
     title: ['Stories deserve', 'time and tenderness.'],
     description:
-      "We believe stories aren't content to be consumed. They are living things — shaped by care, by choice, and by the people who touch them along the way.",
+      "We believe stories aren't content to be consumed. They are living things - shaped by care, by choice, and by the people who touch them along the way.",
   },
 
   footer: {

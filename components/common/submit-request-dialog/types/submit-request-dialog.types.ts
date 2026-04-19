@@ -1,13 +1,13 @@
 import { FileEdit, Plus, Trash2 } from 'lucide-react';
 
-import { TSubmitRequestLabel, TSubmitRequestType } from './submit-request.schema';
+import { TPullRequestLabel, TPullRequestType } from './submit-request.schema';
 
 // ---------------------------------------------------------------------------
 // Submit Request type config (for the TypeStep cards)
 // ---------------------------------------------------------------------------
 
-export interface SubmitRequestTypeConfig {
-  value: TSubmitRequestType;
+export interface PullRequestTypeConfig {
+  value: TPullRequestType;
   label: string;
   description: string;
   icon: React.ElementType;
@@ -15,7 +15,7 @@ export interface SubmitRequestTypeConfig {
   bgClass: string;
 }
 
-export const SUBMIT_REQUEST_TYPES: SubmitRequestTypeConfig[] = [
+export const PULL_REQUEST_TYPES: PullRequestTypeConfig[] = [
   {
     value: 'new_chapter',
     label: 'New Chapter',
@@ -46,7 +46,7 @@ export const SUBMIT_REQUEST_TYPES: SubmitRequestTypeConfig[] = [
 // Label options
 // ---------------------------------------------------------------------------
 
-export const SR_LABEL_OPTIONS: { value: TSubmitRequestLabel; label: string }[] = [
+export const SR_LABEL_OPTIONS: { value: TPullRequestLabel; label: string }[] = [
   { value: 'needs_review', label: 'Needs Review' },
   { value: 'quality_issue', label: 'Quality Issue' },
   { value: 'grammar', label: 'Grammar' },

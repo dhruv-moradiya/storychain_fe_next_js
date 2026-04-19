@@ -91,7 +91,7 @@ export default function CollaboratorSection({ slug }: CollaboratorSectionProps) 
         </>
       )}
 
-      {/* Empty — no collaborators at all */}
+      {/* Empty - no collaborators at all */}
       {isEmpty && <CollaboratorsEmpty onInvite={() => setIsInviteOpen(true)} />}
 
       {/* No results after filtering / search */}

@@ -50,11 +50,11 @@ export function RewardsSection({ roles }: RewardsSectionProps) {
             className="text-muted-foreground mx-auto max-w-xl text-sm leading-relaxed"
           >
             Every time a reader unlocks a chapter in your story, the revenue is shared between the
-            platform and all contributors — automatically, transparently, via Razorpay Payouts.
+            platform and all contributors - automatically, transparently, via Razorpay Payouts.
           </motion.p>
         </div>
 
-        {/* ── Revenue split — Donut visual ─────────────────────────── */}
+        {/* ── Revenue split - Donut visual ─────────────────────────── */}
         <motion.div
           {...scrollReveal.card(0)}
           className="border-border/50 bg-card mb-8 overflow-hidden rounded-2xl border p-6"
@@ -231,7 +231,7 @@ export function RewardsSection({ roles }: RewardsSectionProps) {
           </div>
         </motion.div>
 
-        {/* ── How Payouts Work — Card-based flow ──────────────────────── */}
+        {/* ── How Payouts Work - Card-based flow ──────────────────────── */}
         <motion.div
           {...scrollReveal.card(2)}
           className="border-border/50 bg-card rounded-2xl border p-6 sm:p-8"
@@ -338,7 +338,7 @@ export function RewardsSection({ roles }: RewardsSectionProps) {
               <div key={item.label} className="flex items-center gap-2 text-sm">
                 <div className="bg-primary h-1.5 w-1.5 rounded-full" />
                 <span className="text-foreground font-medium">{item.label}</span>
-                <span className="text-muted-foreground text-xs">— {item.desc}</span>
+                <span className="text-muted-foreground text-xs">- {item.desc}</span>
               </div>
             ))}
           </div>

@@ -50,7 +50,7 @@ const storyCraftSections = [
       {
         title: 'Voice Through Action',
         description:
-          'How a character enters a room, picks up a cup, or responds to silence—these reveal more than dialogue.',
+          'How a character enters a room, picks up a cup, or responds to silence-these reveal more than dialogue.',
         quote: 'Actions paint the soul.',
       },
     ],
@@ -71,13 +71,13 @@ const storyCraftSections = [
       {
         title: 'Sensory Anchors',
         description:
-          'Ground your world in specific sensory details—the smell of rain on cobblestones, the taste of copper in the air.',
+          'Ground your world in specific sensory details-the smell of rain on cobblestones, the taste of copper in the air.',
         quote: 'Details create magic.',
       },
       {
         title: 'Rules and Consequences',
         description:
-          'Every world has rules. Magic, technology, society—establish them early, then explore their consequences.',
+          'Every world has rules. Magic, technology, society-establish them early, then explore their consequences.',
         quote: 'Every world has its laws.',
       },
     ],
@@ -98,7 +98,7 @@ const storyCraftSections = [
       {
         title: 'Unique Rhythms',
         description:
-          'Each character should have their own speech patterns. Close your eyes—can you tell who is speaking?',
+          'Each character should have their own speech patterns. Close your eyes-can you tell who is speaking?',
         quote: 'Every voice is a world.',
       },
       {
@@ -135,7 +135,7 @@ const sceneTechniques = [
   {
     icon: Eye,
     title: 'The Opening Hook',
-    description: 'Begin in the middle—in medias res. Drop readers into tension, then orient them.',
+    description: 'Begin in the middle-in medias res. Drop readers into tension, then orient them.',
     example: (
       <div className="space-y-2 text-sm">
         <p className="text-text-secondary-65 italic">Instead of:</p>
@@ -154,7 +154,7 @@ const sceneTechniques = [
     icon: Theater,
     title: 'Scene Beats',
     description:
-      'Every scene needs a turning point—a moment where something shifts emotionally or in the plot.',
+      'Every scene needs a turning point-a moment where something shifts emotionally or in the plot.',
     example: (
       <div className="space-y-1 text-center">
         <p className="text-text-secondary-65 text-xs tracking-wider uppercase">The Turn</p>
@@ -172,7 +172,7 @@ const sceneTechniques = [
     example: (
       <div className="space-y-2 text-sm">
         <p className="from-text-secondary to-text-secondary-65 bg-linear-to-r bg-clip-text text-transparent italic">
-          The garden had once been her mother&apos;s pride—roses climbing toward the sky, lavender
+          The garden had once been her mother&apos;s pride-roses climbing toward the sky, lavender
           humming with bees. Now the roses were wild tangles, the lavender just dry stalks. Like
           grief, she thought. Neglect looks the same from the outside.
         </p>
@@ -310,7 +310,7 @@ const multilingualExamples = [
     example: (
       <div className="space-y-2 text-center">
         <p className="text-text-secondary-65 text-xs italic">
-          She stared at the letter, hands trembling. And then—
+          She stared at the letter, hands trembling. And then-
         </p>
         <p className="text-text-primary text-sm font-bold tracking-wide">THE TRUTH SET HER FREE.</p>
       </div>
@@ -325,7 +325,7 @@ const multilingualExamples = [
     context: 'Poetic lines for emotional depth',
     example: (
       <div className="space-y-2 text-center">
-        <p className="text-text-secondary-65 text-xs italic">His final words echoed—</p>
+        <p className="text-text-secondary-65 text-xs italic">His final words echoed-</p>
         <p className="text-text-primary font-serif text-sm font-semibold italic">
           सच्चा प्यार कभी नहीं मरता।
         </p>
@@ -342,7 +342,7 @@ const multilingualExamples = [
     context: 'Manga-style dramatic moments',
     example: (
       <div className="space-y-2 text-center">
-        <p className="text-text-secondary-65 text-xs italic">She gripped her sword tighter—</p>
+        <p className="text-text-secondary-65 text-xs italic">She gripped her sword tighter-</p>
         <p className="text-text-primary text-sm font-bold">運命は変えられる。</p>
         <p className="text-text-secondary-65/70 text-[10px]">(Fate can be changed.)</p>
       </div>
@@ -357,7 +357,7 @@ const multilingualExamples = [
     context: 'Cultural wisdom and proverbs',
     example: (
       <div className="space-y-2 text-center">
-        <p className="text-text-secondary-65 text-xs italic">Grandmother always said—</p>
+        <p className="text-text-secondary-65 text-xs italic">Grandmother always said-</p>
         <p className="text-text-primary font-serif text-sm font-semibold italic">
           દિલની વાત દિલ જાણે.
         </p>
@@ -377,7 +377,7 @@ const multilingualExamples = [
     example: (
       <div className="space-y-2 text-center">
         <p className="text-text-secondary-65 text-xs italic">
-          Across centuries, their souls found each other—
+          Across centuries, their souls found each other-
         </p>
         <p className="text-text-primary text-sm font-bold">사랑은 시간을 초월한다.</p>
         <p className="text-text-secondary-65/70 text-[10px]">(Love transcends time.)</p>
@@ -393,7 +393,7 @@ const multilingualExamples = [
     context: 'Modern casual dialogue',
     example: (
       <div className="space-y-2 text-center">
-        <p className="text-text-secondary-65 text-xs italic">Raj leaned back and asked—</p>
+        <p className="text-text-secondary-65 text-xs italic">Raj leaned back and asked-</p>
         <p className="text-text-primary text-sm font-medium">
           &ldquo;Dil ka scene kya hai, bro?&rdquo;
         </p>
@@ -468,7 +468,7 @@ export default function WritingTipsPage() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-text-secondary-65 mx-auto mb-8 max-w-2xl text-base leading-relaxed"
           >
-            Beyond formatting—discover the techniques that transform words into worlds, characters
+            Beyond formatting-discover the techniques that transform words into worlds, characters
             into companions, and stories into experiences that linger long after the final page.
           </motion.p>
 
@@ -517,7 +517,7 @@ export default function WritingTipsPage() {
                   <p className="text-text-secondary-70 mb-4 font-serif text-sm leading-relaxed italic">
                     &ldquo;{wisdom.quote}&rdquo;
                   </p>
-                  <p className={`text-${wisdom.accent} text-xs font-medium`}>— {wisdom.author}</p>
+                  <p className={`text-${wisdom.accent} text-xs font-medium`}>- {wisdom.author}</p>
                 </div>
               </motion.div>
             ))}

@@ -42,7 +42,7 @@ export function StoriesList() {
         {Array.from({ length: 7 }).map((_, i) => (
           <div
             key={i}
-            className="border-border/20 bg-card/30 flex min-h-[220px] w-full items-center justify-center rounded-xl border shadow-sm transition-colors"
+            className="border-border/20 bg-card/30 flex min-h-55 w-full items-center justify-center rounded-xl border shadow-sm transition-colors"
           ></div>
         ))}
       </>

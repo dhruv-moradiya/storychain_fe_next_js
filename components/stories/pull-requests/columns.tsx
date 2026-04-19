@@ -1,6 +1,8 @@
 'use client';
 
 import { IPullRequest, PRStatus, PRType } from '@/type/pull-request.type';
+import { IPullRequestListItem } from '@/type/pull-reuqest/pull-request-response.type';
+import { AvatarFallback } from '@radix-ui/react-avatar';
 import { ColumnDef } from '@tanstack/react-table';
 import { formatDistanceToNow } from 'date-fns';
 import {
@@ -13,6 +15,7 @@ import {
   GitMerge,
   GitPullRequest,
   GitPullRequestClosed,
+  Info,
   LucideIcon,
   MessageSquare,
   Plus,
@@ -60,7 +63,7 @@ const TYPE_ICON: Record<PRType, LucideIcon> = {
 
 // --- Columns ---
 
-export const getColumns = (): ColumnDef<IPullRequest>[] => [
+export const getColumns = (): ColumnDef<IPullRequestListItem>[] => [
   {
     header: '',
     id: 'expander',
@@ -89,8 +92,8 @@ export const getColumns = (): ColumnDef<IPullRequest>[] => [
   {
     accessorKey: 'status',
     header: 'Status',
-    cell: ({}) => {
-      const config = STATUS['approved'];
+    cell: ({ row }) => {
+      const config = STATUS[row.original.status];
 
       return (
         <div className="flex items-center gap-2">
@@ -115,16 +118,16 @@ export const getColumns = (): ColumnDef<IPullRequest>[] => [
     cell: ({ row }) => {
       const pr = row.original;
       return (
-        <div className="max-w-[280px] space-y-1">
+        <div className="max-w-70 space-y-1">
           <div className="flex items-center gap-2">
             <span className="text-foreground line-clamp-1 text-sm font-medium">{pr.title}</span>
             <span className="text-muted-foreground shrink-0 text-xs">#{pr._id.slice(-4)}</span>
           </div>
           <div className="text-muted-foreground line-clamp-1 flex items-center gap-1.5 text-xs">
-            <span className="">Gojo Satoru</span>
+            <span className="">{pr.author?.username}</span>
             <span>•</span>
             <span className="text-foreground max-w-37.5 truncate font-medium">
-              Chapter 5: Jujutsu Kaisen
+              {pr.chapter?.title}
             </span>
           </div>
         </div>
@@ -231,33 +234,51 @@ export const getColumns = (): ColumnDef<IPullRequest>[] => [
       const pr = row.original;
       return (
         <TooltipProvider>
-          <div className="flex -space-x-2">
-            {pr.approvalsStatus.approvers.slice(0, 3).map((_, i) => (
-              <Tooltip key={i}>
-                <TooltipTrigger asChild>
-                  <Avatar className="border-card ring-border/10 h-6 w-6 cursor-help border-2 ring-1 transition-transform hover:z-10 hover:scale-110">
-                    <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`} />
-                  </Avatar>
-                </TooltipTrigger>
-                <TooltipContent>Approver {i + 1}</TooltipContent>
-              </Tooltip>
-            ))}
-            {pr.approvalsStatus.blockers.length > 0 && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="bg-card border-destructive/20 relative z-10 flex h-6 w-6 items-center justify-center rounded-full border-2 shadow-sm">
-                    <AlertCircle className="text-destructive h-3.5 w-3.5" />
+          <div className="flex items-center">
+            {pr.approvers.length > 0 || pr.blockers.length > 0 ? (
+              <div className="flex items-center -space-x-3">
+                {/* Approvers */}
+                {pr.approvers.slice(0, 4).map((approver) => (
+                  <Tooltip key={approver.clerkId}>
+                    <TooltipTrigger asChild>
+                      <Avatar className="border-background h-8 w-8 border-2 shadow-sm">
+                        <AvatarImage src={approver.avatarUrl} />
+                        <AvatarFallback className="flex items-center justify-center text-xs font-medium">
+                          {approver.username?.[0]?.toUpperCase() || '?'}
+                        </AvatarFallback>
+                      </Avatar>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">{approver.username}</TooltipContent>
+                  </Tooltip>
+                ))}
+
+                {/* Extra approvers */}
+                {pr.approvers.length > 4 && (
+                  <div className="bg-muted border-background flex h-8 w-8 items-center justify-center rounded-full border-2 text-xs font-medium">
+                    +{pr.approvers.length - 4}
                   </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  {pr.approvalsStatus.blockers.length} blocking reviews
-                </TooltipContent>
-              </Tooltip>
+                )}
+
+                {/* Blockers */}
+                {pr.blockers.length > 0 && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Avatar className="border-background h-8 w-8 border-2 bg-red-100 text-red-600">
+                        <AvatarFallback className="flex items-center justify-center">
+                          <Info className="h-4 w-4" />
+                        </AvatarFallback>
+                      </Avatar>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">
+                      {pr.blockers.length} blocking review
+                      {pr.blockers.length > 1 ? 's' : ''}
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+              </div>
+            ) : (
+              <span className="text-muted-foreground text-xs italic">No activity</span>
             )}
-            {pr.approvalsStatus.approvers.length === 0 &&
-              pr.approvalsStatus.blockers.length === 0 && (
-                <span className="text-muted-foreground text-xs">-</span>
-              )}
           </div>
         </TooltipProvider>
       );

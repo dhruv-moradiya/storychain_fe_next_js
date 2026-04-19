@@ -1,4 +1,4 @@
-# ⚡ Performance Optimization Guide — Story Chain API
+# ⚡ Performance Optimization Guide - Story Chain API
 
 > Generated from Postman load test results: **11,661 total requests**, **37.89 req/s**, avg response **2,174ms**, P90 **3,113ms**, P98 **3,937ms**.
 > This doc maps every bottleneck back to the actual code file and line responsible, and gives a concrete fix for each.
@@ -18,12 +18,12 @@
 
 ---
 
-## 🔥 #1 — Auth Middleware Does 2 DB Queries on Every Single Request
+## 🔥 #1 - Auth Middleware Does 2 DB Queries on Every Single Request
 
-**File:** `src/middlewares/authHandler.ts` — Lines 36–44
+**File:** `src/middlewares/authHandler.ts` - Lines 36–44
 
 ```ts
-// ❌ CURRENT — 2 round trips to MongoDB on EVERY authenticated request
+// ❌ CURRENT - 2 round trips to MongoDB on EVERY authenticated request
 const user = await userService.getOrCreateUser(auth.userId); // DB hit
 const platformRole = await platformRoleRepo.findByUserId(auth.userId); // DB hit
 ```
@@ -34,7 +34,7 @@ const platformRole = await platformRoleRepo.findByUserId(auth.userId); // DB hit
 - At 37 req/s, this is your **single highest-frequency bottleneck**.
 - `getOrCreateUser` calls `findByClerkId` on every request. If the user exists (99.9% of the time), this is just a wasted query.
 
-### Fix — Cache the Auth Result in Redis
+### Fix - Cache the Auth Result in Redis
 
 ```ts
 // src/middlewares/authHandler.ts
@@ -48,7 +48,7 @@ export async function validateAuth(request: FastifyRequest, _reply: FastifyReply
   const cacheService = container.resolve<CacheService>(TOKENS.CacheService);
   const cacheKey = CacheKeyBuilder.userProfile(auth.userId);          // sc:user:detail:clerkId=...
 
-  // Try cache first — avoids both DB queries
+  // Try cache first - avoids both DB queries
   const cached = await cacheService.get<AuthUser>(cacheKey);
   if (cached) {
     request.user = cached;
@@ -77,12 +77,12 @@ export async function validateAuth(request: FastifyRequest, _reply: FastifyReply
 
 ---
 
-## 🔥 #2 — `getStoryTreeBySlug` Is the Slowest Endpoint (P95: 3,895ms) with No Cache
+## 🔥 #2 - `getStoryTreeBySlug` Is the Slowest Endpoint (P95: 3,895ms) with No Cache
 
-**File:** `src/features/story/services/story-query.service.ts` — Lines 106–130
+**File:** `src/features/story/services/story-query.service.ts` - Lines 106–130
 
 ```ts
-// ❌ CURRENT — No caching, 2 DB round-trips per call
+// ❌ CURRENT - No caching, 2 DB round-trips per call
 async getStoryTreeBySlug(slug: string): Promise<IStoryTreeResult> {
   const story = await this.storyRepo.findBySlug(slug);  // round-trip 1
   const pipeline = new ChapterPipelineBuilder()...
@@ -92,7 +92,7 @@ async getStoryTreeBySlug(slug: string): Promise<IStoryTreeResult> {
 }
 ```
 
-### Fix — Cache the Tree Result
+### Fix - Cache the Tree Result
 
 ```ts
 async getStoryTreeBySlug(slug: string): Promise<IStoryTreeResult> {
@@ -106,7 +106,7 @@ async getStoryTreeBySlug(slug: string): Promise<IStoryTreeResult> {
       if (!chapters || chapters.length === 0) return { slug: story.slug, chapters: [] };
       return { slug: story.slug, chapters: buildChapterTree(chapters) };
     },
-    { ttl: CACHE_TTL.STORY_TREE }  // 15 min — already defined in cache.constants.ts ✅
+    { ttl: CACHE_TTL.STORY_TREE }  // 15 min - already defined in cache.constants.ts ✅
   );
 }
 ```
@@ -115,10 +115,10 @@ async getStoryTreeBySlug(slug: string): Promise<IStoryTreeResult> {
 
 ---
 
-## 🔥 #3 — Story Overview Pipeline Has Nested Lookups with No Cache
+## 🔥 #3 - Story Overview Pipeline Has Nested Lookups with No Cache
 
-**File:** `src/features/story/services/story-query.service.ts` — Lines 135–151  
-**Pipeline:** `src/features/story/pipelines/storyPipeline.builder.ts` — `getStoryOverviewPreset()`
+**File:** `src/features/story/services/story-query.service.ts` - Lines 135–151  
+**Pipeline:** `src/features/story/pipelines/storyPipeline.builder.ts` - `getStoryOverviewPreset()`
 
 ### Why `getStoryOverviewPreset` Is Expensive
 
@@ -130,7 +130,7 @@ The pipeline does:
 
 That's **5 nested `$lookup` stages** in one aggregation, running uncached on every call.
 
-### Fix A — Cache the Overview Result
+### Fix A - Cache the Overview Result
 
 ```ts
 async getStoryOverviewBySlug(slug: string): Promise<IStoryWithCreator> {
@@ -142,12 +142,12 @@ async getStoryOverviewBySlug(slug: string): Promise<IStoryWithCreator> {
       if (!stories.length) this.throwNotFoundError('Story not found');
       return stories[0];
     },
-    { ttl: CACHE_TTL.STORY_OVERVIEW }  // 30 min — already defined ✅
+    { ttl: CACHE_TTL.STORY_OVERVIEW }  // 30 min - already defined ✅
   );
 }
 ```
 
-### Fix B — Run `findBySlug` and `aggregateStories` in Parallel
+### Fix B - Run `findBySlug` and `aggregateStories` in Parallel
 
 The current pipeline already embeds the `$match` by slug, so the first `findBySlug` call in other methods is an extra round trip. For overview, start the agg directly (the pipeline already filters by slug).
 
@@ -155,7 +155,7 @@ The current pipeline already embeds the `$match` by slug, so the first `findBySl
 
 ---
 
-## 🔥 #4 — Settings & Collaborators Endpoints Have No Cache
+## 🔥 #4 - Settings & Collaborators Endpoints Have No Cache
 
 **Files:**
 
@@ -163,14 +163,14 @@ The current pipeline already embeds the `$match` by slug, so the first `findBySl
 - `src/features/storyCollaborator/services/collaborator-query.service.ts` (`getStoryCollaboratorsBySlug`)
 
 ```ts
-// ❌ CURRENT — Raw DB query every time
+// ❌ CURRENT - Raw DB query every time
 async getStorySettingsBySlug(slug: string): Promise<IStorySettingsWithImages> {
   const story = await this.storyRepo.findBySlug(slug); // uncached
   ...
 }
 ```
 
-### Fix — Wrap Both in `cacheService.getOrSet`
+### Fix - Wrap Both in `cacheService.getOrSet`
 
 ```ts
 async getStorySettingsBySlug(slug: string): Promise<IStorySettingsWithImages> {
@@ -202,21 +202,21 @@ async getStoryCollaboratorsBySlug(slug: string) {
 
 ---
 
-## ⚠️ #5 — Auth Middleware Resolves Containers Inline Every Request
+## ⚠️ #5 - Auth Middleware Resolves Containers Inline Every Request
 
-**File:** `src/middlewares/authHandler.ts` — Lines 36–38
+**File:** `src/middlewares/authHandler.ts` - Lines 36–38
 
 ```ts
-// ❌ CURRENT — container.resolve called on EVERY request
+// ❌ CURRENT - container.resolve called on EVERY request
 const userService = container.resolve<UserService>(TOKENS.UserService);
 const platformRoleRepo = container.resolve<PlatformRoleRepository>(TOKENS.PlatformRoleRepository);
 ```
 
 ### Why This Matters
 
-`tsyringe` `container.resolve()` is not free — it walks the DI graph and resolves all dependencies. Even though singletons are cached internally, there's still overhead per call.
+`tsyringe` `container.resolve()` is not free - it walks the DI graph and resolves all dependencies. Even though singletons are cached internally, there's still overhead per call.
 
-### Fix — Resolve Once at Startup
+### Fix - Resolve Once at Startup
 
 Convert `validateAuth` into a factory function so services are resolved once:
 
@@ -237,9 +237,9 @@ Then in app.ts, call `createAuthMiddleware()` once and pass the result to routes
 
 ---
 
-## ⚠️ #6 — `loadStoryContext` Middleware Double-Fetches Story (Already Fetched in Controller)
+## ⚠️ #6 - `loadStoryContext` Middleware Double-Fetches Story (Already Fetched in Controller)
 
-**File:** `src/middlewares/rbac/storyRole.middleware.ts` — Lines 50–66  
+**File:** `src/middlewares/rbac/storyRole.middleware.ts` - Lines 50–66  
 **Affected routes:** `PublishBySlug`, `UpdateSettingsBySlug`, `AddChapterBySlug`, `UpdateStoryCoverImage`, etc.
 
 ```ts
@@ -247,27 +247,27 @@ Then in app.ts, call `createAuthMiddleware()` once and pass the result to routes
 const story = await storyQueryService.getBySlug(slug); // DB hit #1
 
 // In controller: addChapterToStoryBySlug (story.controller.ts line 305)
-const story = await this.storyQueryService.getBySlug(slug); // DB hit #2 — DUPLICATE!
+const story = await this.storyQueryService.getBySlug(slug); // DB hit #2 - DUPLICATE!
 ```
 
-### Fix — Reuse Request Context Set by Middleware
+### Fix - Reuse Request Context Set by Middleware
 
 The middleware already attaches `request.storyContext`. Make controller methods use it:
 
 ```ts
 // In StoryController.addChapterToStoryBySlug
-const { storySlug } = request.storyContext!; // ✅ Already loaded by middleware — zero extra query
+const { storySlug } = request.storyContext!; // ✅ Already loaded by middleware - zero extra query
 ```
 
 **Expected gain:** Removes 1 DB query from all RBAC-protected write routes.
 
-Also note: `loadStoryContext` calls `getBySlug` which bypasses cache — use `getOrSet` there too.
+Also note: `loadStoryContext` calls `getBySlug` which bypasses cache - use `getOrSet` there too.
 
 ---
 
-## ⚠️ #7 — `getBySlug` Core Method Has No Cache Despite Being Used Everywhere
+## ⚠️ #7 - `getBySlug` Core Method Has No Cache Despite Being Used Everywhere
 
-**File:** `src/features/story/services/story-query.service.ts` — Lines 41–49
+**File:** `src/features/story/services/story-query.service.ts` - Lines 41–49
 
 ```ts
 async getBySlug(slug: string, options: IOperationOptions = {}): Promise<IStory> {
@@ -308,9 +308,9 @@ async getBySlug(slug: string, options: IOperationOptions = {}): Promise<IStory> 
 
 ---
 
-## ⚠️ #8 — MongoDB Connection Pool May Be Too Small for This Load
+## ⚠️ #8 - MongoDB Connection Pool May Be Too Small for This Load
 
-**File:** `src/config/db.ts` — Line 10
+**File:** `src/config/db.ts` - Line 10
 
 ```ts
 maxPoolSize: 10,  // ❌ Only 10 connections for ~38 req/s
@@ -330,20 +330,20 @@ await mongoose.connect(env.MONGODB_URI, {
 });
 ```
 
-**Expected gain:** Eliminates connection queue wait times — likely **200–500ms off avg response**.
+**Expected gain:** Eliminates connection queue wait times - likely **200–500ms off avg response**.
 
 ---
 
-## ⚠️ #9 — `searchByTitle` Uses a Slow `$regex` Query
+## ⚠️ #9 - `searchByTitle` Uses a Slow `$regex` Query
 
-**File:** `src/features/story/repositories/story.repository.ts` — Lines 131–133
+**File:** `src/features/story/repositories/story.repository.ts` - Lines 131–133
 
 ```ts
 // ❌ $regex with 'i' option does NOT use MongoDB indexes efficiently
 { title: { $regex: query, $options: 'i' }, status: StoryStatus.PUBLISHED }
 ```
 
-### Fix — Use MongoDB Atlas Search or a Text Index
+### Fix - Use MongoDB Atlas Search or a Text Index
 
 **Option A (Quick): Add a text index**
 
@@ -382,12 +382,12 @@ async searchStoriesByTitle(query: string, limit: number = 10) {
 
 ---
 
-## 💡 #10 — `getOrSet` Logs on Every Cache Hit — Disable in Production
+## 💡 #10 - `getOrSet` Logs on Every Cache Hit - Disable in Production
 
-**File:** `src/infrastructure/cache/cache.service.ts` — Lines 131–132
+**File:** `src/infrastructure/cache/cache.service.ts` - Lines 131–132
 
 ```ts
-this.logInfo(`Cache hit for key: ${key}`); // ❌ 1 log line per request — expensive under load
+this.logInfo(`Cache hit for key: ${key}`); // ❌ 1 log line per request - expensive under load
 ```
 
 ### Fix
@@ -447,7 +447,7 @@ After adding all these caches, confirm invalidation happens on write:
 | `createCollaborator` / `acceptInvitation` | `collaboratorList(slug)`, `storyOverview(slug)` |
 | User platformRole change                  | `userProfile(userId)`                           |
 
-Your `CacheService.invalidateStory(slug)` already covers most of these — just ensure it's called in the right write service methods.
+Your `CacheService.invalidateStory(slug)` already covers most of these - just ensure it's called in the right write service methods.
 
 ---
 
@@ -478,4 +478,4 @@ Critical indexes that must exist:
 | `users`              | `clerkId`             | unique            |
 | `platformroles`      | `userId`              | unique            |
 
-If any of these are missing, MongoDB is doing full collection scans — which would explain why some endpoints degrade heavily under load.
+If any of these are missing, MongoDB is doing full collection scans - which would explain why some endpoints degrade heavily under load.

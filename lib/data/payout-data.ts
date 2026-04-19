@@ -67,7 +67,7 @@ export const mockAllPayoutRequests: PayoutRequest[] = [
     status: 'APPROVED',
     requestedAt: new Date('2025-01-20'),
     processedAt: new Date('2025-01-21'),
-    adminNote: 'Verified — processing via Razorpay',
+    adminNote: 'Verified - processing via Razorpay',
   },
   {
     id: 'po_005',

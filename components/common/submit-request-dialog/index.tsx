@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { ICreatePullRequestRequest } from '@/type/pull-reuqest/pull-request-request.type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, GitPullRequestArrow, Loader2 } from 'lucide-react';
@@ -18,7 +19,6 @@ import {
 } from '@/components/ui/responsive-dialog';
 import { useSearchAutoSaveDrafts } from '@/services/auto-save/auto-save.query';
 import { useSearchChapters } from '@/services/chapters/chapters.query';
-import { ICreatePullRequestRequest } from '@/services/pull-requests/pull-requests.api';
 import { useCreatePullRequest } from '@/services/pull-requests/pull-requests.mutation';
 import { useGetStoryBasic } from '@/services/stories/stories.query';
 
@@ -31,8 +31,8 @@ import { TypeStep } from './steps/type-step';
 import { ChapterOption, DraftOption, StoryOption } from './types/submit-request-dialog.types';
 import {
   SubmitRequestFormSchema,
+  TPullRequestType,
   TSubmitRequestFormData,
-  TSubmitRequestType,
 } from './types/submit-request.schema';
 
 // Removed mock data in favor of API integration
@@ -64,7 +64,7 @@ interface SubmitRequestDialogProps {
   draftContent?: string;
 
   /** SR type to pre-select */
-  submitRequestType?: TSubmitRequestType;
+  PullRequestType?: TPullRequestType;
 
   // ── Edit mode ─────────────────────────────────────────────────────────────
   /**
@@ -82,8 +82,7 @@ function buildDefaultValues(props: SubmitRequestDialogProps): TSubmitRequestForm
   return {
     title: props.initialData?.title ?? '',
     description: props.initialData?.description ?? '',
-    submitRequestType:
-      props.initialData?.submitRequestType ?? props.submitRequestType ?? 'new_chapter',
+    PullRequestType: props.initialData?.PullRequestType ?? props.PullRequestType ?? 'new_chapter',
     storySlug: props.initialData?.storySlug ?? props.storySlug ?? '',
     chapterSlug: props.initialData?.chapterSlug ?? props.chapterSlug ?? '',
     parentChapterSlug: props.initialData?.parentChapterSlug ?? props.parentChapterSlug ?? '',
@@ -97,7 +96,7 @@ function buildDefaultValues(props: SubmitRequestDialogProps): TSubmitRequestForm
 
 /** Fields that must be valid before leaving each step */
 const STEP_VALIDATION_FIELDS: Record<StepName, (keyof TSubmitRequestFormData)[]> = {
-  Type: ['submitRequestType'],
+  Type: ['PullRequestType'],
   Select: ['storySlug'],
   Details: ['title', 'description'],
   Preview: [],
@@ -220,7 +219,7 @@ export function SubmitRequestDialog(props: SubmitRequestDialogProps) {
 
     // Add chapter/draft validation to the Select step based on SR type
     if (stepName === 'Select') {
-      const type = getValues('submitRequestType');
+      const type = getValues('PullRequestType');
       if (type === 'new_chapter') {
         fields.push('draftId', 'parentChapterSlug');
       } else if (type === 'edit_chapter') {
@@ -246,7 +245,7 @@ export function SubmitRequestDialog(props: SubmitRequestDialogProps) {
   const onFormSubmit = (data: TSubmitRequestFormData) => {
     // Basic slugification for new chapters if chapterSlug is missing
     let finalChapterSlug = data.chapterSlug;
-    if (data.submitRequestType === 'new_chapter' && !finalChapterSlug) {
+    if (data.PullRequestType === 'new_chapter' && !finalChapterSlug) {
       finalChapterSlug = data.title
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
@@ -257,7 +256,7 @@ export function SubmitRequestDialog(props: SubmitRequestDialogProps) {
       title: data.title,
       description: data.description,
       storySlug: data.storySlug,
-      prType: data.submitRequestType,
+      prType: data.PullRequestType,
       isDraft: data.isDraft,
       chapterSlug: finalChapterSlug || '',
       parentChapterSlug: data.parentChapterSlug || 'root',

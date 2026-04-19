@@ -1,17 +1,17 @@
-# SEO Metadata — Quick Reference
+# SEO Metadata - Quick Reference
 
 File: [seo-metadata.ts](file:///d:/projects/storychain-frontend/storychain_fe_next_js/components/common/seo/seo-metadata.ts)
 
 Import from: `@/components/common`
 
 > [!IMPORTANT]
-> Next.js App Router handles SEO via **[generateMetadata](file:///d:/projects/storychain-frontend/storychain_fe_next_js/app/%28protected%29/stories/%5Bslug%5D/collaborators/page.tsx#5-13)** (async) or **`export const metadata`** (static) in [page.tsx](file:///d:/projects/storychain-frontend/storychain_fe_next_js/app/%28public%29/page.tsx) / [layout.tsx](file:///d:/projects/storychain-frontend/storychain_fe_next_js/app/layout.tsx). These are **not** React components — they run server-side only.
+> Next.js App Router handles SEO via **[generateMetadata](file:///d:/projects/storychain-frontend/storychain_fe_next_js/app/%28protected%29/stories/%5Bslug%5D/collaborators/page.tsx#5-13)** (async) or **`export const metadata`** (static) in [page.tsx](file:///d:/projects/storychain-frontend/storychain_fe_next_js/app/%28public%29/page.tsx) / [layout.tsx](file:///d:/projects/storychain-frontend/storychain_fe_next_js/app/layout.tsx). These are **not** React components - they run server-side only.
 
 ---
 
 ## Builder Functions
 
-### [buildStoryMeta](file:///d:/projects/storychain-frontend/storychain_fe_next_js/components/common/seo/seo-metadata.ts#70-142) — Story pages with dynamic data
+### [buildStoryMeta](file:///d:/projects/storychain-frontend/storychain_fe_next_js/components/common/seo/seo-metadata.ts#70-142) - Story pages with dynamic data
 
 ```ts
 import { buildStoryMeta } from '@/components/common';
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
     coverImageUrl: story.coverImage?.url, // used as OG image
     author: story.creator.username, // optional
     genres: story.settings.genres, // optional keywords
-    pageLabel: 'Overview', // → "My Story — Overview"
+    pageLabel: 'Overview', // → "My Story - Overview"
   });
 }
 ```
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 
 ---
 
-### [buildChapterMeta](file:///d:/projects/storychain-frontend/storychain_fe_next_js/components/common/seo/seo-metadata.ts#158-223) — Chapter read pages
+### [buildChapterMeta](file:///d:/projects/storychain-frontend/storychain_fe_next_js/components/common/seo/seo-metadata.ts#158-223) - Chapter read pages
 
 ```ts
 import { buildChapterMeta } from '@/components/common';
@@ -64,7 +64,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 
 ---
 
-### [buildStorySubPageMeta](file:///d:/projects/storychain-frontend/storychain_fe_next_js/components/common/seo/seo-metadata.ts#317-359) — Protected story management pages
+### [buildStorySubPageMeta](file:///d:/projects/storychain-frontend/storychain_fe_next_js/components/common/seo/seo-metadata.ts#317-359) - Protected story management pages
 
 For pages where you only have the slug (no full story data fetched):
 
@@ -92,11 +92,11 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 | `'Settings'`        | `/settings`        |
 | `'Tree'`            | `/tree`            |
 
-> Sets `robots: noIndex` — these are auth-protected pages.
+> Sets `robots: noIndex` - these are auth-protected pages.
 
 ---
 
-### [buildProfileMeta](file:///d:/projects/storychain-frontend/storychain_fe_next_js/components/common/seo/seo-metadata.ts#237-293) — Public / private profile pages
+### [buildProfileMeta](file:///d:/projects/storychain-frontend/storychain_fe_next_js/components/common/seo/seo-metadata.ts#237-293) - Public / private profile pages
 
 ```ts
 import { buildProfileMeta } from '@/components/common';
@@ -111,14 +111,14 @@ export async function generateMetadata({ params }): Promise<Metadata> {
     displayName: user.displayName,
     bio: user.bio,
     avatarUrl: user.avatarUrl,
-    pageLabel: 'Stories', // optional: "Alice — Stories"
+    pageLabel: 'Stories', // optional: "Alice - Stories"
   });
 }
 ```
 
 ---
 
-### [buildStaticPageMeta](file:///d:/projects/storychain-frontend/storychain_fe_next_js/components/common/seo/seo-metadata.ts#373-420) — Public static pages
+### [buildStaticPageMeta](file:///d:/projects/storychain-frontend/storychain_fe_next_js/components/common/seo/seo-metadata.ts#373-420) - Public static pages
 
 ```ts
 import { buildStaticPageMeta } from '@/components/common';
@@ -137,7 +137,7 @@ export const metadata = buildStaticPageMeta({
 
 ---
 
-### [buildAppPageMeta](file:///d:/projects/storychain-frontend/storychain_fe_next_js/components/common/seo/seo-metadata.ts#430-447) — Private app pages (always noIndex)
+### [buildAppPageMeta](file:///d:/projects/storychain-frontend/storychain_fe_next_js/components/common/seo/seo-metadata.ts#430-447) - Private app pages (always noIndex)
 
 ```ts
 import { buildAppPageMeta } from '@/components/common';

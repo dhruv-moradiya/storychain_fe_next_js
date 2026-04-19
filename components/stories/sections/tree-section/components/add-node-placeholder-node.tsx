@@ -28,7 +28,7 @@ export function AddNodePlaceholderNode({ data, selected }: AddNodePlaceholderNod
       storySlug: slug,
     });
 
-    router.push(`/stories/${slug}/builder?${params.toString()}`);
+    router.push(`/builder?${params.toString()}`);
   };
 
   return (

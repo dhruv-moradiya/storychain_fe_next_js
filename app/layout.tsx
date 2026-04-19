@@ -81,7 +81,7 @@ const yellowtail = Yellowtail({
 export const metadata: Metadata = {
   metadataBase: new URL('https://storychain-fe.vercel.app'),
   title: {
-    default: 'StoryChain — Collaborative Branching Storytelling Platform',
+    default: 'StoryChain - Collaborative Branching Storytelling Platform',
     template: '%s | StoryChain',
   },
   description:
@@ -100,7 +100,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://storychain-fe.vercel.app',
-    title: 'StoryChain — Collaborative Branching Storytelling Platform',
+    title: 'StoryChain - Collaborative Branching Storytelling Platform',
     description:
       'Create, collaborate, and explore branching narratives with StoryChain. The ultimate platform for interactive storytelling.',
     siteName: 'StoryChain',
@@ -109,13 +109,13 @@ export const metadata: Metadata = {
         url: 'https://res.cloudinary.com/dpji4qfnu/image/upload/v1774158510/storychain-logo-raw-removebg-preview_mhethr.png',
         width: 1200,
         height: 630,
-        alt: 'StoryChain — Collaborative Storytelling',
+        alt: 'StoryChain - Collaborative Storytelling',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'StoryChain — Collaborative Branching Storytelling Platform',
+    title: 'StoryChain - Collaborative Branching Storytelling Platform',
     description:
       'Create, collaborate, and explore branching narratives with StoryChain. The ultimate platform for interactive storytelling.',
     images: [

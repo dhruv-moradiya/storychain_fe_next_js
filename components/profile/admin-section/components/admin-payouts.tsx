@@ -200,7 +200,7 @@ export function AdminPayouts() {
       cell: ({ row }) => {
         if (row.original.status !== 'PENDING') {
           return (
-            <span className="text-muted-foreground text-xs">{row.original.adminNote || '—'}</span>
+            <span className="text-muted-foreground text-xs">{row.original.adminNote || '-'}</span>
           );
         }
         return (
@@ -349,7 +349,7 @@ export function AdminPayouts() {
               onChange={(e) => setAdminNote(e.target.value)}
               placeholder={
                 actionDialog.action === 'approve'
-                  ? 'e.g. Verified — processing via Razorpay'
+                  ? 'e.g. Verified - processing via Razorpay'
                   : 'e.g. Insufficient earned coins'
               }
               className="bg-muted/20 border-border/50"

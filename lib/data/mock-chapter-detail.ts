@@ -14,11 +14,11 @@ export const MOCK_CHAPTER_DETAIL: IChapterDetail = {
   authorId: 'user_001',
 
   title: 'The Morning They Left',
-  content: `<p>The last origami crane sat on the windowsill like a small, white ghost. Naomi had placed it there three years ago, on the morning her mother had packed a single bag and slipped out before dawn — before the neighborhood woke, before the birds remembered what sound was for.</p>
+  content: `<p>The last origami crane sat on the windowsill like a small, white ghost. Naomi had placed it there three years ago, on the morning her mother had packed a single bag and slipped out before dawn - before the neighborhood woke, before the birds remembered what sound was for.</p>
     <p>She remembered thinking it felt unfair that the sun rose anyway.</p>
     <p>The crane had yellowed slightly at its wing-tips now, softened by two summers of afternoon light. Naomi pressed her fingertip against its paper beak and wondered, not for the first time, whether her mother had ever learned to fold one herself, or if she had simply carried the ghost of an intention the way most people carry unread books.</p>
     <blockquote>"Some promises are just shapes we make with our hands," her grandmother had told her once. "What matters is the muscle memory."</blockquote>
-    <p>Naomi still wasn't sure she believed that. She had been folding cranes since she was seven — over a thousand now, tucked into drawers and gifted to strangers and left in hospital waiting rooms. But the wish at the center of each one had never changed, and it had never come true.</p>
+    <p>Naomi still wasn't sure she believed that. She had been folding cranes since she was seven - over a thousand now, tucked into drawers and gifted to strangers and left in hospital waiting rooms. But the wish at the center of each one had never changed, and it had never come true.</p>
     <p>She was thinking about this when she heard the knock at the door.</p>`,
   chapterNumber: 1,
 
@@ -174,7 +174,7 @@ export const MOCK_COMMENTS: IComment[] = [
     },
     parentCommentId: null,
     content:
-      '"Some promises are just shapes we make with our hands" — this line is going to stay with me for a long time. The grandmother feels so present even in such a brief mention.',
+      '"Some promises are just shapes we make with our hands" - this line is going to stay with me for a long time. The grandmother feels so present even in such a brief mention.',
     votes: { upvotes: 24, downvotes: 1 },
     createdAt: new Date(Date.now() - 1000 * 60 * 60 * 30).toISOString(),
     isEdited: false,
@@ -194,7 +194,7 @@ export const MOCK_COMMENTS: IComment[] = [
     },
     parentCommentId: null,
     content:
-      'I love how the ending hooks you. "She was thinking about this when she heard the knock at the door." — perfect cut.',
+      'I love how the ending hooks you. "She was thinking about this when she heard the knock at the door." - perfect cut.',
     votes: { upvotes: 11, downvotes: 0 },
     createdAt: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(),
     isEdited: false,

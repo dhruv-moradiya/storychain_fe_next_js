@@ -37,7 +37,7 @@ export function LoadMorePlaceholderNode({ data, selected }: LoadMorePlaceholderN
       className={cn(
         'group relative flex cursor-pointer flex-col items-center justify-center transition-all duration-300',
         'h-14 w-14 rounded-2xl',
-        'via-cream-95 to-cream-90 bg-gradient-to-br from-white',
+        'via-cream-95 to-cream-90 bg-linear-to-br from-white',
         'border border-dashed',
         isLoading && 'pointer-events-none',
         selected
@@ -49,14 +49,14 @@ export function LoadMorePlaceholderNode({ data, selected }: LoadMorePlaceholderN
       <Handle
         type="target"
         position={Position.Top}
-        className="!from-brand-blue !to-brand-pink-500 !-top-1 !h-2.5 !w-2.5 !rounded-full !border-2 !border-white !bg-gradient-to-br !shadow-sm"
+        className="from-brand-blue! to-brand-pink-500! -top-1! h-2.5! w-2.5! rounded-full! border-2! border-white! bg-linear-to-br! shadow-sm!"
       />
 
       {/* Gradient background on hover */}
       <div
         className={cn(
           'absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300',
-          'from-brand-blue via-brand-pink-500 to-brand-orange bg-gradient-to-br',
+          'from-brand-blue via-brand-pink-500 to-brand-orange bg-linear-to-br',
           isLoading ? 'opacity-100' : 'group-hover:opacity-100'
         )}
       />
@@ -116,7 +116,7 @@ export function LoadMorePlaceholderNode({ data, selected }: LoadMorePlaceholderN
       <div
         className={cn(
           'pointer-events-none absolute -inset-1 -z-10 rounded-3xl opacity-0 blur-lg transition-opacity duration-300',
-          'from-brand-blue/40 via-brand-pink-500/30 to-brand-orange/40 bg-gradient-to-br',
+          'from-brand-blue/40 via-brand-pink-500/30 to-brand-orange/40 bg-linear-to-br',
           isLoading ? 'opacity-100' : 'group-hover:opacity-100'
         )}
       />

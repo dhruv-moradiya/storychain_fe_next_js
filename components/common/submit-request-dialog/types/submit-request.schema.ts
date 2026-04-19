@@ -4,8 +4,8 @@ import { z } from 'zod';
 // Enums
 // ---------------------------------------------------------------------------
 
-export const SubmitRequestTypeEnum = z.enum(['new_chapter', 'edit_chapter', 'delete_chapter']);
-export type TSubmitRequestType = z.infer<typeof SubmitRequestTypeEnum>;
+export const PullRequestTypeEnum = z.enum(['new_chapter', 'edit_chapter', 'delete_chapter']);
+export type TPullRequestType = z.infer<typeof PullRequestTypeEnum>;
 
 export const SubmitRequestLabelEnum = z.enum([
   'needs_review',
@@ -14,7 +14,7 @@ export const SubmitRequestLabelEnum = z.enum([
   'plot_hole',
   'good_first_submission',
 ]);
-export type TSubmitRequestLabel = z.infer<typeof SubmitRequestLabelEnum>;
+export type TPullRequestLabel = z.infer<typeof SubmitRequestLabelEnum>;
 
 // ---------------------------------------------------------------------------
 // Form Schema
@@ -32,7 +32,7 @@ export const SubmitRequestFormSchema = z.object({
     .min(10, 'Description must be at least 10 characters')
     .max(2000, 'Description cannot exceed 2000 characters'),
 
-  submitRequestType: SubmitRequestTypeEnum,
+  PullRequestType: PullRequestTypeEnum,
 
   // Slug-based selection (no IDs)
   storySlug: z.string().min(1, 'Please select a story'),

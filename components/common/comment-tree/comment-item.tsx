@@ -238,7 +238,7 @@ export function CommentItem({
       className="ct-comment-node group relative"
       style={{ paddingLeft: indentPadding }}
     >
-      {/* Depth accent indicator — subtle dot instead of border */}
+      {/* Depth accent indicator - subtle dot instead of border */}
       {depth > 0 && (
         <div
           className="ct-depth-indicator absolute top-4"
@@ -268,7 +268,7 @@ export function CommentItem({
 
           {/* Content Column */}
           <div className="min-w-0 flex-1">
-            {/* Author header — row with name, username, time */}
+            {/* Author header - row with name, username, time */}
             <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
               <span className="font-libre-baskerville ct-author-name text-[13px] leading-snug font-semibold">
                 {comment.author.displayName}
@@ -292,7 +292,7 @@ export function CommentItem({
               {comment.content}
             </p>
 
-            {/* Action row — like, reply count, reply button */}
+            {/* Action row - like, reply count, reply button */}
             <div className="mt-2.5 flex items-center gap-1.5 sm:gap-2">
               <LikeButton likes={likeCount} isLiked={isLiked} onToggle={handleLikeToggle} />
 

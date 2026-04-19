@@ -19,5 +19,12 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "registries": {}
+  "registries": {
+    "@shadcnuikit": {
+      "url": "https://shadcnuikit.com/r/{name}.json",
+      "headers": {
+        "Authorization": "Bearer n1pr1j8bxLDHDyn2HM7DCFMM8DDH9eQiBTcagN1YpC57dE4HecpY2VhHvfwTPEEVV8rpK9Lanh9syvsZEvxHW9"
+      }
+    }
+  }
 }

@@ -2,15 +2,15 @@ import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-import { SubmitRequestTypeConfig } from '../types/submit-request-dialog.types';
+import { PullRequestTypeConfig } from '../types/submit-request-dialog.types';
 
-interface SubmitRequestTypeCardProps {
-  type: SubmitRequestTypeConfig;
+interface PullRequestTypeCardProps {
+  type: PullRequestTypeConfig;
   isSelected: boolean;
   onSelect: () => void;
 }
 
-export function SubmitRequestTypeCard({ type, isSelected, onSelect }: SubmitRequestTypeCardProps) {
+export function PullRequestTypeCard({ type, isSelected, onSelect }: PullRequestTypeCardProps) {
   return (
     <button
       type="button"

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 
-import type { IUserBasic } from '@/type/common';
+import type { IUserBasicWithEmail } from '@/type/common';
 import type { ICollaboratorRecord } from '@/type/story/story-response.type';
 import type { TStoryCollaboratorRole } from '@/type/story/story.types';
 import {
@@ -83,7 +83,7 @@ const columnHelper = createColumnHelper<ICollaboratorRecord>();
 
 interface ActiveCollaborator {
   _id: string;
-  user: IUserBasic;
+  user: IUserBasicWithEmail;
   currentRole: TStoryCollaboratorRole;
 }
 
@@ -110,7 +110,10 @@ const CollaboratorTable = ({
 }: CollaboratorTableProps) => {
   // ── Dialog state ───────────────────────────────────────────────────────────
   const [changeRoleTarget, setChangeRoleTarget] = useState<ActiveCollaborator | null>(null);
-  const [removeTarget, setRemoveTarget] = useState<{ _id: string; user: IUserBasic } | null>(null);
+  const [removeTarget, setRemoveTarget] = useState<{
+    _id: string;
+    user: IUserBasicWithEmail;
+  } | null>(null);
 
   // ── Filter ─────────────────────────────────────────────────────────────────
   const filteredData = useMemo(() => {
@@ -217,7 +220,7 @@ const CollaboratorTable = ({
           const invitedBy = row.original.invitedBy;
 
           if (!invitedBy) {
-            return <span className="text-text-secondary-65 text-sm">—</span>;
+            return <span className="text-text-secondary-65 text-sm">-</span>;
           }
 
           return (

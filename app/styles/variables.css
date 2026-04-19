@@ -1,6 +1,6 @@
 :root {
   /* ===========================================
-     Base Theme Colors — StoryChain Brand
+     Base Theme Colors - StoryChain Brand
      (shadcn/ui tokens mapped to StoryChain palette)
      =========================================== */
 
@@ -8,25 +8,25 @@
   --background: oklch(0.974 0.022 86); /* bg-cream */
   --foreground: oklch(0.248 0.104 265); /* text-primary */
 
-  /* Card / Popover — slightly lighter than page bg */
+  /* Card / Popover - slightly lighter than page bg */
   --card: oklch(0.984 0.014 85);
   --card-foreground: oklch(0.248 0.104 265);
   --popover: oklch(0.984 0.014 85);
   --popover-foreground: oklch(0.248 0.104 265);
 
-  /* Primary — StoryChain Pink */
+  /* Primary - StoryChain Pink */
   --primary: oklch(0.588 0.214 350); /* brand-pink-500 */
   --primary-foreground: oklch(1 0 0);
 
-  /* Secondary — StoryChain Blue */
+  /* Secondary - StoryChain Blue */
   --secondary: oklch(0.574 0.199 267); /* brand-blue */
   --secondary-foreground: oklch(1 0 0);
 
-  /* Muted — soft cream surface */
+  /* Muted - soft cream surface */
   --muted: oklch(0.974 0.022 86 / 0.8); /* cream-80 */
   --muted-foreground: oklch(0.262 0.099 265 / 0.65); /* text-secondary-65 */
 
-  /* Accent — StoryChain Teal */
+  /* Accent - StoryChain Teal */
   --accent: oklch(0.7 0.14 185); /* teal */
   --accent-foreground: oklch(1 0 0);
 
@@ -42,14 +42,14 @@
   --input: oklch(0.262 0.099 265 / 0.12);
   --ring: oklch(0.588 0.214 350 / 0.3); /* brand-pink-ring30 */
 
-  /* Chart Colors — StoryChain brand palette */
+  /* Chart Colors - StoryChain brand palette */
   --chart-1: oklch(0.588 0.214 350); /* pink */
   --chart-2: oklch(0.574 0.199 267); /* blue */
   --chart-3: oklch(0.7 0.14 185); /* teal */
   --chart-4: oklch(0.671 0.193 349); /* pink-400 */
   --chart-5: oklch(0.543 0.213 267); /* blue-alt */
 
-  /* Sidebar Colors — StoryChain themed */
+  /* Sidebar Colors - StoryChain themed */
   --sidebar: oklch(0.969 0.018 80); /* warm beige surface #f0e6d3 area */
   --sidebar-foreground: oklch(0.22 0.06 30); /* dark brown #2c1810 */
   --sidebar-primary: oklch(0.63 0.13 30); /* terracotta #e8927c */
@@ -60,7 +60,7 @@
   --sidebar-ring: oklch(0.63 0.13 30 / 0.25);
 
   /* ===========================================
-     Editorial Brand Palette — Warm Palette
+     Editorial Brand Palette - Warm Palette
      Cream #FAF7F2 | Terracotta #E8927C
      Dusty Purple #9B8BB4 | Dark Brown #2C1810
      Warm Beige #F0E6D3 | Muted Rose #D4A5A5
@@ -134,6 +134,7 @@
   --brand-pink-ring30: oklch(0.588 0.214 350 / 0.3);
   --brand-blue: oklch(0.574 0.199 267); /* #6b7cff */
   --brand-blue-alt: oklch(0.543 0.213 267); /* #5a6cff */
+  --brand-orange: #ff9f68;
   --brand-teal: oklch(0.7 0.14 185); /* teal accent */
 
   /* Cream Opacity Variants */
@@ -209,37 +210,37 @@
 
 .dark {
   /* ===========================================
-     Base Theme Colors — StoryChain Brand (Dark Mode)
+     Base Theme Colors - StoryChain Brand (Dark Mode)
      (shadcn/ui tokens mapped to StoryChain dark palette)
      =========================================== */
 
-  /* Page surfaces — deep navy-indigo for rich dark feel */
+  /* Page surfaces - deep navy-indigo for rich dark feel */
   --background: oklch(0.145 0.025 270); /* deep navy-indigo #0d0f1a */
   --foreground: oklch(0.925 0.018 280); /* #eae9f2 */
 
-  /* Card / Popover — lifted slate-purple surface */
+  /* Card / Popover - lifted slate-purple surface */
   --card: oklch(0.175 0.028 272); /* slate-purple #121425 */
   --card-foreground: oklch(0.925 0.018 280);
   --popover: oklch(0.175 0.028 272);
   --popover-foreground: oklch(0.925 0.018 280);
 
-  /* Primary — StoryChain Pink (brightened for dark bg) */
+  /* Primary - StoryChain Pink (brightened for dark bg) */
   --primary: oklch(0.641 0.199 349); /* #f06aaf */
   --primary-foreground: oklch(1 0 0);
 
-  /* Secondary — StoryChain Blue (brightened for dark bg) */
+  /* Secondary - StoryChain Blue (brightened for dark bg) */
   --secondary: oklch(0.633 0.179 268); /* #7e8eff */
   --secondary-foreground: oklch(1 0 0);
 
-  /* Muted — subtle dark surface tones with navy warmth */
+  /* Muted - subtle dark surface tones with navy warmth */
   --muted: oklch(0.175 0.028 272 / 0.8);
   --muted-foreground: oklch(0.793 0.038 286 / 0.65);
 
-  /* Accent — StoryChain Teal (brightened for dark bg) */
+  /* Accent - StoryChain Teal (brightened for dark bg) */
   --accent: oklch(0.755 0.125 185); /* teal brightened */
   --accent-foreground: oklch(1 0 0);
 
-  /* Destructive — slightly lifted for dark */
+  /* Destructive - slightly lifted for dark */
   --destructive: oklch(0.641 0.163 25); /* #f87171 */
   --destructive-foreground: oklch(1 0 0);
 
@@ -251,14 +252,14 @@
   --input: oklch(0.793 0.038 286 / 0.1);
   --ring: oklch(0.641 0.199 349 / 0.3); /* brand-pink-ring30 dark */
 
-  /* Chart Colors — Dark Mode StoryChain palette */
+  /* Chart Colors - Dark Mode StoryChain palette */
   --chart-1: oklch(0.641 0.199 349); /* pink dark */
   --chart-2: oklch(0.633 0.179 268); /* blue dark */
   --chart-3: oklch(0.755 0.125 185); /* teal dark */
   --chart-4: oklch(0.712 0.181 350); /* pink-400 dark */
   --chart-5: oklch(0.577 0.2 267); /* blue-alt dark */
 
-  /* Sidebar Colors — deeper warm-dark surface */
+  /* Sidebar Colors - deeper warm-dark surface */
   --sidebar: oklch(0.14 0.022 30); /* very dark warm brown */
   --sidebar-foreground: oklch(0.923 0.026 80); /* warm beige text */
   --sidebar-primary: oklch(0.7 0.12 30); /* terracotta brightened */
@@ -268,7 +269,7 @@
   --sidebar-border: oklch(0.923 0.026 80 / 0.1);
   --sidebar-ring: oklch(0.7 0.12 30 / 0.3);
 
-  /* Editorial Brand Palette — Dark Mode overrides */
+  /* Editorial Brand Palette - Dark Mode overrides */
   --brand-cream: oklch(0.14 0.022 30); /* remapped to dark base */
   --brand-terracotta: oklch(0.7 0.12 30); /* brightened terracotta */
   --brand-terracotta-hover: oklch(0.78 0.1 30);
@@ -278,7 +279,7 @@
   --brand-dusty-purple-hover: oklch(0.76 0.08 300);
   --brand-dusty-purple-subtle: oklch(0.68 0.08 300 / 0.15);
   --brand-dusty-purple-border: oklch(0.68 0.08 300 / 0.3);
-  --brand-dark-brown: oklch(0.923 0.026 80); /* flipped — beige as text */
+  --brand-dark-brown: oklch(0.923 0.026 80); /* flipped - beige as text */
   --brand-dark-brown-75: oklch(0.923 0.026 80 / 0.75);
   --brand-dark-brown-50: oklch(0.923 0.026 80 / 0.5);
   --brand-dark-brown-30: oklch(0.923 0.026 80 / 0.3);
@@ -289,10 +290,10 @@
   --brand-muted-rose-border: oklch(0.78 0.06 15 / 0.28);
 
   /* ===========================================
-     StoryChain Color Palette — Dark Mode
+     StoryChain Color Palette - Dark Mode
      =========================================== */
 
-  /* Hero Gradient Colors — Moody/Deep */
+  /* Hero Gradient Colors - Moody/Deep */
   --hero-gradient-from: oklch(0.304 0.105 258); /* #2a3570 */
   --hero-gradient-via1: oklch(0.316 0.12 308); /* #4a2a6e */
   --hero-gradient-via2: oklch(0.344 0.114 353); /* #6e2a4e */
@@ -301,13 +302,13 @@
   --hero-overlay-white10: oklch(1 0 0 / 0.04);
   --hero-overlay-purple5: oklch(0.567 0.279 307 / 0.12);
 
-  /* Background Colors — Dark Mode (layered navy surfaces) */
-  --bg-cream: oklch(0.145 0.025 270); /* base page — deep navy */
+  /* Background Colors - Dark Mode (layered navy surfaces) */
+  --bg-cream: oklch(0.145 0.025 270); /* base page - deep navy */
   --bg-cream-light: oklch(0.175 0.028 272); /* card-level surface */
   --bg-cream-blend: oklch(0.16 0.026 271); /* mid-tier surface */
   --bg-dark: oklch(0.105 0.02 266); /* deepest surface */
 
-  /* Text Colors — Dark Mode */
+  /* Text Colors - Dark Mode */
   --text-primary: oklch(0.917 0.022 286); /* #e8e6f0 */
   --text-secondary: oklch(0.793 0.038 286); /* #c4c2d6 */
   --text-tertiary: oklch(0.851 0.03 287); /* #d4d2e4 */
@@ -317,7 +318,7 @@
   --text-secondary-70: oklch(0.793 0.038 286 / 0.7);
   --text-secondary-65: oklch(0.793 0.038 286 / 0.65);
 
-  /* Brand Colors — Dark Mode (brightened for dark bg contrast) */
+  /* Brand Colors - Dark Mode (brightened for dark bg contrast) */
   --brand-pink-400: oklch(0.712 0.181 350); /* #f78cc4 */
   --brand-pink-500: oklch(0.641 0.199 349); /* #f06aaf */
   --brand-pink-600: oklch(0.55 0.214 351); /* #e0408e */
@@ -326,9 +327,10 @@
   --brand-pink-ring30: oklch(0.641 0.199 349 / 0.3);
   --brand-blue: oklch(0.633 0.179 268); /* #7e8eff */
   --brand-blue-alt: oklch(0.577 0.2 267); /* #6d7eff */
+  --brand-orange: #ffb184;
   --brand-teal: oklch(0.755 0.125 185); /* teal brightened */
 
-  /* Cream Opacity Variants — remapped to navy dark surfaces */
+  /* Cream Opacity Variants - remapped to navy dark surfaces */
   --cream-95: oklch(0.145 0.025 270 / 0.95);
   --cream-90: oklch(0.145 0.025 270 / 0.9);
   --cream-85: oklch(0.145 0.025 270 / 0.85);
@@ -343,7 +345,7 @@
   --cream-blend-60: oklch(0.16 0.026 271 / 0.6);
   --cream-blend-50: oklch(0.16 0.026 271 / 0.5);
 
-  /* Dark Opacity Variants — inverted to light tones for dark mode */
+  /* Dark Opacity Variants - inverted to light tones for dark mode */
   --dark-95: oklch(0.965 0.006 286 / 0.95);
   --dark-90: oklch(0.965 0.006 286 / 0.9);
   --dark-75: oklch(0.965 0.006 286 / 0.75);
@@ -352,7 +354,7 @@
   --dark-50: oklch(0.965 0.006 286 / 0.5);
   --dark-40: oklch(0.965 0.006 286 / 0.4);
 
-  /* White Opacity Variants — adjusted for dark mode */
+  /* White Opacity Variants - adjusted for dark mode */
   --white-95: oklch(1 0 0 / 0.92);
   --white-75: oklch(1 0 0 / 0.7);
   --white-60: oklch(1 0 0 / 0.55);
@@ -362,7 +364,7 @@
   --white-4: oklch(1 0 0 / 0.06);
 
   /* ===========================================
-     Shadows — Dark Mode (darker, more diffused)
+     Shadows - Dark Mode (darker, more diffused)
      =========================================== */
   --shadow-color: oklch(0 0 0);
   --shadow-opacity: 0.35;

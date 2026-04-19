@@ -88,7 +88,7 @@ function CoinPackCard({ pack, index }: { pack: CoinPack; index: number }) {
           pack.bonus ? 'text-emerald-600 dark:text-emerald-400' : 'invisible'
         )}
       >
-        {pack.bonus ? `+ ${formatINR(pack.bonus)} bonus coins free!` : '—'}
+        {pack.bonus ? `+ ${formatINR(pack.bonus)} bonus coins free!` : '-'}
       </p>
 
       {/* Price */}
@@ -158,7 +158,7 @@ export function CoinPacksSection({ packs }: CoinPacksSectionProps) {
             className="text-muted-foreground mx-auto max-w-xl text-sm leading-relaxed"
           >
             Coins are your in-app currency to unlock chapters, create stories, use AI features, and
-            much more. Buy once, use anytime — no expiry.
+            much more. Buy once, use anytime - no expiry.
           </motion.p>
         </div>
 
@@ -176,7 +176,7 @@ export function CoinPacksSection({ packs }: CoinPacksSectionProps) {
             <div key={item.label} className="flex items-center gap-2">
               <Sparkles className="text-secondary h-3.5 w-3.5 shrink-0" />
               <span className="text-foreground text-sm font-medium">{item.label}</span>
-              <span className="text-muted-foreground text-xs">— {item.desc}</span>
+              <span className="text-muted-foreground text-xs">- {item.desc}</span>
             </div>
           ))}
         </motion.div>
