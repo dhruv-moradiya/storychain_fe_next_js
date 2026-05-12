@@ -70,7 +70,59 @@ interface IChapterStartReadingSessionResponse extends IBaseResponse<null> {}
 
 interface IChapterRecordReadingSessionResponse extends IBaseResponse<null> {}
 
+// -------------------
+// COMMENT TYPES
+// -------------------
+type ICommentVoteType = 'upvote' | 'downvote' | null;
+
+interface ICommentAuthor {
+  clerkId: string;
+  username: string;
+  avatarUrl: string;
+}
+
+interface ICommentVotes {
+  upvotes: number;
+  downvotes: number;
+}
+
+interface IComment {
+  _id: string;
+  chapterSlug: string;
+  userId: string;
+  parentCommentId: string | null;
+  content: string;
+  votes: ICommentVotes;
+  isEdited: boolean;
+  isDeleted: boolean;
+  reportCount: number;
+  createdAt: string;
+  author: ICommentAuthor;
+  currentUserVote: ICommentVoteType;
+  replyCount: number;
+  replies?: IComment[];
+}
+
+interface IPaginatedComments {
+  docs: IComment[];
+  totalDocs: number;
+  limit: number;
+  totalPages: number;
+  page: number;
+  pagingCounter: number;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
+  prevPage: number | null;
+  nextPage: number | null;
+}
+
+interface IGetCommentsResponse extends IBaseResponse<IPaginatedComments> {}
+
+// -------------------
+// EXPORT TYPES
+// -------------------
 export type {
+  // Chapter related
   IUserChapters,
   IUserChaptersResponse,
   IChapterSearchItem,
@@ -80,4 +132,12 @@ export type {
   IChapterDetailResponse,
   IChapterStartReadingSessionResponse,
   IChapterRecordReadingSessionResponse,
+
+  // Comments
+  IComment,
+  ICommentAuthor,
+  ICommentVotes,
+  ICommentVoteType,
+  IPaginatedComments,
+  IGetCommentsResponse,
 };

@@ -15,7 +15,6 @@ import {
 
 import { InfoBadge, SecondaryBadge, TagBadge } from '@/components/common/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent } from '@/components/ui/card';
 import { IHistoryEvent } from '@/lib/data/mock-history';
 import { cn } from '@/lib/utils';
 
@@ -74,12 +73,12 @@ export default function HistoryTimeline({ events, variant = 'detailed' }: Histor
   const isCompact = variant === 'compact';
 
   return (
-    <Card className="border-border/50 bg-bg-cream/50 shadow-sm transition-all duration-300">
-      <CardContent className={cn('pt-6', isCompact ? 'pb-2' : 'pb-6')}>
+    <div>
+      <div className={cn('pt-6', isCompact ? 'pb-2' : 'pb-6')}>
         {/* Timeline Container */}
         <div
           className={cn(
-            'before:from-border/60 relative pl-10 before:absolute before:top-3 before:left-[19px] before:h-[calc(100%-24px)] before:w-[2px] before:bg-gradient-to-b before:to-transparent',
+            'before:from-border/60 relative pl-10 before:absolute before:top-3 before:left-4.75 before:h-[calc(100%-24px)] before:w-px before:bg-linear-to-b before:to-transparent',
             isCompact ? 'space-y-4' : 'space-y-8'
           )}
         >
@@ -87,7 +86,7 @@ export default function HistoryTimeline({ events, variant = 'detailed' }: Histor
             return (
               <div key={event.id} className="relative">
                 {/* Timeline Dot Wrapper (Solid Background) */}
-                <div className="bg-bg-cream ring-bg-cream absolute top-1.5 -left-[36px] z-10 flex h-8 w-8 items-center justify-center rounded-full ring-4">
+                <div className="bg-bg-cream ring-bg-cream absolute top-1.5 -left-9 z-10 flex h-8 w-8 items-center justify-center rounded-full ring-4">
                   {/* Timeline Dot Content (Colored) */}
                   <div
                     className={cn(
@@ -128,10 +127,10 @@ export default function HistoryTimeline({ events, variant = 'detailed' }: Histor
                   </div>
                 ) : (
                   // Detailed View
-                  <div className="bg-bg-cream group border-border/40 hover:border-brand-pink-500/30 relative rounded-xl border p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+                  <div className="bg-bg-cream group border-border/40 hover:border-brand-pink-500/30 relative rounded-xl border p-5 shadow-sm transition-all duration-300 hover:shadow-md">
                     <div className="mb-3 flex flex-wrap items-start justify-between gap-4">
                       <div className="flex items-center gap-3">
-                        <Avatar className="h-9 w-9 border-2 border-white shadow-sm transition-transform group-hover:scale-105">
+                        <Avatar className="border-border/50 h-9 w-9 shadow-sm">
                           <AvatarImage src={event.user.avatarUrl} alt={event.user.username} />
                           <AvatarFallback className="bg-brand-pink-500/10 text-brand-pink-500 text-xs font-semibold">
                             {event.user.username.slice(0, 2).toUpperCase()}
@@ -194,7 +193,7 @@ export default function HistoryTimeline({ events, variant = 'detailed' }: Histor
             );
           })}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

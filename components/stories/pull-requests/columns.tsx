@@ -1,12 +1,11 @@
 'use client';
 
-import { IPullRequest, PRStatus, PRType } from '@/type/pull-request.type';
+import { PRStatus, PRType } from '@/type/pull-request.type';
 import { IPullRequestListItem } from '@/type/pull-reuqest/pull-request-response.type';
 import { AvatarFallback } from '@radix-ui/react-avatar';
 import { ColumnDef } from '@tanstack/react-table';
 import { formatDistanceToNow } from 'date-fns';
 import {
-  AlertCircle,
   Check,
   ChevronDownCircleIcon,
   ChevronRightIcon,

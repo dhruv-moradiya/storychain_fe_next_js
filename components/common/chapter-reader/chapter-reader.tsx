@@ -126,49 +126,68 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
         {/* Content */}
         <article
           className={cn(
-            'font-reading text-base leading-relaxed sm:text-lg',
+            // Base typography — Literata for body, generous line-height for long-form reading
+            'font-reading text-foreground/90 text-[17px] leading-[1.85] tracking-[0.01em] sm:text-[19px] sm:leading-[1.9]',
 
-            // Paragraphs
-            '[&_p]:mb-4 [&_p]:text-justify',
+            // Paragraphs — generous spacing, slight hyphens for justified text
+            '[&_p]:mb-6 [&_p]:text-justify [&_p]:hyphens-auto',
 
-            // Headings
-            '[&_h1]:mt-6 [&_h1]:mb-4 [&_h1]:font-sans [&_h1]:text-3xl [&_h1]:leading-tight [&_h1]:font-bold [&_h1]:tracking-tight',
-            '[&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:font-sans [&_h2]:text-2xl [&_h2]:leading-tight [&_h2]:font-bold [&_h2]:tracking-tight',
-            '[&_h3]:mt-5 [&_h3]:mb-2 [&_h3]:font-sans [&_h3]:text-xl [&_h3]:leading-tight [&_h3]:font-bold [&_h3]:tracking-tight',
-            '[&_h4]:mt-4 [&_h4]:mb-2 [&_h4]:font-sans [&_h4]:text-lg [&_h4]:leading-tight [&_h4]:font-bold [&_h4]:tracking-tight',
-            '[&_h5]:font-sans [&_h5]:text-base [&_h5]:leading-tight [&_h5]:font-bold [&_h5]:tracking-tight',
-            '[&_h6]:font-sans [&_h6]:text-sm [&_h6]:leading-tight [&_h6]:font-bold [&_h6]:tracking-tight',
+            // First paragraph emphasis — slightly larger
+            '[&_p:first-of-type]:text-[18px] [&_p:first-of-type]:leading-[1.8] sm:[&_p:first-of-type]:text-[20px]',
 
-            // Blockquote
-            '[&_blockquote]:border-primary [&_blockquote]:text-muted-foreground [&_blockquote]:my-4 [&_blockquote]:border-l-4 [&_blockquote]:pl-4 [&_blockquote]:italic',
+            // Drop cap on the first letter of the first paragraph
+            '[&_p:first-of-type]:first-letter:float-left [&_p:first-of-type]:first-letter:text-[3.4em]',
+            '[&_p:first-of-type]:first-letter:font-libre-baskerville [&_p:first-of-type]:first-letter:leading-[0.85]',
+            '[&_p:first-of-type]:first-letter:mr-2 [&_p:first-of-type]:first-letter:font-bold',
+            '[&_p:first-of-type]:first-letter:text-brand-pink-500',
 
-            // Lists
-            '[&_ul]:mb-4 [&_ul]:list-disc [&_ul]:pl-6',
-            '[&_ol]:mb-4 [&_ol]:list-decimal [&_ol]:pl-6',
-            '[&_li]:mb-1',
+            // Headings — Libre Baskerville for an editorial/literary feel
+            '[&_h1]:font-libre-baskerville [&_h1]:text-foreground [&_h1]:mt-12 [&_h1]:mb-5 [&_h1]:text-[28px] [&_h1]:leading-[1.25] [&_h1]:font-bold [&_h1]:tracking-[-0.02em] sm:[&_h1]:text-[32px]',
+            '[&_h2]:font-libre-baskerville [&_h2]:text-foreground [&_h2]:mt-10 [&_h2]:mb-4 [&_h2]:text-[24px] [&_h2]:leading-[1.3] [&_h2]:font-bold [&_h2]:tracking-[-0.015em] sm:[&_h2]:text-[26px]',
+            '[&_h3]:font-libre-baskerville [&_h3]:text-foreground [&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:text-[20px] [&_h3]:leading-[1.35] [&_h3]:font-bold [&_h3]:tracking-[-0.01em] sm:[&_h3]:text-[22px]',
+            '[&_h4]:font-libre-baskerville [&_h4]:text-foreground [&_h4]:mt-6 [&_h4]:mb-2 [&_h4]:text-[18px] [&_h4]:leading-[1.4] [&_h4]:font-bold sm:[&_h4]:text-[19px]',
+            '[&_h5]:font-libre-baskerville [&_h5]:text-foreground/90 [&_h5]:mt-4 [&_h5]:mb-2 [&_h5]:text-[16px] [&_h5]:leading-[1.4] [&_h5]:font-bold',
+            '[&_h6]:font-libre-baskerville [&_h6]:text-foreground/75 [&_h6]:mt-4 [&_h6]:mb-1 [&_h6]:text-[14px] [&_h6]:leading-[1.4] [&_h6]:font-semibold [&_h6]:tracking-wide [&_h6]:uppercase',
+
+            // Blockquote — branded accent, subtle background
+            '[&_blockquote]:border-brand-pink-400 [&_blockquote]:my-8 [&_blockquote]:border-l-[3px]',
+            '[&_blockquote]:bg-brand-pink-50/50 [&_blockquote]:rounded-r-lg [&_blockquote]:px-6 [&_blockquote]:py-4',
+            '[&_blockquote]:text-foreground/80 [&_blockquote]:font-serif [&_blockquote]:italic',
+            '[&_blockquote]:text-[17px] [&_blockquote]:leading-[1.75] sm:[&_blockquote]:text-[18px]',
+
+            // Lists — proper reading spacing
+            '[&_ul]:mb-6 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-7',
+            '[&_ol]:mb-6 [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:pl-7',
+            '[&_li]:mb-1.5 [&_li]:pl-1 [&_li]:leading-[1.7]',
+            '[&_li_p]:mb-2',
 
             // Inline styles
-            '[&_strong]:font-semibold',
+            '[&_strong]:text-foreground [&_strong]:font-bold',
             '[&_em]:italic',
-            '[&_u]:underline',
+            '[&_u]:decoration-brand-pink-300 [&_u]:underline [&_u]:decoration-2 [&_u]:underline-offset-4',
 
-            // Code
-            '[&_code]:bg-muted [&_code]:rounded [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-sm',
-            '[&_pre]:bg-muted [&_pre]:mb-4 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:p-4',
+            // Code — refined mono style
+            '[&_code]:bg-muted/70 [&_code]:font-ibm-plex-mono [&_code]:text-brand-pink-600 [&_code]:rounded-md [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[0.85em]',
+            '[&_pre]:bg-muted/50 [&_pre]:border-border/50 [&_pre]:mb-6 [&_pre]:overflow-x-auto [&_pre]:rounded-xl [&_pre]:border [&_pre]:p-5',
+            '[&_pre_code]:text-foreground/85 [&_pre_code]:bg-transparent [&_pre_code]:p-0',
 
-            // Links
-            '[&_a]:text-primary [&_a]:underline [&_a:hover]:opacity-80',
+            // Links — brand-colored with smooth transition
+            '[&_a]:text-brand-pink-500 [&_a]:decoration-brand-pink-300/50 [&_a]:underline [&_a]:underline-offset-2 [&_a]:transition-colors [&_a]:duration-200',
+            '[&_a:hover]:text-brand-pink-600 [&_a:hover]:decoration-brand-pink-500',
 
-            // Horizontal line
-            '[&_hr]:border-muted [&_hr]:my-6',
+            // Horizontal rule — elegant separator
+            '[&_hr]:via-border [&_hr]:my-10 [&_hr]:h-px [&_hr]:border-0 [&_hr]:bg-gradient-to-r [&_hr]:from-transparent [&_hr]:to-transparent',
 
-            // Images
-            '[&_img]:my-4 [&_img]:rounded-lg',
+            // Images — slightly elevated with shadow
+            '[&_img]:my-8 [&_img]:w-full [&_img]:rounded-xl [&_img]:object-cover [&_img]:shadow-md',
 
-            // Tables (optional but nice)
-            '[&_table]:my-4 [&_table]:w-full [&_table]:border-collapse',
-            '[&_th]:bg-muted [&_th]:border [&_th]:p-2 [&_th]:text-left',
-            '[&_td]:border [&_td]:p-2'
+            // Tables — refined editorial style
+            '[&_table]:my-8 [&_table]:w-full [&_table]:border-collapse [&_table]:text-[15px]',
+            '[&_th]:bg-muted/50 [&_th]:border-border/60 [&_th]:text-foreground [&_th]:border [&_th]:px-4 [&_th]:py-2.5 [&_th]:text-left [&_th]:font-semibold',
+            '[&_td]:border-border/40 [&_td]:border [&_td]:px-4 [&_td]:py-2.5',
+
+            // Selection color
+            '[&_::selection]:bg-brand-pink-100 [&_::selection]:text-foreground'
           )}
           dangerouslySetInnerHTML={{ __html: chapter.content }}
         />

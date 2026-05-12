@@ -30,7 +30,7 @@ export interface IChapterVersion {
   updatedAt: string;
 }
 
-export interface IComment {
+export interface ICommentDetail {
   _id: string;
   chapterSlug: string;
   userId: string;
@@ -46,7 +46,7 @@ export interface IComment {
   editedAt?: string;
   isDeleted: boolean;
   reportCount: number;
-  replies?: IComment[];
+  replies?: ICommentDetail[];
 }
 
 export interface IChapterDetail {

@@ -20,6 +20,8 @@ export interface ICommentNode {
   editedAt?: string;
   isDeleted?: boolean;
   reportCount?: number;
+  /** Number of direct replies (from API, before fetching) */
+  replyCount?: number;
   /** Nested reply nodes (pre-built tree, or flat list nested by the caller) */
   replies?: ICommentNode[];
 }
@@ -43,6 +45,16 @@ export interface CommentTreeProps {
   showComposer?: boolean;
   /** Whether to show the reply button on each comment (default: true) */
   showReplyButton?: boolean;
+  /** Whether top-level comments are loading */
+  isLoading?: boolean;
+  /** Whether there are more pages of top-level comments */
+  hasNextPage?: boolean;
+  /** Whether the next page is currently being fetched */
+  isFetchingNextPage?: boolean;
+  /** Callback to load the next page of top-level comments */
+  onLoadMore?: () => void;
+  /** Chapter slug needed for fetching child replies */
+  chapterSlug?: string;
   className?: string;
 }
 
@@ -50,6 +62,8 @@ export interface CommentItemProps {
   comment: ICommentNode;
   depth: number;
   maxDepth: number;
+  /** Chapter slug needed for fetching child replies */
+  chapterSlug?: string;
   /** Whether to show the reply button */
   showReplyButton?: boolean;
   onReply?: (parentId: string, content: string) => void;

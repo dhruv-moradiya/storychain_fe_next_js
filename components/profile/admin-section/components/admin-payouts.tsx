@@ -6,7 +6,7 @@ import { PayoutRequest, PayoutStatus } from '@/type/payout';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
-import { Banknote, Check, CheckCircle, Clock, Coins, Loader2, X, XCircle } from 'lucide-react';
+import { Check, CheckCircle, Clock, Coins, Loader2, X, XCircle } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

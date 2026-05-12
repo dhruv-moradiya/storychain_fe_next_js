@@ -52,6 +52,7 @@
   --color-bg-cream: var(--bg-cream);
   --color-bg-cream-light: var(--bg-cream-light);
   --color-bg-cream-blend: var(--bg-cream-blend);
+  --color-bg-cream-dark: var(--bg-cream-dark);
   --color-bg-dark: var(--bg-dark);
 
   /* StoryChain Text Colors */
@@ -63,11 +64,17 @@
   --color-text-secondary-75: var(--text-secondary-75);
   --color-text-secondary-70: var(--text-secondary-70);
   --color-text-secondary-65: var(--text-secondary-65);
+  --color-text-secondary-50: var(--text-secondary-50);
+  --color-text-secondary-40: var(--text-secondary-40);
 
   /* StoryChain Brand Colors */
+  --color-brand-pink-50: var(--brand-pink-50);
+  --color-brand-pink-100: var(--brand-pink-100);
+  --color-brand-pink-300: var(--brand-pink-300);
   --color-brand-pink-400: var(--brand-pink-400);
   --color-brand-pink-500: var(--brand-pink-500);
   --color-brand-pink-600: var(--brand-pink-600);
+  --color-brand-pink-700: var(--brand-pink-700);
   --color-brand-pink-shadow25: var(--brand-pink-shadow25);
   --color-brand-pink-shadow35: var(--brand-pink-shadow35);
   --color-brand-pink-ring30: var(--brand-pink-ring30);
@@ -75,6 +82,7 @@
   --color-brand-blue-alt: var(--brand-blue-alt);
   --color-brand-orange: var(--brand-orange);
   --color-brand-teal: var(--brand-teal);
+  --color-brand-purple: var(--brand-purple);
 
   /* StoryChain Editorial Palette - Tailwind utilities */
   --color-brand-cream: var(--brand-cream);
@@ -96,86 +104,86 @@
   --color-brand-muted-rose-subtle: var(--brand-muted-rose-subtle);
   --color-brand-muted-rose-border: var(--brand-muted-rose-border);
 
-  /* Badge Colors */
-  --color-badge-success: #10b981;
-  --color-badge-success-bg: rgba(16, 185, 129, 0.08);
-  --color-badge-success-border: rgba(16, 185, 129, 0.19);
-  --color-badge-warning: #f59e0b;
-  --color-badge-warning-bg: rgba(245, 158, 11, 0.08);
-  --color-badge-warning-border: rgba(245, 158, 11, 0.19);
-  --color-badge-error: #ef4444;
-  --color-badge-error-bg: rgba(239, 68, 68, 0.08);
-  --color-badge-error-border: rgba(239, 68, 68, 0.19);
-  --color-badge-info: #3b82f6;
-  --color-badge-info-bg: rgba(59, 130, 246, 0.08);
-  --color-badge-info-border: rgba(59, 130, 246, 0.19);
-  --color-badge-gray: #64748b;
-  --color-badge-gray-bg: rgba(100, 116, 139, 0.08);
-  --color-badge-gray-border: rgba(100, 116, 139, 0.19);
-  --color-badge-slate: #475569;
-  --color-badge-slate-bg: rgba(71, 85, 105, 0.08);
-  --color-badge-slate-border: rgba(71, 85, 105, 0.19);
-  --color-badge-purple: #8b5cf6;
-  --color-badge-purple-bg: rgba(139, 92, 246, 0.08);
-  --color-badge-purple-border: rgba(139, 92, 246, 0.19);
-  --color-badge-cyan: #06b6d4;
-  --color-badge-cyan-bg: rgba(6, 182, 212, 0.08);
-  --color-badge-cyan-border: rgba(6, 182, 212, 0.19);
-  --color-badge-emerald: #10b981;
-  --color-badge-emerald-bg: rgba(16, 185, 129, 0.08);
-  --color-badge-emerald-border: rgba(16, 185, 129, 0.19);
-  --color-badge-amber: #f59e0b;
-  --color-badge-amber-bg: rgba(245, 158, 11, 0.08);
-  --color-badge-amber-border: rgba(245, 158, 11, 0.19);
-  --color-badge-rose: #f43663;
-  --color-badge-rose-bg: rgba(244, 54, 99, 0.08);
-  --color-badge-rose-border: rgba(244, 54, 99, 0.19);
-  --color-badge-indigo: #6366f1;
-  --color-badge-indigo-bg: rgba(99, 102, 241, 0.08);
-  --color-badge-indigo-border: rgba(99, 102, 241, 0.19);
-  --color-badge-pink-bg: rgba(236, 72, 153, 0.08);
-  --color-badge-pink-border: rgba(236, 72, 153, 0.19);
-  --color-badge-blue-bg: rgba(107, 124, 255, 0.08);
-  --color-badge-blue-border: rgba(107, 124, 255, 0.19);
-  --color-badge-orange-bg: rgba(255, 159, 104, 0.08);
-  --color-badge-orange-border: rgba(255, 159, 104, 0.19);
+  /* Badge Colors - oklch with opacity for dark mode compatibility */
+  --color-badge-success: oklch(0.62 0.17 162); /* #10b981 */
+  --color-badge-success-bg: oklch(0.62 0.17 162 / 0.08);
+  --color-badge-success-border: oklch(0.62 0.17 162 / 0.19);
+  --color-badge-warning: oklch(0.74 0.17 72); /* #f59e0b */
+  --color-badge-warning-bg: oklch(0.74 0.17 72 / 0.08);
+  --color-badge-warning-border: oklch(0.74 0.17 72 / 0.19);
+  --color-badge-error: oklch(0.577 0.215 27); /* #ef4444 */
+  --color-badge-error-bg: oklch(0.577 0.215 27 / 0.08);
+  --color-badge-error-border: oklch(0.577 0.215 27 / 0.19);
+  --color-badge-info: oklch(0.588 0.17 255); /* #3b82f6 */
+  --color-badge-info-bg: oklch(0.588 0.17 255 / 0.08);
+  --color-badge-info-border: oklch(0.588 0.17 255 / 0.19);
+  --color-badge-gray: oklch(0.554 0.03 257); /* #64748b */
+  --color-badge-gray-bg: oklch(0.554 0.03 257 / 0.08);
+  --color-badge-gray-border: oklch(0.554 0.03 257 / 0.19);
+  --color-badge-slate: oklch(0.46 0.03 257); /* #475569 */
+  --color-badge-slate-bg: oklch(0.46 0.03 257 / 0.08);
+  --color-badge-slate-border: oklch(0.46 0.03 257 / 0.19);
+  --color-badge-purple: oklch(0.584 0.183 293); /* #8b5cf6 */
+  --color-badge-purple-bg: oklch(0.584 0.183 293 / 0.08);
+  --color-badge-purple-border: oklch(0.584 0.183 293 / 0.19);
+  --color-badge-cyan: oklch(0.648 0.15 210); /* #06b6d4 */
+  --color-badge-cyan-bg: oklch(0.648 0.15 210 / 0.08);
+  --color-badge-cyan-border: oklch(0.648 0.15 210 / 0.19);
+  --color-badge-emerald: oklch(0.62 0.17 162); /* #10b981 */
+  --color-badge-emerald-bg: oklch(0.62 0.17 162 / 0.08);
+  --color-badge-emerald-border: oklch(0.62 0.17 162 / 0.19);
+  --color-badge-amber: oklch(0.74 0.17 72); /* #f59e0b */
+  --color-badge-amber-bg: oklch(0.74 0.17 72 / 0.08);
+  --color-badge-amber-border: oklch(0.74 0.17 72 / 0.19);
+  --color-badge-rose: oklch(0.555 0.215 14); /* #f43663 */
+  --color-badge-rose-bg: oklch(0.555 0.215 14 / 0.08);
+  --color-badge-rose-border: oklch(0.555 0.215 14 / 0.19);
+  --color-badge-indigo: oklch(0.554 0.19 275); /* #6366f1 */
+  --color-badge-indigo-bg: oklch(0.554 0.19 275 / 0.08);
+  --color-badge-indigo-border: oklch(0.554 0.19 275 / 0.19);
+  --color-badge-pink-bg: oklch(0.588 0.214 350 / 0.08);
+  --color-badge-pink-border: oklch(0.588 0.214 350 / 0.19);
+  --color-badge-blue-bg: oklch(0.574 0.199 267 / 0.08);
+  --color-badge-blue-border: oklch(0.574 0.199 267 / 0.19);
+  --color-badge-orange-bg: oklch(0.783 0.138 51 / 0.08);
+  --color-badge-orange-border: oklch(0.783 0.138 51 / 0.19);
 
-  /* Toast Colors */
-  --toast-success-bg: rgba(255, 252, 248, 0.8);
-  --toast-success-border: rgba(16, 185, 129, 0.25);
-  --toast-success-text: #065f46;
-  --toast-success-icon: #10b981;
-  --toast-success-icon-bg: rgba(16, 185, 129, 0.12);
+  /* Toast Colors - referencing CSS variables for dark mode support */
+  --toast-success-bg: var(--toast-success-bg);
+  --toast-success-border: var(--toast-success-border);
+  --toast-success-text: var(--toast-success-text);
+  --toast-success-icon: var(--toast-success-icon);
+  --toast-success-icon-bg: var(--toast-success-icon-bg);
 
-  --toast-error-bg: rgba(255, 252, 248, 0.8);
-  --toast-error-border: rgba(239, 68, 68, 0.25);
-  --toast-error-text: #991b1b;
-  --toast-error-icon: #ef4444;
-  --toast-error-icon-bg: rgba(239, 68, 68, 0.12);
+  --toast-error-bg: var(--toast-error-bg);
+  --toast-error-border: var(--toast-error-border);
+  --toast-error-text: var(--toast-error-text);
+  --toast-error-icon: var(--toast-error-icon);
+  --toast-error-icon-bg: var(--toast-error-icon-bg);
 
-  --toast-warning-bg: rgba(255, 252, 248, 0.8);
-  --toast-warning-border: rgba(245, 158, 11, 0.25);
-  --toast-warning-text: #92400e;
-  --toast-warning-icon: #f59e0b;
-  --toast-warning-icon-bg: rgba(245, 158, 11, 0.12);
+  --toast-warning-bg: var(--toast-warning-bg);
+  --toast-warning-border: var(--toast-warning-border);
+  --toast-warning-text: var(--toast-warning-text);
+  --toast-warning-icon: var(--toast-warning-icon);
+  --toast-warning-icon-bg: var(--toast-warning-icon-bg);
 
-  --toast-info-bg: rgba(255, 252, 248, 0.8);
-  --toast-info-border: rgba(59, 130, 246, 0.25);
-  --toast-info-text: #1e40af;
-  --toast-info-icon: #3b82f6;
-  --toast-info-icon-bg: rgba(59, 130, 246, 0.12);
+  --toast-info-bg: var(--toast-info-bg);
+  --toast-info-border: var(--toast-info-border);
+  --toast-info-text: var(--toast-info-text);
+  --toast-info-icon: var(--toast-info-icon);
+  --toast-info-icon-bg: var(--toast-info-icon-bg);
 
-  --toast-default-bg: rgba(255, 252, 248, 0.8);
-  --toast-default-border: rgba(42, 45, 102, 0.15);
-  --toast-default-text: var(--text-primary);
-  --toast-default-icon: var(--brand-pink-500);
-  --toast-default-icon-bg: rgba(236, 72, 153, 0.12);
+  --toast-default-bg: var(--toast-default-bg);
+  --toast-default-border: var(--toast-default-border);
+  --toast-default-text: var(--toast-default-text);
+  --toast-default-icon: var(--toast-default-icon);
+  --toast-default-icon-bg: var(--toast-default-icon-bg);
 
-  --toast-loading-bg: rgba(255, 252, 248, 0.8);
-  --toast-loading-border: rgba(107, 124, 255, 0.25);
-  --toast-loading-text: var(--text-secondary);
-  --toast-loading-icon: var(--brand-blue);
-  --toast-loading-icon-bg: rgba(107, 124, 255, 0.12);
+  --toast-loading-bg: var(--toast-loading-bg);
+  --toast-loading-border: var(--toast-loading-border);
+  --toast-loading-text: var(--toast-loading-text);
+  --toast-loading-icon: var(--toast-loading-icon);
+  --toast-loading-icon-bg: var(--toast-loading-icon-bg);
 
   /* StoryChain Cream Opacity Variants */
   --color-cream-95: var(--cream-95);

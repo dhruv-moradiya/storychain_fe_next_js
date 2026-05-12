@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import { Flame } from 'lucide-react';
+
 import { createBadge } from './badge';
 import type { BadgeConfig } from './types';
 
@@ -71,4 +73,13 @@ export const CountBadge = createBadgeFactory({
   shape: 'pill',
   size: 'xs',
   mono: true,
+});
+
+export const TrendingBadge = createBadgeFactory({
+  color: 'orange',
+  shape: 'rounded',
+  size: 'sm',
+  icon: Flame,
+  iconPosition: 'left',
+  dot: true,
 });

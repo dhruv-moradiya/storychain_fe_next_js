@@ -3,16 +3,17 @@
 import { useState } from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { MessageSquare, Send } from 'lucide-react';
+import { Loader2, MessageSquare, Send } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 
 import { CommentItem } from './comment-item';
+import { CommentTreeSkeleton } from './comment-tree-skeleton';
 import type { CommentTreeProps } from './comment-tree.types';
 
-// ─── Stagger list animation ───────────────────────────────────────────────────
+// Stagger list animation
 
 const listVariants = {
   hidden: {},
@@ -21,7 +22,7 @@ const listVariants = {
   },
 };
 
-// ─── Top-level Composer ───────────────────────────────────────────────────────
+// Top-level Composer
 
 interface ComposerProps {
   onSubmit: (content: string) => void;
@@ -60,7 +61,7 @@ function Composer({ onSubmit }: ComposerProps) {
         onFocus={() => setIsFocused(true)}
         onBlur={() => !text && setIsFocused(false)}
         placeholder="Share your thoughts…"
-        className="ct-composer-textarea font-lora min-h-[60px] resize-none border-0 bg-transparent p-0 text-[15px] leading-relaxed shadow-none transition-all focus-visible:ring-0 sm:text-[16px]"
+        className="ct-composer-textarea font-lora min-h-15 resize-none border-0 bg-transparent p-0 text-[15px] leading-relaxed shadow-none transition-all focus-visible:ring-0 sm:text-[16px]"
         style={{ minHeight: isFocused ? '100px' : '60px' }}
         maxLength={maxLen}
         onKeyDown={(e) => {
@@ -136,8 +137,7 @@ function Composer({ onSubmit }: ComposerProps) {
   );
 }
 
-// ─── Comment Tree ─────────────────────────────────────────────────────────────
-
+// Comment Tree
 export function CommentTree({
   comments,
   maxDepth = 4,
@@ -148,6 +148,11 @@ export function CommentTree({
   totalCount,
   showComposer = true,
   showReplyButton = true,
+  isLoading = false,
+  hasNextPage = false,
+  isFetchingNextPage = false,
+  onLoadMore,
+  chapterSlug,
   className,
 }: CommentTreeProps) {
   const topLevel = comments.filter((c) => !c.isDeleted || (c.replies ?? []).length > 0);
@@ -155,7 +160,7 @@ export function CommentTree({
 
   return (
     <section className={cn('ct-section space-y-6', className)} aria-label="Comments section">
-      {/* ─── Header ─── */}
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="ct-header-icon flex h-9 w-9 items-center justify-center rounded-xl">
@@ -173,52 +178,85 @@ export function CommentTree({
         )}
       </div>
 
-      {/* ─── Composer ─── */}
+      {/* Composer */}
       {showComposer && <Composer onSubmit={onSubmitComment ?? (() => {})} />}
 
-      {/* ─── Thread list ─── */}
-      {topLevel.length > 0 ? (
-        <motion.div
-          variants={listVariants}
-          initial="hidden"
-          animate="visible"
-          className="space-y-2"
-        >
-          <AnimatePresence initial={false}>
-            {topLevel.map((comment) => (
-              <div key={comment.id} className="group relative">
-                <CommentItem
-                  comment={comment}
-                  depth={0}
-                  maxDepth={maxDepth}
-                  showReplyButton={showReplyButton}
-                  onReply={onSubmitReply}
-                  onUpvote={onUpvote}
-                  onDownvote={onDownvote}
-                />
-              </div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+      {/* Skeleton for initial load */}
+      {isLoading && <CommentTreeSkeleton className="flex flex-col space-y-2" />}
+
+      {/* Thread list */}
+      {!isLoading && topLevel.length > 0 ? (
+        <>
+          <motion.div
+            variants={listVariants}
+            initial="hidden"
+            animate="visible"
+            className="space-y-2"
+          >
+            <AnimatePresence initial={false}>
+              {topLevel.map((comment) => (
+                <div key={comment.id} className="group relative">
+                  <CommentItem
+                    comment={comment}
+                    depth={0}
+                    maxDepth={maxDepth}
+                    chapterSlug={chapterSlug}
+                    showReplyButton={showReplyButton}
+                    onReply={onSubmitReply}
+                    onUpvote={onUpvote}
+                    onDownvote={onDownvote}
+                  />
+                </div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* Load more button */}
+          {hasNextPage && (
+            <div className="flex justify-center pt-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onLoadMore}
+                disabled={isFetchingNextPage}
+                className="ct-load-more-btn group h-9 rounded-full px-6 text-xs font-semibold transition-all hover:shadow-sm active:scale-[0.97] disabled:opacity-50"
+              >
+                {isFetchingNextPage ? (
+                  <>
+                    <Loader2 size={14} className="mr-2 animate-spin" />
+                    Loading…
+                  </>
+                ) : (
+                  'Load more comments'
+                )}
+              </Button>
+            </div>
+          )}
+
+          {/* Skeleton when fetching next page */}
+          {isFetchingNextPage && <CommentTreeSkeleton className="flex flex-col space-y-2" />}
+        </>
       ) : (
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="ct-empty flex flex-col items-center gap-4 rounded-2xl py-14 text-center sm:py-16"
-        >
-          <div className="ct-empty-icon flex h-14 w-14 items-center justify-center rounded-2xl sm:h-16 sm:w-16">
-            <MessageSquare size={26} className="text-brand-pink-500/30" />
-          </div>
-          <div className="space-y-1">
-            <p className="font-libre-baskerville ct-heading text-base font-bold">
-              Quiet in the archives...
-            </p>
-            <p className="ct-meta-text mx-auto max-w-[240px] font-sans text-xs leading-relaxed">
-              Be the first to leave a mark on this chapter. Your thoughts help shape the story.
-            </p>
-          </div>
-        </motion.div>
+        !isLoading && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="ct-empty flex flex-col items-center gap-4 rounded-2xl py-14 text-center sm:py-16"
+          >
+            <div className="ct-empty-icon flex h-14 w-14 items-center justify-center rounded-2xl sm:h-16 sm:w-16">
+              <MessageSquare size={26} className="text-brand-pink-500/30" />
+            </div>
+            <div className="space-y-1">
+              <p className="font-libre-baskerville ct-heading text-base font-bold">
+                Quiet in the archives...
+              </p>
+              <p className="ct-meta-text mx-auto max-w-60 font-sans text-xs leading-relaxed">
+                Be the first to leave a mark on this chapter. Your thoughts help shape the story.
+              </p>
+            </div>
+          </motion.div>
+        )
       )}
     </section>
   );

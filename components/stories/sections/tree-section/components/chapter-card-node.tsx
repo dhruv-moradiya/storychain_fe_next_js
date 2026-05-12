@@ -7,7 +7,6 @@ import {
   BookOpen,
   Clock,
   Eye,
-  EyeIcon,
   Flag,
   GitBranch,
   Heart,
@@ -17,7 +16,6 @@ import {
 } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 import { IChapterNodeProps } from '../types/canvas.types';
@@ -58,7 +56,7 @@ export const ChapterCardNode = ({ id, data, selected }: IChapterNodeProps) => {
   return (
     <div
       className={cn(
-        'group bg-bg-cream relative w-[280px] rounded-xl transition-all duration-300',
+        'group bg-bg-cream relative w-70 rounded-xl transition-all duration-300',
         'border shadow-sm',
         selected
           ? 'border-brand-pink-500 shadow-brand-pink-500/10 shadow-md'
@@ -96,14 +94,14 @@ export const ChapterCardNode = ({ id, data, selected }: IChapterNodeProps) => {
             )}
           </div>
 
-          <Button
+          {/* <Button
             size="icon-xs"
             onClick={() => {
               router.replace(`/stories/${data.storySlug}/chapter/${data.slug}`);
             }}
           >
             <EyeIcon />
-          </Button>
+          </Button> */}
 
           {/* Status Badges + Quick-add button */}
           <div className="flex items-center gap-1.5">

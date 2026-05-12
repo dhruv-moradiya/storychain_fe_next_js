@@ -1,43 +1,52 @@
 'use client';
 
-import type { IComment } from '@/type/chapter/chapter-detail.type';
+import { useMemo } from 'react';
 
-import { CommentTree } from '@/components/common/comment-tree';
-import type { ICommentNode } from '@/components/common/comment-tree';
+import { IComment } from '@/type/chapter/chapter-response.type';
+
+import { useGetInfiniteComments } from '@/services/chapters/chapters.query';
+
+import CommentTree from '../common/comment-tree/comment-tree';
+import { ICommentNode } from '../common/comment-tree/comment-tree.types';
 
 interface ChapterCommentsSectionProps {
-  comments: IComment[];
   chapterSlug: string;
   totalCount?: number;
 }
 
-/** Map domain IComment → generic ICommentNode for the CommentTree */
+/** Map API IComment → generic ICommentNode for the CommentTree */
 function mapComment(c: IComment): ICommentNode {
   return {
     id: c._id,
     author: {
       id: c.userId,
-      displayName: c.user?.displayName ?? 'Unknown',
-      username: c.user?.username,
-      avatarUrl: c.user?.avatarUrl,
+      displayName: c.author?.username ?? 'Unknown',
+      username: c.author?.username,
+      avatarUrl: c.author?.avatarUrl,
     },
     content: c.content,
     votes: { upvotes: c.votes.upvotes, downvotes: c.votes.downvotes },
     createdAt: c.createdAt,
     isEdited: c.isEdited,
-    editedAt: c.editedAt,
     isDeleted: c.isDeleted,
     reportCount: c.reportCount,
+    replyCount: c.replyCount,
     replies: c.replies?.map(mapComment),
   };
 }
 
-export function ChapterCommentsSection({
-  comments,
-  chapterSlug: _chapterSlug,
-  totalCount,
-}: ChapterCommentsSectionProps) {
-  const nodes = comments.map(mapComment);
+export function ChapterCommentsSection({ chapterSlug, totalCount }: ChapterCommentsSectionProps) {
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
+    useGetInfiniteComments({
+      chapterSlug,
+      limit: 10,
+    });
+
+  // eslint-disable-next-line
+  const nodes = useMemo<ICommentNode[]>(() => {
+    if (!data?.pages) return [];
+    return data.pages.flatMap((page) => page.data.docs.map(mapComment));
+  }, [data?.pages]);
 
   return (
     <CommentTree
@@ -45,6 +54,11 @@ export function ChapterCommentsSection({
       maxDepth={4}
       totalCount={totalCount}
       showComposer
+      isLoading={isPending}
+      hasNextPage={hasNextPage}
+      isFetchingNextPage={isFetchingNextPage}
+      onLoadMore={fetchNextPage}
+      chapterSlug={chapterSlug}
       onSubmitComment={(content) => {
         // TODO: wire up to API with chapterSlug
         console.log('New comment:', content);

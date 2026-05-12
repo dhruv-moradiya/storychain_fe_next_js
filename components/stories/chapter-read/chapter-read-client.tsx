@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 
 import { IChapterDetailExtended } from '@/type';
-import { type IComment } from '@/type/chapter/chapter-detail.type';
 import { useQuery } from '@tanstack/react-query';
 import { nanoid } from 'nanoid';
 
@@ -24,14 +23,12 @@ interface ChapterReadClientProps {
   initialData: IChapterDetailExtended;
   storySlug: string;
   chapterSlug: string;
-  comments: IComment[];
 }
 
 export default function ChapterReadClient({
   initialData,
   storySlug,
   chapterSlug,
-  comments,
 }: ChapterReadClientProps) {
   const { data: chapter } = useQuery({
     queryKey: QueryKey.chapter.bySlug(chapterSlug),
@@ -121,12 +118,8 @@ export default function ChapterReadClient({
           onNavigate={navigateToChapter}
         />
 
-        <div className="mt-12 px-2 sm:px-4">
-          <ChapterCommentsSection
-            comments={comments}
-            chapterSlug={chapterSlug}
-            totalCount={chapter.stats.comments}
-          />
+        <div className="mt-12">
+          <ChapterCommentsSection chapterSlug={chapterSlug} totalCount={chapter.stats.comments} />
         </div>
       </main>
     </div>

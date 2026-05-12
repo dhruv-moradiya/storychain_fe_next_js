@@ -13,6 +13,12 @@ export const QueryKey = {
     bySlug: (chapterSlug: string) => ['chapter', 'slug', chapterSlug] as const,
     my: ['chapter', 'my'] as const,
     search: (storySlug: string) => ['chapter', 'search', storySlug] as const,
+
+    // Comments
+    comments: (chapterSlug: string, limit: number, _parentCommentId?: string) =>
+      ['chapter', 'comments', chapterSlug, 'limit', limit] as const,
+    replies: (chapterSlug: string, parentCommentId: string, limit: number) =>
+      ['chapter', 'comments', chapterSlug, 'replies', parentCommentId, 'limit', limit] as const,
   },
 
   story: {

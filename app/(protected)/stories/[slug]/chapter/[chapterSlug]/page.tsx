@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 
 import { buildChapterMeta } from '@/components/common';
 import { ChapterReadClient } from '@/components/stories/chapter-read';
-import { MOCK_COMMENTS } from '@/lib/data/mock-chapter-detail';
 import { chapterApi } from '@/services/chapters/chapters-api';
 
 interface IChapterPageProps {
@@ -42,14 +41,11 @@ export default async function ChapterPage({ params }: IChapterPageProps) {
 
   const chapterDetail = await chapterApi.getCachedChapterBySlug(chapterSlug);
 
-  const comments = MOCK_COMMENTS;
-
   return (
     <ChapterReadClient
       initialData={chapterDetail.data}
       storySlug={storySlug}
       chapterSlug={chapterSlug}
-      comments={comments}
     />
   );
 }

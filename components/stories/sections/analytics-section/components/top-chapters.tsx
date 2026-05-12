@@ -52,14 +52,7 @@ export function TopChapters({ chapters, slug }: TopChaptersProps) {
               {/* Rank */}
               <div
                 className={cn(
-                  'flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-xs font-bold shadow-sm',
-                  index === 0
-                    ? 'border border-amber-200 bg-amber-100 text-amber-700'
-                    : index === 1
-                      ? 'border border-slate-200 bg-slate-100 text-slate-600'
-                      : index === 2
-                        ? 'border border-orange-200 bg-orange-100 text-orange-700'
-                        : 'border-border/50 text-text-secondary-65 border bg-white'
+                  'flex h-6 w-6 shrink-0 items-center justify-center text-xs font-bold shadow-sm'
                 )}
               >
                 {index + 1}

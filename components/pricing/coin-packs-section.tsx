@@ -2,7 +2,7 @@
 
 import type { CoinPack } from '@/type/coins';
 import { motion } from 'framer-motion';
-import { Check, Coins, ShoppingCart, Sparkles, TrendingUp } from 'lucide-react';
+import { Coins, ShoppingCart, Sparkles, TrendingUp } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

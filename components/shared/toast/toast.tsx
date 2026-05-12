@@ -51,59 +51,69 @@ function ToastContent({
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: -20, scale: 0.9 }}
+      initial={{ opacity: 0, y: -12, scale: 0.95 }}
       animate={{
         opacity: t.visible ? 1 : 0,
-        y: t.visible ? 0 : -20,
-        scale: t.visible ? 1 : 0.9,
+        y: t.visible ? 0 : -12,
+        scale: t.visible ? 1 : 0.95,
       }}
       exit={{
         opacity: 0,
-        y: -20,
-        scale: 0.9,
+        y: -12,
+        scale: 0.95,
       }}
       transition={{
         type: 'spring',
-        stiffness: 350,
-        damping: 30,
-        opacity: { duration: 0.2 },
+        stiffness: 400,
+        damping: 28,
+        opacity: { duration: 0.15 },
       }}
       className={cn(
-        'pointer-events-auto flex w-full max-w-[calc(100vw-32px)] items-center gap-3 rounded-xl border px-4 py-3 shadow-xl backdrop-blur-md sm:max-w-[350px]',
+        // Base layout — compact on mobile, comfortable on desktop
+        'pointer-events-auto relative flex w-full items-start gap-2.5 overflow-hidden rounded-xl border shadow-lg backdrop-blur-xl',
+        // Mobile: narrower, tighter padding
+        'max-w-[calc(100vw-24px)] px-3 py-2.5',
+        // Desktop: wider with more padding
+        'sm:max-w-[380px] sm:gap-3 sm:px-4 sm:py-3',
         style.bg,
         style.border
       )}
     >
+      {/* Left accent bar */}
+      <div
+        className={cn('absolute top-0 left-0 h-full w-[3px] rounded-l-xl', style.iconBg)}
+        style={{ backgroundColor: `var(--toast-${variant}-icon)` }}
+      />
+
       {/* Icon */}
       <div
         className={cn(
-          'mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg',
+          'mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg sm:h-7 sm:w-7',
           style.iconBg
         )}
       >
         {customIcon ? (
-          <span className={cn(style.icon)}>{customIcon}</span>
+          <span className={cn('text-xs sm:text-sm', style.icon)}>{customIcon}</span>
         ) : (
-          <IconComponent size={16} className={cn(isLoading && 'animate-spin', style.icon)} />
+          <IconComponent
+            size={14}
+            className={cn(isLoading && 'animate-spin', 'sm:h-4 sm:w-4', style.icon)}
+          />
         )}
       </div>
+
       {/* Content */}
-      <div className="flex min-w-0 flex-1 flex-col justify-center">
+      <div className="flex min-w-0 flex-1 flex-col justify-center gap-0.5">
         <p
           className={cn(
-            'font-libre-baskerville text-sm leading-tight font-bold tracking-tight',
+            'text-[13px] leading-snug font-semibold tracking-tight sm:text-sm',
             style.text
           )}
         >
           {title}
         </p>
         {description && (
-          <p
-            className={cn(
-              'font-ibm-plex-mono mt-0.5 text-[11px] leading-relaxed opacity-85',
-              style.text
-            )}
-          >
+          <p className={cn('text-[11px] leading-relaxed opacity-75 sm:text-xs', style.text)}>
             {description}
           </p>
         )}
@@ -118,25 +128,26 @@ function ToastContent({
             hotToast.dismiss(t.id);
           }}
           className={cn(
-            'font-ibm-plex-mono h-7 shrink-0 px-2.5 text-[11px] font-medium transition-transform hover:scale-105 active:scale-95',
+            'h-6 shrink-0 rounded-md px-2 text-[10px] font-semibold transition-all hover:scale-105 active:scale-95 sm:h-7 sm:px-2.5 sm:text-[11px]',
             style.iconBg,
             style.icon,
-            'hover:bg-opacity-80'
+            'hover:opacity-80'
           )}
         >
           {action.label}
         </Button>
       )}
+
       {/* Dismiss button */}
       {dismissible && !isLoading && (
         <button
           onClick={() => hotToast.dismiss(t.id)}
           className={cn(
-            '-mt-2 -mr-2 ml-2 p-1.5 opacity-40 transition-opacity hover:opacity-100',
+            'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md opacity-40 transition-all hover:bg-black/5 hover:opacity-100 sm:h-6 sm:w-6 dark:hover:bg-white/10',
             style.text
           )}
         >
-          <X size={14} />
+          <X size={12} className="sm:h-3.5 sm:w-3.5" />
         </button>
       )}
     </motion.div>

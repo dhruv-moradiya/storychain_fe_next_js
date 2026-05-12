@@ -3,12 +3,14 @@ import { cache } from 'react';
 import {
   IChapterRecordReadingSessionRequest,
   IChapterStartReadingSessionRequest,
+  IGetCommentsRequest,
 } from '@/type/chapter/chapter-request.type';
 import {
   IChapterDetailResponse,
   IChapterRecordReadingSessionResponse,
   IChapterSearchResponse,
   IChapterStartReadingSessionResponse,
+  IGetCommentsResponse,
   IUserChaptersResponse,
 } from '@/type/chapter/chapter-response.type';
 import { AxiosResponse } from 'axios';
@@ -64,6 +66,21 @@ const chapterApi = {
         `/reading-history/record-session`,
         request
       );
+    return response.data;
+  },
+
+  getPaginatedComments: async (input: IGetCommentsRequest) => {
+    const params: Record<string, string | number> = {
+      page: input.page ?? 1,
+      limit: input.limit ?? 10,
+    };
+    if (input.parentCommentId) {
+      params.parentCommentId = input.parentCommentId;
+    }
+    const response: AxiosResponse<IGetCommentsResponse> = await apiClient.get<IGetCommentsResponse>(
+      `/comments/chapter/${input.chapterSlug}`,
+      { params }
+    );
     return response.data;
   },
 };

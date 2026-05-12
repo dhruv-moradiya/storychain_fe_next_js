@@ -25,10 +25,10 @@ export function AddNodePlaceholderNode({ data, selected }: AddNodePlaceholderNod
     const params = new URLSearchParams({
       mode: 'new',
       parentChapterSlug: data.parentChapterSlug,
-      storySlug: slug,
+      // storySlug: slug,
     });
 
-    router.push(`/builder?${params.toString()}`);
+    router.push(`/stories/${slug}/builder?${params.toString()}`);
   };
 
   return (

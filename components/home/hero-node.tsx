@@ -16,7 +16,7 @@ export const HeroNode = ({ data, selected }: { data: IHeroNodeData; selected?: b
   return (
     <div
       className={cn(
-        'group bg-bg-cream relative w-[200px] cursor-pointer rounded-xl transition-all duration-300',
+        'group bg-bg-cream relative w-50 cursor-pointer rounded-xl transition-all duration-300',
         'border shadow-sm',
         selected
           ? 'border-brand-pink-500 shadow-brand-pink-500/20 -translate-y-1 shadow-lg'
@@ -55,7 +55,7 @@ export const HeroNode = ({ data, selected }: { data: IHeroNodeData; selected?: b
         </p>
 
         {/* Subtle bottom accent */}
-        <div className="from-brand-pink-500/20 mt-3 h-[2px] rounded-full bg-linear-to-r to-transparent" />
+        <div className="from-brand-pink-500/20 mt-3 h-0.5 rounded-full bg-linear-to-r to-transparent" />
       </div>
     </div>
   );

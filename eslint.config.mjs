@@ -1,7 +1,7 @@
-import { defineConfig, globalIgnores } from 'eslint/config';
+import pluginQuery from '@tanstack/eslint-plugin-query';
 import nextVitals from 'eslint-config-next/core-web-vitals';
 import nextTs from 'eslint-config-next/typescript';
-import pluginQuery from '@tanstack/eslint-plugin-query';
+import { defineConfig, globalIgnores } from 'eslint/config';
 
 const eslintConfig = defineConfig([
   ...nextVitals,
@@ -30,6 +30,7 @@ const eslintConfig = defineConfig([
       'react/jsx-sort-props': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',
       '@react-hooks/incompatible-library': 'off',
+      '@react-hooks/preserve-manual-memoization': 'off',
     },
   },
 ]);

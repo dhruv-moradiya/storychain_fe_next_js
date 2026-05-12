@@ -11,4 +11,33 @@ interface IChapterRecordReadingSessionRequest {
   duration: number; // Duration in seconds
 }
 
-export type { IChapterStartReadingSessionRequest, IChapterRecordReadingSessionRequest };
+interface ICommentCreateRequest {
+  chapterSlug: string;
+  content: string;
+  parentCommentId?: string | undefined;
+}
+
+interface ICommentUpdateRequest {
+  commentId: string;
+  content: string;
+}
+
+interface ICommentDeleteRequest {
+  commentId: string;
+}
+
+interface IGetCommentsRequest {
+  chapterSlug: string;
+  limit?: number;
+  page?: number;
+  parentCommentId?: string;
+}
+
+export type {
+  IChapterStartReadingSessionRequest,
+  IChapterRecordReadingSessionRequest,
+  IGetCommentsRequest,
+  ICommentCreateRequest,
+  ICommentUpdateRequest,
+  ICommentDeleteRequest,
+};

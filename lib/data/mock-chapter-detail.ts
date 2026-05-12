@@ -1,4 +1,8 @@
-import { IChapterDetail, IChapterVersion, IComment } from '@/type/chapter/chapter-detail.type';
+import {
+  IChapterDetail,
+  IChapterVersion,
+  ICommentDetail,
+} from '@/type/chapter/chapter-detail.type';
 
 export const MOCK_CHAPTER_DETAIL: IChapterDetail = {
   _id: 'ch_001',
@@ -121,7 +125,7 @@ export const MOCK_CHAPTER_VERSIONS: IChapterVersion[] = [
   },
 ];
 
-export const MOCK_COMMENTS: IComment[] = [
+export const MOCK_COMMENTS: ICommentDetail[] = [
   {
     _id: 'cmt_001',
     chapterSlug: 'the-morning-they-left',

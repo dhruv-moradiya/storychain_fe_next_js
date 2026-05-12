@@ -32,10 +32,10 @@ export function ToastProvider({
           duration: 4000,
         }}
         containerStyle={{
-          top: 16,
-          right: 16,
-          bottom: 16,
-          left: 16,
+          top: 12,
+          right: 12,
+          bottom: 12,
+          left: 12,
         }}
         gutter={gap}
         containerClassName="toast-container !z-[9999]"

@@ -1,8 +1,8 @@
 import type { IStoryOverview } from '@/type/story';
 import { format, formatDistanceToNow } from 'date-fns';
-import { motion } from 'framer-motion';
 import { BookOpen, Calendar, Eye, GitBranch, Heart, RefreshCw, Star, Users } from 'lucide-react';
 
+import { StaggerChildren } from '@/lib/animations';
 import { cn } from '@/lib/utils';
 
 interface StoryStatsProps {
@@ -19,12 +19,7 @@ export function StoryStats({ story }: StoryStatsProps) {
   return (
     <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
       {/* About Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="border-soft space-y-3 rounded-xl border p-4 sm:space-y-4 sm:p-5"
-      >
+      <div className="border-soft space-y-3 rounded-xl border p-4 sm:space-y-4 sm:p-5">
         <h2 className="text-text-primary flex items-center gap-2 text-sm font-semibold sm:text-base">
           <BookOpen size={16} className="text-brand-pink-500 sm:h-[18px] sm:w-[18px]" />
           About This Story
@@ -49,21 +44,17 @@ export function StoryStats({ story }: StoryStatsProps) {
             <span>Status: {status}</span>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Statistics Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25 }}
-        className="border-soft space-y-3 rounded-xl border p-4 sm:space-y-4 sm:p-5"
-      >
+      <div className="border-soft space-y-3 rounded-xl border p-4 sm:space-y-4 sm:p-5">
         <h2 className="text-text-primary flex items-center gap-2 text-sm font-semibold sm:text-base">
-          <Star size={16} className="text-brand-orange sm:h-[18px] sm:w-[18px]" />
+          <Star size={16} className="text-brand-orange sm:h-4.5 sm:w-4.5" />
           Statistics
         </h2>
 
-        <div className="grid grid-cols-2 gap-2 sm:gap-4">
+        {/* StatCards — staggered entrance */}
+        <StaggerChildren className="grid grid-cols-2 gap-2 sm:gap-4" stagger={0.07} duration={0.35}>
           <StatCard
             icon={<BookOpen size={15} />}
             label="Chapters"
@@ -100,8 +91,8 @@ export function StoryStats({ story }: StoryStatsProps) {
             value={stats.uniqueContributors}
             color="pink"
           />
-        </div>
-      </motion.div>
+        </StaggerChildren>
+      </div>
     </div>
   );
 }

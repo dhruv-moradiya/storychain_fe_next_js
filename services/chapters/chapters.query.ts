@@ -1,9 +1,17 @@
+import { IGetCommentsRequest } from '@/type/chapter/chapter-request.type';
 import {
   IChapterDetailResponse,
   IChapterSearchResponse,
+  IGetCommentsResponse,
   IUserChaptersResponse,
 } from '@/type/chapter/chapter-response.type';
-import { UseQueryOptions, useQuery } from '@tanstack/react-query';
+import {
+  InfiniteData,
+  UseInfiniteQueryOptions,
+  UseQueryOptions,
+  useInfiniteQuery,
+  useQuery,
+} from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 import { QueryKey } from '@/lib/query-keys';
@@ -83,6 +91,74 @@ const useGetChapterBySlug = (
   });
 };
 
+const useGetInfiniteComments = (
+  input: Omit<IGetCommentsRequest, 'page'>,
+  options?: Omit<
+    UseInfiniteQueryOptions<
+      IGetCommentsResponse,
+      AxiosError,
+      InfiniteData<IGetCommentsResponse>,
+      ReturnType<typeof QueryKey.chapter.comments>,
+      number
+    >,
+    'queryKey' | 'queryFn' | 'initialPageParam' | 'getNextPageParam'
+  >
+) => {
+  const { chapterSlug, limit = 10, parentCommentId } = input;
+  return useInfiniteQuery({
+    queryKey: QueryKey.chapter.comments(chapterSlug, limit, parentCommentId),
+    queryFn: ({ pageParam = 1 }) =>
+      chapterApi.getPaginatedComments({
+        chapterSlug,
+        page: pageParam,
+        limit,
+        parentCommentId,
+      }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      return lastPage.data.hasNextPage ? (lastPage.data.nextPage ?? undefined) : undefined;
+    },
+    enabled: !!chapterSlug,
+    ...options,
+  });
+};
+
+/**
+ * Fetches paginated child replies for a given parent comment.
+ * Uses a separate query key so reply pages are cached independently.
+ */
+const useGetInfiniteReplies = (
+  input: Omit<IGetCommentsRequest, 'page'> & { parentCommentId: string },
+  options?: Omit<
+    UseInfiniteQueryOptions<
+      IGetCommentsResponse,
+      AxiosError,
+      InfiniteData<IGetCommentsResponse>,
+      ReturnType<typeof QueryKey.chapter.replies>,
+      number
+    >,
+    'queryKey' | 'queryFn' | 'initialPageParam' | 'getNextPageParam'
+  >
+) => {
+  const { chapterSlug, limit = 10, parentCommentId } = input;
+  return useInfiniteQuery({
+    queryKey: QueryKey.chapter.replies(chapterSlug, parentCommentId, limit),
+    queryFn: ({ pageParam = 1 }) =>
+      chapterApi.getPaginatedComments({
+        chapterSlug,
+        page: pageParam,
+        limit,
+        parentCommentId,
+      }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      return lastPage.data.hasNextPage ? (lastPage.data.nextPage ?? undefined) : undefined;
+    },
+    enabled: !!chapterSlug && !!parentCommentId,
+    ...options,
+  });
+};
+
 export {
   getUserChaptersQueryFn,
   useGetUserChapters,
@@ -90,4 +166,6 @@ export {
   useSearchChapters,
   getChapterBySlugQueryFn,
   useGetChapterBySlug,
+  useGetInfiniteComments,
+  useGetInfiniteReplies,
 };

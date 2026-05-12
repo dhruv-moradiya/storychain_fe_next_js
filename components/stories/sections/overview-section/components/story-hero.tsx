@@ -11,6 +11,7 @@ import {
   tagsBadges,
 } from '@/components/common/badge';
 import { Button } from '@/components/ui/button';
+import { StaggerChildren } from '@/lib/animations';
 
 interface StoryHeroProps {
   story: IStoryOverview;
@@ -19,15 +20,10 @@ interface StoryHeroProps {
 
 export function StoryHero({ story, onBack }: StoryHeroProps) {
   const { title, slug, status, settings, cardImage, stats } = story;
-  console.log('story', story);
   return (
     <div className="space-y-6">
       {/* Top Actions */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between gap-2"
-      >
+      <div className="flex items-center justify-between gap-2">
         <Button
           variant="ghost"
           size="sm"
@@ -57,7 +53,7 @@ export function StoryHero({ story, onBack }: StoryHeroProps) {
             <Share2 size={16} />
           </motion.button>
         </div>
-      </motion.div>
+      </div>
 
       {/* Header */}
       <div className="flex items-center gap-4">
@@ -82,17 +78,24 @@ export function StoryHero({ story, onBack }: StoryHeroProps) {
 
           <h1 className="text-text-primary text-lg font-bold sm:text-2xl md:text-3xl">{title}</h1>
 
-          <div className="flex flex-wrap gap-1.5">
+          {/* Status & Content Rating — staggered */}
+          <StaggerChildren className="flex flex-wrap gap-1.5" stagger={0.1} duration={0.35}>
             {storyStatusBadge(status)}
             {contentRatingBadge(settings.contentRating)}
-          </div>
+          </StaggerChildren>
 
+          {/* Genres — staggered */}
           {settings.genres.length > 0 && (
-            <div className="flex flex-wrap gap-1.5">{genresBadges(settings.genres)}</div>
+            <StaggerChildren className="flex flex-wrap gap-1.5" stagger={0.06} duration={0.3}>
+              {genresBadges(settings.genres)}
+            </StaggerChildren>
           )}
 
+          {/* Tags — staggered */}
           {story.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5">{tagsBadges(story.tags)}</div>
+            <StaggerChildren className="flex flex-wrap gap-1.5" stagger={0.05} duration={0.3}>
+              {tagsBadges(story.tags)}
+            </StaggerChildren>
           )}
         </div>
       </div>

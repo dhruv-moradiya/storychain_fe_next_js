@@ -120,7 +120,7 @@ function getUsageColumns(currency: Currency): ColumnDef<CoinUsageFeature>[] {
       id: 'description',
       header: 'Description',
       cell: ({ row }) => (
-        <p className="text-muted-foreground line-clamp-2 max-w-[280px] text-xs leading-relaxed">
+        <p className="text-muted-foreground line-clamp-2 max-w-70 text-xs leading-relaxed">
           {row.original.description}
         </p>
       ),
