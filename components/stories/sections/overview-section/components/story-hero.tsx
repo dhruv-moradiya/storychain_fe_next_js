@@ -35,20 +35,23 @@ export function StoryHero({ story, onBack }: StoryHeroProps) {
         </Button>
 
         <div className="flex items-center gap-1.5 sm:gap-3">
+          {/* Notification Button */}
           <motion.button className="border-border/50 text-text-secondary-65 hover:border-brand-pink-500/50 hover:text-brand-pink-500 hidden h-9 w-9 items-center justify-center rounded-lg border transition sm:flex">
             <Bell size={18} />
           </motion.button>
 
+          {/* Like Button */}
           <motion.button className="border-border/50 text-text-secondary-65 hover:border-brand-pink-500/50 hover:text-brand-pink-500 flex h-8 items-center gap-1 rounded-lg border px-2 transition sm:h-9 sm:px-3">
             <Heart size={14} />
             <span className="text-xs sm:text-sm">{stats?.totalVotes?.toLocaleString() || 0}</span>
           </motion.button>
-          {/* <LikeButton /> */}
 
+          {/* Bookmark Button */}
           <motion.button className="border-border/50 text-text-secondary-65 hover:border-brand-pink-500/50 hover:text-brand-pink-500 flex h-8 w-8 items-center justify-center rounded-lg border transition sm:h-9 sm:w-9">
             <Bookmark size={16} />
           </motion.button>
 
+          {/* Share Button */}
           <motion.button className="border-border/50 text-text-secondary-65 hover:border-brand-pink-500/50 hover:text-brand-pink-500 flex h-8 w-8 items-center justify-center rounded-lg border transition sm:h-9 sm:w-9">
             <Share2 size={16} />
           </motion.button>
@@ -74,8 +77,10 @@ export function StoryHero({ story, onBack }: StoryHeroProps) {
 
         {/* Content */}
         <div className="flex-1 space-y-3">
+          {/* Slug */}
           <p className="text-text-secondary-65 font-ibm-plex-mono text-xs">{slug}</p>
 
+          {/* Title */}
           <h1 className="text-text-primary text-lg font-bold sm:text-2xl md:text-3xl">{title}</h1>
 
           {/* Status & Content Rating — staggered */}
