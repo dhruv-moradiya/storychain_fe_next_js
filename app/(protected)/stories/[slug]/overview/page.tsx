@@ -4,7 +4,7 @@ import { cache } from 'react';
 import type { IStoryOverview } from '@/type/story';
 
 import { buildStoryMeta } from '@/components/common';
-import OverviewSection from '@/components/stories/sections/overview-section';
+import { Overview } from '@/components/story-overview/overview';
 import { getStoryOverviewQueryFn } from '@/services/stories/stories.query';
 
 // React.cache deduplicates this fetch so generateMetadata and the page
@@ -36,12 +36,12 @@ export async function generateMetadata({
   });
 }
 
-export default async function OverviewPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function OverviewPage({}: { params: Promise<{ slug: string }> }) {
+  // const { slug } = await params;
   // Prefetch on the server so the client component gets initialData
   // and avoids a loading flash. React.cache ensures this reuses the
   // same fetch result from generateMetadata above.
-  const story = await getStoryOverview(slug);
+  // const story = await getStoryOverview(slug);
 
-  return <OverviewSection initialData={story ?? undefined} />;
+  return <Overview />;
 }

@@ -39,12 +39,15 @@ export function CollaboratorsPreview({
       className="space-y-3 sm:space-y-4"
     >
       <h2 className="text-text-primary flex items-center gap-2 text-sm font-semibold sm:text-base">
-        <Users size={16} className="text-brand-pink-500 sm:h-[18px] sm:w-[18px]" />
+        <Users size={16} className="text-brand-pink-500 sm:h-4.5 sm:w-4.5" />
         Creators & Collaborators
       </h2>
 
       <AnimatePresence>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div
+          className="grid grid-cols-2 gap-3"
+          style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 180px), 1fr))' }}
+        >
           {/* Owner */}
           {owner && (
             <motion.div
@@ -62,7 +65,7 @@ export function CollaboratorsPreview({
                   }
                   alt={owner.username}
                   fill
-                  className="rounded-full border-[2px] border-yellow-500/70 object-cover"
+                  className="rounded-full border-2 border-yellow-500/70 object-cover"
                 />
                 <div className="absolute -right-1 -bottom-1 z-10 flex h-4 w-4 items-center justify-center rounded-full bg-yellow-500 shadow-sm">
                   <Crown size={10} className="text-white" />
@@ -70,13 +73,13 @@ export function CollaboratorsPreview({
               </div>
 
               <span className="text-text-primary truncate text-sm font-medium">
-                @{owner.username}
+                {owner.username}
               </span>
 
               {createBadge({
-                label: ROLE_DISPLAY[owner.role]?.label ?? 'Owner',
-                icon: ROLE_DISPLAY[owner.role]?.icon ?? Crown,
-                color: ROLE_DISPLAY[owner.role]?.color ?? 'orange',
+                label: ROLE_DISPLAY[owner.role].label ?? 'Owner',
+                icon: ROLE_DISPLAY[owner.role].icon ?? Crown,
+                color: ROLE_DISPLAY[owner.role].color ?? 'orange',
                 size: 'xs',
                 shape: 'pill',
                 style: 'soft',
@@ -110,7 +113,7 @@ export function CollaboratorsPreview({
                 </div>
 
                 <span className="text-text-primary truncate text-xs font-medium sm:text-sm">
-                  @{collab.username}
+                  {collab.username}
                 </span>
 
                 {createBadge({
