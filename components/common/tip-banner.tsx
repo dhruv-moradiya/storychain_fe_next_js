@@ -18,7 +18,7 @@ export const TipBanner = ({ title, className, icon }: ITipBannerProps) => {
     >
       <div className="text-text-secondary-65 mt-0.5 shrink-0">{icon || <Bubbles size={16} />}</div>
 
-      <p className="text-text-secondary-65 text-sm leading-6">{title}</p>
+      <p className="text-text-secondary-65 text-xs leading-6">{title}</p>
     </div>
   );
 };

@@ -8,11 +8,13 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 import { ExploreToolbar } from './explore-toolbar';
-import { ImageCard } from './image-card';
+import { IImageItem, ImageCard } from './image-card';
+import { ImageDetailDialog } from './image-detail-dialog';
 
 export const StoryImages = () => {
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [filter, setFilter] = useState('all');
+  const [selectedImage, setSelectedImage] = useState<IImageItem | null>(null);
 
   const filteredItems =
     filter === 'all' ? galleryItems : galleryItems.filter((item) => item.type === filter);
@@ -50,7 +52,9 @@ export const StoryImages = () => {
         )}
       >
         {filteredItems.map((item) => (
-          <ImageCard key={item.id} item={item} view={view} />
+          <div key={item.id} onClick={() => setSelectedImage(item)} className="cursor-pointer">
+            <ImageCard item={item} view={view} />
+          </div>
         ))}
         {filteredItems.length === 0 && (
           <div className="text-text-secondary-65 col-span-full py-8 text-center text-sm">
@@ -63,6 +67,12 @@ export const StoryImages = () => {
         View All Images (32)
         <ChevronDown size={14} />
       </Button>
+
+      <ImageDetailDialog
+        item={selectedImage}
+        open={!!selectedImage}
+        onOpenChange={(open) => !open && setSelectedImage(null)}
+      />
     </div>
   );
 };

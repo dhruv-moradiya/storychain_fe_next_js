@@ -10,12 +10,13 @@ interface IImageCardProps {
   view?: 'grid' | 'list';
 }
 
-interface IImageItem {
+export interface IImageItem {
   id: number;
   title: string;
   image: string;
   chapter: string;
   createdAt: string;
+  type?: string;
 }
 
 export const ImageCard = ({ item, view = 'grid' }: IImageCardProps) => {

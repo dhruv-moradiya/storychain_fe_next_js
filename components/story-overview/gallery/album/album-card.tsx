@@ -4,16 +4,19 @@ import { Ellipsis } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-interface AlbumCardProps {
+export interface IAlbumItem {
   id: number;
   image: string;
   title: string;
   imagesCount: number;
 }
 
-export const AlbumCard = ({ item }: { item: AlbumCardProps }) => {
+export const AlbumCard = ({ item, onClick }: { item: IAlbumItem; onClick?: () => void }) => {
   return (
-    <div className="border-soft bg-background w-[250px] shrink-0 snap-center overflow-hidden rounded-2xl border p-2 pb-0 sm:w-[280px]">
+    <div
+      onClick={onClick}
+      className="border-soft bg-background hover:border-brand-pink-500/40 w-[250px] shrink-0 cursor-pointer snap-center overflow-hidden rounded-2xl border p-2 pb-0 transition-colors sm:w-[280px]"
+    >
       {/* Image */}
       <div className="relative aspect-2/1 w-full overflow-hidden rounded-xl">
         <Image

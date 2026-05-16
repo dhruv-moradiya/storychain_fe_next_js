@@ -4,9 +4,9 @@ import { ChevronLeft, ChevronRight, ImageIcon, Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-import { AlbumCard } from './album-card';
+import { AlbumCard, IAlbumItem } from './album-card';
 
-export const Albums = () => {
+export const Albums = ({ onAlbumSelect }: { onAlbumSelect?: (album: IAlbumItem) => void }) => {
   const albumsScrollRef = useRef<HTMLDivElement>(null);
 
   const scrollAlbums = (direction: 'left' | 'right') => {
@@ -44,7 +44,7 @@ export const Albums = () => {
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {albumItems.map((item) => (
-            <AlbumCard key={item.id} item={item} />
+            <AlbumCard key={item.id} item={item} onClick={() => onAlbumSelect?.(item)} />
           ))}
         </div>
 
