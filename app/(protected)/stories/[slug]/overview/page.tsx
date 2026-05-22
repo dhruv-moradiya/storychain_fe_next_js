@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
-import { cache } from 'react';
+import { Suspense, cache } from 'react';
 
 import type { IStoryOverview } from '@/type/story';
 
 import { buildStoryMeta } from '@/components/common';
 import { Overview } from '@/components/story-overview/overview';
+import OverviewSectionLoading from '@/components/story-overview/overview/overview-section-loading';
 import { getStoryOverviewQueryFn } from '@/services/stories/stories.query';
 
 // React.cache deduplicates this fetch so generateMetadata and the page
@@ -43,5 +44,9 @@ export default async function OverviewPage({}: { params: Promise<{ slug: string 
   // same fetch result from generateMetadata above.
   // const story = await getStoryOverview(slug);
 
-  return <Overview />;
+  return (
+    <Suspense fallback={<OverviewSectionLoading />}>
+      <Overview />
+    </Suspense>
+  );
 }

@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { ArrowLeft, Edit2, Ellipsis, LayoutGrid, Plus, Share2 } from 'lucide-react';
+import { ArrowLeft, Edit2, Ellipsis, Plus, Share2 } from 'lucide-react';
 
 import createBadge from '@/components/common/badge';
 import { Button } from '@/components/ui/button';

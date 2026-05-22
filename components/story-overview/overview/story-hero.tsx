@@ -5,10 +5,10 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Bell, BookOpen, Bookmark, Heart, Share2 } from 'lucide-react';
 
 import {
+  BadgeGroup,
   contentRatingBadge,
   genresBadges,
   storyStatusBadge,
-  tagsBadges,
 } from '@/components/common/badge';
 import { Button } from '@/components/ui/button';
 import { StaggerChildren } from '@/lib/animations';
@@ -99,7 +99,17 @@ export function StoryHero({ story, onBack }: StoryHeroProps) {
           {/* Tags — staggered */}
           {story.tags.length > 0 && (
             <StaggerChildren className="flex flex-wrap gap-1.5" stagger={0.05} duration={0.3}>
-              {tagsBadges(story.tags)}
+              {/* {tagsBadges(story.tags)} */}
+              <BadgeGroup
+                badges={story.tags.map((tag) => ({
+                  label: tag,
+                  color: 'pink',
+                  shape: 'pill',
+                  size: 'sm',
+                }))}
+                gap="xs"
+                max={4}
+              />
             </StaggerChildren>
           )}
         </div>

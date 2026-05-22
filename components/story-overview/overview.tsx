@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { IStoryOverview, IStoryOverviewResponse } from '@/type';
 import { BookOpen, GalleryHorizontal, Globe2, Users } from 'lucide-react';
@@ -30,7 +30,18 @@ interface OverviewProps {
 export function Overview({ initialData }: OverviewProps) {
   const router = useRouter();
   const params = useParams();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const slug = params?.slug as string;
+
+  const activeTab = searchParams.get('tab') || 'overview';
+
+  const handleTabChange = (value: string) => {
+    const nextParams = new URLSearchParams(searchParams.toString());
+    nextParams.set('tab', value);
+    nextParams.delete('album'); // Reset active album when changing tabs
+    router.push(`${pathname}?${nextParams.toString()}`, { scroll: false });
+  };
 
   const tanstackInitialData: IStoryOverviewResponse | undefined = initialData
     ? { data: initialData, success: true, message: '', code: '' }
@@ -52,7 +63,7 @@ export function Overview({ initialData }: OverviewProps) {
         <StoryHero story={story} onBack={() => router.back()} />
       </FadeInView>
 
-      <Tabs defaultValue="overview" className="space-y-5">
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-5">
         <TabsList
           variant="line"
           className="border-soft bg-background/60 h-auto! w-full justify-start rounded-[10px]! border px-3 py-2!"
@@ -80,7 +91,7 @@ export function Overview({ initialData }: OverviewProps) {
         </TabsContent>
 
         <TabsContent value="characters">
-          <CharacterTab />
+          <CharacterTab slug={slug} />
         </TabsContent>
 
         <TabsContent value="world">

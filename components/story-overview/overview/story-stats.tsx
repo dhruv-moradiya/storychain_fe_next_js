@@ -5,6 +5,8 @@ import { BookOpen, Calendar, Eye, GitBranch, Heart, RefreshCw, Star, Users } fro
 import { StaggerChildren } from '@/lib/animations';
 import { cn } from '@/lib/utils';
 
+import ReadMore from './read-more';
+
 interface StoryStatsProps {
   story: IStoryOverview;
 }
@@ -25,10 +27,7 @@ export function StoryStats({ story }: StoryStatsProps) {
           About This Story
         </h2>
 
-        <div
-          className="text-text-secondary text-justify font-serif text-[15px] leading-[1.75] tracking-[0.01em] sm:text-base sm:leading-[1.8]"
-          dangerouslySetInnerHTML={{ __html: description }}
-        />
+        <ReadMore html={description} maxLines={6} />
 
         <div className="text-text-secondary-65 space-y-1.5 pt-2 text-xs sm:space-y-2">
           <div className="flex items-center gap-2">

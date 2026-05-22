@@ -77,7 +77,7 @@ export const Albums = ({ onAlbumSelect }: { onAlbumSelect?: (album: IAlbumItem) 
   );
 };
 
-const albumItems = [
+export const albumItems = [
   {
     id: 1,
     title: 'Ports & Cities',

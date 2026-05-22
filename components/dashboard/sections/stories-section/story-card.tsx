@@ -34,10 +34,10 @@ export const StoryCard = memo(({ story }: StoryCardProps) => {
   );
 
   return (
-    <Link href={`/stories/${story.slug}/overview`} className="block" prefetch={false}>
-      <div className="group/story-card bg-card relative cursor-pointer overflow-hidden rounded-[14px] p-1.5 transition-all duration-300">
+    <Link href={`/stories/${story.slug}/overview`} className="block h-full" prefetch={false}>
+      <div className="group/story-card bg-card relative flex h-full flex-col overflow-hidden rounded-[14px] p-1.5 transition-all duration-300">
         {/* ================= CARD CONTENT ================= */}
-        <div className="relative flex flex-1 flex-col justify-between gap-2 rounded-[12px] border p-3 shadow">
+        <div className="relative flex flex-1 flex-col rounded-[12px] border p-3 shadow">
           {/* TOP ACCENT */}
           <div className="bg-brand-orange absolute inset-x-16 top-0 h-[2px] rounded-b-full" />
 
@@ -46,39 +46,51 @@ export const StoryCard = memo(({ story }: StoryCardProps) => {
             <div className="flex size-8 shrink-0 items-center justify-center rounded-full border">
               <User size={18} className="text-muted-foreground" />
             </div>
+
             <Tooltip>
               <TooltipTrigger asChild>
                 <div className="text-muted-foreground font-ibm-plex-mono truncate text-xs">
                   {story.slug}
                 </div>
               </TooltipTrigger>
+
               <TooltipContent side="top">{story.slug}</TooltipContent>
             </Tooltip>
           </div>
 
           {/* STATUS + TITLE */}
-          <div className="mb-3 flex flex-col gap-2">
-            <div className="self-start">
-              {storyStatusBadge(story.status, { size: 'xs', className: 'uppercase' })}
+          <div className="mb-4">
+            <div className="mb-2 self-start">
+              {storyStatusBadge(story.status, {
+                size: 'xs',
+                className: 'uppercase',
+              })}
             </div>
-            <h3 className="line-clamp-2 min-h-10 text-[15px] leading-tight font-medium">
+
+            {/* FIXED TITLE HEIGHT */}
+            <h3 className="line-clamp-2 min-h-[48px] text-[15px] leading-tight font-medium">
               {story.title}
             </h3>
           </div>
 
-          {/* RATING + TAGS */}
+          {/* PUSH CONTENT DOWN */}
           <div className="mt-auto">
+            {/* RATING */}
             <div className="mb-2 flex items-center gap-2 text-xs">
               <span className="text-muted-foreground font-medium">Rating:</span>
+
               {contentRatingBadge(story.contentRating, {
                 size: 'xs',
                 className: 'uppercase',
               })}
             </div>
 
-            {story.tags && story.tags.length > 0 && (
-              <BadgeGroup badges={tagBadges} max={2} gap="xs" className="uppercase" />
-            )}
+            {/* FIXED TAG AREA */}
+            <div className="min-h-[28px]">
+              {story.tags && story.tags.length > 0 && (
+                <BadgeGroup badges={tagBadges} max={2} gap="xs" className="uppercase" />
+              )}
+            </div>
           </div>
         </div>
 

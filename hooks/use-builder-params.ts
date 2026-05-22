@@ -7,7 +7,6 @@ export type TBuilderMode = 'new' | 'update';
 export function useBuilderParams() {
   const searchParams = useSearchParams();
   const params = useParams();
-  console.log('params', params);
 
   const mode = (searchParams.get('mode') as TBuilderMode) || 'new';
   const autoSaveId = searchParams.get('autoSaveId') || undefined;
