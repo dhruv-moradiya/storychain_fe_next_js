@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useHotkey } from '@tanstack/react-hotkeys';
 import Emoji, { gitHubEmojis } from '@tiptap/extension-emoji';
@@ -19,10 +19,14 @@ import {
   BuilderStatusBar,
   BuilderToolbar,
   DraftRecoveryBanner,
+  FindAndReplace,
 } from '@/components/story-builder';
 import { useBuilderParams } from '@/hooks/use-builder-params';
 import { cn } from '@/lib/utils';
 import { useGetAutoSaveDraft } from '@/services/auto-save/auto-save.query';
+
+import { SearchAndReplace } from '../extensions/search-and-replace';
+import { ShortcutKeys } from '../types/shortcut-keys.enum';
 
 const DEFAULT_CONTENT = `
   <h2>Welcome to StoryChain</h2>
@@ -94,6 +98,7 @@ const extensions = [
     enableEmoticons: true,
   }),
   TableKit.configure({ table: { resizable: true } }),
+  SearchAndReplace,
 ];
 
 function StoryBuilderContent() {
@@ -102,6 +107,10 @@ function StoryBuilderContent() {
   const draftedDocs = draftResponse?.data?.docs;
 
   const [title, setTitle] = useState<string>('');
+
+  // Find and Replace state
+  const [isFindOpen, setIsFindOpen] = useState(false);
+  const [showReplace, setShowReplace] = useState(false);
 
   const selectedDraft = useMemo(() => {
     const draftList = draftedDocs || [];
@@ -169,6 +178,40 @@ function StoryBuilderContent() {
     { requireReset: true }
   );
 
+  // Find (Ctrl+F) — open find panel
+  useHotkey(
+    ShortcutKeys.Find,
+    () => {
+      setIsFindOpen(true);
+      setShowReplace(false);
+    },
+    { requireReset: true }
+  );
+
+  // Find and Replace (Ctrl+H) — open find panel with replace row
+  useHotkey(
+    ShortcutKeys.FindAndReplace,
+    () => {
+      setIsFindOpen(true);
+      setShowReplace(true);
+    },
+    { requireReset: true }
+  );
+
+  const handleFindOpen = useCallback((withReplace = false) => {
+    setIsFindOpen(true);
+    setShowReplace(withReplace);
+  }, []);
+
+  const handleFindClose = useCallback(() => {
+    setIsFindOpen(false);
+    if (editor) {
+      editor.commands.setSearchTerm('');
+      editor.commands.setReplaceTerm('');
+      editor.commands.focus();
+    }
+  }, [editor]);
+
   if (!editor) return null;
 
   return (
@@ -185,7 +228,16 @@ function StoryBuilderContent() {
         draftId={autoSaveId}
       />
       <BuilderToolbar editor={editor} />
-      <BuilderCanvas editor={editor} />
+      <div className="relative">
+        <FindAndReplace
+          editor={editor}
+          isOpen={isFindOpen}
+          showReplace={showReplace}
+          onOpen={handleFindOpen}
+          onClose={handleFindClose}
+        />
+        <BuilderCanvas editor={editor} />
+      </div>
       <BuilderStatusBar editor={editor} />
     </div>
   );

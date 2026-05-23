@@ -27,6 +27,9 @@ enum ShortcutKeys {
   Undo = 'Mod+Z',
   Redo = 'Mod+Shift+Z',
 
+  Find = 'Mod+F',
+  FindAndReplace = 'Mod+H',
+
   Save = 'Mod+S',
   SaveAsDraft = 'Mod+Shift+D',
   Preview = 'Mod+Shift+P',
