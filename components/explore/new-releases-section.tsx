@@ -73,16 +73,16 @@ export function NewReleasesSection() {
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
         {NEW_RELEASES.map((story) => (
           <div key={story.title} className="group flex cursor-pointer flex-col gap-3">
-            <div className="relative aspect-[2/3] w-full overflow-hidden rounded-lg border shadow-sm transition-shadow group-hover:shadow-md">
+            <div className="border-primary/20 relative aspect-2/3 w-full overflow-hidden rounded-lg border shadow-sm transition-shadow group-hover:shadow-md">
               <Image
                 src={story.image}
                 alt={story.title}
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute top-2 left-2">
+              {/* <div className="absolute top-2 left-2">
                 {textBadge('New', 'pink', { className: 'shadow-sm border-none' })}
-              </div>
+              </div> */}
             </div>
 
             <div className="space-y-1">

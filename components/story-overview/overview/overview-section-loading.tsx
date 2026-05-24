@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 
@@ -23,7 +25,7 @@ const OverviewSectionLoading = () => {
         <motion.div
           animate={{ x: ['-100%', '100%'] }}
           transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
-          className="via-muted/60 absolute inset-0 w-full bg-gradient-to-r from-transparent to-transparent"
+          className="via-muted/60 absolute inset-0 w-full bg-linear-to-r from-transparent to-transparent"
         />
       </motion.div>
 
@@ -66,7 +68,7 @@ const OverviewSectionLoading = () => {
               <motion.div
                 animate={{ x: ['-120%', '120%'] }}
                 transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-                className="via-muted/50 absolute inset-0 bg-gradient-to-r from-transparent to-transparent"
+                className="via-muted/50 absolute inset-0 bg-linear-to-r from-transparent to-transparent"
               />
               <div className="bg-muted/50 h-4 w-24 rounded" />
               <div className="bg-muted/50 h-4 w-12 rounded" />

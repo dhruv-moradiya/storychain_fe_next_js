@@ -6,9 +6,15 @@ import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experime
 import { Toaster } from 'sonner';
 
 import { getQueryClient } from '@/lib/query-client';
+import { useMe } from '@/services/users/user.query';
 
 interface QueryProviderProps {
   children: React.ReactNode;
+}
+
+function UserInitializer() {
+  useMe();
+  return null;
 }
 
 /**
@@ -20,7 +26,10 @@ export function QueryProvider({ children }: QueryProviderProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryStreamedHydration>{children}</ReactQueryStreamedHydration>
+      <ReactQueryStreamedHydration>
+        <UserInitializer />
+        {children}
+      </ReactQueryStreamedHydration>
       <Toaster position="top-center" richColors />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

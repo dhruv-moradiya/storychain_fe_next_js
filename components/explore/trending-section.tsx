@@ -3,9 +3,9 @@
 import Image from 'next/image';
 import { useRef } from 'react';
 
-import { ChevronLeft, ChevronRight, Eye, Flame, GitMerge } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Clock, Eye, Flame, GitMerge } from 'lucide-react';
 
-import { genreBadge } from '@/components/common/badge';
+import { genreBadge, textBadge } from '@/components/common/badge';
 import { Button } from '@/components/ui/button';
 
 import { TrendingBadge } from '../common/badge/factories';
@@ -19,6 +19,7 @@ const TRENDING_STORIES = [
     branches: 124,
     reads: 45200,
     image: 'https://i.pinimg.com/736x/74/91/5c/74915cfe2e29d53bafb269ffa0a6c1dc.jpg',
+    date: '2 hours ago',
   },
   {
     title: 'Echoes of the Forgotten Empire',
@@ -28,6 +29,7 @@ const TRENDING_STORIES = [
     branches: 89,
     reads: 32100,
     image: 'https://i.pinimg.com/1200x/0a/16/61/0a1661c44d8301b97eb8e4496b9713e3.jpg',
+    date: '3 hours ago',
   },
   {
     title: 'Whispers in the Manor',
@@ -37,6 +39,7 @@ const TRENDING_STORIES = [
     branches: 56,
     reads: 18400,
     image: 'https://i.pinimg.com/1200x/dc/49/67/dc49670e2a7f1fa64a7d6c206514118b.jpg',
+    date: '1 hours ago',
   },
 ];
 
@@ -92,65 +95,41 @@ export function TrendingSection() {
       {/* No scrollbar - only < > buttons */}
       <div
         ref={scrollRef}
-        className="-mx-4 flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0"
+        className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {TRENDING_STORIES.map((story) => (
-          <div
-            key={story.title}
-            className="group bg-muted/30 relative flex w-[85vw] shrink-0 snap-center flex-col overflow-hidden rounded-md border sm:w-[500px] md:w-[600px] lg:h-[320px] lg:flex-row"
-          >
+          <div key={story.title} className="group flex cursor-pointer flex-col gap-3">
             {/* Image Container */}
-            <div className="relative aspect-[2/3] w-full shrink-0 overflow-hidden lg:aspect-auto lg:h-full lg:w-[280px]">
+            <div className="border-primary/20 relative aspect-2/3 w-full overflow-hidden rounded-lg border shadow-sm transition-shadow group-hover:shadow-md">
               <Image
                 src={story.image}
                 alt={story.title}
                 fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent lg:hidden" />
-              <TrendingBadge
-                label="Trending"
-                icon={Flame}
-                iconPosition="left"
-                iconColor="currentColor"
-                className="bg-brand-orange/30! absolute top-3 left-3 gap-1 border-none px-2 py-1"
-              />
+              {/* <div className="absolute top-2 left-2">
+                {textBadge('Trending', 'amber', {
+                  className: 'shadow-sm border-non bg-amber-500/50! text-amber-100!',
+                })}
+              </div> */}
             </div>
 
             {/* Content */}
-            <div className="lg:bg-background/50 flex flex-1 flex-col justify-between p-5 lg:p-6">
-              <div className="space-y-3">
-                {genreBadge(story.genre)}
-                <div>
-                  <h3 className="font-libre-baskerville group-hover:text-brand-pink-500 mb-1 line-clamp-2 text-xl leading-tight font-bold transition-colors sm:text-2xl">
-                    {story.title}
-                  </h3>
-                  <p className="text-muted-foreground line-clamp-2 text-sm">{story.tagline}</p>
-                </div>
-                <p className="text-foreground/80 text-xs font-medium">
-                  By <span className="text-brand-blue">{story.author}</span>
-                </p>
-              </div>
+            <div className="space-y-1">
+              <h3 className="font-libre-baskerville group-hover:text-brand-pink-500 line-clamp-1 text-base leading-tight font-bold transition-colors">
+                {story.title}
+              </h3>
+              <p className="text-muted-foreground line-clamp-1 text-xs">by {story.author}</p>
 
-              <div className="mt-6 flex items-center justify-between gap-4">
-                <div className="text-muted-foreground font-ibm-plex-mono flex items-center gap-3 text-xs">
-                  <div className="flex items-center gap-1">
-                    <GitMerge size={14} />
-                    <span>{story.branches} paths</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Eye size={14} />
-                    <span>{(story.reads / 1000).toFixed(1)}k reads</span>
-                  </div>
+              <div className="flex items-center justify-between pt-1">
+                <span className="text-brand-teal text-[10px] font-medium tracking-wider uppercase">
+                  {story.genre}
+                </span>
+                <div className="text-muted-foreground flex items-center gap-1 text-[10px]">
+                  <Clock size={10} />
+                  <span>{story.date}</span>
                 </div>
-
-                <Button
-                  size="sm"
-                  className="bg-foreground text-background hover:bg-foreground/90 shrink-0 rounded-full px-4 font-semibold"
-                >
-                  Read Now
-                </Button>
               </div>
             </div>
           </div>

@@ -73,12 +73,12 @@ export function GenresSection() {
         {GENRES.map((genre) => (
           <div
             key={genre.name}
-            className="group bg-card hover:border-brand-pink-200 dark:hover:border-brand-pink-800 cursor-pointer rounded-xl border p-4 transition-all hover:shadow-md"
+            className="group hover:border-brand-pink-200 dark:hover:border-brand-pink-800 cursor-pointer rounded-xl border p-4 transition-all hover:shadow-md"
           >
             <div className="flex items-center gap-3">
               <div
                 className={cn(
-                  'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-transform group-hover:scale-110',
+                  'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-transform',
                   genre.color
                 )}
               >

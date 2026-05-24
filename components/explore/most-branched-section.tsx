@@ -133,7 +133,7 @@ export function MostBranchedSection() {
         {BRANCHED_STORIES.map((story) => (
           <div
             key={story.title}
-            className="group bg-card relative flex w-[45vw] shrink-0 snap-start flex-col overflow-hidden rounded-xl border transition-all hover:shadow-md sm:w-48 lg:w-48"
+            className="group relative flex w-[45vw] shrink-0 snap-start flex-col gap-3 overflow-hidden transition-all hover:shadow-md sm:w-48 lg:w-48"
           >
             {/* Rank Badge */}
             <div className="bg-background/90 absolute top-3 left-3 z-10 flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold shadow-sm backdrop-blur-sm">
@@ -141,18 +141,17 @@ export function MostBranchedSection() {
             </div>
 
             {/* Cover — fixed height for uniformity */}
-            <div className="relative aspect-[2/3] w-full shrink-0 overflow-hidden">
+            <div className="relative aspect-2/3 w-full shrink-0 overflow-hidden rounded-xl">
               <Image
                 src={story.image}
                 alt={story.title}
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
             </div>
 
             {/* Details */}
-            <div className="flex flex-1 flex-col justify-between p-4">
+            <div className="flex flex-1 flex-col justify-between">
               <div className="mb-3 space-y-2">
                 {genreBadge(story.genre)}
                 <h3 className="font-libre-baskerville group-hover:text-brand-purple line-clamp-2 text-base leading-tight font-bold transition-colors">
@@ -171,7 +170,7 @@ export function MostBranchedSection() {
                   </div>
                   <div className="bg-muted h-1.5 w-full overflow-hidden rounded-full">
                     <div
-                      className="from-brand-pink-400 to-brand-purple h-full rounded-full bg-gradient-to-r"
+                      className="from-brand-pink-400 to-brand-purple h-full rounded-full bg-linear-to-r"
                       style={{ width: `${Math.min(100, (story.branches / 500) * 100)}%` }}
                     />
                   </div>

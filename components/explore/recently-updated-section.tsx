@@ -4,6 +4,8 @@ import { Clock, FileText, GitBranch } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
+import { textBadge } from '../common/badge';
+
 const RECENT_UPDATES = [
   {
     title: 'The Silent King',
@@ -51,9 +53,9 @@ export function RecentlyUpdatedSection() {
         {RECENT_UPDATES.map((update) => (
           <div
             key={update.title}
-            className="group bg-card flex cursor-pointer items-center gap-4 rounded-xl border p-4 transition-all hover:-translate-y-0.5 hover:shadow-md"
+            className="group flex cursor-pointer items-center gap-4 rounded-xl border p-2 transition-all hover:shadow-md"
           >
-            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md shadow-sm">
+            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md shadow-sm">
               <Image
                 src={update.image}
                 alt={update.title}
@@ -64,23 +66,7 @@ export function RecentlyUpdatedSection() {
 
             <div className="flex min-w-0 flex-1 flex-col justify-center space-y-1">
               <div className="flex items-center gap-2">
-                <span
-                  className={cn(
-                    'flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-bold tracking-wider uppercase',
-                    update.updateType === 'New Branch'
-                      ? 'bg-brand-purple/10 text-brand-purple'
-                      : update.updateType === 'Continuation'
-                        ? 'bg-brand-blue/10 text-brand-blue'
-                        : 'bg-brand-teal/10 text-brand-teal'
-                  )}
-                >
-                  {update.updateType === 'New Branch' ? (
-                    <GitBranch size={10} />
-                  ) : (
-                    <FileText size={10} />
-                  )}
-                  {update.updateType}
-                </span>
+                {textBadge(update.updateType, 'info', { size: 'xs' })}
               </div>
               <h3 className="font-libre-baskerville group-hover:text-brand-pink-500 truncate text-base font-bold transition-colors">
                 {update.title}

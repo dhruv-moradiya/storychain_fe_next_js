@@ -19,7 +19,7 @@ export default function ExplorePage() {
   return (
     <div className="container mx-auto max-w-7xl px-4 pt-6 pb-20 sm:px-6 lg:px-8">
       {/* Top Navigation / Filter Bar */}
-      <ExploreFilters />
+      {/* <ExploreFilters /> */}
 
       {/* Main Content Sections */}
       <div className="mt-8 space-y-16">
@@ -33,7 +33,7 @@ export default function ExplorePage() {
         <MostBranchedSection />
 
         {/* Section 4 — Community Picks */}
-        <CommunityPicksSection />
+        {/* <CommunityPicksSection /> */}
 
         {/* Section 5 — By Genre */}
         <GenresSection />
