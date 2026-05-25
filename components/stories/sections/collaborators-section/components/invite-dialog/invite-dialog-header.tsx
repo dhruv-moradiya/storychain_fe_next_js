@@ -12,7 +12,7 @@ export function InviteDialogHeader() {
 
       <div className="relative">
         <DialogTitle className="text-text-primary flex items-center gap-2.5 font-serif text-xl font-semibold">
-          <div className="from-brand-pink-500 to-brand-orange flex size-9 items-center justify-center rounded-xl bg-linear-to-br shadow-md ring-2 ring-white/50">
+          <div className="from-brand-pink-500 to-brand-orange flex size-9 items-center justify-center rounded-xl bg-linear-to-br shadow-md">
             <UserPlus className="h-4.5 w-4.5 text-white" />
           </div>
           Invite Collaborator

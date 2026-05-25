@@ -137,7 +137,7 @@ const CollaboratorTable = ({
 
           return (
             <div className="flex items-center gap-3">
-              <Avatar className="h-10 w-10 border-2 border-white shadow-sm">
+              <Avatar className="border-border h-10 w-10 border shadow-sm">
                 <AvatarImage src={user.avatarUrl} alt={user.username} />
                 <AvatarFallback className="bg-brand-blue/10 text-brand-blue font-medium">
                   {user.username.charAt(0).toUpperCase()}

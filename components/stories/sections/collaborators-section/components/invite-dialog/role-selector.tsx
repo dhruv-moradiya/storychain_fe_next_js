@@ -33,7 +33,7 @@ export function RoleSelector({ value, onChange }: RoleSelectorProps) {
                 'group relative flex flex-col items-start gap-1.5 rounded-xl border p-3 text-left transition-all duration-200',
                 isSelected
                   ? 'border-brand-pink-500 from-brand-pink-500/10 to-brand-blue/5 shadow-brand-pink-shadow25 bg-linear-to-br shadow-md'
-                  : 'border-border/50 hover:border-brand-pink-300/40 bg-white/60 hover:bg-white hover:shadow-sm'
+                  : 'border-border/50 hover:border-brand-pink-300/40 hover:shadow-sm'
               )}
             >
               <div className="flex w-full items-start justify-between">
@@ -60,7 +60,7 @@ export function RoleSelector({ value, onChange }: RoleSelectorProps) {
 
                 {isSelected && (
                   <div className="animate-in zoom-in-75 from-brand-pink-500 to-brand-pink-600 flex size-4 items-center justify-center rounded-full bg-linear-to-br duration-150">
-                    <CheckCircle className="h-3 w-3 fill-white text-white" />
+                    <CheckCircle className="h-3 w-3" />
                   </div>
                 )}
               </div>

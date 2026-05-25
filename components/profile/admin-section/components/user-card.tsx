@@ -50,7 +50,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
+import { cn, getInitials } from '@/lib/utils';
 
 const roleConfig: Record<PlatformRole, { label: string; color: string; icon: typeof Crown }> = {
   SUPER_ADMIN: {
@@ -204,10 +204,7 @@ export function UserCard({ user, onRoleChange, onBan, onUnban }: UserCardProps) 
         <Avatar className="h-9 w-9 flex-shrink-0">
           <AvatarImage src={user.avatar || undefined} alt={user.name} />
           <AvatarFallback className="bg-primary/10 text-primary text-xs font-medium">
-            {user.name
-              .split(' ')
-              .map((n) => n[0])
-              .join('')}
+            {getInitials(user.name)}
           </AvatarFallback>
         </Avatar>
 

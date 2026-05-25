@@ -127,18 +127,17 @@ export function CommentItem({
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      className="group border-border relative rounded-2xl border"
+      className="group relative rounded-2xl"
       style={{
         paddingLeft: depth > 0 ? `${depth * 20}px` : '0px',
       }}
     >
-      <div className="rounded-xl p-3 sm:p-4">
+      <div className="sm:p-4">
         <div className="flex gap-3">
-          <Avatar className="h-8 w-8 shrink-0 sm:h-9 sm:w-9">
+          <Avatar className="border-border h-10 w-10 border shadow-sm">
             <AvatarImage src={comment.author.avatarUrl} alt={comment.author.displayName} />
-
             <AvatarFallback
-              className="font-ibm-plex-mono border-border border text-[10px] font-semibold"
+              className="font-ibm-plex-mono text-[10px] font-semibold"
               style={{
                 background: `linear-gradient(135deg, ${depthAccent}22, ${depthAccent}44)`,
                 color: depthAccent,

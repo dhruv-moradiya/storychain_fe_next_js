@@ -47,3 +47,28 @@ export const scrollReveal = {
     transition: { duration: 0.4, delay: index * 0.06, ease: 'easeOut' as const },
   }),
 };
+
+/**
+ * Generates type-safe initials from a user's name string.
+ * @param name The full name of the user (e.g. "Arjun Mehta" or undefined)
+ * @param fallback The default fallback string to return if name is empty (default: "AD")
+ * @returns A string representing the user's initials (up to 2 characters)
+ */
+export function getInitials(name?: string | null, fallback = 'AD'): string {
+  if (!name || typeof name !== 'string') return fallback;
+
+  const trimmed = name.trim();
+  if (!trimmed) return fallback;
+
+  const parts = trimmed.split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return fallback;
+
+  if (parts.length === 1) {
+    return parts[0].slice(0, 2).toUpperCase();
+  }
+
+  const firstInitial = parts[0][0] || '';
+  const lastInitial = parts[parts.length - 1][0] || '';
+
+  return (firstInitial + lastInitial).slice(0, 2).toUpperCase();
+}

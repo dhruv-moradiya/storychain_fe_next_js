@@ -9,9 +9,8 @@ import {
   Yellowtail,
 } from 'next/font/google';
 
-import { ClerkProvider } from '@clerk/nextjs';
-
 import { FooterSection } from '@/components/home/footer-section';
+import { ClerkThemeProvider } from '@/components/providers/clerk-theme-provider';
 import { QueryProvider } from '@/components/providers/query-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import ToastProvider from '@/components/shared/toast/toast-provider';
@@ -151,29 +150,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider signInUrl="/sign-in" signUpUrl="/sign-up" afterSignInUrl="/" afterSignUpUrl="/">
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={`${inter.variable} ${lora.variable} ${yellowtail.variable} ${playfair.variable} ${libreBaskerville.variable} ${ibmPlexMono.variable} ${literata.variable} antialiased`}
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${inter.variable} ${lora.variable} ${yellowtail.variable} ${playfair.variable} ${libreBaskerville.variable} ${ibmPlexMono.variable} ${literata.variable} antialiased`}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
+          <ClerkThemeProvider
+            signInUrl="/sign-in"
+            signUpUrl="/sign-up"
+            afterSignInUrl="/"
+            afterSignUpUrl="/"
           >
             <QueryProvider>
               <main>
                 {/* <NavigationProgress /> */}
                 <ToastProvider>
                   {children}
-                  <FooterSection />
+                  {/* <FooterSection /> */}
                 </ToastProvider>
               </main>
             </QueryProvider>
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+          </ClerkThemeProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

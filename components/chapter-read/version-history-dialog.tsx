@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/drawer';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { cn } from '@/lib/utils';
+import { cn, getInitials } from '@/lib/utils';
 
 interface VersionHistoryDialogProps {
   versions: IChapterVersion[];
@@ -70,14 +70,7 @@ function VersionItem({
     addSuffix: true,
   });
 
-  const editorInitials = version.editedByUser
-    ? version.editedByUser.displayName
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2)
-    : '??';
+  const editorInitials = getInitials(version.editedByUser?.displayName, '??');
 
   return (
     <div className="relative pb-6 last:pb-0">

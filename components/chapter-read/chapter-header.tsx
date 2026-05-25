@@ -7,6 +7,7 @@ import { Clock, Flag, GitMerge, GitPullRequest } from 'lucide-react';
 import { chapterStatusBadge } from '@/components/common/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { getInitials } from '@/lib/utils';
 
 import { Separator } from '../ui/separator';
 
@@ -18,14 +19,7 @@ export function ChapterHeader({ chapter }: ChapterHeaderProps) {
   const updatedAt = formatDistance(new Date(chapter.updatedAt), new Date(), { addSuffix: true });
   const createdAt = formatDistance(new Date(chapter.createdAt), new Date(), { addSuffix: true });
 
-  const authorInitials = chapter.author
-    ? chapter.author.displayName
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2)
-    : '??';
+  const authorInitials = getInitials(chapter.author?.displayName, '??');
 
   const normalizedStatus = (chapter.status || 'DRAFT').toUpperCase();
 

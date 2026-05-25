@@ -41,6 +41,7 @@ interface DataTableProps<TData, TValue> {
   pageSize?: number;
   onRowClick?: (row: TData) => void;
   renderSubComponent?: (props: { row: Row<TData> }) => React.ReactNode;
+  className?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -49,6 +50,7 @@ export function DataTable<TData, TValue>({
   pageSize = 10,
   onRowClick,
   renderSubComponent,
+  className,
 }: DataTableProps<TData, TValue>) {
   const [expanded, setExpanded] = useState<ExpandedState>({});
 
@@ -78,17 +80,22 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="bg-card border-border/50 overflow-hidden rounded-xl border shadow-sm">
+    <div
+      className={cn(
+        'bg-card border-border/50 overflow-hidden rounded-2xl border shadow-sm',
+        className
+      )}
+    >
       <div className="relative w-full overflow-auto">
         <Table>
-          <TableHeader className="bg-muted/40">
+          <TableHeader className="bg-muted/30">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-border/50 hover:bg-transparent">
+              <TableRow key={headerGroup.id} className="border-border/40 hover:bg-transparent">
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
                       key={header.id}
-                      className="text-muted-foreground font-libre-baskerville h-12 text-xs font-semibold tracking-wider uppercase"
+                      className="text-text-secondary-50 h-11 px-4 text-[11px] font-semibold tracking-widest uppercase"
                     >
                       {header.isPlaceholder
                         ? null
@@ -109,14 +116,14 @@ export function DataTable<TData, TValue>({
                     transition={{ duration: 0.3, delay: index * 0.03, ease: 'easeOut' }}
                     data-state={row.getIsSelected() && 'selected'}
                     className={cn(
-                      'border-border/40 hover:bg-muted/30 transition-colors',
+                      'border-border/30 hover:bg-muted/20 transition-colors duration-150',
                       onRowClick && 'cursor-pointer',
                       'group'
                     )}
                     onClick={() => onRowClick?.(row.original)}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="py-3">
+                      <TableCell key={cell.id} className="px-4 py-3.5">
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}
@@ -127,11 +134,11 @@ export function DataTable<TData, TValue>({
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.25, ease: 'easeInOut' }}
+                        transition={{ duration: 0.28, ease: 'easeInOut' }}
                       >
                         <TableCell
                           colSpan={row.getVisibleCells().length}
-                          className="bg-muted/20 border-border/40 border-b p-0"
+                          className="bg-muted/10 border-border/30 border-b p-0"
                         >
                           {renderSubComponent({ row })}
                         </TableCell>
@@ -144,9 +151,9 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="text-muted-foreground h-24 text-center"
+                  className="text-text-secondary-50 h-32 text-center text-sm"
                 >
-                  No results.
+                  No results found.
                 </TableCell>
               </TableRow>
             )}
@@ -155,21 +162,21 @@ export function DataTable<TData, TValue>({
       </div>
 
       {/* Pagination */}
-      <div className="border-border/50 flex items-center justify-between border-t px-4 py-3">
-        <div className="text-muted-foreground hidden text-sm sm:block">
+      <div className="border-border/40 bg-muted/10 flex items-center justify-between border-t px-5 py-3">
+        <div className="text-text-secondary-50 hidden text-xs sm:block">
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {table.getFilteredRowModel().rows.length} row(s) selected
         </div>
-        <div className="flex items-center space-x-6 lg:space-x-8">
-          <div className="flex items-center space-x-2">
-            <p className="text-muted-foreground text-sm font-medium">Rows per page</p>
+        <div className="ml-auto flex items-center gap-5">
+          <div className="flex items-center gap-2">
+            <p className="text-text-secondary-65 text-xs font-medium">Rows per page</p>
             <Select
               value={`${table.getState().pagination.pageSize}`}
               onValueChange={(value) => {
                 table.setPageSize(Number(value));
               }}
             >
-              <SelectTrigger className="border-border/50 bg-card h-8 w-[70px]">
+              <SelectTrigger className="border-border/40 bg-card text-text-primary h-8 w-[68px] text-xs">
                 <SelectValue placeholder={table.getState().pagination.pageSize} />
               </SelectTrigger>
               <SelectContent side="top">
@@ -181,45 +188,45 @@ export function DataTable<TData, TValue>({
               </SelectContent>
             </Select>
           </div>
-          <div className="text-foreground flex w-[100px] items-center justify-center text-sm font-medium">
+          <div className="text-text-secondary-65 flex items-center justify-center text-xs font-medium">
             Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-1">
             <Button
               variant="outline"
-              className="text-foreground hidden h-8 w-8 p-0 lg:flex"
+              className="border-border/40 text-text-secondary-65 hover:text-text-primary hover:bg-muted/30 hidden h-8 w-8 cursor-pointer p-0 lg:flex"
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
               <span className="sr-only">Go to first page</span>
-              <ChevronsLeft className="h-4 w-4" />
+              <ChevronsLeft className="h-3.5 w-3.5" />
             </Button>
             <Button
               variant="outline"
-              className="text-foreground h-8 w-8 p-0"
+              className="border-border/40 text-text-secondary-65 hover:text-text-primary hover:bg-muted/30 h-8 w-8 cursor-pointer p-0"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
               <span className="sr-only">Go to previous page</span>
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-3.5 w-3.5" />
             </Button>
             <Button
               variant="outline"
-              className="text-foreground h-8 w-8 p-0"
+              className="border-border/40 text-text-secondary-65 hover:text-text-primary hover:bg-muted/30 h-8 w-8 cursor-pointer p-0"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
               <span className="sr-only">Go to next page</span>
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-3.5 w-3.5" />
             </Button>
             <Button
               variant="outline"
-              className="text-foreground hidden h-8 w-8 p-0 lg:flex"
+              className="border-border/40 text-text-secondary-65 hover:text-text-primary hover:bg-muted/30 hidden h-8 w-8 cursor-pointer p-0 lg:flex"
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
               <span className="sr-only">Go to last page</span>
-              <ChevronsRight className="h-4 w-4" />
+              <ChevronsRight className="h-3.5 w-3.5" />
             </Button>
           </div>
         </div>

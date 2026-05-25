@@ -1,11 +1,6 @@
-export function getInitials(name: string): string {
-  return name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
-}
+import { getInitials } from '@/lib/utils';
+
+export { getInitials };
 
 export const DEPTH_ACCENT_COLORS = [
   'var(--brand-pink-500)',
