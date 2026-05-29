@@ -3,12 +3,9 @@
 import Image from 'next/image';
 import { useRef } from 'react';
 
-import { ChevronLeft, ChevronRight, Clock, Eye, Flame, GitMerge } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Clock } from 'lucide-react';
 
-import { genreBadge, textBadge } from '@/components/common/badge';
 import { Button } from '@/components/ui/button';
-
-import { TrendingBadge } from '../common/badge/factories';
 
 const TRENDING_STORIES = [
   {

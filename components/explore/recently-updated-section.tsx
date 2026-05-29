@@ -1,8 +1,6 @@
 import Image from 'next/image';
 
-import { Clock, FileText, GitBranch } from 'lucide-react';
-
-import { cn } from '@/lib/utils';
+import { Clock } from 'lucide-react';
 
 import { textBadge } from '../common/badge';
 

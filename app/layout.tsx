@@ -9,7 +9,6 @@ import {
   Yellowtail,
 } from 'next/font/google';
 
-import { FooterSection } from '@/components/home/footer-section';
 import { ClerkThemeProvider } from '@/components/providers/clerk-theme-provider';
 import { QueryProvider } from '@/components/providers/query-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';

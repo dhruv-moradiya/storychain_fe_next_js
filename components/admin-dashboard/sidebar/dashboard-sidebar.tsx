@@ -8,7 +8,6 @@ import * as React from 'react';
 import { useClerk } from '@clerk/nextjs';
 import {
   BookOpen,
-  ChevronDown,
   CircleDollarSign,
   Coins,
   FileBarChart2,
@@ -46,47 +45,47 @@ const navigationItems = [
   },
   {
     title: 'Users',
-    href: '/users',
+    href: '/dashboard/users',
     icon: Users,
   },
   {
     title: 'Stories',
-    href: '/stories',
+    href: '/dashboard/stories',
     icon: BookOpen,
   },
   {
     title: 'Transactions',
-    href: '/transactions',
+    href: '/dashboard/transactions',
     icon: SlidersHorizontal,
   },
   {
     title: 'Coins & Packages',
-    href: '/coins-packages',
+    href: '/dashboard/coins-packages',
     icon: Coins,
   },
   {
     title: 'Reports',
-    href: '/reports',
+    href: '/dashboard/reports',
     icon: FileBarChart2,
   },
   {
     title: 'Withdraw Requests',
-    href: '/withdraw-requests',
+    href: '/dashboard/withdraw-requests',
     icon: CircleDollarSign,
   },
   {
     title: 'CMS',
-    href: '/cms',
+    href: '/dashboard/cms',
     icon: Monitor,
   },
   {
     title: 'Support Tickets',
-    href: '/support-tickets',
+    href: '/dashboard/support-tickets',
     icon: MessageSquare,
   },
   {
     title: 'Settings',
-    href: '/settings',
+    href: '/dashboard/settings',
     icon: Settings,
   },
 ];
@@ -157,7 +156,7 @@ export const DashboardSidebar = () => {
                     <Link href={item.href} className="flex w-full items-center gap-3">
                       <Icon
                         className={cn(
-                          'h-[18px] w-[18px] shrink-0 transition-all duration-200 ease-out',
+                          'h-4.5 w-4.5 shrink-0 transition-all duration-200 ease-out',
                           isActive
                             ? 'text-brand-pink-500 scale-105'
                             : 'text-text-secondary-65 group-hover/menu-item:text-text-primary group-hover/menu-item:translate-x-0.5 group-hover/menu-item:scale-105'

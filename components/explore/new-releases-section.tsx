@@ -2,8 +2,6 @@ import Image from 'next/image';
 
 import { Clock } from 'lucide-react';
 
-import { textBadge } from '@/components/common/badge';
-
 const NEW_RELEASES = [
   {
     title: 'Neon Nights',
