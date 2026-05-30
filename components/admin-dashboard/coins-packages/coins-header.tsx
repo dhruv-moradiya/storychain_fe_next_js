@@ -9,7 +9,7 @@ export const CoinsHeader = () => {
   return (
     <div
       className={cn(
-        'flex w-full flex-col gap-4 bg-transparent px-6 py-5 sm:flex-row sm:items-center sm:justify-between'
+        'flex w-full flex-col gap-4 bg-transparent sm:flex-row sm:items-center sm:justify-between'
       )}
     >
       {/* Left: Title & Subtitle */}

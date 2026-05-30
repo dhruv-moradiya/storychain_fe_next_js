@@ -15,8 +15,8 @@ const stats = [
       </div>
     ),
     icon: Coins,
-    iconBg: 'bg-orange-100',
-    iconColor: 'text-orange-500',
+    iconBg: 'bg-orange-500/10 dark:bg-orange-500/15',
+    iconColor: 'text-orange-500 dark:text-orange-400',
   },
   {
     title: 'Total Coins in Circulation',
@@ -29,8 +29,8 @@ const stats = [
       </div>
     ),
     icon: Coins,
-    iconBg: 'bg-amber-100',
-    iconColor: 'text-amber-500',
+    iconBg: 'bg-amber-500/10 dark:bg-amber-500/15',
+    iconColor: 'text-amber-500 dark:text-amber-400',
   },
   {
     title: 'Total Packages Sold (30d)',
@@ -43,8 +43,8 @@ const stats = [
       </div>
     ),
     icon: Wallet,
-    iconBg: 'bg-pink-100',
-    iconColor: 'text-pink-500',
+    iconBg: 'bg-pink-500/10 dark:bg-pink-500/15',
+    iconColor: 'text-pink-500 dark:text-pink-400',
   },
   {
     title: 'Total Revenue (30d)',
@@ -57,8 +57,8 @@ const stats = [
       </div>
     ),
     icon: WalletCards,
-    iconBg: 'bg-purple-100',
-    iconColor: 'text-purple-500',
+    iconBg: 'bg-purple-500/10 dark:bg-purple-500/15',
+    iconColor: 'text-purple-500 dark:text-purple-400',
   },
 ];
 
@@ -70,16 +70,15 @@ export function CoinsStats() {
         return (
           <Card
             key={index}
-            className="border-border/50 flex flex-row items-center gap-4 p-5 shadow-none"
+            className="border-border/50 flex flex-row items-center gap-4 bg-transparent p-4 shadow-none"
           >
             <div
               className={cn(
                 'flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl',
-                stat.iconBg,
-                stat.iconColor
+                stat.iconBg
               )}
             >
-              <Icon className="h-6 w-6" />
+              <Icon className={cn('h-6 w-6', stat.iconColor)} />
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-muted-foreground text-xs font-medium">{stat.title}</span>

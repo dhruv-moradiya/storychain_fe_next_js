@@ -4,7 +4,7 @@ import { CoinsStats } from '@/components/admin-dashboard/coins-packages/coins-st
 
 export default function CoinsPage() {
   return (
-    <div className="w-full bg-transparent">
+    <div className="w-full space-y-6 bg-transparent p-4">
       <CoinsHeader />
       <CoinsStats />
       <CoinsPackagesView />

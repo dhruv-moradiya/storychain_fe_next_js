@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 import { ColumnDef } from '@tanstack/react-table';
 import { Edit, MoreVertical, Trash } from 'lucide-react';
 
@@ -27,6 +29,7 @@ export interface CoinPackage {
   sold: number;
   revenue: number;
   icon: string;
+  image?: string;
 }
 
 const formatCurrency = (amount: number, currency: 'INR' | 'USD' = 'INR') => {
@@ -45,7 +48,19 @@ export const getColumns = (currency: 'INR' | 'USD'): ColumnDef<CoinPackage>[] =>
       const pkg = row.original;
       return (
         <div className="flex items-center gap-3">
-          <span className="text-2xl">{pkg.icon}</span>
+          {pkg.image ? (
+            <div className="flex h-8 w-8 items-center justify-center">
+              <Image
+                src={pkg.image}
+                alt={pkg.name}
+                width={32}
+                height={32}
+                className="object-contain"
+              />
+            </div>
+          ) : (
+            <span className="text-2xl">{pkg.icon}</span>
+          )}
           <span className="text-text-primary text-sm font-semibold tracking-tight">{pkg.name}</span>
         </div>
       );
@@ -96,7 +111,6 @@ export const getColumns = (currency: 'INR' | 'USD'): ColumnDef<CoinPackage>[] =>
           shape="pill"
           size="xs"
           uppercase
-          mono={false}
           style="soft"
         />
       );

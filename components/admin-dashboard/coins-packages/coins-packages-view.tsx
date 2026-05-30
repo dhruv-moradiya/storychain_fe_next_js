@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React, { useMemo, useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
@@ -27,6 +28,7 @@ const mockPackagesData: CoinPackage[] = [
     sold: 2450,
     revenue: 242550,
     icon: '🪙',
+    image: '/images/mini_pack_rupee.png',
   },
   {
     id: 2,
@@ -41,6 +43,7 @@ const mockPackagesData: CoinPackage[] = [
     sold: 2890,
     revenue: 575110,
     icon: '💰',
+    image: '/images/starter_pack_rupee.png',
   },
   {
     id: 3,
@@ -55,6 +58,7 @@ const mockPackagesData: CoinPackage[] = [
     sold: 3120,
     revenue: 1243880,
     icon: '🛍️',
+    image: '/images/pro_pack_rupee.png',
   },
   {
     id: 4,
@@ -69,6 +73,7 @@ const mockPackagesData: CoinPackage[] = [
     sold: 2780,
     revenue: 2221220,
     icon: '📦',
+    image: '/images/mega_pack_rupee.png',
   },
   {
     id: 5,
@@ -83,6 +88,7 @@ const mockPackagesData: CoinPackage[] = [
     sold: 450,
     revenue: 674550,
     icon: '🛢️',
+    image: '/images/super_pack_rupee.png',
   },
   {
     id: 6,
@@ -97,6 +103,7 @@ const mockPackagesData: CoinPackage[] = [
     sold: 210,
     revenue: 524790,
     icon: '💎',
+    image: '/images/ultimate_pack_rupee.png',
   },
 ];
 
@@ -123,7 +130,7 @@ export function CoinsPackagesView() {
   const columns = useMemo(() => getColumns(currency), [currency]);
 
   return (
-    <div className="flex w-full flex-col gap-6 px-6 pb-6">
+    <div className="flex w-full flex-col gap-6">
       {/* Header Row */}
       <div className="flex items-start justify-between">
         <div className="flex flex-col gap-1">
@@ -148,12 +155,12 @@ export function CoinsPackagesView() {
           <span>Loading packages...</span>
         </div>
       ) : (
-        <div className="flex flex-col gap-10">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+        <div className="flex flex-col gap-6">
+          <div className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
             {packages?.map((pkg) => (
               <Card
                 key={pkg.id}
-                className="border-border-soft bg-card flex flex-col items-center gap-3 p-4 pt-5 shadow-sm"
+                className="border-border-soft flex flex-col items-center gap-3 bg-transparent p-4 pt-5 shadow-sm"
               >
                 <div className="relative flex w-full justify-center">
                   <h3 className="text-text-primary text-sm font-bold">{pkg.name}</h3>
@@ -173,7 +180,6 @@ export function CoinsPackagesView() {
                     shape="pill"
                     size="xs"
                     uppercase
-                    mono={false}
                     style="soft"
                   />
                   {pkg.mostPopular && (
@@ -183,13 +189,24 @@ export function CoinsPackagesView() {
                       shape="pill"
                       size="xs"
                       uppercase
-                      mono={false}
                       style="soft"
                     />
                   )}
                 </div>
 
-                <div className="flex h-20 items-center justify-center text-5xl">{pkg.icon}</div>
+                <div className="flex h-20 items-center justify-center">
+                  {pkg.image ? (
+                    <Image
+                      src={pkg.image}
+                      alt={pkg.name}
+                      width={80}
+                      height={80}
+                      className="h-full object-contain"
+                    />
+                  ) : (
+                    <span className="text-5xl">{pkg.icon}</span>
+                  )}
+                </div>
 
                 <div className="flex items-center justify-center gap-1.5">
                   <div className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-500/10 text-amber-500">
