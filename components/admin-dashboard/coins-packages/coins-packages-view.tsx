@@ -3,114 +3,21 @@
 import Image from 'next/image';
 import React, { useMemo, useState } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
+import { ICoinBundleListItem } from '@/type/coin-bundle/coin-bundle.type';
 import { CircleDot, Loader2, MoreVertical } from 'lucide-react';
 
 import Badge from '@/components/common/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { DataTable } from '@/components/ui/data-table';
+import {
+  useDeleteCoinBundle,
+  useToggleCoinBundleActive,
+} from '@/services/coin-bundles/coin-bundles.mutation';
+import { useGetCoinBundles } from '@/services/coin-bundles/coin-bundles.query';
 
-import { CoinPackage, getColumns } from './columns';
+import { getColumns } from './columns';
 import { CurrencyToggle } from './currency-toggle';
-
-const mockPackagesData: CoinPackage[] = [
-  {
-    id: 1,
-    name: 'Mini Pack',
-    coins: 250,
-    priceInr: 99,
-    priceUsd: 1.49,
-    pricePerCoinInr: 0.4,
-    pricePerCoinUsd: 0.006,
-    status: 'Active',
-    mostPopular: false,
-    sold: 2450,
-    revenue: 242550,
-    icon: '🪙',
-    image: '/images/mini_pack_rupee.png',
-  },
-  {
-    id: 2,
-    name: 'Starter Pack',
-    coins: 600,
-    priceInr: 199,
-    priceUsd: 2.99,
-    pricePerCoinInr: 0.33,
-    pricePerCoinUsd: 0.005,
-    status: 'Active',
-    mostPopular: false,
-    sold: 2890,
-    revenue: 575110,
-    icon: '💰',
-    image: '/images/starter_pack_rupee.png',
-  },
-  {
-    id: 3,
-    name: 'Pro Pack',
-    coins: 1500,
-    priceInr: 399,
-    priceUsd: 5.49,
-    pricePerCoinInr: 0.27,
-    pricePerCoinUsd: 0.004,
-    status: 'Active',
-    mostPopular: false,
-    sold: 3120,
-    revenue: 1243880,
-    icon: '🛍️',
-    image: '/images/pro_pack_rupee.png',
-  },
-  {
-    id: 4,
-    name: 'Mega Pack',
-    coins: 3500,
-    priceInr: 799,
-    priceUsd: 10.99,
-    pricePerCoinInr: 0.23,
-    pricePerCoinUsd: 0.003,
-    status: 'Active',
-    mostPopular: true,
-    sold: 2780,
-    revenue: 2221220,
-    icon: '📦',
-    image: '/images/mega_pack_rupee.png',
-  },
-  {
-    id: 5,
-    name: 'Super Pack',
-    coins: 7500,
-    priceInr: 1499,
-    priceUsd: 19.99,
-    pricePerCoinInr: 0.2,
-    pricePerCoinUsd: 0.003,
-    status: 'Inactive',
-    mostPopular: false,
-    sold: 450,
-    revenue: 674550,
-    icon: '🛢️',
-    image: '/images/super_pack_rupee.png',
-  },
-  {
-    id: 6,
-    name: 'Ultimate Pack',
-    coins: 15000,
-    priceInr: 2499,
-    priceUsd: 32.99,
-    pricePerCoinInr: 0.16,
-    pricePerCoinUsd: 0.002,
-    status: 'Inactive',
-    mostPopular: false,
-    sold: 210,
-    revenue: 524790,
-    icon: '💎',
-    image: '/images/ultimate_pack_rupee.png',
-  },
-];
-
-const fetchMockPackages = async (): Promise<CoinPackage[]> => {
-  await new Promise((resolve) => setTimeout(resolve, 300));
-  return mockPackagesData;
-};
 
 const formatCurrency = (amount: number, currency: 'INR' | 'USD' = 'INR') => {
   if (currency === 'INR') {
@@ -122,12 +29,25 @@ const formatCurrency = (amount: number, currency: 'INR' | 'USD' = 'INR') => {
 export function CoinsPackagesView() {
   const [currency, setCurrency] = useState<'INR' | 'USD'>('INR');
 
-  const { data: packages, isLoading } = useQuery<CoinPackage[]>({
-    queryKey: ['admin-dashboard-coins-packages'],
-    queryFn: fetchMockPackages,
-  });
+  const { data: bundlesResponse, isLoading } = useGetCoinBundles();
+  const bundles: ICoinBundleListItem[] = bundlesResponse?.data ?? [];
 
-  const columns = useMemo(() => getColumns(currency), [currency]);
+  const toggleActiveMutation = useToggleCoinBundleActive();
+  const deleteMutation = useDeleteCoinBundle();
+
+  const handleToggleActive = (slug: string) => {
+    toggleActiveMutation.mutate(slug);
+  };
+
+  const handleDelete = (slug: string) => {
+    deleteMutation.mutate(slug);
+  };
+
+  const columns = useMemo(
+    () => getColumns({ currency, onToggleActive: handleToggleActive, onDelete: handleDelete }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currency]
+  );
 
   return (
     <div className="flex w-full flex-col gap-6">
@@ -156,10 +76,11 @@ export function CoinsPackagesView() {
         </div>
       ) : (
         <div className="flex flex-col gap-6">
+          {/* Cards grid */}
           <div className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            {packages?.map((pkg) => (
+            {bundles.map((pkg) => (
               <Card
-                key={pkg.id}
+                key={pkg._id}
                 className="border-border-soft flex flex-col items-center gap-3 bg-transparent p-4 pt-5 shadow-sm"
               >
                 <div className="relative flex w-full justify-center">
@@ -175,17 +96,17 @@ export function CoinsPackagesView() {
 
                 <div className="flex h-5 items-center justify-center gap-2">
                   <Badge
-                    label={pkg.status}
-                    color={pkg.status === 'Active' ? 'emerald' : 'gray'}
+                    label={pkg.isActive ? 'Active' : 'Inactive'}
+                    color={pkg.isActive ? 'emerald' : 'gray'}
                     shape="pill"
                     size="xs"
                     uppercase
                     style="soft"
                   />
-                  {pkg.mostPopular && (
+                  {pkg.isDeleted && (
                     <Badge
-                      label="Most Popular"
-                      color="pink"
+                      label="Deleted"
+                      color="rose"
                       shape="pill"
                       size="xs"
                       uppercase
@@ -194,18 +115,9 @@ export function CoinsPackagesView() {
                   )}
                 </div>
 
+                {/* Thumbnail placeholder — use pkg.bundleType as a visual cue */}
                 <div className="flex h-20 items-center justify-center">
-                  {pkg.image ? (
-                    <Image
-                      src={pkg.image}
-                      alt={pkg.name}
-                      width={80}
-                      height={80}
-                      className="h-full object-contain"
-                    />
-                  ) : (
-                    <span className="text-5xl">{pkg.icon}</span>
-                  )}
+                  <span className="text-5xl">🪙</span>
                 </div>
 
                 <div className="flex items-center justify-center gap-1.5">
@@ -213,15 +125,15 @@ export function CoinsPackagesView() {
                     <CircleDot className="h-3 w-3" />
                   </div>
                   <span className="text-xl font-bold text-amber-500">
-                    {pkg.coins.toLocaleString()}
+                    {pkg.totalCoins.toLocaleString()}
                   </span>
                 </div>
 
                 <div className="bg-muted/30 border-border-soft mt-2 flex w-full items-center justify-center rounded-lg border p-2 px-3">
                   <span className="text-text-primary text-sm font-bold">
                     {currency === 'INR'
-                      ? formatCurrency(pkg.priceInr, 'INR')
-                      : formatCurrency(pkg.priceUsd, 'USD')}
+                      ? formatCurrency(pkg.inrPrice / 100, 'INR')
+                      : formatCurrency((pkg.usdPrice ?? 0) / 100, 'USD')}
                   </span>
                 </div>
 
@@ -229,8 +141,14 @@ export function CoinsPackagesView() {
                   <span className="text-text-secondary-65 text-[11px] font-medium">
                     ~
                     {currency === 'INR'
-                      ? formatCurrency(pkg.pricePerCoinInr, 'INR')
-                      : formatCurrency(pkg.pricePerCoinUsd, 'USD')}{' '}
+                      ? formatCurrency(
+                          Number((pkg.inrPrice / 100 / pkg.totalCoins).toFixed(4)),
+                          'INR'
+                        )
+                      : formatCurrency(
+                          Number(((pkg.usdPrice ?? 0) / 100 / pkg.totalCoins).toFixed(4)),
+                          'USD'
+                        )}{' '}
                     / coin
                   </span>
                 </div>
@@ -238,6 +156,7 @@ export function CoinsPackagesView() {
             ))}
           </div>
 
+          {/* Table */}
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
               <h2 className="text-text-primary text-lg font-bold">Packages List</h2>
@@ -245,12 +164,7 @@ export function CoinsPackagesView() {
                 Detailed view of all available coin packages.
               </p>
             </div>
-            <DataTable
-              columns={columns}
-              data={packages || []}
-              pageSize={10}
-              className="bg-transparent"
-            />
+            <DataTable columns={columns} data={bundles} pageSize={10} className="bg-transparent" />
           </div>
         </div>
       )}

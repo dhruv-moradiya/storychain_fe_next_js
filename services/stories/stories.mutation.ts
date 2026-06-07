@@ -164,11 +164,14 @@ export const useUploadStoryImage = (slug: string) => {
       const signature = searchParams.get('signature');
       const apiKey = searchParams.get('api_key');
       const folder = searchParams.get('folder');
+      const eager = searchParams.get('eager'); // auto-decoded from percent-encoding
 
       if (timestamp) formData.append('timestamp', timestamp);
       if (signature) formData.append('signature', signature);
       if (apiKey) formData.append('api_key', apiKey);
       if (folder) formData.append('folder', folder);
+      // eager must be sent — the backend signature was computed over { eager, folder, timestamp }
+      if (eager) formData.append('eager', eager);
 
       // Cloudinary upload API URL is the uploadURL without query params
       const uploadEndpoint = `${url.origin}${url.pathname}`;

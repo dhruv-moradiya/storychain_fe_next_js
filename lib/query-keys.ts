@@ -1,4 +1,13 @@
+import { ICoinBundleListFilters } from '@/type/coin-bundle/coin-bundle.type';
+
 export const QueryKey = {
+  coinBundle: {
+    /** Base key for all coin-bundle queries. */
+    all: ['coin-bundle'] as const,
+    /** Admin list with optional filters. */
+    list: (filters?: ICoinBundleListFilters) => ['coin-bundle', 'list', filters ?? {}] as const,
+  },
+
   user: {
     me: ['user', 'me'] as const,
     searchByUsername: (username: string) => ['user', 'search', username] as const,
