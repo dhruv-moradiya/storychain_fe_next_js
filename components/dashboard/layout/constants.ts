@@ -13,6 +13,11 @@ export type MaxWidthVariant =
   | '5xl'
   | '6xl'
   | '7xl'
+  | '8xl'
+  | '9xl'
+  | '10xl'
+  | '11xl'
+  | '12xl'
   | 'full';
 
 export type SpacingSize = 'sm' | 'md' | 'lg' | 'xl';
@@ -37,6 +42,11 @@ export const MAX_WIDTH_CLASSES: Record<MaxWidthVariant, string> = {
   '5xl': 'max-w-5xl',
   '6xl': 'max-w-6xl',
   '7xl': 'max-w-7xl',
+  '8xl': 'max-w-[88rem]',
+  '9xl': 'max-w-[96rem]',
+  '10xl': 'max-w-[104rem]',
+  '11xl': 'max-w-[112rem]',
+  '12xl': 'max-w-[120rem]',
   full: 'max-w-full',
 };
 

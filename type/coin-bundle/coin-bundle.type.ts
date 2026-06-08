@@ -1,7 +1,5 @@
 import { IBaseResponse } from '../base-response.type';
 
-// ─── Enums / Literals ─────────────────────────────────────────────────────────
-
 export type BundleType =
   | 'standard'
   | 'seasonal'
@@ -17,8 +15,6 @@ export type BundleType =
 export type RestrictionType = 'unlimited' | 'one_time' | 'daily' | 'monthly' | 'lifetime';
 export type SupportedCurrency = 'INR' | 'USD';
 
-// ─── Sub-Models ───────────────────────────────────────────────────────────────
-
 export interface ICoinBundleThumbnail {
   url: string;
   publicId: string;
@@ -33,8 +29,6 @@ export interface ICoinBundleRestrictions {
   perUserLimit: number | null;
 }
 
-// ─── Core Coin Bundle Model ───────────────────────────────────────────────────
-
 export interface ICoinBundle {
   _id: string;
   name: string;
@@ -47,7 +41,7 @@ export interface ICoinBundle {
   inrPrice: number;
   usdPrice?: number;
   currencies: SupportedCurrency[];
-  thumbnail?: ICoinBundleThumbnail;
+  thumbnail: ICoinBundleThumbnail;
   isFeatured: boolean;
   isPopular: boolean;
   displayOrder: number;
@@ -68,28 +62,24 @@ export interface ICoinBundle {
   updatedAt: string;
 }
 
-// ─── List Item (subset returned by GET /admin/coin-bundles) ──────────────────
-
-export interface ICoinBundleListItem extends Pick<
-  ICoinBundle,
-  | '_id'
-  | 'name'
-  | 'slug'
-  | 'bundleType'
-  | 'baseCoins'
-  | 'bonusCoins'
-  | 'totalCoins'
-  | 'inrPrice'
-  | 'usdPrice'
-  | 'currencies'
-  | 'displayOrder'
-  | 'isActive'
-  | 'isDeleted'
-  | 'createdAt'
-  | 'updatedAt'
-> {}
-
-// ─── Filter Params ────────────────────────────────────────────────────────────
+// export interface ICoinBundle extends Pick<
+//   ICoinBundle,
+//   | '_id'
+//   | 'name'
+//   | 'slug'
+//   | 'bundleType'
+//   | 'baseCoins'
+//   | 'bonusCoins'
+//   | 'totalCoins'
+//   | 'inrPrice'
+//   | 'usdPrice'
+//   | 'currencies'
+//   | 'displayOrder'
+//   | 'isActive'
+//   | 'isDeleted'
+//   | 'createdAt'
+//   | 'updatedAt'
+// > {}
 
 export interface ICoinBundleListFilters {
   search?: string;
@@ -99,8 +89,6 @@ export interface ICoinBundleListFilters {
   sortBy?: 'displayOrder' | 'createdAt' | 'name';
   sortOrder?: 'asc' | 'desc';
 }
-
-// ─── Request Payloads ─────────────────────────────────────────────────────────
 
 export interface ICreateCoinBundlePayload {
   name: string;
@@ -136,12 +124,10 @@ export interface ICreateCoinBundlePayload {
 
 export type IUpdateCoinBundlePayload = Partial<Omit<ICreateCoinBundlePayload, 'slug'>>;
 
-// ─── API Response Interfaces ──────────────────────────────────────────────────
-
 export interface ICoinBundleCreateResponse extends IBaseResponse<ICoinBundle> {}
 export interface ICoinBundleUpdateResponse extends IBaseResponse<Partial<ICoinBundle>> {}
 
-export interface ICoinBundleListResponse extends IBaseResponse<ICoinBundleListItem[]> {}
+export interface ICoinBundleListResponse extends IBaseResponse<ICoinBundle[]> {}
 
 export interface ICoinBundleToggleActiveResponse extends IBaseResponse<{
   slug: string;

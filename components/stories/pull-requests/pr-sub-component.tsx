@@ -52,7 +52,7 @@ export function PRSubComponent({ row }: IPRSubComponentProps) {
                     className="text-foreground font-playfair truncate font-medium"
                     title={row.original.chapter?.title}
                   >
-                    {row.original.chapter.title}
+                    {row.original.chapter?.title}
                   </dd>
                 </div>
                 {row.original.chapter?.parentChapter && (
@@ -62,9 +62,9 @@ export function PRSubComponent({ row }: IPRSubComponentProps) {
                     </dt>
                     <dd
                       className="text-foreground font-playfair truncate font-medium"
-                      title={row.original.chapter.parentChapter.title}
+                      title={row.original.chapter?.parentChapter?.title}
                     >
-                      {row.original.chapter.parentChapter.title}
+                      {row.original.chapter?.parentChapter?.title}
                     </dd>
                   </div>
                 )}

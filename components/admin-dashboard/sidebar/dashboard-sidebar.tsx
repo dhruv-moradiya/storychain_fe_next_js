@@ -104,8 +104,8 @@ export const DashboardSidebar = () => {
 
   const currentTheme = mounted ? theme : 'system';
 
-  const initials = getInitials(user?.username, 'AD');
-  const displayName = user?.username || 'Admin';
+  // const initials = getInitials(user?.username, 'AD');
+  // const displayName = user?.username || 'Admin';
 
   // Format role string nicely (e.g. SUPER_ADMIN -> Super Admin)
   const formatRole = (role?: string) => {

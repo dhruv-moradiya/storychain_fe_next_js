@@ -1,6 +1,8 @@
 'use client';
 
-import { ICoinBundleListItem } from '@/type/coin-bundle/coin-bundle.type';
+import Image from 'next/image';
+
+import { ICoinBundle } from '@/type/coin-bundle/coin-bundle.type';
 import { ColumnDef } from '@tanstack/react-table';
 import { Edit, MoreVertical, Power, Trash } from 'lucide-react';
 
@@ -51,7 +53,7 @@ export const getColumns = ({
   onToggleActive,
   onDelete,
   onEdit,
-}: GetColumnsOptions): ColumnDef<ICoinBundleListItem>[] => [
+}: GetColumnsOptions): ColumnDef<ICoinBundle>[] => [
   {
     id: 'name',
     header: 'Package Name',
@@ -60,7 +62,14 @@ export const getColumns = ({
       const pkg = row.original;
       return (
         <div className="flex items-center gap-3">
-          <span className="text-2xl">🪙</span>
+          <Image
+            src={pkg.thumbnail.url}
+            alt={pkg.name}
+            width={40}
+            height={40}
+            className="rounded-lg"
+            unoptimized
+          />
           <span className="text-text-primary text-sm font-semibold tracking-tight">{pkg.name}</span>
         </div>
       );

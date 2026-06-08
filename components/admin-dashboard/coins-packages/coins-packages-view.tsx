@@ -1,23 +1,24 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useMemo, useState } from 'react';
+import { useState } from 'react';
 
-import { ICoinBundleListItem } from '@/type/coin-bundle/coin-bundle.type';
-import { CircleDot, Loader2, MoreVertical } from 'lucide-react';
+import { ICoinBundle } from '@/type/coin-bundle/coin-bundle.type';
+import { CircleDot, MoreVertical } from 'lucide-react';
 
 import Badge from '@/components/common/badge';
+import { DashboardSection } from '@/components/dashboard';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { DataTable } from '@/components/ui/data-table';
 import {
   useDeleteCoinBundle,
   useToggleCoinBundleActive,
 } from '@/services/coin-bundles/coin-bundles.mutation';
 import { useGetCoinBundles } from '@/services/coin-bundles/coin-bundles.query';
 
-import { getColumns } from './columns';
+import { CoinPackageCardSkeleton } from './coin-package-card-skeleton';
 import { CurrencyToggle } from './currency-toggle';
+import { PackagesList } from './packages-list';
 
 const formatCurrency = (amount: number, currency: 'INR' | 'USD' = 'INR') => {
   if (currency === 'INR') {
@@ -30,7 +31,7 @@ export function CoinsPackagesView() {
   const [currency, setCurrency] = useState<'INR' | 'USD'>('INR');
 
   const { data: bundlesResponse, isLoading } = useGetCoinBundles();
-  const bundles: ICoinBundleListItem[] = bundlesResponse?.data ?? [];
+  const bundles: ICoinBundle[] = bundlesResponse?.data ?? [];
 
   const toggleActiveMutation = useToggleCoinBundleActive();
   const deleteMutation = useDeleteCoinBundle();
@@ -43,40 +44,24 @@ export function CoinsPackagesView() {
     deleteMutation.mutate(slug);
   };
 
-  const columns = useMemo(
-    () => getColumns({ currency, onToggleActive: handleToggleActive, onDelete: handleDelete }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currency]
+  const currencyToggle = (
+    <div className="flex items-center gap-2">
+      <span className="text-text-secondary-65 text-sm">Currency View:</span>
+      <CurrencyToggle currency={currency} onChange={setCurrency} />
+    </div>
   );
 
   return (
     <div className="flex w-full flex-col gap-6">
-      {/* Header Row */}
-      <div className="flex items-start justify-between">
-        <div className="flex flex-col gap-1">
-          <h2 className="text-text-primary text-xl font-bold">Coin Packages</h2>
-          <p className="text-text-secondary-65 text-sm">
-            Create and manage packages to sell coins to users.
-          </p>
-        </div>
-        <div className="flex items-center gap-4">
-          {/* Currency Toggle */}
-          <div className="flex items-center gap-2">
-            <span className="text-text-secondary-65 text-sm">Currency View:</span>
-            <CurrencyToggle currency={currency} onChange={setCurrency} />
+      {/* Coin Packages Section */}
+      <DashboardSection title="Coin Packages" headerAction={currencyToggle}>
+        {isLoading ? (
+          <div className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <CoinPackageCardSkeleton key={i} />
+            ))}
           </div>
-        </div>
-      </div>
-
-      {/* Content */}
-      {isLoading ? (
-        <div className="text-text-secondary-65 flex h-48 w-full items-center justify-center gap-2 text-sm">
-          <Loader2 className="text-primary h-5 w-5 animate-spin" />
-          <span>Loading packages...</span>
-        </div>
-      ) : (
-        <div className="flex flex-col gap-6">
-          {/* Cards grid */}
+        ) : (
           <div className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
             {bundles.map((pkg) => (
               <Card
@@ -115,9 +100,15 @@ export function CoinsPackagesView() {
                   )}
                 </div>
 
-                {/* Thumbnail placeholder — use pkg.bundleType as a visual cue */}
                 <div className="flex h-20 items-center justify-center">
-                  <span className="text-5xl">🪙</span>
+                  <Image
+                    src={pkg.thumbnail.url}
+                    alt={pkg.name}
+                    width={128}
+                    height={128}
+                    className="rounded-lg"
+                    unoptimized
+                  />
                 </div>
 
                 <div className="flex items-center justify-center gap-1.5">
@@ -155,19 +146,18 @@ export function CoinsPackagesView() {
               </Card>
             ))}
           </div>
+        )}
+      </DashboardSection>
 
-          {/* Table */}
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1">
-              <h2 className="text-text-primary text-lg font-bold">Packages List</h2>
-              <p className="text-text-secondary-65 text-sm">
-                Detailed view of all available coin packages.
-              </p>
-            </div>
-            <DataTable columns={columns} data={bundles} pageSize={10} className="bg-transparent" />
-          </div>
-        </div>
-      )}
+      {/* Packages List Section */}
+      <DashboardSection title="Packages List">
+        <PackagesList
+          bundles={bundles}
+          currency={currency}
+          onToggleActive={handleToggleActive}
+          onDelete={handleDelete}
+        />
+      </DashboardSection>
     </div>
   );
 }

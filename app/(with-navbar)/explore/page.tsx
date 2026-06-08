@@ -1,8 +1,6 @@
 import { AuthorsSection } from '@/components/explore/authors-section';
-import { CommunityPicksSection } from '@/components/explore/community-picks-section';
 import { CompletedStoriesSection } from '@/components/explore/completed-stories-section';
 import { ExperimentalSection } from '@/components/explore/experimental-section';
-import { ExploreFilters } from '@/components/explore/explore-filters';
 import { FeaturedCollectionsSection } from '@/components/explore/featured-collections-section';
 import { GenresSection } from '@/components/explore/genres-section';
 import { MostBranchedSection } from '@/components/explore/most-branched-section';

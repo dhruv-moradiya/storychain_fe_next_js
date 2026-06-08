@@ -18,7 +18,6 @@ import {
   LucideIcon,
   MessageSquare,
   Plus,
-  ThumbsDown,
   ThumbsUp,
   Trash2,
 } from 'lucide-react';
@@ -171,58 +170,38 @@ export const getColumns = (): ColumnDef<IPullRequestListItem>[] => [
     },
   },
   {
-    id: 'engagement',
-    header: 'Engagement',
+    accessorKey: 'votes.upvotes',
+    header: 'Likes',
     cell: ({ row }) => {
-      const pr = row.original;
       return (
-        <TooltipProvider>
-          <div className="text-muted-foreground flex flex-wrap items-center gap-3 text-xs">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="hover:text-secondary flex items-center gap-1 transition-colors">
-                  <ThumbsUp className="h-3.5 w-3.5" />
-                  <span>{pr.votes?.upvotes || 0}</span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>Upvotes</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="hover:text-destructive flex items-center gap-1 transition-colors">
-                  <ThumbsDown className="h-3.5 w-3.5" />
-                  <span>{pr.votes?.downvotes || 0}</span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>Downvotes</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="hover:text-primary flex items-center gap-1 transition-colors">
-                  <MessageSquare className="h-3.5 w-3.5" />
-                  <span>{pr.commentCount || 0}</span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>Comments</TooltipContent>
-            </Tooltip>
-            {pr.autoApprove && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="hover:text-accent flex items-center gap-1 transition-colors">
-                    <Clock className="h-3.5 w-3.5" />
-                    <span>
-                      {pr.autoApprove.threshold || 0} / {pr.autoApprove.timeWindow || 0}d
-                    </span>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  Auto-Approve: {pr.autoApprove.threshold} votes within {pr.autoApprove.timeWindow}{' '}
-                  days
-                </TooltipContent>
-              </Tooltip>
-            )}
-          </div>
-        </TooltipProvider>
+        <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
+          <ThumbsUp className="h-3.5 w-3.5" />
+          <span>{row.original.votes?.upvotes || 0}</span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'commentCount',
+    header: 'Comments',
+    cell: ({ row }) => {
+      return (
+        <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
+          <MessageSquare className="h-3.5 w-3.5" />
+          <span>{row.original.commentCount || 0}</span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'createdAt',
+    header: 'Time',
+    cell: ({ row }) => {
+      return (
+        <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
+          <Clock className="h-3.5 w-3.5" />
+          <span>{formatDistanceToNow(new Date(row.original.createdAt), { addSuffix: true })}</span>
+        </div>
       );
     },
   },
