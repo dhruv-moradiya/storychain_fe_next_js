@@ -116,7 +116,7 @@ export const DashboardSidebar = () => {
       .join(' ');
   };
 
-  const displayRole = user?.role ? formatRole(user.role) : 'Super Admin';
+  // const displayRole = user?.role ? formatRole(user.role) : 'Super Admin';
 
   return (
     <Sidebar className="border-border-soft **:data-[sidebar=sidebar]:bg-background! border-r bg-transparent">

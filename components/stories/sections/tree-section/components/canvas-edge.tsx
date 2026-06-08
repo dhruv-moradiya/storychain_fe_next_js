@@ -16,7 +16,6 @@ export function CanvasEdge({
   markerEnd,
   data,
 }: IChapterEdgeProps) {
-  console.log(data);
   const [path, labelX, labelY] = getSmoothStepPath({
     sourceX,
     sourceY,
@@ -81,7 +80,7 @@ export function CanvasEdge({
           <Button
             size="icon"
             variant="default"
-            className="from-brand-blue to-brand-pink-500 pointer-events-auto size-6 rounded-full border-2 border-white bg-linear-to-br shadow-md transition-all duration-200 hover:scale-110 hover:shadow-lg"
+            className="from-brand-blue to-brand-pink-500 border-border pointer-events-auto size-6 rounded-full border-2 bg-linear-to-br shadow-md transition-all duration-200 hover:scale-110 hover:shadow-lg"
           >
             <Plus size={10} className="text-white" />
           </Button>

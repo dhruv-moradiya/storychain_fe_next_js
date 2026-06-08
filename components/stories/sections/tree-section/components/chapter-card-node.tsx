@@ -81,12 +81,12 @@ export const ChapterCardNode = ({ id, data, selected }: IChapterNodeProps) => {
         <div className="flex items-center justify-between">
           {/* Chapter Badge */}
           <div className="flex items-center gap-2">
-            <div className="bg-brand-blue/8 flex items-center gap-1.5 rounded-full px-2 py-0.5">
+            {/* <div className="bg-brand-blue/8 flex items-center gap-1.5 rounded-full px-2 py-0.5">
               <BookOpen className="text-brand-blue h-3 w-3" />
               <span className="text-brand-blue text-[10px] font-semibold">
                 Chapter {data.displayNumber}
               </span>
-            </div>
+            </div> */}
             {isPopular && (
               <div className="from-brand-orange/15 to-brand-pink-500/15 flex items-center gap-0.5 rounded-full bg-linear-to-r px-1.5 py-0.5">
                 <Sparkles className="text-brand-orange h-2.5 w-2.5" />

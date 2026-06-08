@@ -38,17 +38,18 @@ export function AddNodePlaceholderNode({ data, selected }: AddNodePlaceholderNod
         'group relative flex cursor-pointer flex-col items-center justify-center transition-all duration-300',
         'h-14 w-14 rounded-2xl',
         'via-cream-95 to-cream-90 bg-linear-to-br from-white',
+        'dark:from-card dark:via-card/95 dark:to-card/90',
         'border border-dashed',
         selected
           ? 'border-brand-pink-500 shadow-brand-pink-shadow25 shadow-lg'
-          : 'hover:shadow-brand-blue/20 border-black/20 hover:border-transparent hover:shadow-xl'
+          : 'hover:shadow-brand-blue/20 border-black/20 hover:border-transparent hover:shadow-xl dark:border-white/20 dark:hover:border-transparent'
       )}
     >
       {/* Top Handle */}
       <Handle
         type="target"
         position={Position.Top}
-        className="from-brand-blue! to-brand-pink-500! -top-1! h-2.5! w-2.5! rounded-full! border-2! border-white! bg-linear-to-br! shadow-sm!"
+        className="from-brand-blue! to-brand-pink-500! dark:border-background! -top-1! h-2.5! w-2.5! rounded-full! border-2! border-white! bg-linear-to-br! shadow-sm!"
       />
 
       {/* Gradient background on hover */}
@@ -64,7 +65,7 @@ export function AddNodePlaceholderNode({ data, selected }: AddNodePlaceholderNod
       <Plus
         className={cn(
           'relative z-10 h-6 w-6 transition-all duration-300',
-          'text-text-secondary-65 group-hover:scale-110 group-hover:text-white'
+          'text-text-secondary-65 dark:text-text-secondary-65 group-hover:scale-110 group-hover:text-white'
         )}
         strokeWidth={2.5}
       />
@@ -74,7 +75,7 @@ export function AddNodePlaceholderNode({ data, selected }: AddNodePlaceholderNod
         className={cn(
           'absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap',
           'bg-text-primary rounded-lg px-2.5 py-1',
-          'text-[10px] font-medium text-white',
+          'text-background dark:text-background text-[10px] font-medium',
           'opacity-0 transition-all duration-200',
           'group-hover:-bottom-9 group-hover:opacity-100',
           'shadow-lg'
@@ -100,7 +101,7 @@ export function AddNodePlaceholderNode({ data, selected }: AddNodePlaceholderNod
       <div
         className={cn(
           'pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300',
-          'ring-2 ring-white/50',
+          'ring-2 ring-white/50 dark:ring-black/50',
           'group-hover:animate-pulse group-hover:opacity-100'
         )}
       />

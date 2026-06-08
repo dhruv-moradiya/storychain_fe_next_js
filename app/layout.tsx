@@ -9,6 +9,7 @@ import {
   Yellowtail,
 } from 'next/font/google';
 
+import { NavigationProgress } from '@/components/common/loader/navigation-progress';
 import { ClerkThemeProvider } from '@/components/providers/clerk-theme-provider';
 import { QueryProvider } from '@/components/providers/query-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
@@ -167,7 +168,7 @@ export default function RootLayout({
           >
             <QueryProvider>
               <main>
-                {/* <NavigationProgress /> */}
+                <NavigationProgress />
                 <ToastProvider>
                   {children}
                   {/* <FooterSection /> */}
