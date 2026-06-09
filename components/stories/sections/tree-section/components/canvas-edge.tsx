@@ -1,3 +1,5 @@
+import { useRouter } from 'next/navigation';
+
 import { BaseEdge, EdgeLabelRenderer, getSmoothStepPath } from '@xyflow/react';
 import { Plus } from 'lucide-react';
 
@@ -16,6 +18,8 @@ export function CanvasEdge({
   markerEnd,
   data,
 }: IChapterEdgeProps) {
+  const router = useRouter();
+
   const [path, labelX, labelY] = getSmoothStepPath({
     sourceX,
     sourceY,
@@ -25,6 +29,20 @@ export function CanvasEdge({
     targetPosition,
     borderRadius: 12,
   });
+
+  const handleEdgeClick = () => {
+    if (!data) return;
+    const slug = data.storySlug;
+    if (!slug) return;
+
+    const params = new URLSearchParams();
+    params.append('mode', 'new');
+    if (data.parentChapterSlug) {
+      params.append('parentChapterSlug', data.parentChapterSlug);
+    }
+
+    router.push(`/stories/${slug}/builder?${params.toString()}`);
+  };
 
   return (
     <>
@@ -81,6 +99,7 @@ export function CanvasEdge({
             size="icon"
             variant="default"
             className="from-brand-blue to-brand-pink-500 border-border pointer-events-auto size-6 rounded-full border-2 bg-linear-to-br shadow-md transition-all duration-200 hover:scale-110 hover:shadow-lg"
+            onClick={handleEdgeClick}
           >
             <Plus size={10} className="text-white" />
           </Button>

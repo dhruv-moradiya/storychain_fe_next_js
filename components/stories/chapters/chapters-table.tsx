@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
   ColumnDef,
@@ -14,7 +14,6 @@ import {
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Users } from 'lucide-react';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -97,62 +96,60 @@ export function ChaptersTable({ data, context, pageSize = 10, className }: Chapt
         </div>
       )}
 
-      <div className="relative w-full overflow-auto">
-        <Table>
-          <TableHeader className="bg-muted/30">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-border/40 hover:bg-transparent">
-                {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    className="text-text-secondary-50 h-11 px-4 text-[11px] font-semibold tracking-widest uppercase"
-                    style={{ width: header.getSize() }}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
+      <Table wrapperClassName="max-h-[calc(100vh-300px)] overflow-y-auto">
+        <TableHeader className="bg-muted/50 sticky top-0 z-10 backdrop-blur-sm">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id} className="border-border/40 hover:bg-transparent">
+              {headerGroup.headers.map((header) => (
+                <TableHead
+                  key={header.id}
+                  className="text-text-secondary-50 h-11 px-4 text-[11px] font-semibold tracking-widest uppercase"
+                  style={{ width: header.getSize() }}
+                >
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(header.column.columnDef.header, header.getContext())}
+                </TableHead>
+              ))}
+            </TableRow>
+          ))}
+        </TableHeader>
 
-          <TableBody>
-            <AnimatePresence initial={false}>
-              {paginatedRows.length > 0 ? (
-                paginatedRows.map((row, index) => (
-                  <motion.tr
-                    key={row.id}
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.2, delay: index * 0.02, ease: 'easeOut' }}
-                    className={cn(
-                      'border-border/30 hover:bg-muted/20 group transition-colors duration-150',
-                      getRowDepthStyle(row)
-                    )}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="px-4 py-3">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
-                  </motion.tr>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="text-text-secondary-50 h-32 text-center text-sm"
-                  >
-                    No chapters found.
-                  </TableCell>
-                </TableRow>
-              )}
-            </AnimatePresence>
-          </TableBody>
-        </Table>
-      </div>
+        <TableBody>
+          <AnimatePresence initial={false}>
+            {paginatedRows.length > 0 ? (
+              paginatedRows.map((row, index) => (
+                <motion.tr
+                  key={row.id}
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.2, delay: index * 0.02, ease: 'easeOut' }}
+                  className={cn(
+                    'border-border/30 group cursor-pointer border-b transition-all duration-200 hover:shadow-xl',
+                    getRowDepthStyle(row)
+                  )}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="px-4 py-3">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </motion.tr>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="text-text-secondary-50 h-32 text-center text-sm"
+                >
+                  No chapters found.
+                </TableCell>
+              </TableRow>
+            )}
+          </AnimatePresence>
+        </TableBody>
+      </Table>
 
       {/* Pagination */}
       <div className="border-border/40 bg-muted/10 flex items-center justify-between border-t px-5 py-3">

@@ -31,6 +31,7 @@ type IChapterNodeProps = NodeProps<Node<IChapterNodeData>>;
 
 type IChapterEdgeData = {
   storySlug: string;
+  parentChapterSlug: string | null;
   // onButtonClick: (id: string) => void;
 };
 

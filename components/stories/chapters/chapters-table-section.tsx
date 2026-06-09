@@ -11,8 +11,6 @@ import { ChaptersTable } from './chapters-table';
 import { MOCK_CHAPTERS_TABLE, MOCK_CURRENT_USER_ID } from './mock-data';
 import type { IChaptersTableContext, UserRole } from './types';
 
-// ─── Mock role options for demo ───────────────────────────────────────────────
-
 interface RoleOption {
   role: UserRole;
   label: string;

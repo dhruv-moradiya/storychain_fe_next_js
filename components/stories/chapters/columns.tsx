@@ -17,7 +17,7 @@ import {
   Unlock,
 } from 'lucide-react';
 
-import { chapterStatusBadge } from '@/components/common/badge';
+import createBadge, { chapterStatusBadge } from '@/components/common/badge';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -88,12 +88,7 @@ const expandColumn: ColumnDef<IChapterTableRow> = {
 
 const lockStatusColumn: ColumnDef<IChapterTableRow> = {
   id: 'lockStatus',
-  header: () => (
-    <span className="flex items-center gap-1">
-      <Lock className="h-3 w-3" />
-      Access
-    </span>
-  ),
+  header: () => <span className="flex items-center gap-1">Access</span>,
   size: 80,
   cell: ({ row }: { row: Row<IChapterTableRow> }) => {
     const { coinPrice, isUnlockedByUser } = row.original;
@@ -131,12 +126,7 @@ const lockStatusColumn: ColumnDef<IChapterTableRow> = {
 
 const coinPriceColumn: ColumnDef<IChapterTableRow> = {
   id: 'coinPrice',
-  header: () => (
-    <span className="flex items-center gap-1">
-      <Coins className="h-3 w-3" />
-      Coins
-    </span>
-  ),
+  header: () => <span className="flex items-center gap-1">Coins</span>,
   size: 90,
   cell: ({ row }: { row: Row<IChapterTableRow> }) => {
     const { coinPrice, isUnlockedByUser } = row.original;
@@ -171,7 +161,7 @@ const titleColumn: ColumnDef<IChapterTableRow> = {
     const { title, chapterNumber, depth, isEnding, pullRequest } = row.original;
 
     return (
-      <div className="flex min-w-0 flex-col gap-0.5">
+      <div className="flex min-w-0 gap-1">
         <div className="flex items-center gap-1.5">
           {chapterNumber && (
             <span className="text-text-secondary-50 shrink-0 font-mono text-[10px]">
@@ -198,13 +188,15 @@ const titleColumn: ColumnDef<IChapterTableRow> = {
             </Badge>
           )}
           {pullRequest.isPR && (
-            <Badge
-              variant="outline"
-              className="h-4 gap-0.5 border-amber-400/30 bg-amber-500/5 px-1 text-[9px] text-amber-500"
-            >
-              <GitPullRequest className="h-2 w-2" />
-              PR
-            </Badge>
+            <>
+              {createBadge({
+                color: 'orange',
+                icon: GitPullRequest,
+                label: 'pr',
+                mono: true,
+                size: 'sm',
+              })}
+            </>
           )}
         </div>
       </div>
@@ -220,7 +212,7 @@ const statusColumn: ColumnDef<IChapterTableRow> = {
   cell: ({ row }: { row: Row<IChapterTableRow> }) => {
     const { status } = row.original;
     return (
-      <div>{chapterStatusBadge(status.toUpperCase(), { size: 'xs', className: 'uppercase' })}</div>
+      <div>{chapterStatusBadge(status.toUpperCase(), { size: 'sm', className: 'uppercase' })}</div>
     );
   },
 };
@@ -360,9 +352,9 @@ const moderationColumn: ColumnDef<IChapterTableRow> = {
         {isFlagged && (
           <Badge
             variant="outline"
-            className="h-4 gap-0.5 border-red-400/30 bg-red-500/5 px-1 text-[9px] text-red-500"
+            className="h-5 w-fit gap-0.5 border-red-400/30 bg-red-500/5 px-1 text-[11px] text-red-500"
           >
-            <AlertTriangle className="h-2 w-2" />
+            <AlertTriangle className="h-3 w-3" />
             Flagged
           </Badge>
         )}

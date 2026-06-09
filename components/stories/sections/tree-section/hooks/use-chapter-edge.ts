@@ -24,6 +24,7 @@ const useChapterEdge = (chapters: IChapterTreeItem[]): AllEdgeTypes[] => {
   const edges: AllEdgeTypes[] = [];
 
   const traverse = (node: IChapterTreeItem, parentId?: string) => {
+    // console.log('note', node);
     if (parentId) {
       edges.push({
         id: `${parentId}-${node._id}`,
@@ -34,6 +35,7 @@ const useChapterEdge = (chapters: IChapterTreeItem[]): AllEdgeTypes[] => {
         type: EDGE_TYPE,
         data: {
           storySlug: node.storySlug,
+          parentChapterSlug: node.parentChapterSlug,
         },
       });
     }

@@ -3,6 +3,7 @@ import type { IImageAsset, IUserBasic, IVotes } from '../common';
 import type { IChapterNodeData } from '../story-canvas.type';
 import type {
   STORY_COLLABORATOR_ROLES,
+  STORY_COLLABORATOR_ROLE_CONFIG,
   STORY_COLLABORATOR_STATUSES,
   STORY_CONTENT_RATINGS,
   STORY_GENRES,
@@ -15,6 +16,29 @@ type TStoryCollaboratorRole = (typeof STORY_COLLABORATOR_ROLES)[number];
 type TStoryCollaboratorStatus = (typeof STORY_COLLABORATOR_STATUSES)[number];
 type TStoryGenres = (typeof STORY_GENRES)[number];
 type TStoryContentRating = (typeof STORY_CONTENT_RATINGS)[number];
+
+// ── Role Config Derived Types ─────────────────────────────────────────────────
+
+/** All individual permission keys (e.g. 'canEditStorySettings', 'canDeleteStory', …) */
+type TStoryCollaboratorPermission =
+  keyof (typeof STORY_COLLABORATOR_ROLE_CONFIG)[TStoryCollaboratorRole]['permissions'];
+
+/** The full permissions object shape for any collaborator role */
+type TStoryCollaboratorPermissions =
+  (typeof STORY_COLLABORATOR_ROLE_CONFIG)[TStoryCollaboratorRole]['permissions'];
+
+/** Shape of a single role's config entry (name, description, permissions) */
+interface IStoryCollaboratorRoleConfig {
+  name: string;
+  description: string;
+  permissions: TStoryCollaboratorPermissions;
+}
+
+/**
+ * Extends `TStoryCollaboratorRole` with `'reader'` to cover users who are NOT
+ * collaborators — they can only read the story.
+ */
+type TStoryCollaboratorRoleOrReader = TStoryCollaboratorRole | 'reader';
 
 interface IStorySettings {
   isPublic: boolean;
@@ -142,7 +166,11 @@ export type {
   IStoryCreator,
   IStorySettings,
   IStoryStats,
+  IStoryCollaboratorRoleConfig,
   TStoryCollaboratorRole,
+  TStoryCollaboratorRoleOrReader,
+  TStoryCollaboratorPermission,
+  TStoryCollaboratorPermissions,
   TStoryCollaboratorStatus,
   TStoryStatus,
   TStoryGenres,

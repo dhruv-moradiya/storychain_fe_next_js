@@ -3,17 +3,7 @@
 import { useRouter } from 'next/navigation';
 
 import { Handle, Position } from '@xyflow/react';
-import {
-  BookOpen,
-  Clock,
-  Eye,
-  Flag,
-  GitBranch,
-  Heart,
-  MessageCircle,
-  Plus,
-  Sparkles,
-} from 'lucide-react';
+import { Clock, Eye, Flag, GitBranch, Heart, MessageCircle, Plus, Sparkles } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
