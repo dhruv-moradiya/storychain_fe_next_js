@@ -5,6 +5,7 @@ import {
   IStorySettingsResponse,
   IStoryTreeResponse,
   IUserStoriesResponse,
+  IUserStoryRoleResponse,
 } from '@/type/story/story-response.type';
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -161,6 +162,34 @@ export const useGetCollaborators = (
     queryKey: QueryKey.story.collaborators(slug),
     queryFn: () => getCollaboratorsQueryFn(slug),
     enabled: !!slug,
+    ...options,
+  });
+};
+
+// ── User Role ─────────────────────────────────────────────────────────────────
+
+export const getUserRoleQueryFn = async (slug: string) => {
+  const response = await StoryApi.getUserRole(slug);
+  return response.data;
+};
+
+export const useGetUserRole = (
+  slug: string,
+  options?: Omit<
+    UseQueryOptions<
+      IUserStoryRoleResponse,
+      AxiosError,
+      IUserStoryRoleResponse,
+      ReturnType<typeof QueryKey.story.userRole>
+    >,
+    'queryKey' | 'queryFn'
+  >
+) => {
+  return useQuery({
+    queryKey: QueryKey.story.userRole(slug),
+    queryFn: () => getUserRoleQueryFn(slug),
+    enabled: !!slug,
+    staleTime: 5 * 60 * 1000, // role rarely changes mid-session
     ...options,
   });
 };

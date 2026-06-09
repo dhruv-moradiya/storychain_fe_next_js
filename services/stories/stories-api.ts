@@ -10,6 +10,7 @@ import {
   IStorySettingsResponse,
   IStoryTreeResponse,
   IUserStoriesResponse,
+  IUserStoryRoleResponse,
 } from '@/type/story/story-response.type';
 import { IStorySettings } from '@/type/story/story.types';
 import { AxiosResponse } from 'axios';
@@ -101,6 +102,12 @@ const StoryApi = {
     return await apiClient.post<IInvitationActionResponse>(
       `/stories/slug/${slug}/collaborators/decline-invitation`
     );
+  },
+
+  // ── User Role ───────────────────────────────────────────────────────────────
+
+  getUserRole: async (slug: string): Promise<AxiosResponse<IUserStoryRoleResponse>> => {
+    return await apiClient.get<IUserStoryRoleResponse>(`/stories/slug/${slug}/user-role`);
   },
 };
 

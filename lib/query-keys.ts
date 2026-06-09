@@ -46,6 +46,7 @@ export const QueryKey = {
     search: (query: string) => ['story', 'search', query] as const,
     collaborators: (slug: string) => ['story', slug, 'collaborators'] as const,
     signatureUrl: (slug: string) => ['story', slug, 'signature-url'] as const,
+    userRole: (slug: string) => ['story', slug, 'user-role'] as const,
 
     // ----------------
     // CHAPTER ROUTES

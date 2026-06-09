@@ -4,6 +4,7 @@ import {
   IStory,
   IStorySettings,
   TStoryCollaboratorRole,
+  TStoryCollaboratorRoleOrReader,
   TStoryCollaboratorStatus,
   TStoryContentRating,
   TStoryGenres,
@@ -134,6 +135,12 @@ interface ICreateStoryResponse extends IBaseResponse<{
   createdAt: string;
 }> {}
 
+/** GET /stories/slug/:slug/user-role */
+interface IUserStoryRoleResponse extends IBaseResponse<{
+  role: TStoryCollaboratorRoleOrReader;
+  roleStatus: TStoryCollaboratorStatus | null;
+}> {}
+
 export type {
   ICloudinarySignatureResponse,
   ICollaboratorActionData,
@@ -151,4 +158,5 @@ export type {
   IStoryTreeResponse,
   IUserStories,
   IUserStoriesResponse,
+  IUserStoryRoleResponse,
 };

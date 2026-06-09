@@ -330,7 +330,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Notifications List */}
-                <ScrollArea className="max-h-[400px]">
+                <ScrollArea className="max-h-[400px] overflow-y-auto">
                   <div className="p-2">
                     {notifications.length > 0 ? (
                       <div className="space-y-1">
