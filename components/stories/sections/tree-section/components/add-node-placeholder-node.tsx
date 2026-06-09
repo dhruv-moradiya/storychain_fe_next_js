@@ -15,7 +15,11 @@ export interface AddNodePlaceholderNodeData extends Record<string, unknown> {
 
 export type AddNodePlaceholderNodeProps = NodeProps<Node<AddNodePlaceholderNodeData>>;
 
-export function AddNodePlaceholderNode({ data, selected }: AddNodePlaceholderNodeProps) {
+export function AddNodePlaceholderNode({
+  data,
+  selected,
+  targetPosition = Position.Top,
+}: AddNodePlaceholderNodeProps & { targetPosition?: Position }) {
   const router = useRouter();
 
   const handleClick = () => {
@@ -45,12 +49,20 @@ export function AddNodePlaceholderNode({ data, selected }: AddNodePlaceholderNod
           : 'hover:shadow-brand-blue/20 border-black/20 hover:border-transparent hover:shadow-xl dark:border-white/20 dark:hover:border-transparent'
       )}
     >
-      {/* Top Handle */}
-      <Handle
-        type="target"
-        position={Position.Top}
-        className="from-brand-blue! to-brand-pink-500! dark:border-background! -top-1! h-2.5! w-2.5! rounded-full! border-2! border-white! bg-linear-to-br! shadow-sm!"
-      />
+      {/* Target Handle */}
+      {targetPosition === Position.Left ? (
+        <Handle
+          type="target"
+          position={Position.Left}
+          className="from-brand-blue! to-brand-pink-500! dark:border-background! -left-1! h-2.5! w-2.5! rounded-full! border-2! border-white! bg-linear-to-br! shadow-sm!"
+        />
+      ) : (
+        <Handle
+          type="target"
+          position={Position.Top}
+          className="from-brand-blue! to-brand-pink-500! dark:border-background! -top-1! h-2.5! w-2.5! rounded-full! border-2! border-white! bg-linear-to-br! shadow-sm!"
+        />
+      )}
 
       {/* Gradient background on hover */}
       <div

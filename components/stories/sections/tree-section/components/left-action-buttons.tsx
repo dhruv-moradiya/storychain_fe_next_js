@@ -1,5 +1,13 @@
 import { motion } from 'framer-motion';
-import { FoldVertical, Hand, Plus, SquareMousePointer, ZoomIn, ZoomOut } from 'lucide-react';
+import {
+  FoldHorizontal,
+  FoldVertical,
+  Hand,
+  Plus,
+  SquareMousePointer,
+  ZoomIn,
+  ZoomOut,
+} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -51,9 +59,15 @@ const LeftActionButtons = ({
       tooltip: 'Pan Mode',
     },
     {
-      id: 'auto-layout',
+      id: 'left-to-right',
+      icon: FoldHorizontal,
+      tooltip: 'Left to Right',
+      onClick: () => onLayout('LR'),
+    },
+    {
+      id: 'top-to-bottom',
       icon: FoldVertical,
-      tooltip: 'Auto Layout',
+      tooltip: 'Top to Bottom',
       onClick: () => onLayout('TB'),
     },
   ];

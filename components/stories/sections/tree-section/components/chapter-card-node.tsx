@@ -20,7 +20,12 @@ const CHAPTER_EXCERPTS = [
   'What they discovered in the ruins would rewrite history itself...',
 ];
 
-export const ChapterCardNode = ({ id, data, selected }: IChapterNodeProps) => {
+export const ChapterCardNode = ({
+  id,
+  data,
+  selected,
+  targetPosition = Position.Left,
+}: IChapterNodeProps) => {
   const router = useRouter();
   const chapterNum = data.depth + 1;
   const excerpt = CHAPTER_EXCERPTS[data.depth % CHAPTER_EXCERPTS.length];
@@ -54,16 +59,33 @@ export const ChapterCardNode = ({ id, data, selected }: IChapterNodeProps) => {
       )}
     >
       {/* Handles */}
-      <Handle
-        type="target"
-        position={Position.Top}
-        className="border-bg-cream! bg-brand-pink-500! -top-1.5! h-2.5! w-2.5! rounded-full! border-2!"
-      />
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        className="border-bg-cream! bg-brand-pink-500! -bottom-1.5! h-2.5! w-2.5! rounded-full! border-2!"
-      />
+      {targetPosition === Position.Left ? (
+        <>
+          <Handle
+            type="target"
+            position={Position.Left}
+            className="border-bg-cream! bg-brand-pink-500! h-2.5! w-2.5! rounded-full! border-2!"
+          />
+          <Handle
+            type="source"
+            position={Position.Right}
+            className="border-bg-cream! bg-brand-pink-500! h-2.5! w-2.5! rounded-full! border-2!"
+          />
+        </>
+      ) : (
+        <>
+          <Handle
+            type="target"
+            position={Position.Top}
+            className="border-bg-cream! bg-brand-pink-500! -top-1.5! h-2.5! w-2.5! rounded-full! border-2!"
+          />
+          <Handle
+            type="source"
+            position={Position.Bottom}
+            className="border-bg-cream! bg-brand-pink-500! -bottom-1.5! h-2.5! w-2.5! rounded-full! border-2!"
+          />
+        </>
+      )}
 
       {/* Card Content */}
       <div className="relative z-10 p-3.5">

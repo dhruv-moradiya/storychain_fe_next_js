@@ -17,7 +17,11 @@ export interface LoadMorePlaceholderNodeData extends Record<string, unknown> {
 
 export type LoadMorePlaceholderNodeProps = NodeProps<Node<LoadMorePlaceholderNodeData>>;
 
-export function LoadMorePlaceholderNode({ data, selected }: LoadMorePlaceholderNodeProps) {
+export function LoadMorePlaceholderNode({
+  data,
+  selected,
+  targetPosition = Position.Top,
+}: LoadMorePlaceholderNodeProps & { targetPosition?: Position }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async () => {
@@ -45,12 +49,20 @@ export function LoadMorePlaceholderNode({ data, selected }: LoadMorePlaceholderN
           : 'hover:shadow-brand-blue/20 border-black/20 hover:border-transparent hover:shadow-xl'
       )}
     >
-      {/* Top Handle */}
-      <Handle
-        type="target"
-        position={Position.Top}
-        className="from-brand-blue! to-brand-pink-500! -top-1! h-2.5! w-2.5! rounded-full! border-2! border-white! bg-linear-to-br! shadow-sm!"
-      />
+      {/* Target Handle */}
+      {targetPosition === Position.Left ? (
+        <Handle
+          type="target"
+          position={Position.Left}
+          className="from-brand-blue! to-brand-pink-500! -left-1! h-2.5! w-2.5! rounded-full! border-2! border-white! bg-linear-to-br! shadow-sm!"
+        />
+      ) : (
+        <Handle
+          type="target"
+          position={Position.Top}
+          className="from-brand-blue! to-brand-pink-500! -top-1! h-2.5! w-2.5! rounded-full! border-2! border-white! bg-linear-to-br! shadow-sm!"
+        />
+      )}
 
       {/* Gradient background on hover */}
       <div

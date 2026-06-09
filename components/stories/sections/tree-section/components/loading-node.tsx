@@ -10,7 +10,10 @@ export interface LoadingNodeData extends Record<string, unknown> {}
 
 export type LoadingNodeProps = NodeProps<Node<LoadingNodeData>>;
 
-export function LoadingNode({ selected }: LoadingNodeProps) {
+export function LoadingNode({
+  selected,
+  targetPosition = Position.Top,
+}: LoadingNodeProps & { targetPosition?: Position }) {
   return (
     <div
       className={cn(
@@ -23,12 +26,20 @@ export function LoadingNode({ selected }: LoadingNodeProps) {
           : 'hover:shadow-brand-blue/20 border-black/20 hover:border-transparent hover:shadow-xl'
       )}
     >
-      {/* Top Handle */}
-      <Handle
-        type="target"
-        position={Position.Top}
-        className="!from-brand-blue !to-brand-pink-500 !-top-1 !h-2.5 !w-2.5 !rounded-full !border-2 !border-white !bg-gradient-to-br !shadow-sm"
-      />
+      {/* Target Handle */}
+      {targetPosition === Position.Left ? (
+        <Handle
+          type="target"
+          position={Position.Left}
+          className="!from-brand-blue !to-brand-pink-500 !-left-1 !h-2.5 !w-2.5 !rounded-full !border-2 !border-white !bg-gradient-to-br !shadow-sm"
+        />
+      ) : (
+        <Handle
+          type="target"
+          position={Position.Top}
+          className="!from-brand-blue !to-brand-pink-500 !-top-1 !h-2.5 !w-2.5 !rounded-full !border-2 !border-white !bg-gradient-to-br !shadow-sm"
+        />
+      )}
 
       {/* Gradient background on loading */}
       <div

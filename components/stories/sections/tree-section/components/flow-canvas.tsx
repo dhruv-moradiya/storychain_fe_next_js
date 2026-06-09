@@ -191,7 +191,7 @@ const FlowCanvas = () => {
         onConnect={onConnect}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        connectionLineType={ConnectionLineType.SmoothStep}
+        connectionLineType={ConnectionLineType.SimpleBezier}
         fitView
         fitViewOptions={{ padding: 50 }}
         className="bg-bg-cream h-full w-full"
