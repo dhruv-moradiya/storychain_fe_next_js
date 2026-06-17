@@ -159,7 +159,7 @@ export function CommentTree({
   const count = totalCount ?? topLevel.length;
 
   return (
-    <section className={cn('ct-section space-y-6', className)} aria-label="Comments section">
+    <section className={cn('ct-section space-y-5', className)} aria-label="Comments section">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -191,7 +191,7 @@ export function CommentTree({
             variants={listVariants}
             initial="hidden"
             animate="visible"
-            className="space-y-2"
+            className="space-y-3"
           >
             <AnimatePresence initial={false}>
               {topLevel.map((comment) => (
@@ -247,11 +247,11 @@ export function CommentTree({
             <div className="ct-empty-icon flex h-14 w-14 items-center justify-center rounded-2xl sm:h-16 sm:w-16">
               <MessageSquare size={26} className="text-brand-pink-500/30" />
             </div>
-            <div className="space-y-1">
+            <div className="space-y-2">
               <p className="font-libre-baskerville ct-heading text-base font-bold">
-                Quiet in the archives...
+                Quiet in the archives…
               </p>
-              <p className="ct-meta-text mx-auto max-w-60 font-sans text-xs leading-relaxed">
+              <p className="ct-meta-text mx-auto max-w-64 font-sans text-[13px] leading-relaxed">
                 Be the first to leave a mark on this chapter. Your thoughts help shape the story.
               </p>
             </div>

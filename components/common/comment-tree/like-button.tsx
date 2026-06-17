@@ -1,6 +1,6 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowBigDown, ArrowBigUp } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface LikeButtonProps {
@@ -11,38 +11,45 @@ interface LikeButtonProps {
 
 export function LikeButton({ likes, isLiked, onToggle }: LikeButtonProps) {
   return (
-    <div className="border-border bg-background flex items-center gap-0 rounded-full border py-1 transition-colors [&_button]:h-4 [&_button]:px-1.5">
-      <Button
-        variant="ghost"
-        className={cn(
-          'p-0 hover:bg-transparent',
-          isLiked ? 'text-brand-pink-500' : 'text-muted-foreground'
-        )}
+    <div className="ct-vote-capsule">
+      <button
+        className={cn('ct-vote-btn', isLiked && 'ct-vote-btn--active')}
         onClick={onToggle}
+        aria-label="Upvote"
       >
         <ArrowBigUp
+          size={16}
           strokeWidth={1.8}
-          className="transition-colors"
           fill={isLiked ? 'currentColor' : 'none'}
+          className="transition-all"
         />
-      </Button>
+      </button>
 
-      <span className="text-foreground text-sm font-medium">{likes}</span>
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={likes}
+          initial={{ y: -8, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 8, opacity: 0 }}
+          transition={{ duration: 0.15 }}
+          className="ct-vote-count font-ibm-plex-mono"
+        >
+          {likes}
+        </motion.span>
+      </AnimatePresence>
 
-      <Button
-        variant="ghost"
-        className={cn(
-          'p-0 hover:bg-transparent',
-          !isLiked ? 'text-brand-pink-500' : 'text-muted-foreground'
-        )}
+      <button
+        className={cn('ct-vote-btn', !isLiked && likes > 0 && 'ct-vote-btn--active')}
         onClick={onToggle}
+        aria-label="Downvote"
       >
         <ArrowBigDown
+          size={16}
           strokeWidth={1.8}
-          className="transition-colors"
-          fill={!isLiked ? 'currentColor' : 'none'}
+          fill={!isLiked && likes > 0 ? 'currentColor' : 'none'}
+          className="transition-all"
         />
-      </Button>
+      </button>
     </div>
   );
 }

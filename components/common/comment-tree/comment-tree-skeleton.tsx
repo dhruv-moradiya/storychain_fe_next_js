@@ -1,36 +1,42 @@
-import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 
 export function CommentTreeSkeleton({ className }: { className?: string }) {
   return (
     <div className={cn(className)}>
       {[1, 2, 3].map((i) => (
-        <CommentSkeleton key={i} />
+        <CommentSkeleton key={i} delay={i * 0.1} />
       ))}
     </div>
   );
 }
 
-function CommentSkeleton() {
+function CommentSkeleton({ delay = 0 }: { delay?: number }) {
   return (
-    <div className="border-border flex gap-4 rounded-xl border p-3 sm:p-4">
-      {/* Avatar */}
-      <Skeleton className="size-8 rounded-full" />
+    <div className="ct-skeleton-card p-4 sm:p-5" style={{ animationDelay: `${delay}s` }}>
+      <div className="flex gap-3.5">
+        {/* Avatar skeleton */}
+        <div className="ct-skeleton-bone h-9 w-9 shrink-0 rounded-full sm:h-10 sm:w-10" />
 
-      <div className="min-w-0 flex-1">
-        {/* Header */}
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-          <Skeleton className="size-8 h-4 rounded-full" />
-          <Skeleton className="size-8 h-3 w-16 rounded-full" />
+        <div className="min-w-0 flex-1 space-y-3">
+          {/* Header skeleton */}
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <div className="ct-skeleton-bone h-3.5 w-24 rounded-full" />
+            <div className="ct-skeleton-bone h-3 w-16 rounded-full" />
+            <div className="ct-skeleton-bone h-3 w-14 rounded-full" />
+          </div>
 
-          <Skeleton className="size-8 h-3 w-16 rounded-full" />
-        </div>
+          {/* Content skeleton */}
+          <div className="space-y-2">
+            <div className="ct-skeleton-bone h-3.5 w-full" />
+            <div className="ct-skeleton-bone h-3.5 w-full" />
+            <div className="ct-skeleton-bone h-3.5 w-3/5" />
+          </div>
 
-        {/* Content */}
-        <div className="mt-1.5 space-y-2">
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-3/4" />
+          {/* Actions skeleton */}
+          <div className="flex items-center gap-3 pt-1">
+            <div className="ct-skeleton-bone h-8 w-24 rounded-full" />
+            <div className="ct-skeleton-bone h-8 w-16 rounded-full" />
+          </div>
         </div>
       </div>
     </div>

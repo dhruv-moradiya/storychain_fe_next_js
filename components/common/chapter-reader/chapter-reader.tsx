@@ -127,22 +127,22 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
         <article
           className={cn(
             // Base typography — Literata for body, generous line-height for long-form reading
-            'font-reading text-foreground/90 text-[17px] leading-[1.85] tracking-[0.01em] sm:text-[19px] sm:leading-[1.9]',
+            'text-foreground/90 text-[16.5px]! leading-[1.85] tracking-[0.01em] sm:text-[19px] sm:leading-[1.9]',
 
             // Paragraphs — generous spacing, slight hyphens for justified text
             '[&_p]:mb-6 [&_p]:text-justify [&_p]:hyphens-auto',
 
             // First paragraph emphasis — slightly larger
-            '[&_p:first-of-type]:text-[18px] [&_p:first-of-type]:leading-[1.8] sm:[&_p:first-of-type]:text-[20px]',
+            // '[&_p:first-of-type]:text-[18px] [&_p:first-of-type]:leading-[1.8] sm:[&_p:first-of-type]:text-[20px]',
 
             // Drop cap on the first letter of the first paragraph
-            '[&_p:first-of-type]:first-letter:float-left [&_p:first-of-type]:first-letter:text-[3.4em]',
-            '[&_p:first-of-type]:first-letter:font-libre-baskerville [&_p:first-of-type]:first-letter:leading-[0.85]',
-            '[&_p:first-of-type]:first-letter:mr-2 [&_p:first-of-type]:first-letter:font-bold',
-            '[&_p:first-of-type]:first-letter:text-brand-pink-500',
+            // '[&_p:first-of-type]:first-letter:float-left [&_p:first-of-type]:first-letter:text-[3.4em]',
+            // '[&_p:first-of-type]:first-letter:font-libre-baskerville [&_p:first-of-type]:first-letter:leading-[0.85]',
+            // '[&_p:first-of-type]:first-letter:mr-2 [&_p:first-of-type]:first-letter:font-bold',
+            // '[&_p:first-of-type]:first-letter:text-brand-pink-500',
 
             // Headings — Libre Baskerville for an editorial/literary feel
-            '[&_h1]:font-libre-baskerville [&_h1]:text-foreground [&_h1]:mt-12 [&_h1]:mb-5 [&_h1]:text-[28px] [&_h1]:leading-[1.25] [&_h1]:font-bold [&_h1]:tracking-[-0.02em] sm:[&_h1]:text-[32px]',
+            '[&_h1]:font-libre-baskerville [&_h1]:text-foreground [&_h1]:mt-12 [&_h1]:mb-5 [&_h1]:text-[28px] [&_h1]:leading-tight [&_h1]:font-bold [&_h1]:tracking-[-0.02em] sm:[&_h1]:text-[32px]',
             '[&_h2]:font-libre-baskerville [&_h2]:text-foreground [&_h2]:mt-10 [&_h2]:mb-4 [&_h2]:text-[24px] [&_h2]:leading-[1.3] [&_h2]:font-bold [&_h2]:tracking-[-0.015em] sm:[&_h2]:text-[26px]',
             '[&_h3]:font-libre-baskerville [&_h3]:text-foreground [&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:text-[20px] [&_h3]:leading-[1.35] [&_h3]:font-bold [&_h3]:tracking-[-0.01em] sm:[&_h3]:text-[22px]',
             '[&_h4]:font-libre-baskerville [&_h4]:text-foreground [&_h4]:mt-6 [&_h4]:mb-2 [&_h4]:text-[18px] [&_h4]:leading-[1.4] [&_h4]:font-bold sm:[&_h4]:text-[19px]',
@@ -176,7 +176,7 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
             '[&_a:hover]:text-brand-pink-600 [&_a:hover]:decoration-brand-pink-500',
 
             // Horizontal rule — elegant separator
-            '[&_hr]:via-border [&_hr]:my-10 [&_hr]:h-px [&_hr]:border-0 [&_hr]:bg-gradient-to-r [&_hr]:from-transparent [&_hr]:to-transparent',
+            '[&_hr]:via-border [&_hr]:my-10 [&_hr]:h-px [&_hr]:border-0 [&_hr]:bg-linear-to-r [&_hr]:from-transparent [&_hr]:to-transparent',
 
             // Images — slightly elevated with shadow
             '[&_img]:my-8 [&_img]:w-full [&_img]:rounded-xl [&_img]:object-cover [&_img]:shadow-md',
