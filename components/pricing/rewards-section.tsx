@@ -1,6 +1,5 @@
 'use client';
 
-import type { StoryRole } from '@/type/coins';
 import { motion } from 'framer-motion';
 import {
   ArrowRight,

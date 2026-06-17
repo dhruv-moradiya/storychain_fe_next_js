@@ -121,9 +121,12 @@ export const DashboardSidebar = () => {
   return (
     <Sidebar className="border-border-soft **:data-[sidebar=sidebar]:bg-background! border-r bg-transparent">
       {/* Header with brand logo */}
-      <SidebarHeader className="border-border-soft flex flex-row items-center justify-between border-b px-6 py-5">
-        <Link href="/dashboard" className="flex items-center gap-2">
-          <StorychainLogo size="medium" className="h-7 w-auto" />
+      <SidebarHeader className="border-border-soft flex flex-row items-center justify-between border-b px-6 py-[17.8px]">
+        <Link
+          href="/dashboard"
+          className="font-playfair text-primary flex items-center gap-2 font-bold -tracking-normal text-pretty"
+        >
+          STORYCHAIN
         </Link>
       </SidebarHeader>
 

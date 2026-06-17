@@ -10,7 +10,7 @@ export const SITE_CONFIG = {
   description:
     'Create, collaborate, and explore branching narratives with StoryChain. The ultimate platform for interactive storytelling where your choices shape unique narrative journeys.',
   defaultOgImage:
-    'https://res.cloudinary.com/dpji4qfnu/image/upload/v1774158510/storychain-logo-raw-removebg-preview_mhethr.png',
+    'https://res.cloudinary.com/dpji4qfnu/image/upload/v1781672960/5a66e236-525f-4415-a962-fabcd2e705b2_1_vigjei.png',
   twitterHandle: '@storychain',
   locale: 'en_US',
 } as const;
