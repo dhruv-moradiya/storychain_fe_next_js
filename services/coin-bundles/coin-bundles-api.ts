@@ -16,7 +16,6 @@ import { AxiosResponse } from 'axios';
 import apiClient from '@/lib/api-client';
 
 const CoinBundlesApi = {
-  // ── POST /coin-bundles ────────────────────────────────────────────────────
   /**
    * Create a new coin bundle.
    * SUPER_ADMIN only.
@@ -27,7 +26,6 @@ const CoinBundlesApi = {
     return await apiClient.post<ICoinBundleCreateResponse>('/coin-bundles', payload);
   },
 
-  // ── GET /admin/coin-bundles ───────────────────────────────────────────────
   /**
    * Retrieve all coin bundles (admin view) with optional filtering and sorting.
    * Results are never cached server-side.
@@ -49,7 +47,6 @@ const CoinBundlesApi = {
     );
   },
 
-  // ── PUT /coin-bundles/:slug ───────────────────────────────────────────────
   /**
    * Full update of an existing coin bundle.
    * `slug` cannot be changed.
@@ -61,7 +58,6 @@ const CoinBundlesApi = {
     return await apiClient.put<ICoinBundleUpdateResponse>(`/coin-bundles/${slug}`, payload);
   },
 
-  // ── PATCH /coin-bundles/:slug/toggle-active ───────────────────────────────
   /**
    * Flip the `isActive` flag of a coin bundle.
    */
@@ -73,7 +69,6 @@ const CoinBundlesApi = {
     );
   },
 
-  // ── PATCH /coin-bundles/:slug/display-order ───────────────────────────────
   /**
    * Update the `displayOrder` of a single bundle (drag-to-reorder).
    */
@@ -87,7 +82,6 @@ const CoinBundlesApi = {
     );
   },
 
-  // ── DELETE /coin-bundles/:slug ─────────────────────────────────────────────────────────
   /**
    * Soft-delete a coin bundle.
    * The document is preserved for CoinOrder references.
@@ -96,7 +90,6 @@ const CoinBundlesApi = {
     return await apiClient.delete<ICoinBundleDeleteResponse>(`/coin-bundles/${slug}`);
   },
 
-  // ── GET /coin-bundles/signature-url ─────────────────────────────────────────────────
   /**
    * Get a signed Cloudinary upload URL for a coin-bundle thumbnail.
    * The returned uploadURL contains all required query params (signature, api_key, etc.).
@@ -105,7 +98,6 @@ const CoinBundlesApi = {
     return await apiClient.get<ICloudinarySignatureResponse>('/coin-bundles/signature-url');
   },
 
-  // ── PATCH /coin-bundles/:slug/thumbnail ────────────────────────────────────────────────
   /**
    * Update only the thumbnail of an existing bundle (post-create).
    */

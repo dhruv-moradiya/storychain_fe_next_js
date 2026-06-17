@@ -15,11 +15,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { coinUsageFeatures } from '@/lib/data/coins-data';
 import { cn, scrollReveal } from '@/lib/utils';
-
-interface CoinUsageSectionProps {
-  features: CoinUsageFeature[];
-}
 
 type Category = 'all' | 'reading' | 'writing' | 'ai' | 'social';
 type Currency = 'INR' | 'USD';
@@ -161,14 +158,16 @@ function getUsageColumns(currency: Currency): ColumnDef<CoinUsageFeature>[] {
   ];
 }
 
-export function CoinUsageSection({ features }: CoinUsageSectionProps) {
+export function CoinUsageSection() {
   const [activeCategory, setActiveCategory] = useState<Category>('all');
   const [currency, setCurrency] = useState<Currency>('INR');
 
   const filtered = useMemo(
     () =>
-      activeCategory === 'all' ? features : features.filter((f) => f.category === activeCategory),
-    [activeCategory, features]
+      activeCategory === 'all'
+        ? coinUsageFeatures
+        : coinUsageFeatures.filter((f) => f.category === activeCategory),
+    [activeCategory]
   );
 
   const columns = useMemo(() => getUsageColumns(currency), [currency]);

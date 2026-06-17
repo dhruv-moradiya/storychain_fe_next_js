@@ -8,6 +8,7 @@ import {
   Playfair_Display,
   Yellowtail,
 } from 'next/font/google';
+import Script from 'next/script';
 
 import { NavigationProgress } from '@/components/common/loader/navigation-progress';
 import { ClerkThemeProvider } from '@/components/providers/clerk-theme-provider';
@@ -154,6 +155,11 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${lora.variable} ${yellowtail.variable} ${playfair.variable} ${libreBaskerville.variable} ${ibmPlexMono.variable} ${literata.variable} antialiased`}
       >
+        <Script
+          id="razorpay-checkout"
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          strategy="afterInteractive"
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

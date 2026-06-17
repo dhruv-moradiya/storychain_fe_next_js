@@ -13,13 +13,10 @@ import {
   Users,
 } from 'lucide-react';
 
+import { storyRoles } from '@/lib/data/coins-data';
 import { cn, scrollReveal } from '@/lib/utils';
 
-interface RewardsSectionProps {
-  roles: StoryRole[];
-}
-
-export function RewardsSection({ roles }: RewardsSectionProps) {
+export function RewardsSection() {
   const appShare = 40;
   const creatorShare = 60;
 
@@ -170,7 +167,7 @@ export function RewardsSection({ roles }: RewardsSectionProps) {
           </p>
 
           <div className="space-y-2">
-            {roles.map((role, index) => {
+            {storyRoles.map((role, index) => {
               const Icon = role.icon;
               return (
                 <motion.div
