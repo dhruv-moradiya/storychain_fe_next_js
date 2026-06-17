@@ -4,10 +4,13 @@ import { useEffect } from 'react';
 
 import { IChapterDetailExtended } from '@/type';
 import { useQuery } from '@tanstack/react-query';
+import { ArrowLeft } from 'lucide-react';
 import { nanoid } from 'nanoid';
 
 import { ChapterCommentsSection } from '@/components/chapter-read';
 import { ChapterReader } from '@/components/common/chapter-reader';
+import { DashboardSection } from '@/components/dashboard';
+import { Button } from '@/components/ui/button';
 import { QueryKey } from '@/lib/query-keys';
 import { chapterApi } from '@/services/chapters/chapters-api';
 import {
@@ -43,11 +46,11 @@ export default function ChapterReadClient({
   const { mutate: recordSession } = useRecordReadingSession();
 
   const {
-    isBookmarked,
-    handleShare,
-    handleBookmark,
-    handleEdit,
-    handleCreatePR,
+    // isBookmarked,
+    // handleShare,
+    // handleBookmark,
+    // handleEdit,
+    // handleCreatePR,
     handleBack,
     navigateToChapter,
   } = useChapterActions(storySlug, chapterSlug);
@@ -92,36 +95,27 @@ export default function ChapterReadClient({
   }, [chapterSlug, storySlug]);
 
   return (
-    <div className="bg-bg-cream min-h-screen">
-      <ChapterHeader
-        isBookmarked={isBookmarked}
-        onBack={handleBack}
-        onShare={handleShare}
-        onBookmark={handleBookmark}
-        onEdit={handleEdit}
-        onCreatePR={handleCreatePR}
+    <DashboardSection className="bg-bg-cream col-span-9 min-h-screen">
+      <Button
+        variant="ghost"
+        size="sm"
+        className="border-border/50 hover:border-brand-pink-500/50 hover:bg-brand-pink-500/10! text-text-secondary-65 hover:text-brand-pink-500 mb-5 gap-2"
+        onClick={handleBack}
+      >
+        <ArrowLeft size={14} />
+        Back
+      </Button>
+      <ChapterReader chapter={chapter} variant="full" />
+
+      <ChapterPagination
+        previousChapters={chapter.previousChapters}
+        nextChapters={chapter.nextChapters}
+        onNavigate={navigateToChapter}
       />
 
-      <main className="mx-auto max-w-4xl px-5 py-10 sm:px-8 md:px-10 lg:px-12 lg:py-16">
-        <ChapterReader chapter={chapter} variant="full" />
-
-        {/* <ChapterActionBar
-          stats={chapter.stats}
-          userVote={userVote}
-          onVote={handleVote}
-          onBranch={handleBranch}
-        /> */}
-
-        <ChapterPagination
-          previousChapters={chapter.previousChapters}
-          nextChapters={chapter.nextChapters}
-          onNavigate={navigateToChapter}
-        />
-
-        <div className="mt-12">
-          <ChapterCommentsSection chapterSlug={chapterSlug} totalCount={chapter.stats.comments} />
-        </div>
-      </main>
-    </div>
+      <div className="mt-12">
+        <ChapterCommentsSection chapterSlug={chapterSlug} totalCount={chapter.stats.comments} />
+      </div>
+    </DashboardSection>
   );
 }

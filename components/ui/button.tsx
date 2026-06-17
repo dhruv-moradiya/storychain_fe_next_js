@@ -17,6 +17,10 @@ const buttonVariants = cva(
           'border border-primary text-primary rounded-sm bg-background shadow-xs hover:bg-primary/10 hover:text-primary',
         'outline-brand':
           'border border-brand-pink-500/40 bg-background shadow-xs text-brand-pink-500 hover:bg-brand-pink-500/10 hover:text-primary',
+        'outline-editorial':
+          'border border-border/80 bg-background text-text-primary rounded-lg shadow-2xs hover:bg-muted/40 hover:text-text-primary hover:border-border transition-all duration-200',
+        'outline-brand-editorial':
+          'border border-brand-pink-500/30 bg-background text-brand-pink-500 rounded-lg shadow-2xs hover:bg-brand-pink-500/10 hover:text-brand-pink-600 hover:border-brand-pink-500/50 transition-all duration-200',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:text-brand-pink-500 hover:bg-transparent',
         link: 'text-primary underline-offset-4 hover:underline',
