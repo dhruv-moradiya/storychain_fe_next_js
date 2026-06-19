@@ -11,6 +11,8 @@ import {
   UserProfileStories,
 } from '@/components/user-profile';
 
+import { ContentLayout } from '../dashboard';
+
 // Static mock user data
 const mockUser = {
   id: 'user_123',
@@ -98,7 +100,7 @@ export default function UserProfileView({}: { userId: string }) {
   const user = mockUser;
 
   return (
-    <div className="bg-bg-cream min-h-screen">
+    <ContentLayout maxWidth="7xl">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pb-16">
         {/* Header with cover image and avatar */}
         <UserProfileHeader user={user} />
@@ -124,6 +126,6 @@ export default function UserProfileView({}: { userId: string }) {
           </div>
         </div>
       </motion.div>
-    </div>
+    </ContentLayout>
   );
 }

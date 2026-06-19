@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import {
   Award,
-  Bell,
+  Bookmark,
   Check,
   ChevronDown,
   CreditCard,
@@ -30,7 +30,7 @@ import { cn } from '@/lib/utils';
 const baseTabs = [
   { key: 'general', label: 'General', path: '', icon: User },
   { key: 'badges', label: 'Badges', path: 'badges', icon: Award },
-  { key: 'notifications', label: 'Notifications', path: 'notifications', icon: Bell },
+  { key: 'bookmarks', label: 'Bookmarks', path: 'bookmarks', icon: Bookmark },
   { key: 'my-reports', label: 'My Reports', path: 'my-reports', icon: FileWarning },
   { key: 'subscription', label: 'Subscription', path: 'subscription', icon: CreditCard },
   { key: 'settings', label: 'Settings', path: 'settings', icon: Settings },
