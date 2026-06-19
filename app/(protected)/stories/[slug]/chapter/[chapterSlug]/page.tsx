@@ -50,7 +50,7 @@ export default async function ChapterPage({ params }: IChapterPageProps) {
         chapterSlug={chapterSlug}
       />
       <div className="col-span-3">
-        <ChapterSidebar />
+        <ChapterSidebar chapterData={chapterDetail.data} />
       </div>
     </ContentLayout>
   );

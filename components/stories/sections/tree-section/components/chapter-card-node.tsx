@@ -183,7 +183,7 @@ export const ChapterCardNode = ({
               </span>
               <span className="text-text-secondary-65 flex items-center gap-1 text-[9px]">
                 <Clock className="h-2.5 w-2.5" />
-                {formatTimeAgo(data.createdAt)} · {readTime} min
+                {formatTimeAgo(new Date(data.createdAt))} · {readTime} min
               </span>
             </div>
           </div>

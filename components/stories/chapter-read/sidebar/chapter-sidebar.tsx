@@ -2,31 +2,92 @@
 
 import * as React from 'react';
 
-import { Bookmark, Copy, Facebook, Heart, Link2, List, Twitter } from 'lucide-react';
+import { IChapterDetailExtended, IChapterVoteNumberType } from '@/type';
+import NumberFlow from '@number-flow/react';
+import {
+  Bookmark,
+  Copy,
+  Facebook,
+  Instagram,
+  Link2,
+  List,
+  ThumbsDown,
+  ThumbsUp,
+  Twitter,
+} from 'lucide-react';
 
+import { CopyButton } from '@/components/copy-button';
 import toast from '@/components/shared/toast/toast';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { useReactToChapter } from '@/services/chapters/chapters.mutation';
 
 interface ChapterSidebarProps {
-  initialLikes?: number;
+  chapterData: IChapterDetailExtended;
 }
 
-export function ChapterSidebar({ initialLikes = 124 }: ChapterSidebarProps) {
-  const [liked, setLiked] = React.useState(false);
-  const [likesCount, setLikesCount] = React.useState(initialLikes);
+export function ChapterSidebar({ chapterData }: ChapterSidebarProps) {
+  const reactToChapter = useReactToChapter();
+  const {
+    votes: { upvotes, downvotes, score },
+    currentUserVote,
+  } = chapterData;
+
+  const [voteStatus, setVoteStatus] = React.useState<IChapterVoteNumberType | null>(
+    currentUserVote
+  );
+  const [localUpvotes, setLocalUpvotes] = React.useState(upvotes);
+  const [localDownvotes, setLocalDownvotes] = React.useState(downvotes);
+  const [localScore, setLocalScore] = React.useState(score);
   const [saved, setSaved] = React.useState(false);
 
-  const handleLike = () => {
-    if (liked) {
-      setLiked(false);
-      setLikesCount((prev) => prev - 1);
-      toast.success('Removed like');
-    } else {
-      setLiked(true);
-      setLikesCount((prev) => prev + 1);
-      toast.success('Liked chapter!');
+  const handleReaction = (actionType: 'upvote' | 'downvote') => {
+    if (reactToChapter.isPending) return;
+
+    const previousVoteStatus = voteStatus;
+    const previousUpvotes = localUpvotes;
+    const previousDownvotes = localDownvotes;
+
+    // Optimistic update
+    let newVoteStatus: IChapterVoteNumberType | null = null;
+    let newUpvotes = localUpvotes;
+    let newDownvotes = localDownvotes;
+
+    // Remove previous vote if exists
+    if (previousVoteStatus === 1) {
+      newUpvotes -= 1;
+    } else if (previousVoteStatus === -1) {
+      newDownvotes -= 1;
     }
+
+    // Apply new vote if it's different from the one clicked
+    if (actionType === 'upvote' && previousVoteStatus !== 1) {
+      newVoteStatus = 1;
+      newUpvotes += 1;
+    } else if (actionType === 'downvote' && previousVoteStatus !== -1) {
+      newVoteStatus = -1;
+      newDownvotes += 1;
+    }
+
+    setVoteStatus(newVoteStatus);
+    setLocalUpvotes(newUpvotes);
+    setLocalDownvotes(newDownvotes);
+    setLocalScore(newUpvotes - newDownvotes);
+
+    reactToChapter.mutate(
+      {
+        slug: chapterData.slug,
+        type: actionType,
+      },
+      {
+        onError: () => {
+          setVoteStatus(previousVoteStatus);
+          setLocalUpvotes(previousUpvotes);
+          setLocalDownvotes(previousDownvotes);
+          setLocalScore(previousUpvotes - previousDownvotes);
+        },
+      }
+    );
   };
 
   const handleSave = () => {
@@ -48,6 +109,11 @@ export function ChapterSidebar({ initialLikes = 124 }: ChapterSidebarProps) {
     }
   };
 
+  const shareOnInstagram = () => {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.instagram.com/share?url=${url}`, '_blank');
+  };
+
   const shareOnTwitter = () => {
     const text = encodeURIComponent('Check out this awesome story chapter on StoryChain!');
     const url = encodeURIComponent(window.location.href);
@@ -61,6 +127,7 @@ export function ChapterSidebar({ initialLikes = 124 }: ChapterSidebarProps) {
 
   return (
     <div className="space-y-6">
+      {/* CHAPTER PROGRESS + LIKE SAVE BUTTON */}
       <div className="border-border/50 flex flex-col gap-6 rounded-sm border p-5 shadow-xs">
         {/* Progress */}
         <div className="flex flex-col gap-2.5">
@@ -91,11 +158,11 @@ export function ChapterSidebar({ initialLikes = 124 }: ChapterSidebarProps) {
             <Button
               variant="outline-editorial"
               size="icon"
-              onClick={copyLink}
+              onClick={shareOnInstagram}
               className="h-10 w-full cursor-pointer rounded-sm [&_svg]:size-5"
               title="Copy Link"
             >
-              <Link2 />
+              <Instagram />
             </Button>
             <Button
               variant="outline-editorial"
@@ -115,78 +182,84 @@ export function ChapterSidebar({ initialLikes = 124 }: ChapterSidebarProps) {
             >
               <Facebook className="fill-current text-inherit" />
             </Button>
-            <Button
+            <CopyButton
+              text="Text 1"
+              className="relative h-10 w-full cursor-pointer rounded-sm [&_svg]:size-5"
               variant="outline-editorial"
-              size="icon"
+              size="icon-sm"
               onClick={copyLink}
-              className="h-10 w-full cursor-pointer rounded-sm [&_svg]:size-5"
-              title="Copy text"
-            >
-              <Copy />
-            </Button>
+            />
           </div>
         </div>
-
-        <hr className="border-border/30" />
-
-        {/* Like and Save Buttons (Image 3 style) */}
-        <div className="flex items-center gap-3">
-          <Button
-            variant={liked ? 'default' : 'outline-brand-editorial'}
-            onClick={handleLike}
-            className={`h-10 flex-1 cursor-pointer rounded-sm text-sm font-semibold transition-all duration-300 ${
-              liked ? 'bg-brand-pink-500 hover:bg-brand-pink-600 text-white shadow-sm' : ''
-            }`}
-          >
-            <Heart
-              className={`size-4 transition-transform duration-300 ${liked ? 'scale-110 fill-current' : ''}`}
-            />
-            Like ({likesCount})
-          </Button>
-
-          <Button
-            variant={saved ? 'default' : 'outline-editorial'}
-            onClick={handleSave}
-            className={`h-10 flex-1 cursor-pointer rounded-sm text-sm font-semibold transition-all duration-300 ${
-              saved ? 'bg-text-secondary hover:bg-text-secondary/90 text-white shadow-sm' : ''
-            }`}
-          >
-            <Bookmark
-              className={`size-4 transition-transform duration-300 ${saved ? 'scale-110 fill-current' : ''}`}
-            />
-            {saved ? 'Saved' : 'Save Chapter'}
-          </Button>
-        </div>
       </div>
+
+      {/* FEEDBACK */}
       <div className="border-border/50 flex flex-col gap-6 rounded-sm border p-5 shadow-xs">
-        {/* Progress */}
         <div className="flex flex-col gap-2.5">
           <h3 className="text-text-primary text-lg font-semibold">Do you like this chapter?</h3>
           <p className="text-text-secondary-65 text-sm">Your feedback helps the author grow.</p>
         </div>
 
-        {/* View All Chapters Button */}
-        <div className="grid grid-cols-2 gap-3">
+        {/* LIKE DISLIKE BUTTON */}
+        <div className="grid grid-cols-12 gap-3">
+          {/* Like */}
           <Button
-            variant="outline-editorial"
-            className="h-10 w-full cursor-pointer rounded-sm text-sm font-semibold"
+            variant={voteStatus === 1 ? 'default' : 'outline-brand-editorial'}
+            onClick={() => handleReaction('upvote')}
+            className="col-span-6 h-10 rounded-sm"
           >
-            <Heart className="size-4" />
-            Like
+            <ThumbsUp className="size-4" />
+            {voteStatus === 1 ? 'Liked' : 'Like'}
           </Button>
 
+          {/* Dislike */}
           <Button
-            variant="outline-editorial"
-            className="h-10 w-full cursor-pointer rounded-sm text-sm font-semibold"
+            variant={voteStatus === -1 ? 'default' : 'outline-brand-editorial'}
+            onClick={() => handleReaction('downvote')}
+            className="col-span-6 h-10 rounded-sm"
+          >
+            <ThumbsDown className="size-4" />
+            {voteStatus === -1 ? 'Disliked' : 'Dislike'}
+          </Button>
+
+          {/* Save */}
+          <Button
+            variant={saved ? 'default' : 'outline-editorial'}
+            onClick={handleSave}
+            className={`col-span-12 h-10 flex-1 cursor-pointer rounded-sm text-sm font-semibold transition-all duration-300 ${
+              saved
+                ? 'bg-text-secondary hover:bg-text-secondary/90 dark:hover:bg-white/2/90 text-white shadow-sm dark:bg-white/2'
+                : ''
+            }`}
           >
             <Bookmark className="size-4" />
-            Save
+            {saved ? 'Saved' : 'Save Chapter'}
           </Button>
+        </div>
+
+        {/* ALL STATS */}
+        <div className="border-border/50 flex items-center justify-between gap-1 rounded-sm border p-3 text-sm">
+          <div className="text-text-primary flex items-center gap-1.5 font-semibold">
+            <ThumbsUp
+              className={`size-4 ${voteStatus === 1 ? 'text-brand-pink-500 fill-brand-pink-500' : 'text-text-secondary-65'}`}
+            />
+            <NumberFlow value={localUpvotes} />
+          </div>
+          <div className="text-text-primary flex items-center gap-1.5 font-semibold">
+            <ThumbsDown
+              className={`size-4 ${voteStatus === -1 ? 'text-text-secondary fill-text-secondary' : 'text-text-secondary-65'}`}
+            />
+            <NumberFlow value={localDownvotes} />
+          </div>
+          <div className="text-text-primary flex items-center gap-1.5 font-semibold">
+            <span className="text-text-secondary-65 text-xs tracking-wide uppercase">Score</span>
+            <NumberFlow value={localScore} />
+          </div>
         </div>
       </div>
 
+      {/* COMMUNITY GUIDELINES */}
       <div className="border-border/50 flex flex-col gap-6 rounded-sm border p-5 shadow-xs">
-        {/* Progress */}
         <div className="flex flex-col gap-2.5">
           <h3 className="text-text-primary text-lg font-semibold">Community guidelines</h3>
 

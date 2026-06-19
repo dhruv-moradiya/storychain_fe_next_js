@@ -1,6 +1,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
+import { IChapterDetailExtended } from '@/type';
 import { AutoSaveType, TAutoSaveContentRequest, TAutoSaveType } from '@/type/auto-save';
 import { formatForDisplay, useHotkey } from '@tanstack/react-hotkeys';
 import { Editor } from '@tiptap/react';
@@ -17,7 +18,7 @@ import {
 } from 'lucide-react';
 
 import { statusBadge } from '@/components/common/badge';
-import { type ChapterData, ChapterReader } from '@/components/common/chapter-reader';
+import { ChapterReader } from '@/components/common/chapter-reader';
 import { SubmitRequestDialog } from '@/components/common/submit-request-dialog';
 import toast from '@/components/shared/toast/toast';
 import { Button } from '@/components/ui/button';
@@ -58,6 +59,19 @@ interface BuilderHeaderProps {
   storyTitle?: string;
   parentChapterTitle?: string;
   draftId?: string;
+}
+
+interface ChapterData {
+  id: string;
+  title: string;
+  content: string;
+  author: {
+    id: string;
+    name: string;
+    avatar: string;
+    username: string;
+  };
+  status: ChapterStatus;
 }
 
 const statusBadgeConfig: Record<
@@ -201,7 +215,8 @@ function BuilderHeader({
     author: {
       id: 'current-user',
       name: authorName,
-      avatar: authorAvatar,
+      avatar: authorAvatar ?? '',
+      username: authorName,
     },
     status: 'draft',
   };
@@ -297,7 +312,7 @@ function BuilderHeader({
 
                   <div className="relative z-10 mx-auto max-w-2xl">
                     <ChapterReader
-                      chapter={previewChapter}
+                      chapter={previewChapter as unknown as IChapterDetailExtended}
                       showHeader={true}
                       showStats={false}
                       variant="preview"

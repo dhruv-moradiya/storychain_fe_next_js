@@ -60,6 +60,7 @@ interface IChapterDetailExtended extends IChapterDetail {
   author: IChapterAuthorDetail;
   previousChapters: IChapterNavInfo[];
   nextChapters: IChapterNavInfo[];
+  currentUserVote: IChapterVoteNumberType | null;
 }
 
 interface IChapterDetailResponse extends IBaseResponse<IChapterDetailExtended> {}
@@ -74,6 +75,7 @@ interface IChapterRecordReadingSessionResponse extends IBaseResponse<null> {}
 // COMMENT TYPES
 // -------------------
 type ICommentVoteType = 'upvote' | 'downvote' | null;
+type IChapterVoteNumberType = 1 | -1;
 
 interface ICommentAuthor {
   clerkId: string;
@@ -118,6 +120,8 @@ interface IPaginatedComments {
 
 interface IGetCommentsResponse extends IBaseResponse<IPaginatedComments> {}
 
+interface IReactToChapterResponse extends IBaseResponse<null> {}
+
 // -------------------
 // EXPORT TYPES
 // -------------------
@@ -132,7 +136,8 @@ export type {
   IChapterDetailResponse,
   IChapterStartReadingSessionResponse,
   IChapterRecordReadingSessionResponse,
-
+  IReactToChapterResponse,
+  IChapterVoteNumberType,
   // Comments
   IComment,
   ICommentAuthor,

@@ -4,6 +4,7 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import { Hash } from 'lucide-react';
+import { slugify } from 'transliteration';
 
 import { TagBadge } from '@/components/common/badge';
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
@@ -33,13 +34,10 @@ export const BasicInfoStep = memo(() => {
       return;
     }
 
-    const generatedSlug = title
-      .trim()
-      .toLowerCase()
-      .replace(/[\s_]+/g, '-')
-      .replace(/[^a-z0-9-]/g, '')
-      .replace(/--+/g, '-')
-      .replace(/^-+|-+$/g, '');
+    const generatedSlug = slugify(title, {
+      lowercase: true,
+      separator: '-',
+    });
 
     setValue('slug', generatedSlug, { shouldDirty: true });
   }, [title, setValue]);

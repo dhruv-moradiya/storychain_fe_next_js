@@ -18,7 +18,6 @@ import {
   useStartReadingSession,
 } from '@/services/chapters/chapters.mutation';
 
-import { ChapterHeader } from './header/chapter-header';
 import { useChapterActions } from './hooks/use-chapter-actions';
 import { ChapterPagination } from './navigation/chapter-pagination';
 

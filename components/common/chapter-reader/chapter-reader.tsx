@@ -2,11 +2,13 @@ import { forwardRef } from 'react';
 
 import { IChapterDetailExtended } from '@/type';
 import { formatDate } from 'date-fns';
-import { CalendarDays, Clock, Eye, MessageSquare, ThumbsUp } from 'lucide-react';
+import { CalendarDays, Clock } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
+
+import { ChapterStats } from './chapter-stats';
 
 export interface ChapterAuthor {
   id: string;
@@ -15,32 +17,8 @@ export interface ChapterAuthor {
   username?: string;
 }
 
-export interface ChapterData {
-  id: string;
-  title: string;
-  content: string;
-  author: ChapterAuthor;
-  storyTitle?: string;
-  chapterNumber?: number;
-  createdAt?: string | Date;
-  updatedAt?: string | Date;
-  wordCount?: number;
-  readTime?: number;
-  status?: 'draft' | 'published' | 'pending';
-  stats?: {
-    views?: number;
-    likes?: number;
-    comments?: number;
-  };
-  parentChapter?: {
-    id: string;
-    title: string;
-  };
-  tags?: string[];
-}
-
 interface ChapterReaderProps {
-  chapter: IChapterDetailExtended | ChapterData;
+  chapter: IChapterDetailExtended;
   showHeader?: boolean;
   showStats?: boolean;
   variant?: 'full' | 'compact' | 'preview';
@@ -63,31 +41,17 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
 
     const isCompact = variant === 'compact';
 
-    const normalizedStats = chapter.stats
-      ? {
-          reads:
-            'reads' in chapter.stats
-              ? chapter.stats.reads
-              : (chapter.stats as { views?: number }).views || 0,
-          comments: chapter.stats.comments || 0,
-          likes:
-            'votes' in chapter
-              ? chapter.votes.upvotes
-              : (chapter.stats as { likes?: number }).likes || 0,
-        }
-      : null;
-
     return (
       <div ref={ref} className={cn('chapter-reader', className)}>
-        {/* Header - Clean and minimal */}
+        {/* HEADER */}
         {true && (
           <header className="mb-10 space-y-6">
-            {/* Title */}
+            {/* TITLE */}
             <h1 className="text-3xl font-bold sm:text-4xl">{chapter.title}</h1>
 
-            {/* Meta */}
+            {/* META */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              {/* Left side */}
+              {/* LEFT SIDE */}
               <div className="text-text-secondary-65 flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-1.5">
                   <Clock className="h-4 w-4" />
@@ -102,7 +66,7 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
                 </div>
               </div>
 
-              {/* Author */}
+              {/* AUTHOR */}
               <div className="bg-muted/40 flex items-center gap-3 rounded-xl border px-3 py-2">
                 <Avatar className="h-9 w-9">
                   <AvatarImage src="https://i.pravatar.cc/150?img=12" />
@@ -118,12 +82,12 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
               </div>
             </div>
 
-            {/* Divider */}
+            {/* DIVIDER */}
             <div className="bg-border/50 h-px w-full" />
           </header>
         )}
 
-        {/* Content */}
+        {/* CONTENT */}
         <article
           className={cn(
             // Base typography — Literata for body, generous line-height for long-form reading
@@ -192,28 +156,8 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
           dangerouslySetInnerHTML={{ __html: chapter.content }}
         />
 
-        {/* Stats Footer */}
-        {showStats && normalizedStats && !isCompact && (
-          <>
-            <Separator className="my-6" />
-            <div className="text-muted-foreground flex items-center gap-6 text-sm">
-              {normalizedStats.reads !== undefined && (
-                <div className="flex items-center gap-1.5">
-                  <Eye className="h-4 w-4" />
-                  <span>{normalizedStats.reads.toLocaleString()} reads</span>
-                </div>
-              )}
-              <div className="flex items-center gap-1.5">
-                <ThumbsUp className="h-4 w-4" />
-                <span>{normalizedStats.likes} likes</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <MessageSquare className="h-4 w-4" />
-                <span>{normalizedStats.comments} comments</span>
-              </div>
-            </div>
-          </>
-        )}
+        {/* STATS FOOTER */}
+        {showStats && chapter.stats && !isCompact && <ChapterStats stats={chapter.stats} />}
       </div>
     );
   }
