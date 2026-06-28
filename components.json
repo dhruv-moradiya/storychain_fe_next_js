@@ -25,6 +25,7 @@
       "headers": {
         "Authorization": "Bearer n1pr1j8bxLDHDyn2HM7DCFMM8DDH9eQiBTcagN1YpC57dE4HecpY2VhHvfwTPEEVV8rpK9Lanh9syvsZEvxHW9"
       }
-    }
+    },
+    "@ncdai": "https://chanhdai.com/r/{name}.json"
   }
 }

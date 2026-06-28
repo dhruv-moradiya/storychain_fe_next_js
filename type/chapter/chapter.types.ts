@@ -1,7 +1,8 @@
-import { CHAPTER_PR_STATUSES, CHAPTER_STATUSES } from './chapter-enum';
+import { CHAPTER_PR_STATUSES, CHAPTER_REACTION_TYPES, CHAPTER_STATUSES } from './chapter-enum';
 
 export type TChapterStatus = (typeof CHAPTER_STATUSES)[number];
 export type TChapterPRStatus = (typeof CHAPTER_PR_STATUSES)[number];
+export type TChapterReactionType = (typeof CHAPTER_REACTION_TYPES)[number];
 
 export interface IChapterStats {
   reads: number;
@@ -61,6 +62,6 @@ export interface IChapter {
 
   reportCount: number;
   isFlagged: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }

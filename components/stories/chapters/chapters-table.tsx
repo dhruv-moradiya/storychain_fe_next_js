@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 
 import {
@@ -43,7 +44,8 @@ interface ChaptersTableProps {
 }
 
 export function ChaptersTable({ data, context, pageSize = 10, className }: ChaptersTableProps) {
-  const [expanded, setExpanded] = useState<ExpandedState>({});
+  const router = useRouter();
+  const [expanded, setExpanded] = useState<ExpandedState>(true);
   const [currentPage, setCurrentPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(pageSize);
 
@@ -51,6 +53,10 @@ export function ChaptersTable({ data, context, pageSize = 10, className }: Chapt
     () => buildChapterColumns(context),
     [context]
   );
+
+  function handleRowClick(slug: string, storySlug: string) {
+    router.push(`/stories/${storySlug}/chapter/${slug}`);
+  }
 
   const table = useReactTable({
     data,
@@ -129,6 +135,7 @@ export function ChaptersTable({ data, context, pageSize = 10, className }: Chapt
                     'border-border/30 group cursor-pointer border-b transition-all duration-200 hover:shadow-xl',
                     getRowDepthStyle(row)
                   )}
+                  onClick={() => handleRowClick(row.original.slug, row.original.storySlug)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="px-4 py-3">

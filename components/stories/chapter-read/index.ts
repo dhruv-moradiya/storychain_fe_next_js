@@ -3,4 +3,4 @@ export * from './header/chapter-header';
 export * from './actions/chapter-action-bar';
 export * from './navigation/chapter-pagination';
 export * from './hooks/use-chapter-actions';
-export * from './mock-data';
+export * from './sidebar/chapter-sidebar';

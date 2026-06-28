@@ -55,7 +55,7 @@ const useChapterNode = (chapters: IChapterTreeItem[]): AllNodeTypes[] => {
         parentChapterSlug: node.parentChapterSlug ?? null,
 
         // UI helpers
-        timeAgo: formatTimeAgo(node.createdAt),
+        timeAgo: formatTimeAgo(new Date(node.createdAt)),
         readTime: estimateReadTime(node.title),
         hasChildren: node.children.length > 0,
 

@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Loader2 } from 'lucide-react';
+
+import { Skeleton } from '@/components/ui/skeleton';
 
 const OverviewSectionLoading = () => {
   return (
@@ -9,85 +10,53 @@ const OverviewSectionLoading = () => {
       initial="hidden"
       animate="show"
       variants={{ show: { transition: { staggerChildren: 0.15 } } }}
-      className="mx-auto max-w-xl space-y-10 pb-14"
+      className="mx-auto w-full max-w-6xl space-y-6 px-3 pb-14 sm:space-y-8 sm:px-4"
     >
-      {/* Back button skeleton */}
-      <motion.div
-        variants={{ hidden: { opacity: 0, x: -10 }, show: { opacity: 1, x: 0 } }}
-        className="bg-muted/50 h-8 w-20 rounded-md border"
-      />
-
-      {/* Cover image skeleton */}
+      {/* StoryHero Skeleton */}
       <motion.div
         variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
-        className="bg-muted/40 relative h-64 w-full overflow-hidden rounded-xl"
+        className="space-y-6"
       >
-        <motion.div
-          animate={{ x: ['-100%', '100%'] }}
-          transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
-          className="via-muted/60 absolute inset-0 w-full bg-linear-to-r from-transparent to-transparent"
-        />
-      </motion.div>
-
-      {/* Header skeleton */}
-      <motion.header
-        variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
-        className="space-y-3"
-      >
-        <div className="bg-muted/50 h-4 w-40 rounded" />
-        <div className="bg-muted/50 h-8 w-3/4 rounded" />
-
-        {/* Tags skeleton */}
-        <div className="flex gap-2">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-muted/50 h-4 w-16 rounded" />
-          ))}
+        {/* Top Actions */}
+        <div className="flex items-center justify-between gap-2">
+          <Skeleton className="h-8 w-20" />
+          <div className="flex items-center gap-1.5 sm:gap-3">
+            <Skeleton className="hidden h-9 w-9 rounded-lg sm:block" />
+            <Skeleton className="h-8 w-16 rounded-lg sm:h-9 sm:w-20" />
+            <Skeleton className="h-8 w-8 rounded-lg sm:h-9 sm:w-9" />
+            <Skeleton className="h-8 w-8 rounded-lg sm:h-9 sm:w-9" />
+          </div>
         </div>
-      </motion.header>
 
-      {/* Stats skeleton */}
-      <motion.div variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }} className="space-y-4">
-        <div className="bg-muted/50 h-5 w-32 rounded" />
-
-        {/* Stat cards */}
-        <motion.div
-          initial="hidden"
-          animate="show"
-          variants={{ show: { transition: { staggerChildren: 0.12 } } }}
-          className="grid gap-3"
-        >
-          {[1, 2, 3, 4].map((i) => (
-            <motion.div
-              key={i}
-              variants={{
-                hidden: { opacity: 0, y: 6 },
-                show: { opacity: 1, y: 0 },
-              }}
-              className="bg-muted/40 relative flex h-[42px] w-full items-center justify-between overflow-hidden rounded-md border px-3"
-            >
-              <motion.div
-                animate={{ x: ['-120%', '120%'] }}
-                transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-                className="via-muted/50 absolute inset-0 bg-linear-to-r from-transparent to-transparent"
-              />
-              <div className="bg-muted/50 h-4 w-24 rounded" />
-              <div className="bg-muted/50 h-4 w-12 rounded" />
-            </motion.div>
-          ))}
-        </motion.div>
+        {/* Header */}
+        <div className="flex items-center gap-4">
+          <Skeleton className="h-28 w-20 shrink-0 rounded-lg sm:h-36 sm:w-24" />
+          <div className="flex-1 space-y-3">
+            <Skeleton className="h-3 w-32" />
+            <Skeleton className="h-6 w-3/4 sm:h-8 sm:w-1/2" />
+            <div className="flex flex-wrap gap-1.5">
+              <Skeleton className="h-5 w-20 rounded-full" />
+              <Skeleton className="h-5 w-24 rounded-full" />
+            </div>
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              <Skeleton className="h-5 w-16 rounded-full" />
+              <Skeleton className="h-5 w-20 rounded-full" />
+              <Skeleton className="h-5 w-24 rounded-full" />
+            </div>
+          </div>
+        </div>
       </motion.div>
 
-      {/* Loader icon */}
+      {/* Tabs Skeleton */}
       <motion.div
         variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
-        className="flex justify-center pt-4"
+        className="space-y-5"
       >
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-        >
-          <Loader2 size={22} className="text-muted-foreground/70" />
-        </motion.div>
+        <Skeleton className="h-[42px] w-full rounded-[10px]" />
+        <div className="space-y-4 pt-2">
+          <Skeleton className="h-32 w-full rounded-xl" />
+          <Skeleton className="h-32 w-full rounded-xl" />
+        </div>
       </motion.div>
     </motion.section>
   );

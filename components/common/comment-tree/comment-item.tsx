@@ -87,22 +87,24 @@ export function CommentItem({
 
   if (comment.isDeleted) {
     return (
-      <div className="flex items-center gap-3 rounded-lg">
-        <div className="flex h-6 w-6 items-center justify-center rounded-full">
-          <MessageSquareDashed size={11} className="opacity-50" />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="ct-deleted flex items-center gap-3 rounded-xl px-4 py-3"
+      >
+        <div className="flex h-7 w-7 items-center justify-center rounded-full border border-dashed border-current opacity-40">
+          <MessageSquareDashed size={12} />
         </div>
-
-        <p className="font-ibm-plex-mono text-xs italic">[Comment removed]</p>
-      </div>
+        <p className="font-ibm-plex-mono ct-meta-text text-xs italic opacity-60">
+          [Comment removed]
+        </p>
+      </motion.div>
     );
   }
 
   const timeAgo = formatDistance(new Date(comment.createdAt), new Date(), { addSuffix: true });
-
   const initials = getInitials(comment.author.displayName);
-
   const depthAccent = getDepthAccent(depth);
-
   const canNestDeeper = depth < maxDepth;
 
   function handleLikeToggle() {
@@ -125,21 +127,27 @@ export function CommentItem({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 6 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="group relative rounded-2xl"
+      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+      className="group/comment relative"
       style={{
-        paddingLeft: depth > 0 ? `${depth * 20}px` : '0px',
+        paddingLeft: depth > 0 ? `${Math.min(depth * 16, 64)}px` : '0px',
       }}
     >
-      <div className="sm:p-4">
-        <div className="flex gap-3">
-          <Avatar className="border-border h-10 w-10 border shadow-sm">
+      {/* Card wrapper */}
+      <div className="ct-comment-card rounded-2xl p-4 sm:p-5">
+        {/* Depth accent line */}
+        {depth > 0 && <div className="ct-depth-line" style={{ background: depthAccent }} />}
+
+        <div className="flex gap-3.5">
+          {/* Avatar */}
+          <Avatar className="border-border h-9 w-9 shrink-0 border shadow-sm sm:h-10 sm:w-10">
             <AvatarImage src={comment.author.avatarUrl} alt={comment.author.displayName} />
             <AvatarFallback
-              className="font-ibm-plex-mono text-[10px] font-semibold"
+              className="font-ibm-plex-mono text-[10px] font-bold"
               style={{
-                background: `linear-gradient(135deg, ${depthAccent}22, ${depthAccent}44)`,
+                background: `linear-gradient(135deg, ${depthAccent}18, ${depthAccent}38)`,
                 color: depthAccent,
               }}
             >
@@ -166,6 +174,7 @@ export function CommentItem({
               onReplyToggle={() => setShowReply((p) => !p)}
             />
 
+            {/* Reply box */}
             <AnimatePresence>
               {showReply && (
                 <ReplyBox
@@ -181,12 +190,12 @@ export function CommentItem({
 
             {/* Show / Hide replies button */}
             {totalReplyCount > 0 && canNestDeeper && (
-              <div className="mt-2">
+              <div className="mt-3">
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={handleToggleReplies}
-                  className="ct-show-replies-btn font-ibm-plex-mono text-brand-pink-500 hover:text-brand-pink-600 group/replies h-7 gap-1.5 rounded-full px-3 text-[11px] font-semibold transition-all hover:bg-transparent"
+                  className="ct-show-replies-btn font-ibm-plex-mono text-brand-pink-500 hover:text-brand-pink-600 group/replies h-8 gap-1.5 rounded-full px-3.5 text-[11px] font-semibold transition-all hover:bg-transparent"
                 >
                   {showReplies ? (
                     <>
@@ -195,7 +204,10 @@ export function CommentItem({
                     </>
                   ) : (
                     <>
-                      <ChevronDown size={13} className="transition-transform" />
+                      <ChevronDown
+                        size={13}
+                        className="transition-transform group-hover/replies:translate-y-0.5"
+                      />
                       {totalReplyCount === 1 ? '1 reply' : `${totalReplyCount} replies`}
                     </>
                   )}
@@ -210,8 +222,8 @@ export function CommentItem({
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.25, ease: 'easeInOut' }}
-                  className="mt-2 space-y-2 overflow-hidden"
+                  transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                  className="ct-replies-connector mt-3 space-y-2 overflow-hidden"
                 >
                   {/* Loading skeleton for replies */}
                   {shouldFetchReplies && isLoadingReplies && (

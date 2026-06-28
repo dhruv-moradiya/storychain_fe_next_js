@@ -14,9 +14,17 @@ interface IChapterTreeItem extends Omit<IChapter, 'authorId' | 'content' | 'pull
   author: {
     clerkId: string;
     username: string;
+    email: string;
     avatarUrl: string;
   };
   prId: string | null;
+  ancestorDetails: {
+    slug: string;
+    branchIndex: number;
+  }[];
+  coinPrice: number;
+  createdAt: string;
+  updatedAt: string;
   children: IChapterTreeItem[];
 }
 

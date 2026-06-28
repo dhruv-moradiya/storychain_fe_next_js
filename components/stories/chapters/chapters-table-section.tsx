@@ -1,15 +1,20 @@
 'use client';
 
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
 import { BookOpen, ScrollText, Shield, User } from 'lucide-react';
 
+import { TableSkeleton } from '@/components/common/table-skeleton';
+import type { IChapterTreeItem } from '@/components/stories/sections/tree-section/types/canvas.types';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useGetStoryTree } from '@/services/stories/stories.query';
 
 import { ChaptersTable } from './chapters-table';
-import { MOCK_CHAPTERS_TABLE, MOCK_CURRENT_USER_ID } from './mock-data';
-import type { IChaptersTableContext, UserRole } from './types';
+import { useMapTreeToTable } from './hooks/use-map-tree-to-table';
+import { MOCK_CURRENT_USER_ID } from './mock-data';
+import type { IChapterTableRow, IChaptersTableContext, UserRole } from './types';
 
 interface RoleOption {
   role: UserRole;
@@ -26,6 +31,10 @@ const ROLE_OPTIONS: RoleOption[] = [
 ];
 
 export function ChaptersTableSection() {
+  const params = useParams();
+  const slug = params?.slug as string;
+  const { data, isLoading } = useGetStoryTree(slug);
+
   const [selectedRole, setSelectedRole] = useState<RoleOption>(ROLE_OPTIONS[3]);
 
   const context: IChaptersTableContext = {
@@ -33,6 +42,12 @@ export function ChaptersTableSection() {
     currentUserId: MOCK_CURRENT_USER_ID,
     userRole: selectedRole.role,
   };
+
+  const tableData = useMapTreeToTable(data?.data?.chapters);
+
+  if (isLoading) {
+    return <TableSkeleton rows={5} />;
+  }
 
   return (
     <div className="flex flex-col gap-5">
@@ -108,7 +123,7 @@ export function ChaptersTableSection() {
       </div>
 
       {/* Table */}
-      <ChaptersTable data={MOCK_CHAPTERS_TABLE} context={context} pageSize={10} />
+      <ChaptersTable data={tableData} context={context} pageSize={10} />
     </div>
   );
 }

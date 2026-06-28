@@ -17,4 +17,18 @@ enum ChapterPRStatus {
 
 const CHAPTER_PR_STATUSES = ['pending', 'approved', 'rejected', 'merged'] as const;
 
-export { ChapterStatus, CHAPTER_STATUSES, ChapterPRStatus, CHAPTER_PR_STATUSES };
+enum ChapterReactionType {
+  UPVOTE = 'upvote',
+  DOWNVOTE = 'downvote',
+}
+
+const CHAPTER_REACTION_TYPES = ['upvote', 'downvote'] as const;
+
+export {
+  ChapterStatus,
+  CHAPTER_STATUSES,
+  ChapterPRStatus,
+  CHAPTER_PR_STATUSES,
+  CHAPTER_REACTION_TYPES,
+  ChapterReactionType,
+};

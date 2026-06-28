@@ -20,11 +20,11 @@ export function CommentActions({
   onReplyToggle,
 }: Props) {
   return (
-    <div className="mt-2.5 flex items-center gap-2">
+    <div className="mt-3 flex items-center gap-2.5">
       <LikeButton likes={likes} isLiked={isLiked} onToggle={onLike} />
 
       {replyCount > 0 && (
-        <span className="font-ibm-plex-mono flex items-center gap-1 text-[11px] font-medium">
+        <span className="ct-reply-count font-ibm-plex-mono flex items-center gap-1.5 text-[11px] font-medium">
           <MessageCircle size={12} />
           {replyCount}
         </span>
@@ -33,7 +33,7 @@ export function CommentActions({
       {canReply && (
         <button
           onClick={onReplyToggle}
-          className="font-ibm-plex-mono ml-auto flex h-7 items-center gap-1.5 rounded-full px-3 text-[11px] font-semibold transition-all"
+          className="ct-action-btn font-ibm-plex-mono ml-auto flex h-8 items-center gap-1.5 px-3.5 text-[11px] font-semibold"
         >
           <CornerDownRight size={12} strokeWidth={2.5} />
           <span className="hidden sm:inline">Reply</span>

@@ -4,6 +4,7 @@ import {
   IChapterRecordReadingSessionRequest,
   IChapterStartReadingSessionRequest,
   IGetCommentsRequest,
+  IReactToChapterRequest,
 } from '@/type/chapter/chapter-request.type';
 import {
   IChapterDetailResponse,
@@ -11,6 +12,7 @@ import {
   IChapterSearchResponse,
   IChapterStartReadingSessionResponse,
   IGetCommentsResponse,
+  IReactToChapterResponse,
   IUserChaptersResponse,
 } from '@/type/chapter/chapter-response.type';
 import { AxiosResponse } from 'axios';
@@ -81,6 +83,15 @@ const chapterApi = {
       `/comments/chapter/${input.chapterSlug}`,
       { params }
     );
+    return response.data;
+  },
+
+  reactToChapter: async (input: IReactToChapterRequest) => {
+    const { slug, type } = input;
+    const response: AxiosResponse<IReactToChapterResponse> =
+      await apiClient.post<IReactToChapterResponse>(`/chapters/${slug}/reactions`, {
+        type: type,
+      });
     return response.data;
   },
 };

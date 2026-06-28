@@ -19,7 +19,7 @@ export function StorychainLogo({
   return (
     <div className={`relative ${className}`} style={{ height }}>
       <Image
-        src="https://res.cloudinary.com/dpji4qfnu/image/upload/v1774158510/storychain-logo-raw-removebg-preview_mhethr.png"
+        src="https://res.cloudinary.com/dpji4qfnu/image/upload/v1781672960/5a66e236-525f-4415-a962-fabcd2e705b2_1_vigjei.png"
         alt="Storychain Logo"
         height={height}
         width={height * 3}

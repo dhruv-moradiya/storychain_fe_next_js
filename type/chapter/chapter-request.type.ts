@@ -1,3 +1,5 @@
+import { TChapterReactionType } from './chapter.types';
+
 interface IChapterStartReadingSessionRequest {
   storySlug: string;
   chapterSlug: string;
@@ -33,6 +35,11 @@ interface IGetCommentsRequest {
   parentCommentId?: string;
 }
 
+interface IReactToChapterRequest {
+  slug: string;
+  type: TChapterReactionType;
+}
+
 export type {
   IChapterStartReadingSessionRequest,
   IChapterRecordReadingSessionRequest,
@@ -40,4 +47,5 @@ export type {
   ICommentCreateRequest,
   ICommentUpdateRequest,
   ICommentDeleteRequest,
+  IReactToChapterRequest,
 };

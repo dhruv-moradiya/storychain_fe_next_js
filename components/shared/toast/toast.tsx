@@ -70,7 +70,7 @@ function ToastContent({
       }}
       className={cn(
         // Base layout — compact on mobile, comfortable on desktop
-        'pointer-events-auto relative flex w-full items-start gap-2.5 overflow-hidden rounded-xl border shadow-lg backdrop-blur-xl',
+        'pointer-events-auto relative flex w-full items-center gap-2.5 overflow-hidden rounded-xl border shadow-lg backdrop-blur-xl',
         // Mobile: narrower, tighter padding
         'max-w-[calc(100vw-24px)] px-3 py-2.5',
         // Desktop: wider with more padding

@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 
 import { buildChapterMeta } from '@/components/common';
-import { ChapterReadClient } from '@/components/stories/chapter-read';
+import { ContentLayout } from '@/components/dashboard';
+import { ChapterReadClient, ChapterSidebar } from '@/components/stories/chapter-read';
 import { chapterApi } from '@/services/chapters/chapters-api';
 
 interface IChapterPageProps {
@@ -42,10 +43,15 @@ export default async function ChapterPage({ params }: IChapterPageProps) {
   const chapterDetail = await chapterApi.getCachedChapterBySlug(chapterSlug);
 
   return (
-    <ChapterReadClient
-      initialData={chapterDetail.data}
-      storySlug={storySlug}
-      chapterSlug={chapterSlug}
-    />
+    <ContentLayout maxWidth="8xl" centered={true} className="grid grid-cols-12 gap-12">
+      <ChapterReadClient
+        initialData={chapterDetail.data}
+        storySlug={storySlug}
+        chapterSlug={chapterSlug}
+      />
+      <div className="col-span-3">
+        <ChapterSidebar chapterData={chapterDetail.data} />
+      </div>
+    </ContentLayout>
   );
 }
