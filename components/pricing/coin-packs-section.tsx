@@ -1,7 +1,6 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
 
 import type { ICoinBundle } from '@/type/coin-bundle/coin-bundle.type';
 import type { RazorpayFailedResponse, RazorpaySuccessResponse } from '@/type/razorpay.d';
@@ -24,8 +23,12 @@ import { Button } from '@/components/ui/button';
 import { openRazorpayCheckout } from '@/lib/razorpay';
 import { cn, scrollReveal } from '@/lib/utils';
 import { useGetCoinBundles } from '@/services/coin-bundles/coin-bundles.query';
-import { useCreateCoinOrder } from '@/services/coin-orders/coin-orders.mutation';
+import {
+  useCoinOrderVerifyPayment,
+  useCreateCoinOrder,
+} from '@/services/coin-orders/coin-orders.mutation';
 
+import toast from '../shared/toast/toast';
 import type { CoinPackUI } from './coin-pack-ui.type';
 
 // Cycles through icons + colours when rendering API bundles (the API has no
@@ -111,6 +114,31 @@ function CoinPackCard({ pack, index }: { pack: CoinPackUI; index: number }) {
   const valuePerRupee = totalCoins / pack.priceINR;
 
   const { mutate: createCoinOrder, isPending: isCreatingOrder } = useCreateCoinOrder();
+  const { mutate: verifyPayment, isPending: isVerifyingPayment } = useCoinOrderVerifyPayment();
+
+  const handleVerifyPayment = (res: RazorpaySuccessResponse & { orderId: string }) => {
+    const { orderId, razorpay_order_id, razorpay_payment_id, razorpay_signature } = res;
+    verifyPayment(
+      {
+        coinOrderId: orderId,
+        razorpayOrderId: razorpay_order_id,
+        razorpayPaymentId: razorpay_payment_id,
+        razorpaySignature: razorpay_signature,
+      },
+      {
+        onSuccess(response) {
+          console.log('Payment verified:', response);
+          // toast.success(`🎉 Payment verified! ${pack.totalCoins.toLocaleString()} coins will be credited shortly.`, {
+          //   icon: '💳',
+          // });
+        },
+        onError(error) {
+          console.error('Payment verification failed:', error);
+          toast.error('Could not verify payment. Please try again.');
+        },
+      }
+    );
+  };
 
   const handleBuyPack = () => {
     if (!isSignedIn) {
@@ -129,6 +157,7 @@ function CoinPackCard({ pack, index }: { pack: CoinPackUI; index: number }) {
             toast.success(
               `🎉 Payment successful! ${orderData.bundle.totalCoins.toLocaleString()} coins will be credited shortly.`
             );
+            handleVerifyPayment({ ...res, orderId: orderData.coinOrderId });
           };
 
           const handleFailure = (res: RazorpayFailedResponse) => {
@@ -139,7 +168,7 @@ function CoinPackCard({ pack, index }: { pack: CoinPackUI; index: number }) {
           };
 
           const handleDismiss = () => {
-            toast('Payment cancelled. You can try again anytime.', {
+            toast.error('Payment cancelled. You can try again anytime.', {
               icon: '💳',
             });
           };

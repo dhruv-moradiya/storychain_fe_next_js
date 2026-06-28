@@ -6,4 +6,11 @@ interface ICoinOrderPayload {
   currency: TCoinOrderCurrency;
 }
 
-export type { ICoinOrderPayload };
+interface ICoinOrderVerifyPayment {
+  razorpayOrderId: string;
+  razorpaySignature: string;
+  razorpayPaymentId: string;
+  coinOrderId: string;
+}
+
+export type { ICoinOrderPayload, ICoinOrderVerifyPayment };
