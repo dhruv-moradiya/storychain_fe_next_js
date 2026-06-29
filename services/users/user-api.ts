@@ -1,5 +1,5 @@
 import { IBaseResponse } from '@/type/base-response.type';
-import { IMeResponse } from '@/type/user/user-response.type';
+import { IMeResponse, TGetWalletResponse } from '@/type/user/user-response.type';
 
 import { api } from '@/lib/api-client';
 
@@ -19,6 +19,10 @@ const UserApi = {
 
   getMe: async (): Promise<IMeResponse> => {
     return await api.get<IMeResponse>('/users/me');
+  },
+
+  getWallet: async (): Promise<TGetWalletResponse> => {
+    return await api.get<TGetWalletResponse>('/wallet/balance');
   },
 };
 

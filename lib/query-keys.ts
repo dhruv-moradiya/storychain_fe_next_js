@@ -11,6 +11,7 @@ export const QueryKey = {
   user: {
     me: ['user', 'me'] as const,
     searchByUsername: (username: string) => ['user', 'search', username] as const,
+    getWallet: ['user', 'wallet'] as const,
   },
 
   notification: {

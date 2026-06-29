@@ -1,25 +1,50 @@
-'use client';
+import type { Metadata } from 'next';
 
+import { CollaborationSection } from '@/components/how-to-use/collaboration-section';
 import { CTASection } from '@/components/how-to-use/cta-section';
-import { FeatureSection } from '@/components/how-to-use/feature-section';
-import { GettingStarted } from '@/components/how-to-use/getting-started';
+import { DistributionSection } from '@/components/how-to-use/distribution-section';
+import { DocLayout } from '@/components/how-to-use/doc-layout';
+import { GettingStartedSection } from '@/components/how-to-use/getting-started-section';
+import { GuideFAQSection } from '@/components/how-to-use/guide-faq-section';
 import { HowToUseHero } from '@/components/how-to-use/how-to-use-hero';
-import { ProTips } from '@/components/how-to-use/pro-tips';
-import { gettingStartedSteps, proTips, sections } from '@/lib/data/how-to-use-data';
+import { MonetizationSection } from '@/components/how-to-use/monetization-section';
+import { ProfileSettingsSection } from '@/components/how-to-use/profile-settings-section';
+import { ReadingSection } from '@/components/how-to-use/reading-section';
+import { WritingEditingSection } from '@/components/how-to-use/writing-editing-section';
 
-// Note: Metadata must be exported from a Server Component
-// Moving this to a layout.tsx for this route group would be better
+export const metadata: Metadata = {
+  title: 'How StoryChain Works | App Guide',
+  description:
+    'A complete guide to creating stories, collaborating with others, earning from your writing, and discovering content on StoryChain.',
+};
+
+function SectionDivider() {
+  return <div className="border-border/30 mx-auto border-t" />;
+}
+
 export default function HowToUsePage() {
   return (
     <div className="bg-bg-cream min-h-screen">
       <HowToUseHero />
-      <GettingStarted steps={gettingStartedSteps} />
 
-      {sections.map((section, index) => (
-        <FeatureSection key={section.id} section={section} index={index} />
-      ))}
+      <DocLayout>
+        <GettingStartedSection />
+        <SectionDivider />
+        <CollaborationSection />
+        <SectionDivider />
+        <MonetizationSection />
+        <SectionDivider />
+        <DistributionSection />
+        <SectionDivider />
+        <WritingEditingSection />
+        <SectionDivider />
+        <ReadingSection />
+        <SectionDivider />
+        <ProfileSettingsSection />
+        <SectionDivider />
+        <GuideFAQSection />
+      </DocLayout>
 
-      <ProTips tips={proTips} />
       <CTASection />
     </div>
   );

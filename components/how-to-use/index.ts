@@ -1,5 +1,11 @@
 export { HowToUseHero } from './how-to-use-hero';
-export { GettingStarted } from './getting-started';
-export { FeatureSection } from './feature-section';
-export { ProTips } from './pro-tips';
+export { DocLayout } from './doc-layout';
+export { GettingStartedSection } from './getting-started-section';
+export { CollaborationSection } from './collaboration-section';
+export { MonetizationSection } from './monetization-section';
+export { DistributionSection } from './distribution-section';
+export { WritingEditingSection } from './writing-editing-section';
+export { ReadingSection } from './reading-section';
+export { ProfileSettingsSection } from './profile-settings-section';
+export { GuideFAQSection } from './guide-faq-section';
 export { CTASection } from './cta-section';

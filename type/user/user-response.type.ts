@@ -42,3 +42,21 @@ export interface IUser {
 }
 
 export type IMeResponse = IBaseResponse<IUser>;
+
+// -----------------
+// WALLET
+// -----------------
+
+export interface IWallet {
+  _id: string;
+  userId: string;
+  balance: number;
+  totalEarned: number;
+  totalSpent: number;
+  totalWithdrawn: number;
+  pendingWithdrawal: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type TGetWalletResponse = IBaseResponse<IWallet>;

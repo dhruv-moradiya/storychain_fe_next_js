@@ -39,6 +39,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { useGetNotifications } from '@/services/notifications/notifications.query';
+import { useGetWallet } from '@/services/users/user.query';
 
 import { NotificationMessage } from '../shared/notification-message';
 import { StorychainLogo } from './logo/storychain-logo';
@@ -99,6 +100,21 @@ const NotificationItem = ({ notification }: { notification: INotification }) => 
       </div>
       {!notification.isRead && <div className="bg-brand-pink-500 h-2 w-2 shrink-0 rounded-full" />}
     </motion.div>
+  );
+};
+
+const UserCoins = () => {
+  const { data: walletData, isPending, isError } = useGetWallet();
+
+  if (isError) return null;
+
+  return (
+    <div className="text-secondary-65 flex items-center gap-1.5 rounded-full px-3 py-1.5">
+      <CoinsIcon className="h-5 w-5" strokeWidth={1.5} />
+      <span className="text-secondary-65 text-sm font-semibold">
+        {isPending ? '...' : (walletData?.balance ?? 0)}
+      </span>
+    </div>
   );
 };
 
@@ -278,6 +294,7 @@ export default function Navbar() {
         {/* RIGHT */}
         <div className="flex items-center gap-1.5">
           <ThemeToggle />
+
           {isSignedIn && (
             <Popover open={isNotificationOpen} onOpenChange={setIsNotificationOpen}>
               <PopoverTrigger asChild>
@@ -371,6 +388,8 @@ export default function Navbar() {
               </PopoverContent>
             </Popover>
           )}
+
+          {isSignedIn && <UserCoins />}
 
           {isSignedIn ? (
             <DropdownMenu>
