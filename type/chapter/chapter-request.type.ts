@@ -40,6 +40,11 @@ interface IReactToChapterRequest {
   type: TChapterReactionType;
 }
 
+interface IUnlockChapterRequest {
+  slug: string;
+  storySlug?: string;
+}
+
 export type {
   IChapterStartReadingSessionRequest,
   IChapterRecordReadingSessionRequest,
@@ -48,4 +53,5 @@ export type {
   ICommentUpdateRequest,
   ICommentDeleteRequest,
   IReactToChapterRequest,
+  IUnlockChapterRequest,
 };

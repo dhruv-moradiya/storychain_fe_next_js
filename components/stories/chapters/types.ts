@@ -57,7 +57,7 @@ export interface IChapterTableRow {
 
   // Coin gating
   coinPrice: number;
-  isUnlockedByUser: boolean;
+  isUnlock: boolean;
 
   // Timestamps
   createdAt: string;

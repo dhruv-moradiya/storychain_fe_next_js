@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 
@@ -36,6 +37,11 @@ import { cn } from '@/lib/utils';
 import { buildChapterColumns } from './columns';
 import type { IChapterTableRow, IChaptersTableContext } from './types';
 
+const ChapterUnlockDialog = dynamic(
+  () => import('./chapter-unlock-dialog').then((mod) => mod.ChapterUnlockDialog),
+  { ssr: false }
+);
+
 interface ChaptersTableProps {
   data: IChapterTableRow[];
   context: IChaptersTableContext;
@@ -48,13 +54,21 @@ export function ChaptersTable({ data, context, pageSize = 10, className }: Chapt
   const [expanded, setExpanded] = useState<ExpandedState>(true);
   const [currentPage, setCurrentPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(pageSize);
+  const [selectedLockedChapter, setSelectedLockedChapter] = useState<{
+    slug: string;
+    storySlug: string;
+  } | null>(null);
 
   const columns = useMemo<ColumnDef<IChapterTableRow>[]>(
     () => buildChapterColumns(context),
     [context]
   );
 
-  function handleRowClick(slug: string, storySlug: string) {
+  function handleRowClick(slug: string, storySlug: string, isUnlock: boolean) {
+    if (!isUnlock) {
+      setSelectedLockedChapter({ slug, storySlug });
+      return;
+    }
     router.push(`/stories/${storySlug}/chapter/${slug}`);
   }
 
@@ -135,7 +149,9 @@ export function ChaptersTable({ data, context, pageSize = 10, className }: Chapt
                     'border-border/30 group cursor-pointer border-b transition-all duration-200 hover:shadow-xl',
                     getRowDepthStyle(row)
                   )}
-                  onClick={() => handleRowClick(row.original.slug, row.original.storySlug)}
+                  onClick={() =>
+                    handleRowClick(row.original.slug, row.original.storySlug, row.original.isUnlock)
+                  }
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="px-4 py-3">
@@ -230,6 +246,14 @@ export function ChaptersTable({ data, context, pageSize = 10, className }: Chapt
           </div>
         </div>
       </div>
+
+      {selectedLockedChapter && (
+        <ChapterUnlockDialog
+          slug={selectedLockedChapter.slug}
+          storySlug={selectedLockedChapter.storySlug}
+          onClose={() => setSelectedLockedChapter(null)}
+        />
+      )}
     </div>
   );
 }

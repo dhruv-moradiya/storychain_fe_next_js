@@ -91,9 +91,9 @@ const lockStatusColumn: ColumnDef<IChapterTableRow> = {
   header: () => <span className="flex items-center gap-1">Access</span>,
   size: 80,
   cell: ({ row }: { row: Row<IChapterTableRow> }) => {
-    const { coinPrice, isUnlockedByUser } = row.original;
+    const { coinPrice, isUnlock } = row.original;
     const isFree = coinPrice === 0;
-    const isUnlocked = isFree || isUnlockedByUser;
+    const isUnlocked = isFree || isUnlock;
 
     return (
       <TooltipProvider>
@@ -129,7 +129,7 @@ const coinPriceColumn: ColumnDef<IChapterTableRow> = {
   header: () => <span className="flex items-center gap-1">Coins</span>,
   size: 90,
   cell: ({ row }: { row: Row<IChapterTableRow> }) => {
-    const { coinPrice, isUnlockedByUser } = row.original;
+    const { coinPrice, isUnlock } = row.original;
 
     if (coinPrice === 0) {
       return <span className="text-text-secondary-50 text-xs">Free</span>;
@@ -139,14 +139,11 @@ const coinPriceColumn: ColumnDef<IChapterTableRow> = {
       <div className="flex items-center gap-1">
         <Coins className="h-3.5 w-3.5 text-amber-400" />
         <span
-          className={cn(
-            'text-xs font-semibold',
-            isUnlockedByUser ? 'text-emerald-500' : 'text-amber-500'
-          )}
+          className={cn('text-xs font-semibold', isUnlock ? 'text-emerald-500' : 'text-amber-500')}
         >
           {coinPrice}
         </span>
-        {isUnlockedByUser && <span className="text-text-secondary-50 text-[10px]">(paid)</span>}
+        {isUnlock && <span className="text-text-secondary-50 text-[10px]">(paid)</span>}
       </div>
     );
   },
@@ -394,7 +391,7 @@ export function buildChapterColumns(context: IChaptersTableContext): ColumnDef<I
   const { isOwnerOrPrivileged } = context;
 
   const baseColumns: ColumnDef<IChapterTableRow>[] = [
-    expandColumn,
+    // expandColumn,
     lockStatusColumn,
     coinPriceColumn,
     titleColumn,

@@ -65,6 +65,8 @@ interface IChapterDetailExtended extends IChapterDetail {
 
 interface IChapterDetailResponse extends IBaseResponse<IChapterDetailExtended> {}
 
+interface IUnlockChapterResponse extends IBaseResponse<null> {}
+
 // For chapter details page, reading sesstions
 
 interface IChapterStartReadingSessionResponse extends IBaseResponse<null> {}
@@ -138,6 +140,7 @@ export type {
   IChapterRecordReadingSessionResponse,
   IReactToChapterResponse,
   IChapterVoteNumberType,
+  IUnlockChapterResponse,
   // Comments
   IComment,
   ICommentAuthor,

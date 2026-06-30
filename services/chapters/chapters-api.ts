@@ -5,6 +5,7 @@ import {
   IChapterStartReadingSessionRequest,
   IGetCommentsRequest,
   IReactToChapterRequest,
+  IUnlockChapterRequest,
 } from '@/type/chapter/chapter-request.type';
 import {
   IChapterDetailResponse,
@@ -13,6 +14,7 @@ import {
   IChapterStartReadingSessionResponse,
   IGetCommentsResponse,
   IReactToChapterResponse,
+  IUnlockChapterResponse,
   IUserChaptersResponse,
 } from '@/type/chapter/chapter-response.type';
 import { AxiosResponse } from 'axios';
@@ -92,6 +94,13 @@ const chapterApi = {
       await apiClient.post<IReactToChapterResponse>(`/chapters/${slug}/reactions`, {
         type: type,
       });
+    return response.data;
+  },
+
+  unlockChapter: async (input: IUnlockChapterRequest) => {
+    const { slug } = input;
+    const response: AxiosResponse<IUnlockChapterResponse> =
+      await apiClient.post<IUnlockChapterResponse>(`/chapters/${slug}/unlock`);
     return response.data;
   },
 };

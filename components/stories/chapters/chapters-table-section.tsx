@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { BookOpen, ScrollText, Shield, User } from 'lucide-react';
 
 import { TableSkeleton } from '@/components/common/table-skeleton';
-import type { IChapterTreeItem } from '@/components/stories/sections/tree-section/types/canvas.types';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useGetStoryTree } from '@/services/stories/stories.query';
@@ -14,7 +13,7 @@ import { useGetStoryTree } from '@/services/stories/stories.query';
 import { ChaptersTable } from './chapters-table';
 import { useMapTreeToTable } from './hooks/use-map-tree-to-table';
 import { MOCK_CURRENT_USER_ID } from './mock-data';
-import type { IChapterTableRow, IChaptersTableContext, UserRole } from './types';
+import type { IChaptersTableContext, UserRole } from './types';
 
 interface RoleOption {
   role: UserRole;
@@ -121,6 +120,92 @@ export function ChaptersTableSection() {
           to expand branches
         </span>
       </div>
+
+      {/* <div className="bg-card border-soft flex max-w-[400px] flex-col gap-5 rounded-2xl border p-5 shadow-sm">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500/10">
+              <Unlock className="h-4 w-4 text-emerald-500" />
+            </div>
+            <span className="text-text-secondary-65 text-[15px] font-medium">Free</span>
+          </div>
+          <div className="flex items-center gap-2">
+            {chapterStatusBadge('PUBLISHED'.toUpperCase(), { size: 'sm', className: 'uppercase' })}
+            <button className="text-text-secondary-50 hover:text-text-primary hover:bg-muted/50 rounded-md p-1 transition-colors">
+              <MoreVertical className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-1 flex items-center gap-2">
+          <span className="text-text-secondary-50 text-lg font-semibold">#1</span>
+          <h3 className="text-text-primary text-lg font-bold">The Invitation</h3>
+        </div>
+
+        <div className="border-border/40 flex items-center justify-between border-b px-1 pt-1 pb-5">
+          <div className="flex items-center gap-2 text-emerald-500">
+            <ThumbsUp className="h-4 w-4" />
+            <span className="text-sm font-medium">0</span>
+          </div>
+          <div className="flex items-center gap-2 text-red-400">
+            <ThumbsDown className="h-4 w-4" />
+            <span className="text-sm font-medium">0</span>
+          </div>
+          <div className="text-text-secondary-65 flex items-center gap-2">
+            <Eye className="h-4 w-4" />
+            <span className="text-sm font-medium">0</span>
+          </div>
+          <div className="text-text-secondary-65 flex items-center gap-2">
+            <MessageSquare className="h-4 w-4" />
+            <span className="text-sm font-medium">0</span>
+          </div>
+          <div className="text-text-secondary-65 flex items-center gap-2">
+            <GitFork className="h-4 w-4" />
+            <span className="text-sm font-medium">1</span>
+          </div>
+        </div>
+
+        <div className="flex items-start justify-between pt-1">
+          <div className="flex flex-col gap-2">
+            <span className="text-text-secondary-50 text-[10px] font-bold tracking-wider uppercase">
+              Depth
+            </span>
+            <Badge
+              variant="outline"
+              className="text-text-secondary-65 border-border/40 h-5 px-1.5 font-mono text-[10px]"
+            >
+              L1
+            </Badge>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="text-text-secondary-50 text-[10px] font-bold tracking-wider uppercase">
+              Engagement
+            </span>
+            <div className="flex flex-col gap-0.5">
+              <span className="text-xs font-semibold text-red-400">0/100</span>
+              <span className="text-text-secondary-50 text-[10px] font-medium">0.0% complete</span>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="text-text-secondary-50 text-[10px] font-bold tracking-wider uppercase">
+              Moderation
+            </span>
+            <span className="text-text-secondary-65 mt-1 text-xs font-medium">Clean</span>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="text-text-secondary-50 text-[10px] font-bold tracking-wider uppercase">
+              Ver.
+            </span>
+            <span className="text-text-secondary-65 mt-1 text-xs font-medium">v1</span>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="text-text-secondary-50 text-[10px] font-bold tracking-wider uppercase">
+              Updated
+            </span>
+            <span className="text-text-secondary-65 mt-1 text-xs font-medium">Jun 30, 2026</span>
+          </div>
+        </div>
+      </div> */}
 
       {/* Table */}
       <ChaptersTable data={tableData} context={context} pageSize={10} />

@@ -38,7 +38,7 @@ export function mapTreeToTable(items: IChapterTreeItem[]): IChapterTableRow[] {
     reportCount: item.reportCount || 0,
     isFlagged: item.isFlagged || false,
     coinPrice: item.coinPrice || 0,
-    isUnlockedByUser: true,
+    isUnlock: item.isUnlock || false,
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
     subRows: item.children && item.children.length > 0 ? mapTreeToTable(item.children) : undefined,

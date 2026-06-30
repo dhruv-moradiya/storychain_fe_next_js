@@ -22,6 +22,7 @@ interface IChapterTreeItem extends Omit<IChapter, 'authorId' | 'content' | 'pull
     slug: string;
     branchIndex: number;
   }[];
+  isUnlock: boolean;
   coinPrice: number;
   createdAt: string;
   updatedAt: string;
