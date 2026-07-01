@@ -6,14 +6,21 @@ import { CheckCircle2, Smartphone } from 'lucide-react';
 import { profileFeatures } from '@/lib/data/how-to-use-data';
 import { cn, scrollReveal } from '@/lib/utils';
 
+import { createBadge } from '../common/badge';
+
 export function ProfileSettingsSection() {
   return (
     <section id="profile-settings" className="scroll-mt-6 py-12">
       {/* Section heading */}
       <motion.div {...scrollReveal.paragraph} className="mb-10">
-        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/20 bg-purple-500/5 px-4 py-1.5">
-          <Smartphone className="h-4 w-4 text-purple-500" />
-          <span className="text-sm font-semibold text-purple-500">Profile & Settings</span>
+        <div className="mb-4 flex w-fit rounded-full border-purple-500/20 bg-purple-500/5 p-1 shadow-2xl">
+          {createBadge({
+            icon: Smartphone,
+            label: 'Profile & Settings',
+            color: 'purple',
+            className: 'border-none bg-transparent rounded-full shadow-2xl',
+            size: 'lg',
+          })}
         </div>
         <h2 className="font-libre-baskerville text-text-tertiary mb-3 text-2xl tracking-tight sm:text-3xl">
           Your Account & Profile

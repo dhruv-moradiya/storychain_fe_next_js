@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { guideFaqs } from '@/lib/data/how-to-use-data';
 import { cn, scrollReveal } from '@/lib/utils';
 
+import { createBadge } from '../common/badge';
+
 const categories = [
   { key: 'all', label: 'All Questions' },
   { key: 'general', label: 'General' },
@@ -30,9 +32,14 @@ export function GuideFAQSection() {
     <section id="faq" className="scroll-mt-6 py-12">
       {/* Section heading */}
       <motion.div {...scrollReveal.paragraph} className="mb-8">
-        <div className="border-brand-blue/20 bg-brand-blue/5 mb-3 inline-flex items-center gap-2 rounded-full border px-4 py-1.5">
-          <HelpCircle className="text-brand-blue h-4 w-4" />
-          <span className="text-brand-blue text-sm font-semibold">FAQ</span>
+        <div className="mb-4 flex w-fit rounded-full border-blue-500/20 bg-blue-500/5 p-1 shadow-2xl">
+          {createBadge({
+            icon: HelpCircle,
+            label: 'FAQ',
+            color: 'blue',
+            className: 'border-none bg-transparent rounded-full shadow-2xl',
+            size: 'lg',
+          })}
         </div>
         <h2 className="font-libre-baskerville text-text-tertiary mb-3 text-2xl tracking-tight sm:text-3xl">
           Frequently Asked Questions

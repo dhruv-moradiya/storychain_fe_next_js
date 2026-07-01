@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { motion } from 'framer-motion';
 import { Award, Flame, Sparkles, Star, Trophy } from 'lucide-react';
 
@@ -17,32 +19,36 @@ interface UserProfileAchievementsProps {
 
 const rarityConfig = {
   common: {
-    bg: 'bg-slate-100',
-    border: 'border-slate-200',
-    text: 'text-slate-600',
+    bg: 'bg-badge-gray-bg',
+    border: 'border-badge-gray-border',
+    text: 'text-badge-gray',
+    iconBg: 'bg-gradient-to-br from-slate-100 to-slate-200',
     icon: Award,
-    glow: '',
+    label: 'Common',
   },
   rare: {
-    bg: 'bg-blue-50',
-    border: 'border-blue-200',
-    text: 'text-blue-600',
+    bg: 'bg-badge-info-bg',
+    border: 'border-badge-info/30',
+    text: 'text-badge-info',
+    iconBg: 'bg-gradient-to-br from-blue-100 to-blue-200',
     icon: Star,
-    glow: 'shadow-[0_0_12px_rgba(59,130,246,0.3)]',
+    label: 'Rare',
   },
   epic: {
-    bg: 'bg-purple-50',
-    border: 'border-purple-200',
-    text: 'text-purple-600',
+    bg: 'bg-badge-purple-bg',
+    border: 'border-badge-purple/40',
+    text: 'text-badge-purple',
+    iconBg: 'bg-gradient-to-br from-purple-100 to-purple-200',
     icon: Flame,
-    glow: 'shadow-[0_0_16px_rgba(168,85,247,0.4)]',
+    label: 'Epic',
   },
   legendary: {
-    bg: 'bg-gradient-to-br from-yellow-500/10 to-orange-500/10',
-    border: 'border-yellow-500/30',
-    text: 'text-yellow-700',
+    bg: 'bg-badge-amber-bg',
+    border: 'border-badge-amber/50',
+    text: 'text-badge-amber',
+    iconBg: 'bg-gradient-to-br from-amber-200 via-yellow-200 to-orange-200',
     icon: Trophy,
-    glow: 'shadow-[0_0_20px_rgba(234,179,8,0.5)]',
+    label: 'Legendary',
   },
 };
 
@@ -52,9 +58,9 @@ function UserProfileAchievements({ badges }: UserProfileAchievementsProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
-      className="border-border/50 rounded-xl border bg-white p-5"
+      className="border-border/50 bg-cream-95 rounded-xl border p-5"
     >
-      <div className="mb-3 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between">
         <h3 className="text-text-primary font-semibold">Achievements</h3>
         <span className="text-text-secondary-65 flex items-center gap-1 text-xs">
           <Sparkles className="h-3.5 w-3.5" />
@@ -62,52 +68,64 @@ function UserProfileAchievements({ badges }: UserProfileAchievementsProps) {
         </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="space-y-2">
         {badges.map((badge, index) => {
-          const config = rarityConfig[badge.rarity] || rarityConfig.common;
+          const config = rarityConfig[badge.rarity] ?? rarityConfig.common;
           const Icon = config.icon;
 
           return (
             <motion.div
               key={badge.id}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 + index * 0.07 }}
+              whileHover={{ x: 2 }}
               className={cn(
-                'flex items-center gap-2 rounded-lg border p-2',
+                'flex items-center gap-3 rounded-xl border p-3 transition-all',
                 config.bg,
-                config.border,
-                config.glow,
-                'cursor-pointer transition-all'
+                config.border
               )}
             >
               <div
                 className={cn(
-                  'flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg',
-                  badge.rarity === 'legendary'
-                    ? 'bg-gradient-to-br from-yellow-500 to-orange-500'
-                    : badge.rarity === 'epic'
-                      ? 'bg-purple-500'
-                      : badge.rarity === 'rare'
-                        ? 'bg-blue-500'
-                        : 'bg-gray-400'
+                  'flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg',
+                  config.iconBg
                 )}
               >
-                <Icon className="h-4 w-4 text-white" />
+                <Icon className={cn('h-4 w-4', config.text)} />
               </div>
               <div className="min-w-0 flex-1">
-                <p className={cn('truncate text-[10px] font-bold', config.text)}>{badge.name}</p>
-                <p className="text-text-secondary-65 text-[8px] uppercase">{badge.rarity}</p>
+                <p
+                  className={cn(
+                    'truncate text-sm font-semibold',
+                    badge.rarity === 'legendary'
+                      ? 'bg-gradient-to-r from-amber-600 to-orange-500 bg-clip-text text-transparent'
+                      : config.text
+                  )}
+                >
+                  {badge.name}
+                </p>
+                <span
+                  className={cn(
+                    'rounded-full px-1.5 py-0.5 text-[9px] font-medium tracking-wide uppercase',
+                    config.bg,
+                    config.text
+                  )}
+                >
+                  {config.label}
+                </span>
               </div>
             </motion.div>
           );
         })}
       </div>
 
-      <button className="text-brand-pink-500 mt-3 w-full text-center text-xs hover:underline">
-        View all achievements →
-      </button>
+      <Link
+        href="/profile/badges"
+        className="text-brand-pink-500 hover:text-brand-pink-600 mt-3 flex w-full items-center justify-center gap-1 text-xs transition-colors hover:underline"
+      >
+        View all badges →
+      </Link>
     </motion.div>
   );
 }

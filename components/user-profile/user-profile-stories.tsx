@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, BookOpen, Eye, Star } from 'lucide-react';
+import { ArrowRight, BookOpen, Eye, MessageSquare, Star } from 'lucide-react';
 
 interface Story {
   id: string;
@@ -15,6 +15,7 @@ interface Story {
   rating: number;
   reads: number;
   chapters: number;
+  description?: string;
 }
 
 interface UserProfileStoriesProps {
@@ -35,7 +36,7 @@ function UserProfileStories({ stories, username }: UserProfileStoriesProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.15 }}
-      className="border-border/50 rounded-xl border bg-white p-5"
+      className="border-border/50 bg-cream-95 rounded-xl border p-5"
     >
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-text-primary font-semibold">Featured Stories</h3>
@@ -43,12 +44,12 @@ function UserProfileStories({ stories, username }: UserProfileStoriesProps) {
           href={`/user/${username}/stories`}
           className="text-brand-pink-500 flex items-center gap-1 text-xs hover:underline"
         >
-          View all
+          View all stories
           <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {stories.map((story, index) => (
           <motion.div
             key={story.id}
@@ -59,7 +60,8 @@ function UserProfileStories({ stories, username }: UserProfileStoriesProps) {
             className="group cursor-pointer"
           >
             <Link href={`/stories/${story.slug}`}>
-              <div className="bg-muted relative aspect-[3/4] overflow-hidden rounded-lg">
+              {/* Cover image */}
+              <div className="bg-muted relative aspect-[4/3] overflow-hidden rounded-xl">
                 {story.coverUrl && (
                   <Image
                     src={story.coverUrl}
@@ -69,33 +71,43 @@ function UserProfileStories({ stories, username }: UserProfileStoriesProps) {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
 
                 {/* Genre Badge */}
-                <span className="absolute top-2 left-2 rounded-md bg-black/50 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm">
+                <span className="bg-brand-pink-500/90 absolute top-2 left-2 rounded-md px-2 py-0.5 text-[10px] font-semibold text-white backdrop-blur-sm">
                   {story.genre}
                 </span>
 
-                {/* Info Overlay */}
-                <div className="absolute right-0 bottom-0 left-0 p-3">
-                  <h4 className="mb-1.5 line-clamp-2 text-sm font-semibold text-white">
-                    {story.title}
-                  </h4>
+                {/* Bookmark icon */}
+                <button className="absolute top-2 right-2 flex h-7 w-7 items-center justify-center rounded-md bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60">
+                  <BookOpen className="h-3.5 w-3.5" />
+                </button>
+              </div>
 
-                  <div className="flex items-center gap-3 text-xs text-white/80">
-                    <span className="flex items-center gap-1">
-                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                      {story.rating.toFixed(1)}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Eye className="h-3 w-3" />
-                      {formatNumber(story.reads)}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <BookOpen className="h-3 w-3" />
-                      {story.chapters}
-                    </span>
-                  </div>
+              {/* Story info below image */}
+              <div className="mt-3 space-y-1.5">
+                <h4 className="text-text-primary group-hover:text-brand-pink-500 line-clamp-1 font-semibold transition-colors">
+                  {story.title}
+                </h4>
+                {story.description && (
+                  <p className="text-text-secondary-65 line-clamp-2 text-xs leading-relaxed">
+                    {story.description}
+                  </p>
+                )}
+
+                <div className="text-text-secondary-65 flex items-center gap-3 text-xs">
+                  <span className="flex items-center gap-1">
+                    <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                    {story.rating.toFixed(1)}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Eye className="h-3 w-3" />
+                    {formatNumber(story.reads)}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <MessageSquare className="h-3 w-3" />
+                    {story.chapters}
+                  </span>
                 </div>
               </div>
             </Link>

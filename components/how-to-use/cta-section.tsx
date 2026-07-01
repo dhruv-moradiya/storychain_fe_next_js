@@ -14,7 +14,7 @@ export function CTASection() {
       <div className="mx-auto max-w-4xl">
         <motion.div
           {...scrollReveal.card(0)}
-          className="border-border/50 from-brand-pink-500/5 to-brand-blue/5 relative overflow-hidden rounded-2xl border bg-gradient-to-br via-white/50 p-8 text-center"
+          className="from-brand-pink-500/5 to-brand-blue/5 border-border/50 relative overflow-hidden rounded-2xl border bg-linear-to-br p-8 text-center"
         >
           {/* Background decorations */}
           <div className="pointer-events-none absolute inset-0">

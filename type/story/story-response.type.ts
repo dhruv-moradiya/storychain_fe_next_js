@@ -141,6 +141,18 @@ interface IUserStoryRoleResponse extends IBaseResponse<{
   roleStatus: TStoryCollaboratorStatus | null;
 }> {}
 
+interface IExploreStory {
+  _id: string;
+  title: string;
+  slug: string;
+  creator: { username: string; clerkId: string };
+  cardImage?: { url: string; publicId: string };
+  genres: TStoryGenres[];
+  createdAt: string;
+}
+
+interface IExploreStoriesResponse extends IBaseResponse<IExploreStory[]> {}
+
 export type {
   ICloudinarySignatureResponse,
   ICollaboratorActionData,
@@ -159,4 +171,6 @@ export type {
   IUserStories,
   IUserStoriesResponse,
   IUserStoryRoleResponse,
+  IExploreStory,
+  IExploreStoriesResponse,
 };

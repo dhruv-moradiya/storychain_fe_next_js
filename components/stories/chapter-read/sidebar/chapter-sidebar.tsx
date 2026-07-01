@@ -4,17 +4,7 @@ import * as React from 'react';
 
 import { IChapterDetailExtended, IChapterVoteNumberType } from '@/type';
 import NumberFlow from '@number-flow/react';
-import {
-  Bookmark,
-  Copy,
-  Facebook,
-  Instagram,
-  Link2,
-  List,
-  ThumbsDown,
-  ThumbsUp,
-  Twitter,
-} from 'lucide-react';
+import { Bookmark, Facebook, Instagram, List, ThumbsDown, ThumbsUp, Twitter } from 'lucide-react';
 
 import { CopyButton } from '@/components/copy-button';
 import toast from '@/components/shared/toast/toast';

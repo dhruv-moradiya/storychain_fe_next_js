@@ -1,10 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { Check, CheckCircle2, Info, UserPlus, Users, X } from 'lucide-react';
 
 import { collaborationRoles } from '@/lib/data/how-to-use-data';
-import { cn, scrollReveal } from '@/lib/utils';
+import { cn } from '@/lib/utils';
+
+import { createBadge } from '../common/badge';
 
 const permissions = [
   { key: 'canWrite' as const, label: 'Write Chapters' },
@@ -28,10 +29,15 @@ export function CollaborationSection() {
   return (
     <section id="collaboration" className="scroll-mt-6 py-12">
       {/* Section heading */}
-      <motion.div {...scrollReveal.paragraph} className="mb-10">
-        <div className="border-brand-blue/20 bg-brand-blue/5 mb-3 inline-flex items-center gap-2 rounded-full border px-4 py-1.5">
-          <Users className="text-brand-blue h-4 w-4" />
-          <span className="text-brand-blue text-sm font-semibold">Collaboration & Roles</span>
+      <div className="mb-10">
+        <div className="border-brand-blue/20 bg-brand-blue/5 mb-4 flex w-fit rounded-full p-1 shadow-2xl">
+          {createBadge({
+            icon: Users,
+            label: 'Collaboration & Roles',
+            color: 'blue',
+            className: 'border-none bg-transparent rounded-full shadow-2xl',
+            size: 'lg',
+          })}
         </div>
         <h2 className="font-libre-baskerville text-text-tertiary mb-3 text-2xl tracking-tight sm:text-3xl">
           Writing Together
@@ -40,16 +46,15 @@ export function CollaborationSection() {
           StoryChain supports collaborative storytelling with a role-based permission system. Each
           role has specific capabilities to keep your story organised and secure.
         </p>
-      </motion.div>
+      </div>
 
       {/* Role cards */}
       <div className="mb-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {collaborationRoles.map((role, index) => {
           const Icon = role.icon;
           return (
-            <motion.div
+            <div
               key={role.role}
-              {...scrollReveal.card(index)}
               className={cn(
                 'border-border/40 rounded-2xl border p-5 transition-all hover:shadow-sm',
                 'bg-cream-95/60'
@@ -90,16 +95,13 @@ export function CollaborationSection() {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
           );
         })}
       </div>
 
       {/* Permissions table (desktop-only supplement) */}
-      <motion.div
-        {...scrollReveal.card(5)}
-        className="border-border/40 bg-cream-95/60 mb-10 hidden overflow-hidden rounded-2xl border md:block"
-      >
+      <div className="border-border/40 bg-cream-95/60 mb-10 hidden overflow-hidden rounded-2xl border md:block">
         <div className="border-border/30 border-b px-5 py-4">
           <h3 className="text-text-primary text-sm font-semibold">Role Permissions at a Glance</h3>
         </div>
@@ -126,7 +128,7 @@ export function CollaborationSection() {
                   key={p.key}
                   className={cn(
                     'border-border/10 border-b last:border-0',
-                    i % 2 === 0 ? 'bg-transparent' : 'bg-white/30'
+                    i % 2 === 0 ? 'bg-transparent' : 'bg-cream-95/60'
                   )}
                 >
                   <td className="text-text-secondary-65 px-5 py-3">{p.label}</td>
@@ -144,13 +146,10 @@ export function CollaborationSection() {
             </tbody>
           </table>
         </div>
-      </motion.div>
+      </div>
 
       {/* How to add a collaborator */}
-      <motion.div
-        {...scrollReveal.card(6)}
-        className="border-brand-blue/20 bg-brand-blue/5 rounded-2xl border p-6"
-      >
+      <div className="border-brand-blue/20 bg-brand-blue/5 rounded-2xl border p-6">
         <div className="mb-4 flex items-center gap-3">
           <div className="bg-brand-blue/10 flex h-9 w-9 items-center justify-center rounded-xl">
             <UserPlus className="text-brand-blue h-4.5 w-4.5" />
@@ -160,21 +159,21 @@ export function CollaborationSection() {
         <ol className="space-y-3">
           {addCollaboratorSteps.map((step, i) => (
             <li key={i} className="flex items-start gap-3">
-              <span className="bg-brand-blue flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white">
+              <span className="bg-brand-blue/10 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold">
                 {i + 1}
               </span>
               <span className="text-text-secondary-65 text-sm leading-relaxed">{step}</span>
             </li>
           ))}
         </ol>
-        <div className="border-brand-blue/20 bg-brand-blue/5 mt-5 flex items-start gap-2 rounded-xl border p-3">
+        <div className="border-brand-blue/20 bg-brand-blue/5 mt-5 flex items-start gap-2 rounded-lg border p-3">
           <Info className="text-brand-blue mt-0.5 h-4 w-4 shrink-0" />
           <p className="text-text-secondary-65 text-xs leading-relaxed">
             <span className="text-brand-blue font-semibold">Tip:</span> You can have multiple
             co-authors and collaborators on a single story. There is no hard limit on team size.
           </p>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

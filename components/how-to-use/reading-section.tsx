@@ -6,14 +6,21 @@ import { BookText, CheckCircle2 } from 'lucide-react';
 import { readingFeatures } from '@/lib/data/how-to-use-data';
 import { cn, scrollReveal } from '@/lib/utils';
 
+import { createBadge } from '../common/badge';
+
 export function ReadingSection() {
   return (
     <section id="reading" className="scroll-mt-6 py-12">
       {/* Section heading */}
       <motion.div {...scrollReveal.paragraph} className="mb-10">
-        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/5 px-4 py-1.5">
-          <BookText className="h-4 w-4 text-green-600" />
-          <span className="text-sm font-semibold text-green-600">Reading Experience</span>
+        <div className="mb-4 flex w-fit rounded-full border-emerald-600/20 bg-emerald-600/5 p-1 shadow-2xl">
+          {createBadge({
+            icon: BookText,
+            label: 'Reading Experience',
+            color: 'emerald',
+            className: 'border-none bg-transparent rounded-full shadow-2xl',
+            size: 'lg',
+          })}
         </div>
         <h2 className="font-libre-baskerville text-text-tertiary mb-3 text-2xl tracking-tight sm:text-3xl">
           Discovering & Reading Stories

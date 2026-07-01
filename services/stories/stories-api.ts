@@ -2,6 +2,7 @@ import {
   ICloudinarySignatureResponse,
   ICollaboratorListResponse,
   ICreateStoryResponse,
+  IExploreStoriesResponse,
   IInvitationActionResponse,
   ISendInvitationBody,
   IStoryBasicResponse,
@@ -49,10 +50,13 @@ const StoryApi = {
     slug: string,
     settings: Partial<IStorySettings>
   ): Promise<AxiosResponse<IStorySettingsResponse>> => {
-    return await apiClient.post<IStorySettingsResponse>(`/stories/slug/${slug}/settings`, settings);
+    return await apiClient.patch<IStorySettingsResponse>(
+      `/stories/slug/${slug}/settings`,
+      settings
+    );
   },
 
-  // ── Images ──────────────────────────────────────────────────────────────────
+  // ============IMAGES============
 
   getSignatureUrl: async (slug: string): Promise<AxiosResponse<ICloudinarySignatureResponse>> => {
     return await apiClient.get<ICloudinarySignatureResponse>(`/stories/slug/${slug}/signature-url`);
@@ -76,7 +80,7 @@ const StoryApi = {
     });
   },
 
-  // ── Collaborators ───────────────────────────────────────────────────────────
+  // ============COLLABORATORS============
 
   getCollaborators: async (slug: string): Promise<AxiosResponse<ICollaboratorListResponse>> => {
     return await apiClient.get<ICollaboratorListResponse>(`/stories/slug/${slug}/collaborators`);
@@ -104,10 +108,16 @@ const StoryApi = {
     );
   },
 
-  // ── User Role ───────────────────────────────────────────────────────────────
+  // ============USER ROLE============
 
   getUserRole: async (slug: string): Promise<AxiosResponse<IUserStoryRoleResponse>> => {
     return await apiClient.get<IUserStoryRoleResponse>(`/stories/slug/${slug}/user-role`);
+  },
+
+  // ============EXPLORE==========
+
+  getExploreStories: async (): Promise<AxiosResponse<IExploreStoriesResponse>> => {
+    return await apiClient.get<IExploreStoriesResponse>(`/stories/fresh-stories`);
   },
 };
 

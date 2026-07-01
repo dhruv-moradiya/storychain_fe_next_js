@@ -15,6 +15,8 @@ import {
 
 import { scrollReveal } from '@/lib/utils';
 
+import { createBadge } from '../common/badge';
+
 const readerSteps = [
   {
     icon: Wallet,
@@ -79,9 +81,14 @@ export function MonetizationSection() {
     <section id="monetization" className="scroll-mt-6 py-12">
       {/* Section heading */}
       <motion.div {...scrollReveal.paragraph} className="mb-10">
-        <div className="border-brand-orange/20 bg-brand-orange/5 mb-3 inline-flex items-center gap-2 rounded-full border px-4 py-1.5">
-          <Coins className="text-brand-orange h-4 w-4" />
-          <span className="text-brand-orange text-sm font-semibold">In-App Monetization</span>
+        <div className="border-brand-orange/20 bg-brand-orange/5 mb-4 flex w-fit rounded-full p-1 shadow-2xl">
+          {createBadge({
+            icon: Coins,
+            label: 'In-App Monetization',
+            color: 'orange',
+            className: 'border-none bg-transparent rounded-full shadow-2xl',
+            size: 'lg',
+          })}
         </div>
         <h2 className="font-libre-baskerville text-text-tertiary mb-3 text-2xl tracking-tight sm:text-3xl">
           Coins, Unlocks & Earnings

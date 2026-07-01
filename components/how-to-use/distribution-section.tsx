@@ -5,6 +5,8 @@ import { AlertCircle, CheckCircle2, Clock, Coins, Info, TrendingUp, Wallet } fro
 
 import { scrollReveal } from '@/lib/utils';
 
+import { createBadge } from '../common/badge';
+
 const roleShares = [
   { role: 'Owner', percent: 40, color: 'bg-brand-orange', textColor: 'text-brand-orange' },
   { role: 'Co-Author', percent: 25, color: 'bg-brand-blue', textColor: 'text-brand-blue' },
@@ -28,9 +30,14 @@ export function DistributionSection() {
     <section id="distribution" className="scroll-mt-6 py-12">
       {/* Section heading */}
       <motion.div {...scrollReveal.paragraph} className="mb-10">
-        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-purple-500/20 bg-purple-500/5 px-4 py-1.5">
-          <TrendingUp className="h-4 w-4 text-purple-500" />
-          <span className="text-sm font-semibold text-purple-500">Revenue Distribution</span>
+        <div className="mb-4 flex w-fit rounded-full border-purple-500/20 bg-purple-500/5 p-1 shadow-2xl">
+          {createBadge({
+            icon: TrendingUp,
+            label: 'Revenue Distribution',
+            color: 'purple',
+            className: 'border-none bg-transparent rounded-full shadow-2xl',
+            size: 'lg',
+          })}
         </div>
         <h2 className="font-libre-baskerville text-text-tertiary mb-3 text-2xl tracking-tight sm:text-3xl">
           How Earnings Are Distributed
@@ -156,7 +163,7 @@ export function DistributionSection() {
         <ol className="space-y-3">
           {withdrawalSteps.map((step, i) => (
             <li key={i} className="flex items-start gap-3">
-              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-500 text-[10px] font-bold text-white">
+              <span className="text-brand-green flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-500/20 text-[10px] font-bold">
                 {i + 1}
               </span>
               <span className="text-text-secondary-65 text-sm leading-relaxed">{step}</span>
@@ -165,7 +172,7 @@ export function DistributionSection() {
         </ol>
 
         {/* Processing time callout */}
-        <div className="mt-5 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4">
+        <div className="border-brand-amber/20 bg-brand-amber/5 mt-5 flex items-start gap-3 rounded-xl border p-4">
           <Clock className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
           <div>
             <p className="mb-0.5 text-sm font-semibold text-amber-700">
@@ -193,7 +200,7 @@ export function DistributionSection() {
             </p>
           </div>
         </div>
-        <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4">
+        <div className="border-brand-amber/20 bg-brand-amber/5 flex items-start gap-3 rounded-xl border p-4">
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
           <div>
             <p className="mb-1 text-sm font-semibold text-amber-700">Minimum Withdrawal</p>

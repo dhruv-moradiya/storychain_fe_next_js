@@ -52,7 +52,7 @@ function UserProfileStats({ stats }: UserProfileStatsProps) {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.05 }}
-            className="border-border/50 hover:border-brand-pink-500/30 flex flex-col items-center rounded-xl border bg-white p-4 transition-colors"
+            className="border-border/50 hover:border-brand-pink-500/30 bg-cream-95 flex flex-col items-center rounded-xl border p-4 transition-colors"
           >
             <Icon className={cn('mb-2 h-5 w-5', item.iconColor)} />
             <span className="text-text-primary text-xl font-bold">

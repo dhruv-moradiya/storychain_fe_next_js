@@ -193,3 +193,14 @@ export const useGetUserRole = (
     ...options,
   });
 };
+
+// ============EXPLORE==========
+
+export const useGetFreshStories = () => {
+  return useQuery({
+    queryKey: QueryKey.story.explore.fresh,
+    queryFn: StoryApi.getExploreStories,
+    staleTime: Infinity,
+    select: (response) => response.data,
+  });
+};

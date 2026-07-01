@@ -76,5 +76,13 @@ export const QueryKey = {
 
       publish: (id: string) => ['publish', 'autosave', id] as const,
     },
+
+    // ----------------
+    // EXPLORE
+    // ----------------
+
+    explore: {
+      fresh: ['story', 'explore', 'fresh'] as const,
+    },
   },
 };

@@ -6,14 +6,21 @@ import { CheckCircle2, PenTool } from 'lucide-react';
 import { writingFeatures } from '@/lib/data/how-to-use-data';
 import { cn, scrollReveal } from '@/lib/utils';
 
+import { createBadge } from '../common/badge';
+
 export function WritingEditingSection() {
   return (
     <section id="writing-editing" className="scroll-mt-6 py-12">
       {/* Section heading */}
       <motion.div {...scrollReveal.paragraph} className="mb-10">
-        <div className="border-brand-pink-500/20 bg-brand-pink-500/5 mb-3 inline-flex items-center gap-2 rounded-full border px-4 py-1.5">
-          <PenTool className="text-brand-pink-500 h-4 w-4" />
-          <span className="text-brand-pink-500 text-sm font-semibold">Writing & Editing</span>
+        <div className="border-brand-pink-500/20 bg-brand-pink-500/5 mb-4 flex w-fit rounded-full p-1 shadow-2xl">
+          {createBadge({
+            icon: PenTool,
+            label: 'Writing & Editing',
+            color: 'pink',
+            className: 'border-none bg-transparent rounded-full shadow-2xl',
+            size: 'lg',
+          })}
         </div>
         <h2 className="font-libre-baskerville text-text-tertiary mb-3 text-2xl tracking-tight sm:text-3xl">
           The Writing Experience
