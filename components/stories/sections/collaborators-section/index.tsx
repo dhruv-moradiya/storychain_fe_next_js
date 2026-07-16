@@ -25,7 +25,6 @@ export default function CollaboratorSection({ slug }: CollaboratorSectionProps) 
   const [activeFilter, setActiveFilter] = useState('all');
   const [isInviteOpen, setIsInviteOpen] = useState(false);
 
-  // ── API ─────────────────────────────────────────────────────────────────────
   const { data: collaboratorsResponse, isLoading, isError, refetch } = useGetCollaborators(slug);
 
   const collaborators = useMemo<ICollaboratorRecord[]>(
@@ -33,7 +32,6 @@ export default function CollaboratorSection({ slug }: CollaboratorSectionProps) 
     [collaboratorsResponse]
   );
 
-  // ── Role counts for filter tabs ─────────────────────────────────────────────
   const roleCounts = useMemo(() => {
     return collaborators.reduce(
       (acc, c) => {
@@ -44,7 +42,6 @@ export default function CollaboratorSection({ slug }: CollaboratorSectionProps) 
     );
   }, [collaborators]);
 
-  // ── Filtered list ───────────────────────────────────────────────────────────
   const filtered = useMemo(() => {
     let result = collaborators;
 
@@ -62,7 +59,6 @@ export default function CollaboratorSection({ slug }: CollaboratorSectionProps) 
     return result;
   }, [search, activeFilter, collaborators]);
 
-  // ── Render flags ────────────────────────────────────────────────────────────
   const isReady = !isLoading && !isError;
   const isEmpty = isReady && collaborators.length === 0;
   const hasNoFilterResults = isReady && collaborators.length > 0 && filtered.length === 0;
@@ -86,6 +82,7 @@ export default function CollaboratorSection({ slug }: CollaboratorSectionProps) 
             activeFilter={activeFilter}
             onFilterChange={setActiveFilter}
             counts={roleCounts}
+            collaborators={collaborators}
           />
           <InviteDialog open={isInviteOpen} onOpenChange={setIsInviteOpen} slug={slug} />
         </>

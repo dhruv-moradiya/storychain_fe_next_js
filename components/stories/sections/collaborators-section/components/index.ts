@@ -6,3 +6,4 @@ export { default as CollaboratorsSkeleton } from './collaborators-skeleton';
 export { default as InviteDialog } from './invite-dialog';
 export { ChangeRoleDialog } from './change-role-dialog';
 export { RemoveCollaboratorAlert } from './remove-collaborator-alert';
+export { default as DistributeCoinsDialog } from './distribute-coins-dialog';

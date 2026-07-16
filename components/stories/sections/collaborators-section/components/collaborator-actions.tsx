@@ -1,11 +1,14 @@
 'use client';
 
+import type { ICollaboratorRecord } from '@/type/story/story-response.type';
 import { motion } from 'framer-motion';
 import { Crown, Eye, Handshake, PenTool, Plus, Search, Shield, Users } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+
+import DistributeCoinsDialog from './distribute-coins-dialog';
 
 // Role filter tabs
 const ROLE_FILTERS = [
@@ -24,6 +27,7 @@ interface CollaboratorActionsProps {
   activeFilter?: string;
   onFilterChange?: (filter: string) => void;
   counts?: Record<string, number>;
+  collaborators?: ICollaboratorRecord[];
 }
 
 function CollaboratorActions({
@@ -33,6 +37,7 @@ function CollaboratorActions({
   activeFilter = 'all',
   onFilterChange,
   counts = {},
+  collaborators = [],
 }: CollaboratorActionsProps) {
   return (
     <motion.div
@@ -63,6 +68,8 @@ function CollaboratorActions({
           Invite Collaborator
         </Button>
       </div>
+
+      <DistributeCoinsDialog collaborators={collaborators} />
 
       {/* Filter Tabs and Search */}
       <div className="border-border/50 flex flex-col gap-4 rounded-xl border p-4 lg:flex-row lg:items-center lg:justify-between">

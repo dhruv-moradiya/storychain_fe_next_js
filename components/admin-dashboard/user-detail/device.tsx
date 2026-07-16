@@ -2,8 +2,6 @@ import * as React from 'react';
 
 import { Box, Clock, Cpu, Globe, History, Smartphone } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
-
 interface DeviceItemProps {
   icon: React.ComponentType<{ className?: string }>;
   label: string;

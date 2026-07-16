@@ -1,3 +1,18 @@
+import {
+  CheckCircle,
+  Clock,
+  Crown,
+  Eye,
+  Handshake,
+  type LucideIcon,
+  MoreHorizontal,
+  PenTool,
+  Shield,
+  Trash2,
+  UserCog,
+  XCircle,
+} from 'lucide-react';
+
 import type { BadgeColorKey, ColorScheme } from './types';
 
 // Preset color schemes using CSS variables from index.css
@@ -81,6 +96,35 @@ export const badgeColors: Record<BadgeColorKey, ColorScheme> = {
     text: 'var(--color-badge-indigo)',
     border: 'var(--color-badge-indigo-border)',
   },
+};
+
+export const ROLE_DISPLAY: Record<
+  string,
+  { icon: LucideIcon; color: BadgeColorKey; label: string }
+> = {
+  owner: { icon: Crown, color: 'orange', label: 'Owner' },
+  co_author: { icon: PenTool, color: 'purple', label: 'Co-Author' },
+  moderator: { icon: Shield, color: 'blue', label: 'Moderator' },
+  reviewer: { icon: Eye, color: 'cyan', label: 'Reviewer' },
+  contributor: { icon: Handshake, color: 'gray', label: 'Contributor' },
+};
+
+export const STATUS_DISPLAY: Record<
+  string,
+  { icon: LucideIcon; color: BadgeColorKey; label: string }
+> = {
+  accepted: { icon: CheckCircle, color: 'success', label: 'Accepted' },
+  pending: { icon: Clock, color: 'warning', label: 'Pending' },
+  declined: { icon: XCircle, color: 'error', label: 'Declined' },
+  removed: { icon: XCircle, color: 'gray', label: 'Removed' },
+};
+
+export const ROLE_ICON_COLOR: Record<string, string> = {
+  owner: 'text-amber-500',
+  co_author: 'text-purple-500',
+  moderator: 'text-blue-500',
+  reviewer: 'text-cyan-500',
+  contributor: 'text-gray-500',
 };
 
 // Helper to resolve color scheme from key or custom object

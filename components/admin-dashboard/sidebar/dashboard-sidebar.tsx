@@ -22,7 +22,6 @@ import {
   Users,
 } from 'lucide-react';
 
-import { StorychainLogo } from '@/components/common/logo/storychain-logo';
 import {
   Sidebar,
   SidebarContent,
@@ -34,7 +33,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { cn, getInitials } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { useMe } from '@/services/users/user.query';
 
 const navigationItems = [

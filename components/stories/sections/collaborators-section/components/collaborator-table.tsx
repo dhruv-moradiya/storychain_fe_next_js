@@ -11,23 +11,10 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import {
-  CheckCircle,
-  Clock,
-  Crown,
-  Eye,
-  Handshake,
-  type LucideIcon,
-  MoreHorizontal,
-  PenTool,
-  Shield,
-  Trash2,
-  UserCog,
-  XCircle,
-} from 'lucide-react';
+import { MoreHorizontal, Trash2, UserCog } from 'lucide-react';
 
 import { createBadge } from '@/components/common/badge';
-import type { BadgeColorKey } from '@/components/common/badge/types';
+import { ROLE_DISPLAY, ROLE_ICON_COLOR, STATUS_DISPLAY } from '@/components/common/badge/colors';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -50,44 +37,13 @@ import { cn } from '@/lib/utils';
 import { ChangeRoleDialog } from './change-role-dialog';
 import { RemoveCollaboratorAlert } from './remove-collaborator-alert';
 
-// ── Config maps ───────────────────────────────────────────────────────────────
-
-const ROLE_DISPLAY: Record<string, { icon: LucideIcon; color: BadgeColorKey; label: string }> = {
-  owner: { icon: Crown, color: 'orange', label: 'Owner' },
-  co_author: { icon: PenTool, color: 'purple', label: 'Co-Author' },
-  moderator: { icon: Shield, color: 'blue', label: 'Moderator' },
-  reviewer: { icon: Eye, color: 'cyan', label: 'Reviewer' },
-  contributor: { icon: Handshake, color: 'gray', label: 'Contributor' },
-};
-
-const STATUS_DISPLAY: Record<string, { icon: LucideIcon; color: BadgeColorKey; label: string }> = {
-  accepted: { icon: CheckCircle, color: 'success', label: 'Accepted' },
-  pending: { icon: Clock, color: 'warning', label: 'Pending' },
-  declined: { icon: XCircle, color: 'error', label: 'Declined' },
-  removed: { icon: XCircle, color: 'gray', label: 'Removed' },
-};
-
-const ROLE_ICON_COLOR: Record<string, string> = {
-  owner: 'text-amber-500',
-  co_author: 'text-purple-500',
-  moderator: 'text-blue-500',
-  reviewer: 'text-cyan-500',
-  contributor: 'text-gray-500',
-};
-
-// ── Column helper ─────────────────────────────────────────────────────────────
-
 const columnHelper = createColumnHelper<ICollaboratorRecord>();
-
-// ── Dialog state type ─────────────────────────────────────────────────────────
 
 interface ActiveCollaborator {
   _id: string;
   user: IUserBasicWithEmail;
   currentRole: TStoryCollaboratorRole;
 }
-
-// ── Props ─────────────────────────────────────────────────────────────────────
 
 interface CollaboratorTableProps {
   data: ICollaboratorRecord[];
@@ -98,8 +54,6 @@ interface CollaboratorTableProps {
   isRemoving?: boolean;
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
-
 const CollaboratorTable = ({
   data,
   search,
@@ -108,14 +62,12 @@ const CollaboratorTable = ({
   isChangingRole = false,
   isRemoving = false,
 }: CollaboratorTableProps) => {
-  // ── Dialog state ───────────────────────────────────────────────────────────
   const [changeRoleTarget, setChangeRoleTarget] = useState<ActiveCollaborator | null>(null);
   const [removeTarget, setRemoveTarget] = useState<{
     _id: string;
     user: IUserBasicWithEmail;
   } | null>(null);
 
-  // ── Filter ─────────────────────────────────────────────────────────────────
   const filteredData = useMemo(() => {
     if (!search.trim()) return data;
     const q = search.toLowerCase();
@@ -124,10 +76,8 @@ const CollaboratorTable = ({
     );
   }, [search, data]);
 
-  // ── Columns ────────────────────────────────────────────────────────────────
   const columns = useMemo(
     () => [
-      // ── Collaborator ─────────────────────────────────────────────────────
       columnHelper.display({
         id: 'user',
         header: 'Collaborator',
@@ -158,7 +108,6 @@ const CollaboratorTable = ({
         },
       }),
 
-      // ── Role ─────────────────────────────────────────────────────────────
       columnHelper.accessor('role', {
         header: 'Role',
         cell: (info) => {
@@ -175,7 +124,6 @@ const CollaboratorTable = ({
         },
       }),
 
-      // ── Status ───────────────────────────────────────────────────────────
       columnHelper.accessor('status', {
         header: 'Status',
         cell: (info) => {
