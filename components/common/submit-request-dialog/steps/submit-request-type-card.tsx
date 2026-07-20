@@ -17,9 +17,7 @@ export function PullRequestTypeCard({ type, isSelected, onSelect }: PullRequestT
       onClick={onSelect}
       className={cn(
         'flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-all',
-        isSelected
-          ? 'border-black/20 shadow-sm'
-          : 'border-black/5 hover:border-black/15 hover:bg-black/2'
+        isSelected ? 'border-strong shadow-sm' : 'border-soft hover:border-border hover:bg-muted/50'
       )}
     >
       <div className={cn('flex h-11 w-11 items-center justify-center rounded-xl', type.bgClass)}>

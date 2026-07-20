@@ -69,7 +69,7 @@ export function DetailStep({ hasContext, chapters, stories }: DetailStepProps) {
         <Input
           placeholder="e.g., Add new backstory chapter"
           {...register('title')}
-          className="border-black/10 bg-white/50 font-mono focus:border-[#6b7cff] focus:ring-[#6b7cff]/20"
+          className="border-border bg-background/50 focus:border-brand-blue focus:ring-brand-blue/20 font-mono"
         />
         {errors.title && <p className="font-mono text-xs text-red-500">{errors.title.message}</p>}
       </div>
@@ -83,7 +83,7 @@ export function DetailStep({ hasContext, chapters, stories }: DetailStepProps) {
           placeholder="Describe the changes you're proposing..."
           {...register('description')}
           rows={3}
-          className="border-black/10 bg-white/50 focus:border-[#6b7cff] focus:ring-[#6b7cff]/20"
+          className="border-border bg-background/50 focus:border-brand-blue focus:ring-brand-blue/20"
         />
         {errors.description && (
           <p className="font-mono text-xs text-red-500">{errors.description.message}</p>
@@ -104,7 +104,7 @@ export function DetailStep({ hasContext, chapters, stories }: DetailStepProps) {
             control={control}
             render={({ field }) => (
               <Select onValueChange={field.onChange} value={field.value ?? ''}>
-                <SelectTrigger className="border-black/10 bg-white/50 font-mono">
+                <SelectTrigger className="border-border bg-background/50 font-mono">
                   <SelectValue placeholder="Select chapter" />
                 </SelectTrigger>
                 <SelectContent>
@@ -133,7 +133,7 @@ export function DetailStep({ hasContext, chapters, stories }: DetailStepProps) {
        * as a read-only summary card.
        */}
       {!hasContext && targetChapterTitle && (
-        <div className="rounded-xl border border-black/5 bg-black/2 p-3">
+        <div className="border-soft bg-muted/50 rounded-xl border p-3">
           <p className="text-text-secondary-65 mb-1 font-mono text-xs uppercase">
             {isNewChapter ? 'Insert After' : 'Target Chapter'}
           </p>

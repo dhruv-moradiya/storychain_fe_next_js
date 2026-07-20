@@ -49,7 +49,7 @@ export function ChapterSelection({
           placeholder="Search chapters..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="h-9 border-black/10 bg-white/50 pl-9 font-mono text-sm"
+          className="border-border bg-background/50 h-9 pl-9 font-mono text-sm"
         />
       </div>
 
@@ -64,13 +64,13 @@ export function ChapterSelection({
               'flex w-full items-center gap-3 rounded-lg border p-2 text-left transition-all',
               selectedChapterSlug === 'root'
                 ? 'border-brand-pink-500 bg-brand-pink-500/5'
-                : 'border-black/10 hover:border-black/20 hover:bg-black/2'
+                : 'border-border hover:border-strong hover:bg-muted/50'
             )}
           >
             <div
               className={cn(
                 'flex h-7 w-7 shrink-0 items-center justify-center rounded-md',
-                selectedChapterSlug === 'root' ? 'bg-brand-pink-500/15' : 'bg-black/5'
+                selectedChapterSlug === 'root' ? 'bg-brand-pink-500/15' : 'bg-muted'
               )}
             >
               <BookOpen
@@ -106,7 +106,7 @@ export function ChapterSelection({
                   'flex w-full items-center gap-3 rounded-lg border p-2 text-left transition-all',
                   isSelected
                     ? 'border-brand-pink-500 bg-brand-pink-500/5'
-                    : 'border-black/10 hover:border-black/20 hover:bg-black/2'
+                    : 'border-border hover:border-strong hover:bg-muted/50'
                 )}
               >
                 <div
@@ -114,7 +114,7 @@ export function ChapterSelection({
                     'flex h-7 w-7 shrink-0 items-center justify-center rounded-md font-mono text-xs font-medium',
                     isSelected
                       ? 'bg-brand-pink-500/15 text-brand-pink-500'
-                      : 'text-text-secondary-65 bg-black/5'
+                      : 'text-text-secondary-65 bg-muted'
                   )}
                 >
                   {chapter.order}

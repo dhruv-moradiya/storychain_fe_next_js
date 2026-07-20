@@ -4,6 +4,7 @@ import type { ICollaboratorRecord } from '@/type/story/story-response.type';
 import { motion } from 'framer-motion';
 import { Crown, Eye, Handshake, PenTool, Plus, Search, Shield, Users } from 'lucide-react';
 
+import { StoryRoleGate, useStoryRole } from '@/components/stories/story-role-context';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -39,6 +40,8 @@ function CollaboratorActions({
   counts = {},
   collaborators = [],
 }: CollaboratorActionsProps) {
+  const { roleStatus, role } = useStoryRole();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -59,17 +62,20 @@ function CollaboratorActions({
           </div>
         </div>
 
-        {/* Invite Button */}
-        <Button
-          onClick={openInvite}
-          className="bg-brand-pink-500 shadow-brand-pink-shadow25 hover:bg-brand-pink-600 text-white shadow-sm"
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Invite Collaborator
-        </Button>
+        <StoryRoleGate permission="canInviteCollaborators">
+          <Button
+            onClick={openInvite}
+            className="bg-brand-pink-500 shadow-brand-pink-shadow25 hover:bg-brand-pink-600 text-white shadow-sm"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Invite Collaborator
+          </Button>
+        </StoryRoleGate>
       </div>
 
-      <DistributeCoinsDialog collaborators={collaborators} />
+      <StoryRoleGate permission="canDistributeCoins">
+        <DistributeCoinsDialog collaborators={collaborators} />
+      </StoryRoleGate>
 
       {/* Filter Tabs and Search */}
       <div className="border-border/50 flex flex-col gap-4 rounded-xl border p-4 lg:flex-row lg:items-center lg:justify-between">

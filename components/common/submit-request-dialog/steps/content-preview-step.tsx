@@ -57,13 +57,13 @@ export function ContentPreviewStep({ chapters, drafts }: ContentPreviewStepProps
         </div>
 
         {(selectedChapter || activeChapterSlug === 'root') && (
-          <div className="rounded-xl border border-black/10 bg-black/2 p-4">
+          <div className="border-border bg-muted/50 rounded-xl border p-4">
             <p className="text-text-secondary-65 mb-2 font-mono text-xs uppercase">
               Chapter to be deleted
             </p>
             <p className="text-text-primary font-medium">{targetChapterTitle}</p>
             {selectedChapter?.content && (
-              <div className="mt-3 max-h-[150px] overflow-y-auto rounded-lg border border-black/5 bg-white p-3">
+              <div className="border-soft bg-card mt-3 max-h-[150px] overflow-y-auto rounded-lg border p-3">
                 <p className="text-text-secondary-75 text-sm leading-relaxed">
                   {selectedChapter.content}
                 </p>
@@ -99,8 +99,8 @@ export function ContentPreviewStep({ chapters, drafts }: ContentPreviewStepProps
               <p className="text-text-secondary-65 font-mono text-xs uppercase">Draft Content</p>
               <p className="text-text-secondary-65 font-mono text-xs">{selectedDraft.title}</p>
             </div>
-            <div className="rounded-xl border border-black/10 bg-white/50 p-4">
-              <div className="max-h-[200px] overflow-y-auto rounded-lg border border-black/5 bg-black/2 p-3">
+            <div className="border-border bg-card/50 rounded-xl border p-4">
+              <div className="border-soft bg-muted/50 max-h-[200px] overflow-y-auto rounded-lg border p-3">
                 <p className="text-text-primary text-sm leading-relaxed">{selectedDraft.content}</p>
               </div>
             </div>
@@ -112,12 +112,12 @@ export function ContentPreviewStep({ chapters, drafts }: ContentPreviewStepProps
             <p className="text-text-secondary-65 font-mono text-xs uppercase">
               Parent Chapter Preview
             </p>
-            <div className="rounded-xl border border-black/10 bg-black/2 p-4">
+            <div className="border-border bg-muted/50 rounded-xl border p-4">
               <div className="mb-3 flex items-center gap-2">
                 <FileText className="text-text-secondary-65 h-4 w-4" />
                 <p className="text-text-primary text-sm font-medium">{selectedChapter.title}</p>
               </div>
-              <div className="max-h-[100px] overflow-y-auto rounded-lg border border-black/5 bg-white p-3">
+              <div className="border-soft bg-card max-h-[100px] overflow-y-auto rounded-lg border p-3">
                 <p className="text-text-secondary-75 text-sm leading-relaxed">
                   {selectedChapter.content}
                 </p>
@@ -149,12 +149,12 @@ export function ContentPreviewStep({ chapters, drafts }: ContentPreviewStepProps
       {selectedChapter && (
         <div className="space-y-2">
           <p className="text-text-secondary-65 font-mono text-xs uppercase">Original Content</p>
-          <div className="rounded-xl border border-black/10 bg-white/50 p-4">
+          <div className="border-border bg-card/50 rounded-xl border p-4">
             <div className="mb-3 flex items-center gap-2">
               <FileText className="text-text-secondary-65 h-4 w-4" />
               <p className="text-text-primary text-sm font-medium">{selectedChapter.title}</p>
             </div>
-            <div className="max-h-[200px] overflow-y-auto rounded-lg border border-black/5 bg-black/2 p-3">
+            <div className="border-soft bg-muted/50 max-h-[200px] overflow-y-auto rounded-lg border p-3">
               <p className="text-text-secondary-75 text-sm leading-relaxed">
                 {selectedChapter.content || 'No content available'}
               </p>
@@ -163,7 +163,7 @@ export function ContentPreviewStep({ chapters, drafts }: ContentPreviewStepProps
         </div>
       )}
 
-      <div className="rounded-xl border border-dashed border-black/20 bg-black/2 p-6 text-center">
+      <div className="border-strong bg-muted/50 rounded-xl border border-dashed p-6 text-center">
         <FileEdit className="text-text-secondary-65 mx-auto mb-2 h-8 w-8" />
         <p className="text-text-secondary-65 font-mono text-sm">
           Your proposed changes will appear here

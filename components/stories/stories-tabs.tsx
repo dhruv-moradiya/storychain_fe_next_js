@@ -113,7 +113,7 @@ export const StoryTabs = () => {
                           isActive ? 'text-brand-pink-500' : 'text-text-secondary-65'
                         )}
                       />
-                      <span className="flex-1 font-medium">{t.label}</span>
+                      <span className="flex-1 text-sm font-medium sm:text-base">{t.label}</span>
                       {isActive && <Check className="text-brand-pink-500 h-4 w-4" />}
                     </button>
                   );

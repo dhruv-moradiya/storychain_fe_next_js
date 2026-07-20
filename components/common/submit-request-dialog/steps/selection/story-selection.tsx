@@ -46,7 +46,7 @@ export function StorySelection({
           placeholder="Search stories..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="h-9 border-black/10 bg-white/50 pr-9 pl-9 font-mono text-sm"
+          className="border-border bg-background/50 h-9 pr-9 pl-9 font-mono text-sm"
         />
       </div>
 
@@ -66,13 +66,13 @@ export function StorySelection({
                   'flex w-full items-center gap-3 rounded-lg border p-2.5 text-left transition-all',
                   isSelected
                     ? 'border-brand-blue bg-brand-blue/5'
-                    : 'border-black/10 hover:border-black/20 hover:bg-black/2'
+                    : 'border-border hover:border-strong hover:bg-muted/50'
                 )}
               >
                 <div
                   className={cn(
                     'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg',
-                    isSelected ? 'bg-brand-blue/15' : 'bg-black/5'
+                    isSelected ? 'bg-brand-blue/15' : 'bg-muted'
                   )}
                 >
                   <BookOpen

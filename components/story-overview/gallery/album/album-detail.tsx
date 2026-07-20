@@ -10,8 +10,8 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 import { ExploreToolbar } from '../story-images.tsx/explore-toolbar';
-import { IImageItem, ImageCard } from '../story-images.tsx/image-card';
-import { ImageDetailDialog } from '../story-images.tsx/image-detail-dialog';
+import { ImageCard } from '../story-images.tsx/image-card';
+import { ImageCarouselOverlay } from '../story-images.tsx/image-carousel-overlay';
 import { IAlbumItem } from './album-card';
 
 interface IAlbumDetailProps {
@@ -22,7 +22,7 @@ interface IAlbumDetailProps {
 export const AlbumDetail = ({ album, onBack }: IAlbumDetailProps) => {
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [filter, setFilter] = useState('all');
-  const [selectedImage, setSelectedImage] = useState<IImageItem | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   // Generate some dummy images for the album
   const albumImages = Array.from({ length: album.imagesCount }).map((_, i) => ({
@@ -53,32 +53,7 @@ export const AlbumDetail = ({ album, onBack }: IAlbumDetailProps) => {
       </div>
 
       {/* Album Info Header */}
-      <div className="flex flex-col gap-6 md:flex-row">
-        {/* Collage/Cover Image */}
-        <div className="border-soft flex aspect-video w-full flex-none overflow-hidden rounded-xl border md:aspect-[3/2] md:w-[320px]">
-          <div className="border-soft/50 relative h-full flex-1 border-r">
-            <Image src={album.image} alt={album.title} fill className="object-cover" />
-          </div>
-          <div className="flex h-full flex-1 flex-col">
-            <div className="border-soft/50 relative flex-1 border-b">
-              <Image
-                src="https://i.pinimg.com/control1/736x/b0/35/31/b035314c4e0e4582468f62278e0a19a1.jpg"
-                alt="Collage 1"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div className="relative flex-1">
-              <Image
-                src="https://i.pinimg.com/736x/02/b8/74/02b8743b9f902d9a2e863256ec203905.jpg"
-                alt="Collage 2"
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
-        </div>
-
+      <div className="flex flex-col gap-6">
         {/* Album Details */}
         <div className="flex flex-1 flex-col justify-center">
           <div className="flex items-center justify-between">
@@ -156,8 +131,8 @@ export const AlbumDetail = ({ album, onBack }: IAlbumDetailProps) => {
             : 'flex flex-col gap-4'
         )}
       >
-        {filteredItems.map((item) => (
-          <div key={item.id} onClick={() => setSelectedImage(item)} className="cursor-pointer">
+        {filteredItems.map((item, index) => (
+          <div key={item.id} onClick={() => setSelectedIndex(index)} className="cursor-pointer">
             <ImageCard item={item} view={view} />
           </div>
         ))}
@@ -168,10 +143,10 @@ export const AlbumDetail = ({ album, onBack }: IAlbumDetailProps) => {
         )}
       </div>
 
-      <ImageDetailDialog
-        item={selectedImage}
-        open={!!selectedImage}
-        onOpenChange={(open) => !open && setSelectedImage(null)}
+      <ImageCarouselOverlay
+        items={filteredItems}
+        initialIndex={selectedIndex}
+        onClose={() => setSelectedIndex(null)}
       />
     </div>
   );

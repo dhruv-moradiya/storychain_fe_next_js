@@ -70,19 +70,19 @@ export function Overview({ initialData }: OverviewProps) {
         >
           <TabsTrigger value="overview" className={triggerClass}>
             <BookOpen size={16} />
-            Overview
+            <span className="hidden sm:inline">Overview</span>
           </TabsTrigger>
           <TabsTrigger value="characters" className={triggerClass}>
             <Users size={16} />
-            Characters
+            <span className="hidden sm:inline">Characters</span>
           </TabsTrigger>
           <TabsTrigger value="world" className={triggerClass}>
             <Globe2 size={16} />
-            World
+            <span className="hidden sm:inline">World</span>
           </TabsTrigger>
           <TabsTrigger value="gallery" className={triggerClass}>
             <GalleryHorizontal size={16} />
-            Gallery
+            <span className="hidden sm:inline">Gallery</span>
           </TabsTrigger>
         </TabsList>
 

@@ -360,7 +360,6 @@ const ROLE_HIERARCHY = {
   [StoryCollaboratorRole.OWNER]: 4,
 } as const;
 
-// ── Story-level Role Permission Config ────────────────────────────────────────
 const STORY_COLLABORATOR_ROLE_CONFIG = {
   [StoryCollaboratorRole.OWNER]: {
     name: 'Story Owner',
@@ -383,6 +382,7 @@ const STORY_COLLABORATOR_ROLE_CONFIG = {
       canDeleteComments: true,
       canBanFromStory: true,
       canViewStoryAnalytics: true,
+      canDistributeCoins: true,
     },
   },
   [StoryCollaboratorRole.CO_AUTHOR]: {
@@ -406,6 +406,7 @@ const STORY_COLLABORATOR_ROLE_CONFIG = {
       canDeleteComments: true,
       canBanFromStory: true,
       canViewStoryAnalytics: true,
+      canDistributeCoins: false,
     },
   },
   [StoryCollaboratorRole.MODERATOR]: {
@@ -429,6 +430,7 @@ const STORY_COLLABORATOR_ROLE_CONFIG = {
       canDeleteComments: true,
       canBanFromStory: true,
       canViewStoryAnalytics: false,
+      canDistributeCoins: false,
     },
   },
   [StoryCollaboratorRole.REVIEWER]: {
@@ -452,6 +454,7 @@ const STORY_COLLABORATOR_ROLE_CONFIG = {
       canDeleteComments: false,
       canBanFromStory: false,
       canViewStoryAnalytics: false,
+      canDistributeCoins: false,
     },
   },
   [StoryCollaboratorRole.CONTRIBUTOR]: {
@@ -475,6 +478,7 @@ const STORY_COLLABORATOR_ROLE_CONFIG = {
       canDeleteComments: false,
       canBanFromStory: false,
       canViewStoryAnalytics: false,
+      canDistributeCoins: false,
     },
   },
 } as const;

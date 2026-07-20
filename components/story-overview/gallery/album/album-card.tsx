@@ -1,6 +1,4 @@
-import Image from 'next/image';
-
-import { Ellipsis } from 'lucide-react';
+import { Ellipsis, ImageIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
@@ -15,32 +13,28 @@ export const AlbumCard = ({ item, onClick }: { item: IAlbumItem; onClick?: () =>
   return (
     <div
       onClick={onClick}
-      className="border-soft bg-background hover:border-brand-pink-500/40 w-[250px] shrink-0 cursor-pointer snap-center overflow-hidden rounded-2xl border p-2 pb-0 transition-colors sm:w-[280px]"
+      className="border-soft bg-background hover:border-brand-pink-500/40 flex w-full cursor-pointer items-center justify-between overflow-hidden rounded-xl border p-4 transition-colors"
     >
-      {/* Image */}
-      <div className="relative aspect-2/1 w-full overflow-hidden rounded-xl">
-        <Image
-          src={item.image}
-          alt={item.title}
-          fill
-          className="object-cover transition-transform duration-300 hover:scale-105"
-        />
-      </div>
-
       {/* Content */}
-      <div className="flex items-start justify-between p-3">
-        <div className="space-y-1">
+      <div className="flex items-center gap-4">
+        <div className="bg-muted flex h-10 w-10 items-center justify-center rounded-lg">
+          <ImageIcon className="text-text-secondary-50 h-5 w-5" />
+        </div>
+        <div className="space-y-0.5">
           <h3 className="text-text-secondary-75 text-sm font-semibold">{item.title}</h3>
           <p className="text-text-secondary-65 text-xs">{item.imagesCount} images</p>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-text-secondary-65 hover:bg-muted -mt-1 -mr-2 h-8 w-8 rounded-lg"
-        >
-          <Ellipsis size={16} />
-        </Button>
       </div>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="text-text-secondary-65 hover:bg-muted h-8 w-8 rounded-lg"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <Ellipsis size={16} />
+      </Button>
     </div>
   );
 };

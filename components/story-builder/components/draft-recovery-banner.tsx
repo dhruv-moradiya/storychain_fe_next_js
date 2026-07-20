@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { IChapterAutoSave } from '@/type/auto-save';
 import { formatDistanceToNow } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronDown, ChevronUp, FileText, NotebookPen, Trash2, X } from 'lucide-react';
+import { ChevronDown, ChevronUp, FileText, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -41,7 +41,8 @@ const DraftItem = ({
       <motion.div
         initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}
-        className="border-border/50 bg-cream-95 hover:bg-cream-90 flex items-center gap-2 rounded-lg border p-2.5 transition-colors"
+        onClick={handleContinue}
+        className="border-border/50 bg-cream-95 hover:bg-cream-90 flex cursor-pointer items-center gap-2 rounded-lg border p-2.5 transition-colors"
       >
         <div className="to-primary/30 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-linear-to-br from-orange-500/30">
           <FileText className="text-brand-orange h-4 w-4" />
@@ -60,7 +61,7 @@ const DraftItem = ({
           </TooltipTrigger>
           <TooltipContent side="top" className="max-w-50">
             <p className="text-xs font-medium wrap-break-word">{draft.title || 'Untitled Draft'}</p>
-            <p className="text-muted-foreground text-[10px]">
+            <p className="text-muted text-[10px]">
               Saved {formatDistanceToNow(new Date(draft.lastSavedAt), { addSuffix: true })}
             </p>
           </TooltipContent>
@@ -80,21 +81,6 @@ const DraftItem = ({
             </TooltipTrigger>
             <TooltipContent side="top">
               <p className="text-xs">Delete draft</p>
-            </TooltipContent>
-          </Tooltip>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                size="icon"
-                className="bg-brand-pink-500 hover:bg-brand-pink-600 h-7 w-7 text-white shadow-[0_2px_8px_var(--brand-pink-shadow25)]"
-                onClick={handleContinue}
-              >
-                <NotebookPen className="h-3.5 w-3.5" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="top">
-              <p className="text-xs">Continue editing</p>
             </TooltipContent>
           </Tooltip>
         </div>
@@ -190,7 +176,7 @@ export const DraftRecoveryBanner = () => {
         )}
       >
         <div
-          className="flex cursor-pointer items-center justify-between bg-linear-to-r px-4 py-3"
+          className="from-brand-orange/15 via-brand-pink-500/10 to-brand-purple/15 hover:from-brand-orange/20 hover:via-brand-pink-500/15 hover:to-brand-purple/20 flex cursor-pointer items-center justify-between bg-linear-to-r px-4 py-3 transition-all duration-300"
           onClick={handleToggleExpand}
         >
           <div className="flex items-center gap-3">

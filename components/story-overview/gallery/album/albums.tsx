@@ -1,24 +1,10 @@
-import { useRef } from 'react';
-
-import { ChevronLeft, ChevronRight, ImageIcon, Plus } from 'lucide-react';
+import { ImageIcon, Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
 import { AlbumCard, IAlbumItem } from './album-card';
 
 export const Albums = ({ onAlbumSelect }: { onAlbumSelect?: (album: IAlbumItem) => void }) => {
-  const albumsScrollRef = useRef<HTMLDivElement>(null);
-
-  const scrollAlbums = (direction: 'left' | 'right') => {
-    if (!albumsScrollRef.current) return;
-    const cardWidth = albumsScrollRef.current.firstElementChild
-      ? (albumsScrollRef.current.firstElementChild as HTMLElement).offsetWidth + 16
-      : 300;
-    albumsScrollRef.current.scrollBy({
-      left: direction === 'left' ? -cardWidth : cardWidth,
-      behavior: 'smooth',
-    });
-  };
   return (
     <div className="border-soft relative space-y-4 rounded-2xl border p-6">
       <div className="flex items-start justify-between gap-3">
@@ -37,41 +23,10 @@ export const Albums = ({ onAlbumSelect }: { onAlbumSelect?: (album: IAlbumItem) 
         </Button>
       </div>
 
-      <div className="group relative">
-        <div
-          ref={albumsScrollRef}
-          className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {albumItems.map((item) => (
-            <AlbumCard key={item.id} item={item} onClick={() => onAlbumSelect?.(item)} />
-          ))}
-        </div>
-
-        {/* Nav buttons overlay */}
-        <div className="pointer-events-none absolute inset-y-0 -right-4 flex items-center pr-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:-right-8">
-          <Button
-            variant="outline"
-            size="icon"
-            className="border-soft bg-background hover:bg-muted pointer-events-auto h-8 w-8 rounded-full shadow-md"
-            onClick={() => scrollAlbums('right')}
-            aria-label="Next Album"
-          >
-            <ChevronRight size={16} className="text-text-secondary-75" />
-          </Button>
-        </div>
-
-        <div className="pointer-events-none absolute inset-y-0 -left-4 flex items-center pl-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:-left-8">
-          <Button
-            variant="outline"
-            size="icon"
-            className="border-soft bg-background hover:bg-muted pointer-events-auto h-8 w-8 rounded-full shadow-md"
-            onClick={() => scrollAlbums('left')}
-            aria-label="Previous Album"
-          >
-            <ChevronLeft size={16} className="text-text-secondary-75" />
-          </Button>
-        </div>
+      <div className="flex flex-col gap-3">
+        {albumItems.map((item) => (
+          <AlbumCard key={item.id} item={item} onClick={() => onAlbumSelect?.(item)} />
+        ))}
       </div>
     </div>
   );

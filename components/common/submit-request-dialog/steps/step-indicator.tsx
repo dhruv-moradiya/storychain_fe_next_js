@@ -21,7 +21,7 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
               'flex h-8 w-8 items-center justify-center rounded-full font-mono text-xs font-medium transition-all',
               idx <= currentStep
                 ? 'bg-brand-pink-500 text-white'
-                : 'text-text-secondary-65 bg-black/5'
+                : 'text-text-secondary-65 bg-muted'
             )}
           >
             {idx < currentStep ? <Check className="h-4 w-4" /> : idx + 1}
@@ -30,7 +30,7 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
             <div
               className={cn(
                 'mx-2 h-px w-8 transition-colors',
-                idx < currentStep ? 'bg-brand-pink-500' : 'bg-black/10'
+                idx < currentStep ? 'bg-brand-pink-500' : 'bg-border'
               )}
             />
           )}

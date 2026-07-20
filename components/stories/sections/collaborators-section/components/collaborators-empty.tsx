@@ -19,7 +19,7 @@ interface CollaboratorsEmptyProps {
 
 export default function CollaboratorsEmpty({ onInvite }: CollaboratorsEmptyProps) {
   return (
-    <Empty className="from-background/80 via-muted/25 to-muted/60 relative mx-auto max-w-lg overflow-hidden rounded-xl border bg-gradient-to-b py-14 shadow-xl">
+    <Empty className="from-background/80 via-muted/25 to-muted/60 relative mx-auto max-w-lg overflow-hidden rounded-xl border bg-linear-to-b py-14 shadow-xl">
       {/* Radial Glow */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12),transparent_70%)]" />
 

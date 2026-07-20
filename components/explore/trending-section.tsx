@@ -58,11 +58,11 @@ export function TrendingSection() {
     <section className="mb-16 space-y-6">
       <div className="flex items-end justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <h2 className="font-libre-baskerville text-foreground text-3xl font-bold tracking-tight">
+          <h2 className="font-libre-baskerville text-foreground text-xl font-bold tracking-tight md:text-3xl">
             Trending This Week
           </h2>
           <p className="text-muted-foreground">
-            The stories everyone is reading - and writing - right now
+            The stories everyone is reading & writing right now
           </p>
         </div>
 

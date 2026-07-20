@@ -9,12 +9,12 @@ import { cn } from '@/lib/utils';
 
 import { ExploreToolbar } from './explore-toolbar';
 import { IImageItem, ImageCard } from './image-card';
-import { ImageDetailDialog } from './image-detail-dialog';
+import { ImageCarouselOverlay } from './image-carousel-overlay';
 
 export const StoryImages = () => {
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [filter, setFilter] = useState('all');
-  const [selectedImage, setSelectedImage] = useState<IImageItem | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const filteredItems =
     filter === 'all' ? galleryItems : galleryItems.filter((item) => item.type === filter);
@@ -51,8 +51,8 @@ export const StoryImages = () => {
             : 'flex flex-col gap-4'
         )}
       >
-        {filteredItems.map((item) => (
-          <div key={item.id} onClick={() => setSelectedImage(item)} className="cursor-pointer">
+        {filteredItems.map((item, index) => (
+          <div key={item.id} onClick={() => setSelectedIndex(index)} className="cursor-pointer">
             <ImageCard item={item} view={view} />
           </div>
         ))}
@@ -68,10 +68,10 @@ export const StoryImages = () => {
         <ChevronDown size={14} />
       </Button>
 
-      <ImageDetailDialog
-        item={selectedImage}
-        open={!!selectedImage}
-        onOpenChange={(open) => !open && setSelectedImage(null)}
+      <ImageCarouselOverlay
+        items={filteredItems}
+        initialIndex={selectedIndex}
+        onClose={() => setSelectedIndex(null)}
       />
     </div>
   );

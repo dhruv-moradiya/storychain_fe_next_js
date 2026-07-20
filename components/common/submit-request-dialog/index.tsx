@@ -308,7 +308,7 @@ export function SubmitRequestDialog(props: SubmitRequestDialogProps) {
 
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
-      <ResponsiveDialogContent className="overflow-y-auto border-black/10 bg-white p-0 max-xl:h-[calc(100vh-10rem)] sm:max-w-[600px] xl:max-w-[calc(100vw-50rem)]">
+      <ResponsiveDialogContent className="border-border bg-card overflow-y-auto p-0 max-xl:h-[calc(100vh-10rem)] sm:max-w-[600px] xl:max-w-[calc(100vw-70rem)]">
         <div className="p-6">
           <ResponsiveDialogHeader>
             <ResponsiveDialogTitle className="text-text-primary flex items-center gap-2 font-serif text-xl">
@@ -345,7 +345,7 @@ export function SubmitRequestDialog(props: SubmitRequestDialogProps) {
                 type="button"
                 variant="outline"
                 onClick={handleBack}
-                className="gap-1 border-black/10 font-mono hover:bg-black/5"
+                className="border-border hover:bg-muted gap-1 font-mono"
               >
                 <ChevronLeft className="h-4 w-4" />
                 Back

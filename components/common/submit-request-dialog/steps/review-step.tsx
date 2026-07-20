@@ -74,7 +74,7 @@ export function ReviewStep({ stories, chapters }: ReviewStepProps) {
                   'rounded-full border px-3 py-1.5 font-mono text-xs transition-all',
                   isSelected
                     ? 'bg-brand-blue border-transparent text-white'
-                    : 'text-text-secondary-75 border-black/10 hover:border-black/20'
+                    : 'text-text-secondary-75 border-border hover:border-strong'
                 )}
               >
                 {option.label}
@@ -85,7 +85,7 @@ export function ReviewStep({ stories, chapters }: ReviewStepProps) {
       </div>
 
       {/* SR Options */}
-      <div className="space-y-4 rounded-xl border border-black/5 bg-black/2 p-4">
+      <div className="border-soft bg-muted/50 space-y-4 rounded-xl border p-4">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-text-primary font-medium">Create as draft</p>
@@ -101,7 +101,7 @@ export function ReviewStep({ stories, chapters }: ReviewStepProps) {
             )}
           />
         </div>
-        <div className="h-px bg-black/5" />
+        <div className="bg-border h-px" />
         <div className="flex items-center justify-between">
           <div>
             <p className="text-text-primary font-medium">Community auto-approval</p>
@@ -120,7 +120,7 @@ export function ReviewStep({ stories, chapters }: ReviewStepProps) {
       </div>
 
       {/* Summary */}
-      <div className="rounded-xl border border-black/5 bg-black/2 p-4">
+      <div className="border-soft bg-muted/50 rounded-xl border p-4">
         <p className="text-text-secondary-65 font-mono text-xs font-medium tracking-wider uppercase">
           SR Summary
         </p>

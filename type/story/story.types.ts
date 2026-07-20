@@ -10,14 +10,11 @@ import type {
   STORY_STATUSES,
 } from './story-enum';
 
-// ── Derived types from enums ──────────────────────────────────────────────────
 type TStoryStatus = (typeof STORY_STATUSES)[number];
 type TStoryCollaboratorRole = (typeof STORY_COLLABORATOR_ROLES)[number];
 type TStoryCollaboratorStatus = (typeof STORY_COLLABORATOR_STATUSES)[number];
 type TStoryGenres = (typeof STORY_GENRES)[number];
 type TStoryContentRating = (typeof STORY_CONTENT_RATINGS)[number];
-
-// ── Role Config Derived Types ─────────────────────────────────────────────────
 
 /** All individual permission keys (e.g. 'canEditStorySettings', 'canDeleteStory', …) */
 type TStoryCollaboratorPermission =

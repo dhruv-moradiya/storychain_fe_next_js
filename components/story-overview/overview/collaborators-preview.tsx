@@ -44,10 +44,7 @@ export function CollaboratorsPreview({
       </h2>
 
       <AnimatePresence>
-        <div
-          className="grid grid-cols-2 gap-3"
-          style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 180px), 1fr))' }}
-        >
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3 md:grid-cols-5">
           {/* Owner */}
           {owner && (
             <motion.div

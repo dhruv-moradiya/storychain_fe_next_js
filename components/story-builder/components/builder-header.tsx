@@ -291,7 +291,7 @@ function BuilderHeader({
             >
               <div className="bg-bg-cream-light relative flex h-full flex-col overflow-hidden border border-black/5 shadow-2xl">
                 {/* Immersive Header */}
-                <ResponsiveDialogHeader className="border-border/20 border-b bg-white/40 px-8 py-5 backdrop-blur-xl">
+                <ResponsiveDialogHeader className="border-border border-b px-8 py-5 backdrop-blur-xl">
                   <div className="flex items-center justify-between">
                     <div>
                       <ResponsiveDialogTitle className="font-playfair text-text-tertiary text-2xl font-bold tracking-tight">
@@ -321,7 +321,7 @@ function BuilderHeader({
                 </div>
 
                 {/* Preview Footer */}
-                <div className="border-border/10 flex items-center justify-between border-t bg-white/30 px-8 py-4 backdrop-blur-md">
+                <div className="border-border flex items-center justify-between border-t px-8 py-4 backdrop-blur-md">
                   <div className="flex items-center gap-3">
                     <div className="text-text-secondary-40 font-ibm-plex-mono flex items-center gap-2 text-[10px]">
                       <span>{previewChapter.title.length} characters</span>

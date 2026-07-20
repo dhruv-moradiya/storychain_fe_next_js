@@ -1,13 +1,11 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
 
-import { BookOpen, ScrollText, Shield, User } from 'lucide-react';
+import { ScrollText } from 'lucide-react';
 
 import { TableSkeleton } from '@/components/common/table-skeleton';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { useStoryRole } from '@/components/stories/story-role-context';
 import { useGetStoryTree } from '@/services/stories/stories.query';
 
 import { ChaptersTable } from './chapters-table';
@@ -15,31 +13,17 @@ import { useMapTreeToTable } from './hooks/use-map-tree-to-table';
 import { MOCK_CURRENT_USER_ID } from './mock-data';
 import type { IChaptersTableContext, UserRole } from './types';
 
-interface RoleOption {
-  role: UserRole;
-  label: string;
-  isPrivileged: boolean;
-  icon: typeof User;
-}
-
-const ROLE_OPTIONS: RoleOption[] = [
-  { role: 'owner', label: 'Owner', isPrivileged: true, icon: Shield },
-  { role: 'co_author', label: 'Co-Author', isPrivileged: true, icon: BookOpen },
-  { role: 'contributor', label: 'Contributor', isPrivileged: false, icon: User },
-  { role: 'reader', label: 'Reader', isPrivileged: false, icon: User },
-];
-
 export function ChaptersTableSection() {
   const params = useParams();
   const slug = params?.slug as string;
   const { data, isLoading } = useGetStoryTree(slug);
 
-  const [selectedRole, setSelectedRole] = useState<RoleOption>(ROLE_OPTIONS[3]);
+  const { role } = useStoryRole();
 
   const context: IChaptersTableContext = {
-    isOwnerOrPrivileged: selectedRole.isPrivileged,
+    isOwnerOrPrivileged: role === 'owner' || role === 'co_author',
     currentUserId: MOCK_CURRENT_USER_ID,
-    userRole: selectedRole.role,
+    userRole: role as UserRole,
   };
 
   const tableData = useMapTreeToTable(data?.data?.chapters);
@@ -59,36 +43,6 @@ export function ChaptersTableSection() {
           <div>
             <h1 className="text-text-primary text-xl font-semibold">Chapters</h1>
             <p className="text-text-secondary-65 text-sm">Manage your story chapters</p>
-          </div>
-        </div>
-
-        {/* Demo: Role switcher */}
-        <div className="flex flex-col gap-1.5">
-          <p className="text-text-secondary-50 text-[10px] font-medium tracking-wider uppercase">
-            Preview as role
-          </p>
-          <div className="flex items-center gap-1.5">
-            {ROLE_OPTIONS.map((option) => {
-              const Icon = option.icon;
-              const isActive = selectedRole.role === option.role;
-              return (
-                <Button
-                  key={option.role}
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setSelectedRole(option)}
-                  className={cn(
-                    'h-8 gap-1.5 border px-2.5 text-xs transition-all duration-150',
-                    isActive
-                      ? 'border-brand-pink-500/40 bg-brand-pink-500/10 text-brand-pink-500'
-                      : 'border-border/40 text-text-secondary-65 hover:text-text-primary hover:border-border'
-                  )}
-                >
-                  <Icon className="h-3 w-3" />
-                  {option.label}
-                </Button>
-              );
-            })}
           </div>
         </div>
       </div>

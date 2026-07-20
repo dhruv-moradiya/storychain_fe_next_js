@@ -51,13 +51,13 @@ export function DraftSelection({
               'flex w-full items-center gap-3 rounded-lg border p-3 text-left transition-all',
               isSelected
                 ? 'border-[#10b981] bg-[#10b981]/5'
-                : 'border-black/10 hover:border-black/20 hover:bg-black/2'
+                : 'border-border hover:border-strong hover:bg-muted/50'
             )}
           >
             <div
               className={cn(
                 'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg',
-                isSelected ? 'bg-[#10b981]/15' : 'bg-black/5'
+                isSelected ? 'bg-[#10b981]/15' : 'bg-muted'
               )}
             >
               <FileText

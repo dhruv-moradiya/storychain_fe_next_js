@@ -31,10 +31,10 @@ export function SelectionSection({
       className={cn(
         'rounded-xl border transition-all',
         isActive
-          ? 'border-black/15 bg-white shadow-sm'
+          ? 'border-border bg-card shadow-sm'
           : isCompleted
-            ? 'border-black/10 bg-black/2'
-            : 'border-black/5 bg-black/1',
+            ? 'border-soft bg-muted/50'
+            : 'border-soft bg-muted/20',
         isDisabled && 'pointer-events-none opacity-50'
       )}
     >
@@ -42,7 +42,7 @@ export function SelectionSection({
       <div
         className={cn(
           'flex items-center gap-3 px-4 py-3',
-          isCompleted && !isActive && 'cursor-pointer hover:bg-black/2'
+          isCompleted && !isActive && 'hover:bg-muted/50 cursor-pointer'
         )}
         onClick={isCompleted && !isActive ? onEdit : undefined}
       >
@@ -54,7 +54,7 @@ export function SelectionSection({
               ? 'bg-brand-pink-500 text-white'
               : isActive
                 ? 'bg-brand-blue text-white'
-                : 'text-text-secondary-65 bg-black/10'
+                : 'text-text-secondary-65 bg-muted'
           )}
         >
           {isCompleted ? <Check className="h-3.5 w-3.5" /> : stepNumber}
