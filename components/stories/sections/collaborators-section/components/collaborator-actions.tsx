@@ -53,29 +53,36 @@ function CollaboratorActions({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         {/* Title */}
         <div className="flex items-center gap-3">
-          <div className="bg-brand-pink-500/10 flex h-10 w-10 items-center justify-center rounded-xl">
+          <div className="border-border/50 bg-brand-pink-500/10 flex h-10 w-10 items-center justify-center rounded-xl border">
             <Users className="text-brand-pink-500 h-5 w-5" />
           </div>
           <div>
-            <h2 className="text-text-primary text-lg font-semibold">Collaborators</h2>
-            <p className="text-text-secondary-65 text-sm">Manage your story team and permissions</p>
+            <h2 className="text-text-primary text-lg font-semibold tracking-tight">
+              Collaborators
+            </h2>
+            <p className="text-text-secondary-65 text-xs sm:text-sm">
+              Manage your story team and permissions
+            </p>
           </div>
         </div>
 
-        <StoryRoleGate permission="canInviteCollaborators">
-          <Button
-            onClick={openInvite}
-            className="bg-brand-pink-500 shadow-brand-pink-shadow25 hover:bg-brand-pink-600 text-white shadow-sm"
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Invite Collaborator
-          </Button>
-        </StoryRoleGate>
-      </div>
+        {/* Action Buttons Group */}
+        <div className="flex flex-wrap items-center gap-2.5 sm:justify-end">
+          <StoryRoleGate permission="canDistributeCoins">
+            <DistributeCoinsDialog collaborators={collaborators} />
+          </StoryRoleGate>
 
-      <StoryRoleGate permission="canDistributeCoins">
-        <DistributeCoinsDialog collaborators={collaborators} />
-      </StoryRoleGate>
+          <StoryRoleGate permission="canInviteCollaborators">
+            <Button
+              onClick={openInvite}
+              className="bg-brand-pink-500 shadow-brand-pink-shadow25 hover:bg-brand-pink-600 cursor-pointer font-medium text-white shadow-2xs"
+            >
+              <Plus className="mr-1.5 h-4 w-4" />
+              Invite Collaborator
+            </Button>
+          </StoryRoleGate>
+        </div>
+      </div>
 
       {/* Filter Tabs and Search */}
       <div className="border-border/50 flex flex-col gap-4 rounded-xl border p-4 lg:flex-row lg:items-center lg:justify-between">

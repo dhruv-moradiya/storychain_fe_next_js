@@ -15,6 +15,8 @@ interface ApiErrorProps {
   isRetrying?: boolean;
   /** Additional class names for the root container. */
   className?: string;
+  /** Whether to render a translucent background overlay behind the error state. */
+  overlay?: boolean;
 }
 
 const fadeUp = (delay = 0) => ({
@@ -28,36 +30,39 @@ export function ApiError({
   onRetry,
   isRetrying = false,
   className,
+  overlay = true,
 }: ApiErrorProps) {
   return (
-    <div className={cn('flex w-full items-center justify-center px-4 py-12', className)}>
+    <div className={cn('relative flex w-full items-center justify-center px-4 py-10', className)}>
+      {/* Background Overlay */}
+      {overlay && (
+        <div className="bg-background/40 absolute inset-0 rounded-2xl backdrop-blur-xs" />
+      )}
+
       <motion.div
         {...fadeUp()}
-        className="w-full max-w-sm overflow-hidden rounded-2xl border border-black/5 bg-white/80 shadow-sm backdrop-blur-sm"
+        className="border-border/50 bg-card/95 relative z-10 w-full max-w-sm overflow-hidden rounded-2xl border shadow-lg backdrop-blur-md"
       >
-        {/* Top accent bar */}
-        <div className="from-brand-pink-500 via-brand-blue to-brand-orange h-[3px] w-full bg-linear-to-r" />
-
-        <div className="flex flex-col items-center p-8 text-center">
+        <div className="relative z-10 flex flex-col items-center p-6 text-center sm:p-8">
           {/* Animated icon */}
           <motion.div
             initial={{ scale: 0.7, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.4, delay: 0.05, type: 'spring', stiffness: 200 }}
-            className="relative mb-5 flex h-20 w-20 items-center justify-center"
+            className="relative mb-4 flex h-16 w-16 items-center justify-center"
           >
-            {/* Pulsing glow */}
+            {/* Pulsing background */}
             <motion.div
               className="bg-brand-pink-500/10 absolute inset-0 rounded-full"
-              animate={{ scale: [1, 1.18, 1], opacity: [0.6, 0.2, 0.6] }}
+              animate={{ scale: [1, 1.15, 1], opacity: [0.6, 0.2, 0.6] }}
               transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
             />
-            <div className="bg-brand-pink-500/10 relative flex h-16 w-16 items-center justify-center rounded-full">
+            <div className="border-brand-pink-500/20 bg-brand-pink-500/10 text-brand-pink-500 relative flex h-14 w-14 items-center justify-center rounded-full border shadow-2xs">
               <motion.div
                 animate={{ rotate: [0, -6, 6, -4, 4, 0] }}
                 transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut', repeatDelay: 1 }}
               >
-                <AlertTriangle className="text-brand-pink-500 h-8 w-8" strokeWidth={1.75} />
+                <AlertTriangle className="h-6 w-6" strokeWidth={2} />
               </motion.div>
             </div>
           </motion.div>
@@ -65,7 +70,7 @@ export function ApiError({
           {/* Title */}
           <motion.h3
             {...fadeUp(0.1)}
-            className="font-libre-baskerville text-text-tertiary mb-2 text-xl font-semibold tracking-tight"
+            className="text-text-primary mb-1.5 text-lg font-semibold tracking-tight"
           >
             Request Failed
           </motion.h3>
@@ -73,7 +78,7 @@ export function ApiError({
           {/* Message */}
           <motion.p
             {...fadeUp(0.15)}
-            className="font-ibm-plex-mono text-text-secondary-65 mb-6 text-sm leading-relaxed"
+            className="text-text-secondary-65 mb-6 max-w-xs text-xs leading-relaxed"
           >
             {message}
           </motion.p>
@@ -84,7 +89,7 @@ export function ApiError({
               <Button
                 onClick={onRetry}
                 disabled={isRetrying}
-                className="font-ibm-plex-mono bg-brand-pink-500 hover:bg-brand-pink-600 w-full gap-2 text-sm text-white disabled:opacity-60"
+                className="bg-brand-pink-500 hover:bg-brand-pink-600 w-full cursor-pointer gap-2 text-sm font-medium text-white shadow-2xs disabled:opacity-60"
               >
                 <motion.span
                   animate={isRetrying ? { rotate: 360 } : { rotate: 0 }}

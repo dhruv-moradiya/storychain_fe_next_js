@@ -195,18 +195,18 @@ export const ImageRow = ({
           )}
 
           {!uploading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition group-hover:opacity-100">
-              <span className="rounded-lg bg-white px-4 py-2 text-sm font-medium shadow-lg">
+            <div className="backdrop-blur-2xs absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition group-hover:opacity-100">
+              <span className="bg-background text-text-primary border-border/50 rounded-lg border px-4 py-2 text-sm font-semibold shadow-md">
                 {displayImage ? 'Change image' : 'Upload image'}
               </span>
             </div>
           )}
 
           {uploading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-              <div className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 shadow-lg">
+            <div className="backdrop-blur-2xs absolute inset-0 flex items-center justify-center bg-black/40">
+              <div className="bg-background text-text-primary border-border/50 flex items-center gap-2 rounded-lg border px-4 py-2 shadow-md">
                 <Loader2 size={16} className="text-brand-pink-500 animate-spin" />
-                <span className="text-sm">Uploading...</span>
+                <span className="text-sm font-medium">Uploading...</span>
               </div>
             </div>
           )}
@@ -216,9 +216,9 @@ export const ImageRow = ({
       {displayImage && onRemove && !uploading && (
         <button
           onClick={onRemove}
-          className="text-destructive mt-2 flex items-center gap-1.5 text-xs hover:underline"
+          className="text-destructive hover:text-destructive/80 mt-2.5 flex cursor-pointer items-center gap-1.5 text-xs font-medium transition hover:underline"
         >
-          <Trash2 size={12} />
+          <Trash2 size={13} />
           Remove image
         </button>
       )}

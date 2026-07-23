@@ -4,17 +4,20 @@ import Link from 'next/link';
 import type { ILatestChaptersResponse } from '@/type/story';
 import { formatDistanceToNow } from 'date-fns';
 import { motion } from 'framer-motion';
-import { ArrowRight, BookOpen, ChartNoAxesColumn, Eye, MessageSquare } from 'lucide-react';
+import { ArrowRight, BookOpen, ChartNoAxesColumn, Eye, MessageSquare, Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface ChapterPreviewProps {
   chapters: ILatestChaptersResponse[];
+  storySlug: string;
   continueChapter?: string;
 }
 
-export function ChapterPreview({ chapters }: ChapterPreviewProps) {
+export function ChapterPreview({ chapters, storySlug }: ChapterPreviewProps) {
+  const hasChapters = chapters && chapters.length > 0;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -28,25 +31,60 @@ export function ChapterPreview({ chapters }: ChapterPreviewProps) {
           Latest Chapters
         </h2>
 
-        <Button variant="ghost" size="sm">
-          View All
-          <ArrowRight size={14} />
-        </Button>
+        {hasChapters && (
+          <Button variant="ghost" size="sm" asChild>
+            <Link href={`/stories/${storySlug}/chapters`}>
+              View All
+              <ArrowRight size={14} />
+            </Link>
+          </Button>
+        )}
       </div>
 
-      {/* Chapters List */}
-      <div className="space-y-2 sm:space-y-3">
-        {chapters.map((chapter) => (
-          <ChapterCard key={chapter.slug} chapter={chapter} />
-        ))}
-      </div>
+      {/* Chapters List or Empty State */}
+      {hasChapters ? (
+        <div className="space-y-2 sm:space-y-3">
+          {chapters.map((chapter) => (
+            <ChapterCard key={chapter.slug} chapter={chapter} />
+          ))}
+        </div>
+      ) : (
+        <div className="border-border/50 bg-card/40 flex flex-col items-center justify-center gap-2.5 rounded-xl border p-6 text-center shadow-2xs backdrop-blur-xs">
+          <div className="border-brand-pink-500/20 bg-brand-pink-500/10 text-brand-pink-500 flex h-10 w-10 items-center justify-center rounded-xl border">
+            <BookOpen className="h-5 w-5" />
+          </div>
+          <div className="space-y-1">
+            <p className="text-text-primary text-sm font-semibold">No chapters created yet</p>
+            <p className="text-text-secondary-65 max-w-sm text-xs leading-relaxed">
+              Be the first to start this story by writing Chapter 1!
+            </p>
+          </div>
+        </div>
+      )}
 
-      {/* CTA */}
+      {/* CTA Button */}
       <div className="flex flex-col gap-2 pt-3 sm:flex-row sm:gap-3 sm:pt-4">
-        <Button className="from-brand-pink-500 to-brand-orange flex-1 gap-2 bg-linear-to-r text-sm text-white hover:opacity-90 sm:text-base">
-          <BookOpen size={16} className="sm:h-4.5 sm:w-4.5" />
-          Start Reading
-        </Button>
+        {hasChapters ? (
+          <Button
+            asChild
+            className="from-brand-pink-500 to-brand-orange flex-1 cursor-pointer gap-2 bg-linear-to-r text-sm font-medium text-white shadow-2xs hover:opacity-90 sm:text-base"
+          >
+            <Link href={`/stories/${storySlug}/chapter/${chapters[0].slug}`}>
+              <BookOpen size={16} className="sm:h-4.5 sm:w-4.5" />
+              Start Reading
+            </Link>
+          </Button>
+        ) : (
+          <Button
+            asChild
+            className="from-brand-pink-500 to-brand-orange flex-1 cursor-pointer gap-2 bg-linear-to-r text-sm font-medium text-white shadow-2xs hover:opacity-90 sm:text-base"
+          >
+            <Link href={`/stories/${storySlug}/builder?mode=new&parentChapterSlug=root`}>
+              <Plus size={16} className="sm:h-4.5 sm:w-4.5" />
+              Create First Chapter
+            </Link>
+          </Button>
+        )}
       </div>
     </motion.div>
   );

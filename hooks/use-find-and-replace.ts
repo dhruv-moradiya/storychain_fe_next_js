@@ -35,8 +35,6 @@ interface UseFindAndReplaceReturn {
   actions: FindAndReplaceActions;
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
 /**
  * Safely retrieves the SearchAndReplace extension storage from the editor.
  */
@@ -71,6 +69,7 @@ function scrollToCurrentMatch(editor: Editor | null) {
 export function useFindAndReplace(editor: Editor | null): UseFindAndReplaceReturn {
   const [isOpen, setIsOpen] = useState(false);
   const [showReplace, setShowReplace] = useState(false);
+  const [isCaseSensitive, setIsCaseSensitive] = useState(false);
 
   // Read search & replace state reactively from TipTap extension storage
   const editorSearchState = useEditorState({
@@ -113,7 +112,7 @@ export function useFindAndReplace(editor: Editor | null): UseFindAndReplaceRetur
 
   const searchTerm = editorSearchState?.searchTerm ?? '';
   const replaceTerm = editorSearchState?.replaceTerm ?? '';
-  const caseSensitive = editorSearchState?.caseSensitive ?? false;
+  const caseSensitive = isCaseSensitive || (editorSearchState?.caseSensitive ?? false);
   const useRegex = editorSearchState?.useRegex ?? false;
   const currentIndex = editorSearchState?.currentIndex ?? 0;
   const totalResults = editorSearchState?.totalResults ?? 0;
@@ -125,6 +124,11 @@ export function useFindAndReplace(editor: Editor | null): UseFindAndReplaceRetur
 
       // Pre-fill search with current editor selection
       if (editor) {
+        const storage = getSearchStorage(editor);
+        if (storage) {
+          setIsCaseSensitive(storage.caseSensitive);
+        }
+
         const { from, to, empty } = editor.state.selection;
         if (!empty) {
           const selectedText = editor.state.doc.textBetween(from, to);
@@ -169,7 +173,9 @@ export function useFindAndReplace(editor: Editor | null): UseFindAndReplaceRetur
   const toggleCaseSensitive = useCallback(() => {
     if (editor) {
       const s = getSearchStorage(editor);
-      editor.commands.setCaseSensitive(!s.caseSensitive);
+      const nextVal = !s.caseSensitive;
+      setIsCaseSensitive(nextVal);
+      editor.commands.setCaseSensitive(nextVal);
       scrollToCurrentMatch(editor);
     }
   }, [editor]);

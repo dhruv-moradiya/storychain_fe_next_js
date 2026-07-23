@@ -1,6 +1,11 @@
 'use client';
 
-import { Monitor } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
+import { useAuth, useUser } from '@clerk/nextjs';
+import type { SessionWithActivitiesResource } from '@clerk/shared/types/index';
+import { formatDistanceToNow } from 'date-fns';
+import { Monitor, Smartphone, Tablet } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -13,34 +18,120 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-const mockDevices = [
-  {
-    id: '1',
-    name: 'Chrome on Windows',
-    lastActive: '2 hours ago',
-    location: 'New York, USA',
-    current: true,
-  },
-  {
-    id: '2',
-    name: 'Safari on iPhone',
-    lastActive: '1 day ago',
-    location: 'New York, USA',
-    current: false,
-  },
-  {
-    id: '3',
-    name: 'Firefox on MacOS',
-    lastActive: '3 days ago',
-    location: 'Los Angeles, USA',
-    current: false,
-  },
-];
+const getDeviceIcon = (session: SessionWithActivitiesResource) => {
+  const deviceType = session.latestActivity?.deviceType?.toLowerCase();
+  if (deviceType === 'mobile' || session.latestActivity?.isMobile) {
+    return <Smartphone className="text-text-secondary-65 h-4 w-4" />;
+  }
+  if (deviceType === 'tablet') {
+    return <Tablet className="text-text-secondary-65 h-4 w-4" />;
+  }
+  return <Monitor className="text-text-secondary-65 h-4 w-4" />;
+};
+
+const getDeviceName = (session: SessionWithActivitiesResource) => {
+  const activity = session.latestActivity;
+  if (!activity) return 'Unknown Device';
+
+  const browser = activity.browserName
+    ? `${activity.browserName}${activity.browserVersion ? ` ${activity.browserVersion}` : ''}`
+    : 'Unknown Browser';
+
+  const device = activity.deviceType
+    ? activity.deviceType.charAt(0).toUpperCase() + activity.deviceType.slice(1)
+    : activity.isMobile
+      ? 'Mobile'
+      : 'Desktop';
+
+  return `${browser} on ${device}`;
+};
+
+const getLocation = (session: SessionWithActivitiesResource) => {
+  const activity = session.latestActivity;
+  if (!activity) return 'Unknown Location';
+  return [activity.city, activity.country].filter(Boolean).join(', ') || 'Unknown Location';
+};
 
 export function SessionsCard() {
-  const handleLogoutDevice = (id: string) => {
-    console.log('Logout device:', id);
+  const { user, isLoaded: isUserLoaded } = useUser();
+  const { sessionId, isLoaded: isAuthLoaded } = useAuth();
+  const [sessions, setSessions] = useState<SessionWithActivitiesResource[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [revokingSessionIds, setRevokingSessionIds] = useState<string[]>([]);
+  const [isRevokingAll, setIsRevokingAll] = useState(false);
+
+  const handleLogoutDevice = async (id: string) => {
+    if (revokingSessionIds.includes(id)) return;
+    setRevokingSessionIds((prev) => [...prev, id]);
+    try {
+      const sessionToRevoke = sessions.find((s) => s.id === id);
+      if (sessionToRevoke) {
+        await sessionToRevoke.revoke();
+        // Refresh the list
+        setSessions((prev) => prev.filter((s) => s.id !== id));
+      }
+    } catch (error) {
+      console.error('Failed to revoke session:', error);
+    } finally {
+      setRevokingSessionIds((prev) => prev.filter((item) => item !== id));
+    }
   };
+
+  const handleLogoutAllOtherDevices = async () => {
+    if (isRevokingAll) return;
+    setIsRevokingAll(true);
+    try {
+      const otherSessions = sessions.filter((s) => s.id !== sessionId);
+      await Promise.all(otherSessions.map((s) => s.revoke()));
+      // Refresh the list to only contain current session
+      setSessions((prev) => prev.filter((s) => s.id === sessionId));
+    } catch (error) {
+      console.error('Failed to revoke all other sessions:', error);
+    } finally {
+      setIsRevokingAll(false);
+    }
+  };
+
+  useEffect(() => {
+    let active = true;
+
+    async function fetchSessions() {
+      if (!user) {
+        if (active) {
+          setSessions([]);
+          setLoading(false);
+        }
+        return;
+      }
+
+      try {
+        const sessions = await user.getSessions();
+        if (active) {
+          setSessions(sessions);
+        }
+      } catch (error) {
+        console.error('Failed to fetch sessions:', error);
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    if (isUserLoaded) {
+      fetchSessions();
+    }
+
+    return () => {
+      active = false;
+    };
+  }, [user, isUserLoaded]);
+
+  const hasOtherSessions = sessions.some((s) => s.id !== sessionId);
+
+  const isLoading = !isUserLoaded || !isAuthLoaded || loading;
+
+  const revokingSet = new Set(revokingSessionIds);
 
   return (
     <div className="border-border/50 bg-cream-95 rounded-xl border p-5">
@@ -52,8 +143,13 @@ export function SessionsCard() {
             <p className="text-text-secondary-65 text-sm">Devices logged into your account</p>
           </div>
         </div>
-        <Button variant="outline" size="sm">
-          Log out all
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleLogoutAllOtherDevices}
+          disabled={isLoading || isRevokingAll || !hasOtherSessions}
+        >
+          {isRevokingAll ? 'Logging out...' : 'Log out other devices'}
         </Button>
       </div>
 
@@ -67,35 +163,63 @@ export function SessionsCard() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {mockDevices.map((d) => (
-            <TableRow key={d.id} className="hover:bg-muted/40 transition-colors">
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  <Monitor className="text-text-secondary-65 h-4 w-4" />
-                  <span className="text-text-primary">{d.name}</span>
-                  {d.current && (
-                    <Badge variant="secondary" className="bg-brand-pink-500/10 text-brand-pink-500">
-                      Current
-                    </Badge>
-                  )}
+          {isLoading ? (
+            <TableRow>
+              <TableCell colSpan={4} className="text-text-secondary-65 h-24 text-center">
+                <div className="flex items-center justify-center gap-2">
+                  <div className="border-brand-pink-500 h-4 w-4 animate-spin rounded-full border-2 border-t-transparent" />
+                  <span>Loading active sessions...</span>
                 </div>
               </TableCell>
-              <TableCell className="text-text-secondary-65">{d.lastActive}</TableCell>
-              <TableCell className="text-text-secondary-65">{d.location}</TableCell>
-              <TableCell className="text-right">
-                {!d.current && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-destructive hover:bg-destructive/10"
-                    onClick={() => handleLogoutDevice(d.id)}
-                  >
-                    Log out
-                  </Button>
-                )}
+            </TableRow>
+          ) : sessions.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={4} className="text-text-secondary-65 h-24 text-center">
+                No active sessions found.
               </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            sessions.map((session) => {
+              const isCurrent = session.id === sessionId;
+              const isRevoking = revokingSet.has(session.id);
+
+              return (
+                <TableRow key={session.id} className="hover:bg-muted/40 transition-colors">
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      {getDeviceIcon(session)}
+                      <span className="text-text-primary">{getDeviceName(session)}</span>
+                      {isCurrent && (
+                        <Badge
+                          variant="secondary"
+                          className="bg-brand-pink-500/10 text-brand-pink-500"
+                        >
+                          Current
+                        </Badge>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-text-secondary-65">
+                    {formatDistanceToNow(new Date(session.lastActiveAt), { addSuffix: true })}
+                  </TableCell>
+                  <TableCell className="text-text-secondary-65">{getLocation(session)}</TableCell>
+                  <TableCell className="text-right">
+                    {!isCurrent && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-destructive hover:bg-destructive/10"
+                        onClick={() => handleLogoutDevice(session.id)}
+                        disabled={isRevoking}
+                      >
+                        {isRevoking ? 'Logging out...' : 'Log out'}
+                      </Button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            })
+          )}
         </TableBody>
       </Table>
     </div>

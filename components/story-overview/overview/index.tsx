@@ -32,7 +32,11 @@ export const OverviewTab = ({ story }: { story: IStoryOverview }) => {
 
       {/* Chapters Section */}
       <FadeInView delay={0.1}>
-        <ChapterPreview chapters={story.latestChapters} continueChapter="Ch. 23: The Escape" />
+        <ChapterPreview
+          chapters={story.latestChapters}
+          storySlug={story.slug}
+          continueChapter="Ch. 23: The Escape"
+        />
       </FadeInView>
 
       {/* Footer */}

@@ -15,6 +15,7 @@ import { MoreHorizontal, Trash2, UserCog } from 'lucide-react';
 
 import { createBadge } from '@/components/common/badge';
 import { ROLE_DISPLAY, ROLE_ICON_COLOR, STATUS_DISPLAY } from '@/components/common/badge/colors';
+import { useStoryRole } from '@/components/stories/story-role-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -32,6 +33,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { hasPermission } from '@/lib/story-role-utils';
 import { cn } from '@/lib/utils';
 
 import { ChangeRoleDialog } from './change-role-dialog';
@@ -62,6 +64,10 @@ const CollaboratorTable = ({
   isChangingRole = false,
   isRemoving = false,
 }: CollaboratorTableProps) => {
+  const { role: currentUserRole } = useStoryRole();
+  const canChangePermissions = hasPermission(currentUserRole, 'canChangePermissions');
+  const canRemoveCollaborators = hasPermission(currentUserRole, 'canRemoveCollaborators');
+
   const [changeRoleTarget, setChangeRoleTarget] = useState<ActiveCollaborator | null>(null);
   const [removeTarget, setRemoveTarget] = useState<{
     _id: string;
@@ -87,7 +93,7 @@ const CollaboratorTable = ({
 
           return (
             <div className="flex items-center gap-3">
-              <Avatar className="border-border h-10 w-10 border shadow-sm">
+              <Avatar className="border-border h-10 w-10 border shadow-2xs">
                 <AvatarImage src={user.avatarUrl} alt={user.username} />
                 <AvatarFallback className="bg-brand-blue/10 text-brand-blue font-medium">
                   {user.username.charAt(0).toUpperCase()}
@@ -193,6 +199,9 @@ const CollaboratorTable = ({
           const collab = row.original;
           if (collab.role === 'owner') return null;
 
+          // Don't show actions dropdown if current user cannot change permissions or remove collaborators
+          if (!canChangePermissions && !canRemoveCollaborators) return null;
+
           return (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -229,37 +238,43 @@ const CollaboratorTable = ({
                 </div>
 
                 {/* Change Role */}
-                <DropdownMenuItem
-                  className="text-text-primary hover:bg-muted/70 flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium transition-colors"
-                  onSelect={() =>
-                    setChangeRoleTarget({
-                      _id: collab._id,
-                      user: collab.user,
-                      currentRole: collab.role,
-                    })
-                  }
-                >
-                  <UserCog className="text-text-secondary-65 h-4 w-4" />
-                  Change Role
-                </DropdownMenuItem>
+                {canChangePermissions && (
+                  <DropdownMenuItem
+                    className="text-text-primary hover:bg-muted/70 flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium transition-colors"
+                    onSelect={() =>
+                      setChangeRoleTarget({
+                        _id: collab._id,
+                        user: collab.user,
+                        currentRole: collab.role,
+                      })
+                    }
+                  >
+                    <UserCog className="text-text-secondary-65 h-4 w-4" />
+                    Change Role
+                  </DropdownMenuItem>
+                )}
 
-                <DropdownMenuSeparator className="bg-border/30 my-1" />
+                {canChangePermissions && canRemoveCollaborators && (
+                  <DropdownMenuSeparator className="bg-border/30 my-1" />
+                )}
 
                 {/* Remove */}
-                <DropdownMenuItem
-                  className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium text-red-500 transition-colors hover:bg-red-50 hover:text-red-600 focus:bg-red-50 focus:text-red-600"
-                  onSelect={() => setRemoveTarget({ _id: collab._id, user: collab.user })}
-                >
-                  <Trash2 className="h-4 w-4" />
-                  Remove Collaborator
-                </DropdownMenuItem>
+                {canRemoveCollaborators && (
+                  <DropdownMenuItem
+                    className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium text-red-500 transition-colors hover:bg-red-50 hover:text-red-600 focus:bg-red-50 focus:text-red-600 dark:hover:bg-red-950/40 dark:focus:bg-red-950/40"
+                    onSelect={() => setRemoveTarget({ _id: collab._id, user: collab.user })}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Remove Collaborator
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           );
         },
       }),
     ],
-    []
+    [canChangePermissions, canRemoveCollaborators]
   );
 
   // eslint-disable-next-line

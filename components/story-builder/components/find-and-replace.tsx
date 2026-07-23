@@ -9,7 +9,6 @@ import {
   ArrowUp,
   CaseSensitive,
   ChevronRight,
-  Regex,
   Replace,
   ReplaceAll,
   X,
@@ -23,8 +22,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { useFindAndReplace } from '@/hooks/use-find-and-replace';
 import { cn } from '@/lib/utils';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 interface FindAndReplaceProps {
   editor: Editor;
   isOpen: boolean;
@@ -32,8 +29,6 @@ interface FindAndReplaceProps {
   onOpen: (withReplace?: boolean) => void;
   onClose: () => void;
 }
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 function FindAndReplace({ editor, isOpen, showReplace, onOpen, onClose }: FindAndReplaceProps) {
   const { state, actions } = useFindAndReplace(editor);
@@ -51,8 +46,6 @@ function FindAndReplace({ editor, isOpen, showReplace, onOpen, onClose }: FindAn
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
-
-  // ─── Keyboard handlers ──────────────────────────────────────────────────
 
   const handleSearchKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -85,16 +78,12 @@ function FindAndReplace({ editor, isOpen, showReplace, onOpen, onClose }: FindAn
     [actions, onClose]
   );
 
-  // ─── Match counter label ────────────────────────────────────────────────
-
   const matchLabel =
     state.totalResults > 0
       ? `${state.currentIndex + 1} of ${state.totalResults}`
       : state.searchTerm
         ? 'No results'
         : 'No results';
-
-  // ─── Render ─────────────────────────────────────────────────────────────
 
   return (
     <AnimatePresence>
@@ -107,14 +96,13 @@ function FindAndReplace({ editor, isOpen, showReplace, onOpen, onClose }: FindAn
           className={cn(
             'absolute top-2 right-4 z-50',
             'border-border/60 bg-background/95 rounded-lg border shadow-lg backdrop-blur-md',
-            'w-[420px]'
+            'w-105'
           )}
           role="dialog"
           aria-label="Find and Replace"
         >
           <TooltipProvider delayDuration={300}>
             <div className="flex flex-col gap-1.5 p-2">
-              {/* ─── Find Row ──────────────────────────────────────────── */}
               <div className="flex items-center gap-1.5">
                 {/* Toggle replace visibility */}
                 <Tooltip>
@@ -160,31 +148,19 @@ function FindAndReplace({ editor, isOpen, showReplace, onOpen, onClose }: FindAn
                           size="sm"
                           pressed={state.caseSensitive}
                           onPressedChange={() => actions.toggleCaseSensitive()}
-                          className="size-5 p-0"
+                          className={cn(
+                            'size-6 cursor-pointer rounded-md p-0.5 transition-all',
+                            state.caseSensitive
+                              ? 'bg-brand-pink-500 hover:bg-brand-pink-600 font-bold text-white shadow-2xs'
+                              : 'text-text-secondary-65 hover:text-text-primary hover:bg-muted/80'
+                          )}
                           aria-label="Match Case"
                         >
-                          <CaseSensitive className="size-3.5" />
+                          <CaseSensitive className="size-4" />
                         </Toggle>
                       </TooltipTrigger>
                       <TooltipContent side="bottom" className="text-xs">
                         Match Case
-                      </TooltipContent>
-                    </Tooltip>
-
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Toggle
-                          size="sm"
-                          pressed={state.useRegex}
-                          onPressedChange={() => actions.toggleRegex()}
-                          className="size-5 p-0"
-                          aria-label="Use Regular Expression"
-                        >
-                          <Regex className="size-3.5" />
-                        </Toggle>
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom" className="text-xs">
-                        Use Regular Expression
                       </TooltipContent>
                     </Tooltip>
                   </div>
@@ -194,7 +170,7 @@ function FindAndReplace({ editor, isOpen, showReplace, onOpen, onClose }: FindAn
                 <span
                   className={cn(
                     'text-text-secondary-65 shrink-0 text-xs tabular-nums',
-                    'min-w-[52px] text-center',
+                    'min-w-13 text-center',
                     state.searchTerm && state.totalResults === 0 && 'text-destructive'
                   )}
                 >

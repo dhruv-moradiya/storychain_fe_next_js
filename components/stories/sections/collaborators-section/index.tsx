@@ -93,7 +93,7 @@ export default function CollaboratorSection({ slug }: CollaboratorSectionProps) 
 
       {/* No results after filtering / search */}
       {hasNoFilterResults && (
-        <div className="animate-in fade-in-0 zoom-in-95 flex flex-col items-center justify-center rounded-2xl border border-black/10 bg-white py-16 duration-200">
+        <div className="animate-in fade-in-0 zoom-in-95 border-border/50 bg-card flex flex-col items-center justify-center rounded-2xl border py-16 duration-200">
           <p className="text-text-secondary-65 text-sm">
             No collaborators found matching your filters
           </p>

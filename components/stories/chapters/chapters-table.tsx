@@ -64,12 +64,15 @@ export function ChaptersTable({ data, context, pageSize = 10, className }: Chapt
     [context]
   );
 
-  function handleRowClick(slug: string, storySlug: string, isUnlock: boolean) {
-    if (!isUnlock) {
-      setSelectedLockedChapter({ slug, storySlug });
+  function handleRowClick(row: IChapterTableRow) {
+    const isFree = row.coinPrice === 0;
+    const isUnlocked = isFree || row.isUnlock || context.isOwnerOrPrivileged;
+
+    if (!isUnlocked) {
+      setSelectedLockedChapter({ slug: row.slug, storySlug: row.storySlug });
       return;
     }
-    router.push(`/stories/${storySlug}/chapter/${slug}`);
+    router.push(`/stories/${row.storySlug}/chapter/${row.slug}`);
   }
 
   const table = useReactTable({
@@ -149,9 +152,7 @@ export function ChaptersTable({ data, context, pageSize = 10, className }: Chapt
                     'border-border/30 group cursor-pointer border-b transition-all duration-200 hover:shadow-xl',
                     getRowDepthStyle(row)
                   )}
-                  onClick={() =>
-                    handleRowClick(row.original.slug, row.original.storySlug, row.original.isUnlock)
-                  }
+                  onClick={() => handleRowClick(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="px-4 py-3">

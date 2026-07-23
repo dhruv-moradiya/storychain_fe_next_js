@@ -36,7 +36,7 @@ export function MessageField({ show, value, onToggle, onChange }: MessageFieldPr
             onChange={(e) => onChange(e.target.value)}
             placeholder="Write a personalized message to the collaborator..."
             rows={3}
-            className="border-border/50 resize-none bg-white/60 text-sm transition-all focus:bg-white focus:shadow-md"
+            className="border-border/50 bg-card/60 focus:bg-card text-sm transition-all focus:shadow-sm"
           />
         </div>
       </div>

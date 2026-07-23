@@ -15,8 +15,6 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 interface RemoveCollaboratorAlertProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -27,8 +25,6 @@ interface RemoveCollaboratorAlertProps {
   onConfirm: (collaboratorId: string) => void;
   isPending?: boolean;
 }
-
-// ── Component ─────────────────────────────────────────────────────────────────
 
 export function RemoveCollaboratorAlert({
   open,
@@ -44,19 +40,18 @@ export function RemoveCollaboratorAlert({
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="border-border/50 max-w-sm gap-0 overflow-hidden p-0">
-        {/* ── Danger header band ──────────────────────────────────────── */}
-        <div className="relative overflow-hidden bg-red-50 px-6 pt-6 pb-5">
-          <div className="absolute -top-8 -right-8 size-24 rounded-full bg-red-100 opacity-60 blur-2xl" />
+      <AlertDialogContent className="border-border/50 bg-background max-w-sm gap-0 overflow-hidden p-0">
+        <div className="relative overflow-hidden bg-red-50/70 px-6 pt-6 pb-5 dark:bg-red-950/20">
+          <div className="absolute -top-8 -right-8 size-24 rounded-full bg-red-100/60 opacity-60 blur-2xl dark:bg-red-900/20" />
 
           <div className="relative flex items-start gap-4">
             {/* Icon */}
-            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-red-200 bg-red-100 shadow-sm">
-              <AlertTriangle className="h-5 w-5 text-red-600" />
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-red-200/80 bg-red-100/80 text-red-600 shadow-xs dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-400">
+              <AlertTriangle className="h-5 w-5" />
             </div>
 
             <AlertDialogHeader className="gap-1 text-left">
-              <AlertDialogTitle className="font-playfair text-text-primary text-base font-semibold tracking-tight">
+              <AlertDialogTitle className="text-text-primary text-base font-semibold tracking-tight">
                 Remove Collaborator
               </AlertDialogTitle>
               <AlertDialogDescription className="text-text-secondary-65 text-sm leading-relaxed">
@@ -66,13 +61,12 @@ export function RemoveCollaboratorAlert({
           </div>
         </div>
 
-        {/* ── Collaborator chip ───────────────────────────────────────── */}
         {collaborator && (
           <div className="px-6 py-4">
-            <div className="border-border/40 flex items-center gap-3 rounded-xl border bg-white px-3.5 py-3 shadow-sm">
+            <div className="border-border/50 bg-card/80 flex items-center gap-3 rounded-xl border px-3.5 py-3 shadow-xs">
               <Avatar className="h-9 w-9">
                 <AvatarImage src={collaborator.user.avatarUrl} alt={collaborator.user.username} />
-                <AvatarFallback className="bg-red-50 text-xs font-semibold text-red-500">
+                <AvatarFallback className="bg-red-500/10 text-xs font-semibold text-red-500">
                   {collaborator.user.username.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
@@ -86,7 +80,6 @@ export function RemoveCollaboratorAlert({
           </div>
         )}
 
-        {/* ── Footer ─────────────────────────────────────────────────── */}
         <AlertDialogFooter className="border-border/30 bg-muted/10 gap-2 border-t px-6 py-4">
           <AlertDialogCancel
             size="sm"
@@ -99,7 +92,7 @@ export function RemoveCollaboratorAlert({
             size="sm"
             onClick={handleConfirm}
             disabled={isPending}
-            className="bg-red-500 font-semibold text-white shadow-sm hover:bg-red-600 disabled:opacity-50"
+            className="bg-red-500 font-semibold text-white shadow-xs hover:bg-red-600 disabled:opacity-50"
           >
             {isPending ? 'Removing…' : 'Remove'}
           </AlertDialogAction>

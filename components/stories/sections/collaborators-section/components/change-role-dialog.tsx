@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { INVITABLE_ROLES, ROLE_CONFIG } from '@/constants';
 import type { IUserBasicWithEmail } from '@/type/common';
 import type { TStoryCollaboratorRole } from '@/type/story/story.types';
-import { CheckCircle } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -19,8 +19,6 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 interface ChangeRoleDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -32,8 +30,6 @@ interface ChangeRoleDialogProps {
   onConfirm: (collaboratorId: string, newRole: TStoryCollaboratorRole) => void;
   isPending?: boolean;
 }
-
-// ── Role option card ──────────────────────────────────────────────────────────
 
 interface RoleOptionProps {
   role: TStoryCollaboratorRole;
@@ -50,10 +46,10 @@ function RoleOption({ role, selected, onSelect }: RoleOptionProps) {
       type="button"
       onClick={onSelect}
       className={cn(
-        'group relative flex flex-col items-start gap-1.5 rounded-xl border p-3 text-left transition-all duration-200',
+        'group relative flex cursor-pointer flex-col items-start gap-1.5 rounded-xl border p-3.5 text-left transition-all duration-200',
         selected
-          ? 'border-brand-pink-500 from-brand-pink-500/10 to-brand-blue/5 shadow-brand-pink-shadow25 bg-linear-to-br shadow-md'
-          : 'border-border/50 hover:border-brand-pink-300/40 bg-white/60 hover:bg-white hover:shadow-sm'
+          ? 'border-brand-pink-500 bg-brand-pink-500/10 dark:bg-brand-pink-500/15 shadow-brand-pink-shadow25 shadow-xs'
+          : 'border-border/60 hover:border-brand-pink-500/40 bg-card/60 hover:bg-card dark:bg-card/40 dark:hover:bg-card/80'
       )}
     >
       <div className="flex w-full items-start justify-between">
@@ -62,16 +58,16 @@ function RoleOption({ role, selected, onSelect }: RoleOptionProps) {
             className={cn(
               'rounded-lg p-1.5 transition-all',
               selected
-                ? 'bg-brand-pink-500/15 text-brand-pink-600 shadow-sm'
-                : 'bg-muted/50 text-text-secondary-65 group-hover:bg-muted'
+                ? 'bg-brand-pink-500/20 text-brand-pink-500 dark:text-brand-pink-400 shadow-xs'
+                : 'bg-muted/60 text-text-secondary-65 group-hover:bg-muted group-hover:text-text-primary'
             )}
           >
             <Icon className="h-3.5 w-3.5" />
           </div>
           <span
             className={cn(
-              'font-semibold tracking-tight',
-              selected ? 'text-brand-pink-700 text-[13px]' : 'text-text-primary text-[13px]'
+              'text-[13px] font-semibold tracking-tight',
+              selected ? 'text-brand-pink-500 dark:text-brand-pink-400' : 'text-text-primary'
             )}
           >
             {config.label}
@@ -79,8 +75,8 @@ function RoleOption({ role, selected, onSelect }: RoleOptionProps) {
         </div>
 
         {selected && (
-          <div className="animate-in zoom-in-75 from-brand-pink-500 to-brand-pink-600 flex size-4 items-center justify-center rounded-full bg-linear-to-br duration-150">
-            <CheckCircle className="h-3 w-3 fill-white text-white" />
+          <div className="animate-in zoom-in-75 bg-brand-pink-500 flex size-4.5 items-center justify-center rounded-full text-white shadow-xs">
+            <Check className="h-3 w-3 stroke-[3]" />
           </div>
         )}
       </div>
@@ -91,8 +87,6 @@ function RoleOption({ role, selected, onSelect }: RoleOptionProps) {
     </button>
   );
 }
-
-// ── Component ─────────────────────────────────────────────────────────────────
 
 export function ChangeRoleDialog({
   open,
@@ -122,25 +116,24 @@ export function ChangeRoleDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="border-border/50 max-w-md gap-0 overflow-hidden p-0">
+      <DialogContent className="border-border/50 bg-background max-w-md gap-0 overflow-hidden p-0">
         {/* ── Header ─────────────────────────────────────────────────────── */}
-        <div className="from-brand-pink-500/8 to-brand-blue/5 relative overflow-hidden bg-linear-to-br px-6 pt-6 pb-4">
-          <div className="radial-gradient-orb-pink absolute -top-6 -right-6 size-24 opacity-20 blur-2xl" />
+        <div className="from-brand-pink-500/10 via-brand-pink-500/5 border-border/30 relative border-b bg-gradient-to-br to-transparent px-6 pt-6 pb-4">
           <DialogHeader className="relative">
-            <DialogTitle className="font-playfair text-text-primary text-lg font-semibold tracking-tight">
+            <DialogTitle className="text-text-primary text-base font-semibold tracking-tight">
               Change Role
             </DialogTitle>
-            <DialogDescription className="text-text-secondary-65 mt-0.5 text-sm">
+            <DialogDescription className="text-text-secondary-65 mt-0.5 text-xs">
               Update collaborator permissions for this story.
             </DialogDescription>
           </DialogHeader>
 
           {/* Collaborator chip */}
           {collaborator && (
-            <div className="border-border/40 mt-4 flex items-center gap-3 rounded-xl border bg-white/70 px-3 py-2.5 shadow-sm backdrop-blur-sm">
+            <div className="border-border/50 bg-card/80 mt-4 flex items-center gap-3 rounded-xl border px-3 py-2.5 shadow-xs backdrop-blur-sm">
               <Avatar className="h-8 w-8">
                 <AvatarImage src={collaborator.user.avatarUrl} alt={collaborator.user.username} />
-                <AvatarFallback className="bg-brand-pink-500/10 text-brand-pink-600 text-xs font-semibold">
+                <AvatarFallback className="bg-brand-pink-500/15 text-brand-pink-500 text-xs font-semibold">
                   {collaborator.user.username.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
@@ -154,12 +147,11 @@ export function ChangeRoleDialog({
           )}
         </div>
 
-        {/* ── Role Grid ──────────────────────────────────────────────────── */}
         <div className="space-y-2.5 px-6 py-5">
           <p className="text-text-secondary-65 text-[11px] font-semibold tracking-widest uppercase">
             Select new role
           </p>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2.5">
             {INVITABLE_ROLES.map((role) => (
               <RoleOption
                 key={role}
@@ -171,7 +163,6 @@ export function ChangeRoleDialog({
           </div>
         </div>
 
-        {/* ── Footer ─────────────────────────────────────────────────────── */}
         <DialogFooter className="border-border/30 bg-muted/20 gap-2 border-t px-6 py-4">
           <Button
             variant="outline"

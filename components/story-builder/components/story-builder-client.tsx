@@ -143,7 +143,7 @@ function StoryBuilderContent() {
           'prose-blockquote:pl-6 prose-blockquote:py-1',
           'prose-blockquote:italic',
           'prose-blockquote:text-text-secondary-65',
-          'selection:bg-primary selection:text-muted text-sm'
+          'selection:bg-brand-pink-500/25 selection:text-current dark:selection:bg-brand-pink-500/35 text-sm'
         ),
       },
     },

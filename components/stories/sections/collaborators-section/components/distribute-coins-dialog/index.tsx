@@ -68,7 +68,13 @@ export default function DistributeCoinsDialog({ collaborators }: DistributeCoins
   return (
     <ResponsiveDialog>
       <ResponsiveDialogTrigger asChild>
-        <Button>Distribute coins</Button>
+        <Button
+          variant="outline"
+          className="border-border/60 text-text-primary hover:bg-muted/60 cursor-pointer font-medium shadow-2xs"
+        >
+          <Coins className="mr-1.5 h-4 w-4 text-amber-400" />
+          Distribute coins
+        </Button>
       </ResponsiveDialogTrigger>
       <ResponsiveDialogContent
         className="max-h-[calc(100vh-5rem)] p-5 sm:max-w-xl"

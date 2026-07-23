@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useParams, usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
   AlertTriangle,
@@ -18,6 +18,7 @@ import {
   Users,
 } from 'lucide-react';
 
+import { useStoryRole } from '@/components/stories/story-role-context';
 import { Button } from '@/components/ui/button';
 import {
   ResponsiveDialog,
@@ -27,17 +28,15 @@ import {
   ResponsiveDialogTrigger,
 } from '@/components/ui/responsive-dialog';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { hasPermission } from '@/lib/story-role-utils';
 import { cn } from '@/lib/utils';
 
 const baseTabs = [
   { key: 'overview', label: 'Overview', path: 'overview', icon: LayoutDashboard },
   { key: 'chapters', label: 'Chapters', path: 'chapters', icon: FileText },
   { key: 'tree', label: 'Tree', path: 'tree', icon: GitBranch },
-  // { key: 'versions', label: 'Versions', path: 'versions', icon: BookOpen },
   { key: 'reports', label: 'Reports', path: 'reports', icon: AlertTriangle },
-  // { key: 'comments', label: 'Comments', path: 'comments', icon: MessageSquare },
   { key: 'collab', label: 'Collaborators', path: 'collaborators', icon: Users },
-  // { key: 'votes', label: 'Votes', path: 'votes', icon: Vote },
   { key: 'analytics', label: 'Analytics', path: 'analytics', icon: BarChart3 },
   { key: 'history', label: 'History', path: 'history', icon: History },
   { key: 'settings', label: 'Settings', path: 'settings', icon: Settings },
@@ -51,9 +50,21 @@ export const StoryTabs = () => {
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
 
-  const slugStr = Array.isArray(slug) ? slug[0] : slug;
+  const { role } = useStoryRole();
 
-  const tabs = [...baseTabs];
+  const slugStr = Array.isArray(slug) ? slug[0] : (slug ?? '');
+
+  const tabs = useMemo(() => {
+    return baseTabs.filter((t) => {
+      if (t.key === 'settings') {
+        return hasPermission(role, 'canEditStorySettings');
+      }
+      if (t.key === 'analytics') {
+        return hasPermission(role, 'canViewStoryAnalytics');
+      }
+      return true;
+    });
+  }, [role]);
 
   const getIsActive = (tabKey: string) => pathname?.includes(`/${tabKey}`);
 
