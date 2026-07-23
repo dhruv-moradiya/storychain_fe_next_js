@@ -18,6 +18,7 @@ import {
   useStartReadingSession,
 } from '@/services/chapters/chapters.mutation';
 
+import { ChapterMobileBar } from './chapter-mobile-bar';
 import { useChapterActions } from './hooks/use-chapter-actions';
 import { ChapterPagination } from './navigation/chapter-pagination';
 
@@ -25,12 +26,14 @@ interface ChapterReadClientProps {
   initialData: IChapterDetailExtended;
   storySlug: string;
   chapterSlug: string;
+  chapterData: IChapterDetailExtended;
 }
 
 export default function ChapterReadClient({
   initialData,
   storySlug,
   chapterSlug,
+  chapterData,
 }: ChapterReadClientProps) {
   const { data: chapter } = useQuery({
     queryKey: QueryKey.chapter.bySlug(chapterSlug),
@@ -94,27 +97,33 @@ export default function ChapterReadClient({
   }, [chapterSlug, storySlug]);
 
   return (
-    <DashboardSection className="bg-bg-cream col-span-9 min-h-screen">
-      <Button
-        variant="ghost"
-        size="sm"
-        className="border-border/50 hover:border-brand-pink-500/50 hover:bg-brand-pink-500/10! text-text-secondary-65 hover:text-brand-pink-500 mb-5 gap-2"
-        onClick={handleBack}
-      >
-        <ArrowLeft size={14} />
-        Back
-      </Button>
-      <ChapterReader chapter={chapter} variant="full" />
+    <>
+      <DashboardSection className="bg-bg-cream col-span-full pb-24 lg:col-span-9 lg:pb-0">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="border-border/50 hover:border-brand-pink-500/50 hover:bg-brand-pink-500/10! text-text-secondary-65 hover:text-brand-pink-500 mb-5 gap-2"
+          onClick={handleBack}
+        >
+          <ArrowLeft size={14} />
+          Back
+        </Button>
 
-      <ChapterPagination
-        previousChapters={chapter.previousChapters}
-        nextChapters={chapter.nextChapters}
-        onNavigate={navigateToChapter}
-      />
+        <ChapterReader chapter={chapter} variant="full" />
 
-      <div className="mt-12">
-        <ChapterCommentsSection chapterSlug={chapterSlug} totalCount={chapter.stats.comments} />
-      </div>
-    </DashboardSection>
+        <ChapterPagination
+          previousChapters={chapter.previousChapters}
+          nextChapters={chapter.nextChapters}
+          onNavigate={navigateToChapter}
+        />
+
+        <div className="mt-12">
+          <ChapterCommentsSection chapterSlug={chapterSlug} totalCount={chapter.stats.comments} />
+        </div>
+      </DashboardSection>
+
+      {/* Mobile sticky bottom action bar — hidden on desktop */}
+      <ChapterMobileBar chapterData={chapterData} storySlug={storySlug} />
+    </>
   );
 }

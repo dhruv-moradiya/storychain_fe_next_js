@@ -187,14 +187,7 @@
 
 /* ── Depth accent line ── */
 .ct-depth-line {
-  position: absolute;
-  left: 0;
-  top: 12px;
-  bottom: 12px;
-  width: 2px;
-  border-radius: 1px;
-  opacity: 0.6;
-  transition: opacity 0.25s ease;
+  display: none;
 }
 
 .ct-comment-card:hover .ct-depth-line {

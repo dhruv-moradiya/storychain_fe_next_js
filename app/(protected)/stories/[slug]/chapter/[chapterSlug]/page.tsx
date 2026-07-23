@@ -98,14 +98,15 @@ export default async function ChapterPage({ params }: IChapterPageProps) {
   }
 
   return (
-    <ContentLayout maxWidth="8xl" centered className="grid grid-cols-12 gap-12">
+    <ContentLayout maxWidth="8xl" centered className="lg:grid lg:grid-cols-12 lg:gap-12">
       <ChapterReadClient
         initialData={chapterDetail.data}
         storySlug={storySlug}
         chapterSlug={chapterSlug}
+        chapterData={chapterDetail.data}
       />
 
-      <div className="col-span-3">
+      <div className="hidden lg:col-span-3 lg:block">
         <ChapterSidebar chapterData={chapterDetail.data} />
       </div>
     </ContentLayout>

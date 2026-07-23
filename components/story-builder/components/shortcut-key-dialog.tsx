@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 
-import { formatForDisplay } from '@tanstack/react-hotkeys';
-import { Keyboard } from 'lucide-react';
+import { ArrowUp, Command, CornerDownLeft, Keyboard, Option as OptionIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { Kbd, KbdGroup } from '@/components/ui/kbd';
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
@@ -17,6 +17,38 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 import { shortcutGroups } from '../data/shortcut-groups';
+
+function renderKeyBadges(keysString: string) {
+  const parts = keysString.split('+');
+
+  const renderKeyContent = (part: string) => {
+    switch (part) {
+      case 'Mod':
+        return <Command className="size-3" />;
+      case 'Shift':
+        return <ArrowUp className="size-3" />;
+      case 'Alt':
+        return <OptionIcon className="size-3" />;
+      case 'Enter':
+        return <CornerDownLeft className="size-3" />;
+      default:
+        return part;
+    }
+  };
+
+  return (
+    <KbdGroup className="gap-1">
+      {parts.map((part, i) => (
+        <Kbd
+          key={i}
+          className="border-border/60 bg-card/80 text-text-primary font-ibm-plex-mono inline-flex h-6 min-w-6 items-center justify-center rounded-md border px-1.5 text-[11px] font-bold shadow-xs"
+        >
+          {renderKeyContent(part)}
+        </Kbd>
+      ))}
+    </KbdGroup>
+  );
+}
 
 function ShortcutKeysDialog() {
   const [open, setOpen] = useState(false);
@@ -67,22 +99,22 @@ function ShortcutKeysDialog() {
                 </div>
 
                 <div className="grid gap-2 sm:grid-cols-2">
-                  {group.shortcuts.map((shortcut, index) => (
+                  {shortcutGroups[groupIndex].shortcuts.map((shortcut, index) => (
                     <div
                       key={index}
-                      className="bg-cream-40/50 border-border/80 flex items-center justify-between rounded-lg border px-3 py-2.5"
+                      className="border-border/60 bg-card/40 hover:bg-card/70 flex items-center justify-between rounded-lg border px-3.5 py-2.5 transition-colors"
                     >
                       <div className="flex items-center gap-2.5">
                         <span className="bg-brand-pink-500/10 text-brand-pink-600 flex size-6 items-center justify-center rounded text-xs font-bold">
                           {shortcut.icon}
                         </span>
 
-                        <span className="text-text-secondary text-sm">{shortcut.action}</span>
+                        <span className="text-text-secondary text-sm font-medium">
+                          {shortcut.action}
+                        </span>
                       </div>
 
-                      <kbd className="bg-bg-cream border-border text-text-primary font-ibm-plex-mono rounded-md border px-2 py-1 text-xs shadow-sm">
-                        {formatForDisplay(shortcut.keys)}
-                      </kbd>
+                      {renderKeyBadges(shortcut.keys)}
                     </div>
                   ))}
                 </div>

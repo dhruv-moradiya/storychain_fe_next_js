@@ -58,7 +58,7 @@ export function Overview({ initialData }: OverviewProps) {
   if (!story) return <OverviewSectionError message="Story not found." />;
 
   return (
-    <div className="mx-auto w-full max-w-6xl space-y-6 px-3 pb-14 sm:space-y-8 sm:px-4">
+    <div className="mx-auto w-full max-w-6xl space-y-6 px-3 py-8 pb-14 sm:space-y-8 sm:px-4">
       <FadeInView>
         <StoryHero story={story} onBack={() => router.back()} />
       </FadeInView>

@@ -62,6 +62,7 @@ export interface CommentItemProps {
   comment: ICommentNode;
   depth: number;
   maxDepth: number;
+  variant?: 'default' | 'flat';
   /** Chapter slug needed for fetching child replies */
   chapterSlug?: string;
   /** Whether to show the reply button */

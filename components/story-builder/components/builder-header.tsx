@@ -237,7 +237,7 @@ function BuilderHeader({
 
   return (
     <div className="border-border/50 bg-cream-95 sticky top-0 z-30 w-full border-b backdrop-blur-md">
-      <div className="mx-auto flex max-w-[1100px] items-center justify-between gap-2 px-3 py-2 sm:gap-4">
+      <div className="mx-auto flex max-w-275 items-center justify-between gap-2 px-3 py-2 sm:gap-4">
         {/* Left Section - Back button, Chapter Name, Status */}
         <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
           <Button
@@ -356,7 +356,7 @@ function BuilderHeader({
             size="sm"
             className="border-border text-text-secondary hover:bg-muted/50 hover:text-text-primary gap-1.5"
             onClick={handleSave}
-            disabled={isActionPending}
+            disabled={isSaving || isConverting}
           >
             {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             <span className="hidden sm:inline">{isSaving ? 'Saving...' : 'Save'}</span>
@@ -368,15 +368,15 @@ function BuilderHeader({
               <Button
                 size="sm"
                 className="bg-brand-pink-500 hover:bg-brand-pink-600 gap-1.5 text-white shadow-[0_2px_8px_var(--brand-pink-shadow25)]"
-                disabled={isActionPending}
+                disabled={isSaving || isConverting}
               >
-                {isActionPending ? (
+                {isConverting ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <Send className="h-4 w-4" />
                 )}
                 <span className="hidden sm:inline">
-                  {isActionPending ? 'Processing...' : 'Publish'}
+                  {isConverting ? 'Publishing...' : 'Publish'}
                 </span>
                 <ChevronDown className="h-3 w-3" />
               </Button>
@@ -392,18 +392,6 @@ function BuilderHeader({
                 Publish Directly
                 <DropdownMenuShortcut>
                   {formatForDisplay(ShortcutKeys.Publish)}
-                </DropdownMenuShortcut>
-              </DropdownMenuItem>
-
-              <DropdownMenuItem
-                onClick={handleConvertToDraft}
-                className="gap-2"
-                disabled={isActionPending}
-              >
-                <FileText className="h-4 w-4" />
-                Save as Draft Chapter
-                <DropdownMenuShortcut>
-                  {formatForDisplay(ShortcutKeys.SaveAsDraft)}
                 </DropdownMenuShortcut>
               </DropdownMenuItem>
 

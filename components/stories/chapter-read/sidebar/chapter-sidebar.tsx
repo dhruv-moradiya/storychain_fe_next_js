@@ -139,7 +139,7 @@ export function ChapterSidebar({ chapterData }: ChapterSidebarProps) {
 
         <hr className="border-border/30" />
 
-        {/* Share Actions (Image 2 style) */}
+        {/* Share Actions (original style) */}
         <div className="flex flex-col gap-3">
           <span className="text-text-secondary-65 text-xs font-semibold tracking-wide uppercase">
             Share Chapter
@@ -150,7 +150,7 @@ export function ChapterSidebar({ chapterData }: ChapterSidebarProps) {
               size="icon"
               onClick={shareOnInstagram}
               className="h-10 w-full cursor-pointer rounded-sm [&_svg]:size-5"
-              title="Copy Link"
+              title="Share on Instagram"
             >
               <Instagram />
             </Button>

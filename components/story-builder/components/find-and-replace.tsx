@@ -56,6 +56,7 @@ function FindAndReplace({ editor, isOpen, showReplace, onOpen, onClose }: FindAn
 
   const handleSearchKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
+      e.stopPropagation();
       if (e.key === 'Enter' && e.shiftKey) {
         e.preventDefault();
         actions.findPrevious();
@@ -72,6 +73,7 @@ function FindAndReplace({ editor, isOpen, showReplace, onOpen, onClose }: FindAn
 
   const handleReplaceKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
+      e.stopPropagation();
       if (e.key === 'Enter') {
         e.preventDefault();
         actions.replaceCurrent();
@@ -146,7 +148,7 @@ function FindAndReplace({ editor, isOpen, showReplace, onOpen, onClose }: FindAn
                     onChange={(e) => actions.setSearchTerm(e.target.value)}
                     onKeyDown={handleSearchKeyDown}
                     placeholder="Find"
-                    className="h-7 pr-16 text-xs"
+                    className="pr-16 text-xs"
                     aria-label="Search"
                   />
 
@@ -286,7 +288,7 @@ function FindAndReplace({ editor, isOpen, showReplace, onOpen, onClose }: FindAn
                         onChange={(e) => actions.setReplaceTerm(e.target.value)}
                         onKeyDown={handleReplaceKeyDown}
                         placeholder="Replace"
-                        className="h-7 flex-1 text-xs"
+                        className="flex-1 text-xs"
                         aria-label="Replace"
                       />
 

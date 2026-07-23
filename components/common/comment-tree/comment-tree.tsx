@@ -50,7 +50,7 @@ function Composer({ onSubmit }: ComposerProps) {
   return (
     <div
       className={cn(
-        'ct-composer rounded-2xl p-4 transition-all duration-300 sm:p-5',
+        'ct-composer rounded-2xl p-3 transition-all duration-300 sm:p-5',
         isFocused && 'ct-composer--focused'
       )}
     >
@@ -219,7 +219,7 @@ export function CommentTree({
                 size="sm"
                 onClick={onLoadMore}
                 disabled={isFetchingNextPage}
-                className="ct-load-more-btn group h-9 rounded-full px-6 text-xs font-semibold transition-all hover:shadow-sm active:scale-[0.97] disabled:opacity-50"
+                className="ct-load-more-btn group h-9 rounded-sm px-6 text-xs font-semibold transition-all hover:shadow-sm active:scale-[0.97] disabled:opacity-50"
               >
                 {isFetchingNextPage ? (
                   <>

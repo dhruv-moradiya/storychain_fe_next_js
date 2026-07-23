@@ -21,7 +21,7 @@ function BuilderCanvas({ editor }: BuilderCanvasProps) {
           editor={editor}
           className={cn(
             'story-editor',
-            'border-border bg-background w-full rounded-2xl border shadow-sm',
+            'border-border bg-card w-full rounded-2xl border shadow-sm',
             'min-h-[60vh] p-6 sm:min-h-[70vh] sm:p-10 lg:min-h-264 lg:p-10 lg:py-5'
           )}
         />

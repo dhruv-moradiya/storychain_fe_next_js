@@ -3,10 +3,14 @@
 import type { Range } from '@tiptap/core';
 import { Extension } from '@tiptap/core';
 import type { Node as PMNode } from '@tiptap/pm/model';
-import { type EditorState, Plugin, PluginKey, type Transaction } from '@tiptap/pm/state';
+import {
+  type EditorState,
+  Plugin,
+  PluginKey,
+  TextSelection,
+  type Transaction,
+} from '@tiptap/pm/state';
 import { Decoration, DecorationSet } from '@tiptap/pm/view';
-
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface SearchAndReplaceOptions {
   searchResultClass: string;
@@ -168,15 +172,15 @@ function searchWasUpdated(storage: SearchAndReplaceStorage): boolean {
   );
 }
 
-// ─── Extension ────────────────────────────────────────────────────────────────
-
+// Extension
 export const SearchAndReplace = Extension.create<SearchAndReplaceOptions, SearchAndReplaceStorage>({
   name: 'searchAndReplace',
 
   addOptions() {
     return {
-      searchResultClass: 'bg-yellow-300/40 rounded-sm',
-      currentResultClass: 'bg-yellow-400/70 rounded-sm ring-2 ring-yellow-400',
+      searchResultClass: 'search-result bg-yellow-300/40 rounded-sm',
+      currentResultClass:
+        'search-result-current bg-yellow-400/70 rounded-sm ring-2 ring-yellow-400',
       disableRegex: false,
     };
   },
@@ -198,46 +202,139 @@ export const SearchAndReplace = Extension.create<SearchAndReplaceOptions, Search
 
   addCommands() {
     return {
-      setSearchTerm: (searchTerm: string) => () => {
-        this.storage.searchTerm = searchTerm;
-        this.storage.resultIndex = 0;
-        return false; // Don't prevent further commands
-      },
+      setSearchTerm:
+        (searchTerm: string) =>
+        ({ state, tr, dispatch }) => {
+          this.storage.searchTerm = searchTerm;
+          this.storage.resultIndex = 0;
 
-      setReplaceTerm: (replaceTerm: string) => () => {
-        this.storage.replaceTerm = replaceTerm;
-        return false;
-      },
+          const regex = buildRegex(
+            searchTerm,
+            this.options.disableRegex,
+            this.storage.caseSensitive,
+            this.storage.useRegex
+          );
 
-      setCaseSensitive: (caseSensitive: boolean) => () => {
-        this.storage.caseSensitive = caseSensitive;
-        this.storage.resultIndex = 0;
-        return false;
-      },
+          if (regex) {
+            this.storage.results = findMatches(state.doc, regex);
+            if (this.storage.results.length > 0) {
+              const firstMatch = this.storage.results[0];
+              tr.setSelection(TextSelection.create(state.doc, firstMatch.from, firstMatch.to));
+              tr.scrollIntoView();
+            }
+          } else {
+            this.storage.results = [];
+          }
 
-      setUseRegex: (useRegex: boolean) => () => {
-        this.storage.useRegex = useRegex;
-        this.storage.resultIndex = 0;
-        return false;
-      },
+          if (dispatch) dispatch(tr);
+          return true;
+        },
 
-      resetIndex: () => () => {
-        this.storage.resultIndex = 0;
-        return false;
-      },
+      setReplaceTerm:
+        (replaceTerm: string) =>
+        ({ tr, dispatch }) => {
+          this.storage.replaceTerm = replaceTerm;
+          if (dispatch) dispatch(tr);
+          return true;
+        },
 
-      nextSearchResult: () => () => {
-        const nextIndex = this.storage.resultIndex + 1;
-        this.storage.resultIndex = nextIndex >= this.storage.results.length ? 0 : nextIndex;
-        return false;
-      },
+      setCaseSensitive:
+        (caseSensitive: boolean) =>
+        ({ state, tr, dispatch }) => {
+          this.storage.caseSensitive = caseSensitive;
+          this.storage.resultIndex = 0;
 
-      previousSearchResult: () => () => {
-        const prevIndex = this.storage.resultIndex - 1;
-        this.storage.resultIndex =
-          prevIndex < 0 ? Math.max(this.storage.results.length - 1, 0) : prevIndex;
-        return false;
-      },
+          const regex = buildRegex(
+            this.storage.searchTerm,
+            this.options.disableRegex,
+            caseSensitive,
+            this.storage.useRegex
+          );
+
+          if (regex) {
+            this.storage.results = findMatches(state.doc, regex);
+            if (this.storage.results.length > 0) {
+              const firstMatch = this.storage.results[0];
+              tr.setSelection(TextSelection.create(state.doc, firstMatch.from, firstMatch.to));
+              tr.scrollIntoView();
+            }
+          }
+
+          if (dispatch) dispatch(tr);
+          return true;
+        },
+
+      setUseRegex:
+        (useRegex: boolean) =>
+        ({ state, tr, dispatch }) => {
+          this.storage.useRegex = useRegex;
+          this.storage.resultIndex = 0;
+
+          const regex = buildRegex(
+            this.storage.searchTerm,
+            this.options.disableRegex,
+            this.storage.caseSensitive,
+            useRegex
+          );
+
+          if (regex) {
+            this.storage.results = findMatches(state.doc, regex);
+            if (this.storage.results.length > 0) {
+              const firstMatch = this.storage.results[0];
+              tr.setSelection(TextSelection.create(state.doc, firstMatch.from, firstMatch.to));
+              tr.scrollIntoView();
+            }
+          }
+
+          if (dispatch) dispatch(tr);
+          return true;
+        },
+
+      resetIndex:
+        () =>
+        ({ tr, dispatch }) => {
+          this.storage.resultIndex = 0;
+          if (dispatch) dispatch(tr);
+          return true;
+        },
+
+      nextSearchResult:
+        () =>
+        ({ state, tr, dispatch }) => {
+          const { results, resultIndex } = this.storage;
+          if (!results.length) return false;
+
+          const nextIndex = resultIndex + 1;
+          this.storage.resultIndex = nextIndex >= results.length ? 0 : nextIndex;
+
+          const currentResult = results[this.storage.resultIndex];
+          if (currentResult) {
+            tr.setSelection(TextSelection.create(state.doc, currentResult.from, currentResult.to));
+            tr.scrollIntoView();
+          }
+
+          if (dispatch) dispatch(tr);
+          return true;
+        },
+
+      previousSearchResult:
+        () =>
+        ({ state, tr, dispatch }) => {
+          const { results, resultIndex } = this.storage;
+          if (!results.length) return false;
+
+          const prevIndex = resultIndex - 1;
+          this.storage.resultIndex = prevIndex < 0 ? Math.max(results.length - 1, 0) : prevIndex;
+
+          const currentResult = results[this.storage.resultIndex];
+          if (currentResult) {
+            tr.setSelection(TextSelection.create(state.doc, currentResult.from, currentResult.to));
+            tr.scrollIntoView();
+          }
+
+          if (dispatch) dispatch(tr);
+          return true;
+        },
 
       replace:
         () =>

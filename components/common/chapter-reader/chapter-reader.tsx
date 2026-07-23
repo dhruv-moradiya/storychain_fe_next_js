@@ -47,7 +47,7 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
         {true && (
           <header className="mb-10 space-y-6">
             {/* TITLE */}
-            <h1 className="text-3xl font-bold sm:text-4xl">{chapter.title}</h1>
+            <h1 className="text-2xl! font-bold sm:text-3xl!">{chapter.title}</h1>
 
             {/* META */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -67,7 +67,7 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
               </div>
 
               {/* AUTHOR */}
-              <div className="bg-muted/40 flex items-center gap-3 rounded-xl border px-3 py-2">
+              <div className="bg-muted/40 flex items-center gap-3 rounded-sm border px-3 py-2">
                 <Avatar className="h-9 w-9">
                   <AvatarImage src="https://i.pravatar.cc/150?img=12" />
                   <AvatarFallback>JD</AvatarFallback>

@@ -59,12 +59,12 @@ export function StoryHero({ story, onBack }: StoryHeroProps) {
       </div>
 
       {/* Header */}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
         {/* Card Image */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="relative h-28 w-20 shrink-0 overflow-hidden rounded-lg border shadow-md sm:h-36 sm:w-24"
+          className="relative mx-auto h-48 w-32 shrink-0 overflow-hidden rounded-xl border shadow-lg sm:mx-0 sm:h-36 sm:w-24 md:h-64 md:w-44"
         >
           {cardImage?.url ? (
             <Image src={cardImage.url} alt={title} fill className="object-cover" />
@@ -76,31 +76,38 @@ export function StoryHero({ story, onBack }: StoryHeroProps) {
         </motion.div>
 
         {/* Content */}
-        <div className="flex-1 space-y-3">
-          {/* Slug */}
+        <div className="flex-1 space-y-3 text-center sm:text-left">
           <p className="text-text-secondary-65 font-ibm-plex-mono text-xs">{slug}</p>
 
-          {/* Title */}
           <h1 className="text-text-primary text-lg font-bold sm:text-2xl md:text-3xl">{title}</h1>
 
-          {/* Status & Content Rating — staggered */}
-          <StaggerChildren className="flex flex-wrap gap-1.5" stagger={0.1} duration={0.35}>
+          <StaggerChildren
+            className="flex flex-wrap justify-center gap-1.5 sm:justify-start"
+            stagger={0.1}
+            duration={0.35}
+          >
             {storyStatusBadge(status)}
             {contentRatingBadge(settings.contentRating)}
           </StaggerChildren>
 
-          {/* Genres — staggered */}
           {settings.genres.length > 0 && (
-            <StaggerChildren className="flex flex-wrap gap-1.5" stagger={0.06} duration={0.3}>
+            <StaggerChildren
+              className="flex flex-wrap justify-center gap-1.5 sm:justify-start"
+              stagger={0.06}
+              duration={0.3}
+            >
               {genresBadges(settings.genres)}
             </StaggerChildren>
           )}
 
-          {/* Tags — staggered */}
           {story.tags.length > 0 && (
-            <StaggerChildren className="flex flex-wrap gap-1.5" stagger={0.05} duration={0.3}>
-              {/* {tagsBadges(story.tags)} */}
+            <StaggerChildren
+              className="flex flex-wrap justify-center gap-1.5 sm:justify-start"
+              stagger={0.05}
+              duration={0.3}
+            >
               <BadgeGroup
+                className="justify-center sm:justify-start"
                 badges={story.tags.map((tag) => ({
                   label: tag,
                   color: 'pink',
