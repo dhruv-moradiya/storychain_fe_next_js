@@ -42,16 +42,16 @@ export function NotificationMessage({ message, className }: NotificationMessageP
 
         switch (part.type) {
           case 'actor':
-            typeClass = 'font-semibold text-brand-pink-600';
+            typeClass = 'font-semibold text-brand-pink-600 dark:text-brand-pink-400 break-all';
             break;
           case 'story':
-            typeClass = 'font-semibold text-blue-600 italic';
+            typeClass = 'font-semibold text-text-primary italic';
             break;
           case 'role':
-            typeClass = 'font-semibold text-purple-600';
+            typeClass = 'font-semibold text-brand-pink-600/90 dark:text-brand-pink-400/90';
             break;
           case 'chapter':
-            typeClass = 'font-semibold text-amber-600';
+            typeClass = 'font-medium text-text-primary';
             break;
           default:
             typeClass = 'font-semibold text-text-primary';

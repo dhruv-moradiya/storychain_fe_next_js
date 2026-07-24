@@ -19,7 +19,7 @@ import '@xyflow/react/dist/style.css';
 import { useGetStoryTree } from '@/services/stories/stories.query';
 
 import useChapterEdge from '../hooks/use-chapter-edge';
-import { useChapterFlowLayout } from '../hooks/use-chapter-flow-layout';
+import { type LayoutDirection, useChapterFlowLayout } from '../hooks/use-chapter-flow-layout';
 import useChapterNode from '../hooks/use-chapter-node';
 import { IChapterTreeItem, edgeTypes, nodeTypes } from '../types/canvas.types';
 import { LeftActionButtons } from './left-action-buttons';
@@ -32,6 +32,7 @@ const FlowCanvas = () => {
   const { data } = useGetStoryTree(slug as string);
   const storyTree = data?.data;
   const [_openPanel, setOpenPanel] = useState<string | null>(null);
+  const [direction, setDirection] = useState<LayoutDirection>('TB');
 
   const chapters = (storyTree?.chapters ?? []) as unknown as IChapterTreeItem[];
 
@@ -87,20 +88,19 @@ const FlowCanvas = () => {
   const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(
     () =>
       nodesToLayout.length
-        ? layout(nodesToLayout, edgesToLayout)
+        ? layout(nodesToLayout, edgesToLayout, direction)
         : { nodes: EMPTY_ARRAY, edges: EMPTY_ARRAY },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [nodesToLayout.length, nodesToLayout, edgesToLayout, layout]
+    [nodesToLayout, edgesToLayout, layout, direction]
   );
 
   /* ----------------------------------
    * Node interaction
    * ---------------------------------- */
-  const handleNodeButtonClick = (nodeId: string) => {
+  const handleNodeButtonClick = useCallback((nodeId: string) => {
     setOpenPanel('comments');
     // Suppress unused variable warning - nodeId used for future panel targeting
     void nodeId;
-  };
+  }, []);
 
   const nodesWithHandlers = useMemo(
     () =>
@@ -113,21 +113,26 @@ const FlowCanvas = () => {
           onCommentClick: (nodeId: string) => handleNodeButtonClick(nodeId),
         },
       })),
-    [layoutedNodes, slug]
+    [layoutedNodes, slug, handleNodeButtonClick]
   );
 
   const [nodes, setNodes, onNodesChange] = useNodesState(nodesWithHandlers as Node[]);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
+  const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
 
-  // Sync nodes and edges when chapter data changes (fixes tab switching issue)
+  // Sync nodes and edges whenever chapter data or direction changes & center view
   const chaptersKey = chapters.map((c) => c._id).join(',');
   useEffect(() => {
     if (nodesWithHandlers.length > 0) {
-      setNodes(nodesWithHandlers);
+      setNodes(nodesWithHandlers as Node[]);
       setEdges(layoutedEdges);
+      const timer = setTimeout(() => {
+        rfInstance?.fitView({ padding: 0.2, duration: 300 });
+      }, 100);
+      return () => clearTimeout(timer);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chaptersKey]);
+  }, [chaptersKey, direction, rfInstance]);
 
   /* ----------------------------------
    * Edge connect
@@ -150,22 +155,19 @@ const FlowCanvas = () => {
   );
 
   /* ----------------------------------
-   * Manual layout toggle
+   * Zoom & Layout Controls
    * ---------------------------------- */
-  const _onLayout = useCallback(
-    (direction: 'TB' | 'LR') => {
-      const { nodes: nextNodes, edges: nextEdges } = layout(nodes, edges, direction);
+  const onInit = useCallback((instance: ReactFlowInstance) => {
+    setRfInstance(instance);
+    setTimeout(() => {
+      instance.fitView({ padding: 0.2, duration: 300 });
+    }, 100);
+  }, []);
 
-      setNodes(nextNodes);
-      setEdges(nextEdges);
-    },
-    [nodes, edges, layout, setNodes, setEdges]
-  );
+  const _onLayout = useCallback((dir: LayoutDirection) => {
+    setDirection(dir);
+  }, []);
 
-  /* ----------------------------------
-   * Zoom Controls
-   * ---------------------------------- */
-  const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   const onZoomIn = useCallback(() => rfInstance?.zoomIn(), [rfInstance]);
   const onZoomOut = useCallback(() => rfInstance?.zoomOut(), [rfInstance]);
 
@@ -193,9 +195,9 @@ const FlowCanvas = () => {
         edgeTypes={edgeTypes}
         connectionLineType={ConnectionLineType.SimpleBezier}
         fitView
-        fitViewOptions={{ padding: 50 }}
+        fitViewOptions={{ padding: 0.2 }}
         className="bg-bg-cream h-full w-full"
-        onInit={setRfInstance}
+        onInit={onInit}
       >
         <Background gap={40} size={1.5} color="rgba(0, 0, 0, 0.04)" />
       </ReactFlow>

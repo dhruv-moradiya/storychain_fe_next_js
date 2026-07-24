@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
   Bell,
@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { sortNotificationsByDate } from '@/lib/date-utils';
 import { useGetNotifications } from '@/services/notifications/notifications.query';
 
 import { NotificationRow } from './notification-row';
@@ -104,7 +105,11 @@ function NotificationsLoader() {
 
 export default function NotificationsPageContent() {
   const { data, isLoading } = useGetNotifications();
-  const notifications = data?.notifications ?? [];
+  const rawNotifications = data?.notifications ?? [];
+  const notifications = useMemo(
+    () => sortNotificationsByDate(rawNotifications),
+    [rawNotifications]
+  );
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const [settings, setSettings] = useState<NotificationSettings>(DEFAULT_SETTINGS);

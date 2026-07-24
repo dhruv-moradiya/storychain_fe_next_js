@@ -1,9 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import type { LucideIcon } from 'lucide-react';
-import { CheckCircle2 } from 'lucide-react';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, CheckCircle2 } from 'lucide-react';
 
 import { gettingStartedSteps } from '@/lib/data/how-to-use-data';
 import { cn, scrollReveal } from '@/lib/utils';
@@ -36,12 +34,11 @@ export function GettingStartedSection() {
       {/* Steps */}
       <div className="space-y-6">
         {gettingStartedSteps.map((step, index) => {
-          const Icon = step.icon;
           return (
             <motion.div
               key={step.number}
               {...scrollReveal.card(index)}
-              className="border-border/40 bg-cream-95/60 group relative rounded-2xl border p-6 transition-all hover:shadow-sm"
+              className="border-border/40 bg-cream-95/60 group relative rounded-2xl border p-6 hover:shadow-sm"
             >
               {/* Connector line */}
               {index < gettingStartedSteps.length - 1 && (
@@ -77,12 +74,16 @@ export function GettingStartedSection() {
                   {/* Sub-steps */}
                   <ul className="space-y-1.5">
                     {step.subSteps.map((sub, i) => (
-                      <li key={i} className="flex items-start gap-2">
+                      <motion.li
+                        key={i}
+                        {...scrollReveal.list(i)}
+                        className="flex items-start gap-2"
+                      >
                         <CheckCircle2 className={cn('mt-0.5 h-3.5 w-3.5 shrink-0', step.color)} />
                         <span className="text-text-secondary-65 font-reading text-xs leading-relaxed">
                           {sub}
                         </span>
-                      </li>
+                      </motion.li>
                     ))}
                   </ul>
                 </div>

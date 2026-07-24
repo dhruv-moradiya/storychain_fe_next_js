@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { INotification } from '@/type/notification';
 import { useClerk, useUser } from '@clerk/nextjs';
@@ -37,6 +37,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { formatNotificationDate, sortNotificationsByDate } from '@/lib/date-utils';
 import { cn } from '@/lib/utils';
 import { useGetNotifications } from '@/services/notifications/notifications.query';
 import { useGetWallet } from '@/services/users/user.query';
@@ -55,50 +56,46 @@ const mobileNavItems = [
 
 const NotificationItem = ({ notification }: { notification: INotification }) => {
   const Icon = NOTIFICATION_ICONS[notification.type] ?? DEFAULT_NOTIFICATION_ICON;
+  const formattedDate = formatNotificationDate(notification.createdAt, notification._id);
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0 }}
       className={cn(
-        'flex cursor-pointer items-start gap-3 rounded-lg p-3 transition-colors',
+        'group flex cursor-pointer items-start gap-3 rounded-xl p-3 transition-all duration-200',
         notification.isRead
-          ? 'hover:bg-muted/30 bg-transparent'
-          : 'bg-brand-pink-500/5 hover:bg-brand-pink-500/10'
+          ? 'hover:bg-cream-90/80 dark:hover:bg-muted/40 border border-transparent bg-transparent'
+          : 'bg-brand-pink-500/[0.04] dark:bg-brand-pink-500/[0.08] hover:bg-brand-pink-500/[0.08] dark:hover:bg-brand-pink-500/[0.12] border-brand-pink-500/10 border'
       )}
     >
       <div
         className={cn(
-          'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg',
+          'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors',
           notification.isRead
-            ? 'bg-muted/50'
-            : 'from-brand-pink-500/20 to-brand-orange/20 bg-linear-to-br'
+            ? 'bg-cream-90 text-text-secondary-65 dark:bg-muted/50'
+            : 'from-brand-pink-500/20 to-brand-orange/20 text-brand-pink-500 bg-linear-to-br shadow-xs'
         )}
       >
-        <Icon
-          className={cn(
-            'h-4 w-4',
-            notification.isRead ? 'text-text-secondary-65' : 'text-brand-pink-500'
-          )}
-        />
+        <Icon className="h-4 w-4" />
       </div>
       <div className="min-w-0 flex-1">
         <p
           className={cn(
-            'font-lora text-sm',
+            'text-xs leading-snug',
             notification.isRead ? 'text-text-secondary-65' : 'text-text-primary font-medium'
           )}
         >
           <NotificationMessage message={notification.title} />
         </p>
-        <p className="font-lora text-text-secondary-65 line-clamp-2 text-xs leading-relaxed">
+        <p className="text-text-secondary-65/90 mt-0.5 line-clamp-2 text-xs leading-relaxed">
           <NotificationMessage message={notification.message} />
         </p>
-        <p className="text-text-secondary-65/70 mt-1 text-[10px]">
-          {new Date(notification.createdAt).toLocaleDateString()}
-        </p>
+        <p className="text-text-secondary-65/70 mt-1 text-[10px] font-medium">{formattedDate}</p>
       </div>
-      {!notification.isRead && <div className="bg-brand-pink-500 h-2 w-2 shrink-0 rounded-full" />}
+      {!notification.isRead && (
+        <span className="bg-brand-pink-500 mt-1.5 h-2 w-2 shrink-0 rounded-full shadow-[0_0_6px_rgba(236,72,153,0.5)]" />
+      )}
     </motion.div>
   );
 };
@@ -124,7 +121,11 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const { data: notificationsData } = useGetNotifications({ enabled: !!isSignedIn });
-  const notifications = notificationsData?.notifications ?? [];
+  const rawNotifications = notificationsData?.notifications ?? [];
+  const notifications = useMemo(
+    () => sortNotificationsByDate(rawNotifications),
+    [rawNotifications]
+  );
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
@@ -347,7 +348,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Notifications List */}
-                <ScrollArea className="max-h-[400px] overflow-y-auto">
+                <ScrollArea className="max-h-100 overflow-y-auto">
                   <div className="p-2">
                     {notifications.length > 0 ? (
                       <div className="space-y-1">

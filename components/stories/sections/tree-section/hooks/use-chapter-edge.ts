@@ -13,7 +13,7 @@ const PLACEHOLDER_EDGE_STYLE = {
   strokeWidth: 1.5,
   strokeDasharray: '6,4',
   strokeLinecap: 'round' as const,
-  opacity: 0.5,
+  opacity: 0.85,
 } as const;
 
 const EDGE_TYPE = 'chapterEdge' as const;

@@ -35,11 +35,11 @@ export function ChapterPagination({
           <ResponsiveDialogTrigger asChild>
             <Button
               variant="ghost"
-              className="border-border/50 hover:border-brand-pink-500/30 group flex h-auto flex-col items-start gap-1 rounded-xl border p-4 text-left transition-colors"
+              className="border-border/50 hover:border-brand-pink-500/30 hover:bg-brand-pink-500/5 group flex h-auto flex-col items-start gap-1 rounded-xl border p-4 text-left transition-colors"
             >
               <div className="flex w-full items-center justify-between">
                 <span className="text-text-secondary-65 flex items-center gap-2 text-xs">
-                  <MoveLeft />
+                  <MoveLeft className="size-3.5" />
                   Previous
                 </span>
                 <Layers className="text-brand-pink-500/40 group-hover:text-brand-pink-500 size-3.5 transition-colors" />
@@ -47,8 +47,8 @@ export function ChapterPagination({
               <span className="text-text-primary line-clamp-1 font-medium">Multiple Paths</span>
             </Button>
           </ResponsiveDialogTrigger>
-          <ResponsiveDialogContent className="bg-bg-cream flex flex-col gap-0 p-0 sm:max-w-[480px]">
-            <ResponsiveDialogHeader className="border-border/50 relative space-y-4 rounded-t-2xl border-b bg-white/50 px-6 py-5">
+          <ResponsiveDialogContent className="bg-bg-cream border-border/50 flex flex-col gap-0 p-0 sm:max-w-[480px]">
+            <ResponsiveDialogHeader className="border-border/50 relative space-y-4 rounded-t-2xl border-b bg-white/50 px-6 py-5 dark:bg-white/5">
               <div className="flex items-center gap-3">
                 <div className="bg-brand-pink-500/10 flex h-11 w-11 items-center justify-center rounded-xl">
                   <Layers className="text-brand-pink-500 h-5 w-5" />
@@ -68,7 +68,7 @@ export function ChapterPagination({
                 <Button
                   key={chapter.slug}
                   variant="outline"
-                  className="hover:bg-brand-pink-50 hover:border-brand-pink-500/30 h-auto justify-start p-4 text-left transition-all"
+                  className="border-border/50 hover:bg-brand-pink-50 hover:border-brand-pink-500/30 dark:hover:bg-brand-pink-500/10 h-auto justify-start p-4 text-left transition-all"
                   onClick={() => onNavigate(chapter.slug)}
                 >
                   <div className="flex flex-col gap-0.5">
@@ -85,6 +85,24 @@ export function ChapterPagination({
       );
     }
 
+    if (previousChapters[0]) {
+      return (
+        <Button
+          variant="ghost"
+          className="border-border/50 hover:border-brand-pink-500/30 hover:bg-brand-pink-500/5 flex h-auto flex-col items-start gap-1 rounded-xl border p-4 text-left transition-colors"
+          onClick={() => onNavigate(previousChapters[0].slug)}
+        >
+          <span className="text-text-secondary-65 flex items-center gap-2 text-xs">
+            <MoveLeft className="size-3.5" />
+            Previous
+          </span>
+          <span className="text-text-primary line-clamp-1 font-medium">
+            {previousChapters[0].title}
+          </span>
+        </Button>
+      );
+    }
+
     return <div />;
   };
 
@@ -95,7 +113,7 @@ export function ChapterPagination({
           <ResponsiveDialogTrigger asChild>
             <Button
               variant="ghost"
-              className="border-border/50 hover:border-brand-pink-500/30 group flex h-auto flex-col items-end gap-1 rounded-xl border p-4 text-right transition-colors"
+              className="border-border/50 hover:border-brand-pink-500/30 hover:bg-brand-pink-500/5 group flex h-auto flex-col items-end gap-1 rounded-xl border p-4 text-right transition-colors"
             >
               <div className="flex w-full items-center justify-between">
                 <Layers className="text-brand-pink-500/40 group-hover:text-brand-pink-500 size-3.5 transition-colors" />
@@ -104,8 +122,8 @@ export function ChapterPagination({
               <span className="text-text-primary line-clamp-1 font-medium">Branching Paths</span>
             </Button>
           </ResponsiveDialogTrigger>
-          <ResponsiveDialogContent className="bg-bg-cream flex flex-col gap-0 p-0 sm:max-w-[480px]">
-            <ResponsiveDialogHeader className="border-border/50 relative space-y-4 rounded-t-2xl border-b bg-white/50 px-6 py-5">
+          <ResponsiveDialogContent className="bg-bg-cream border-border/50 flex flex-col gap-0 p-0 sm:max-w-[480px]">
+            <ResponsiveDialogHeader className="border-border/50 relative space-y-4 rounded-t-2xl border-b bg-white/50 px-6 py-5 dark:bg-white/5">
               <div className="flex items-center gap-3">
                 <div className="bg-brand-pink-500/10 flex h-11 w-11 items-center justify-center rounded-xl">
                   <Layers className="text-brand-pink-500 h-5 w-5" />
@@ -125,7 +143,7 @@ export function ChapterPagination({
                 <Button
                   key={chapter.slug}
                   variant="outline"
-                  className="hover:bg-brand-pink-50 hover:border-brand-pink-500/30 h-auto justify-start p-4 text-left transition-all"
+                  className="border-border/50 hover:bg-brand-pink-50 hover:border-brand-pink-500/30 dark:hover:bg-brand-pink-500/10 h-auto justify-start p-4 text-left transition-all"
                   onClick={() => onNavigate(chapter.slug)}
                 >
                   <div className="flex flex-col gap-0.5">
@@ -146,7 +164,7 @@ export function ChapterPagination({
       return (
         <Button
           variant="ghost"
-          className="border-border/50 hover:border-brand-pink-500/30 flex h-auto flex-col items-end gap-1 rounded-xl border p-4 text-right transition-colors"
+          className="border-border/50 hover:border-brand-pink-500/30 hover:bg-brand-pink-500/5 flex h-auto flex-col items-end gap-1 rounded-xl border p-4 text-right transition-colors"
           onClick={() => onNavigate(nextChapters[0].slug)}
         >
           <span className="text-text-secondary-65 text-xs">Next →</span>

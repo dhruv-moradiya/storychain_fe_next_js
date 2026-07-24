@@ -1,11 +1,11 @@
 'use client';
 
 import type { INotification } from '@/type/notification';
-import { formatDistanceToNow } from 'date-fns';
 import { Check } from 'lucide-react';
 
 import { NotificationMessage } from '@/components/shared/notification-message';
 import { Button } from '@/components/ui/button';
+import { formatNotificationDate } from '@/lib/date-utils';
 import { cn } from '@/lib/utils';
 import { useAcceptInvitation, useDeclineInvitation } from '@/services/stories/stories.mutation';
 
@@ -43,23 +43,23 @@ export function NotificationRow({ notification }: NotificationRowProps) {
         <div className="flex items-center gap-2">
           <p
             className={cn(
-              'font-lora text-sm leading-snug',
+              'text-sm leading-snug',
               notification.isRead ? 'text-text-secondary-65' : 'text-text-primary font-semibold'
             )}
           >
             <NotificationMessage message={notification.title} />
           </p>
           {!notification.isRead && (
-            <span className="bg-brand-pink-500 h-2 w-2 shrink-0 rounded-full" />
+            <span className="bg-brand-pink-500 h-2 w-2 shrink-0 rounded-full shadow-[0_0_6px_rgba(236,72,153,0.5)]" />
           )}
         </div>
 
-        <p className="font-lora text-text-secondary-65 text-sm leading-relaxed">
+        <p className="text-text-secondary-65 text-sm leading-relaxed">
           <NotificationMessage message={notification.message} />
         </p>
 
-        <p className="text-text-secondary-65/70 text-xs">
-          {formatDistanceToNow(new Date(), { addSuffix: true })}
+        <p className="text-text-secondary-65/70 text-xs font-medium">
+          {formatNotificationDate(notification.createdAt, notification._id)}
         </p>
 
         {/* Collab invitation actions */}

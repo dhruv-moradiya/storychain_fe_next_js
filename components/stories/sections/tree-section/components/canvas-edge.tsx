@@ -44,15 +44,32 @@ export function CanvasEdge({
     router.push(`/stories/${slug}/builder?${params.toString()}`);
   };
 
+  const gradientId = `edgeGradient-${id.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+
   return (
     <>
+      {/* Unique Gradient definition per edge with userSpaceOnUse for LR & TB layouts */}
+      <defs>
+        <linearGradient
+          id={gradientId}
+          gradientUnits="userSpaceOnUse"
+          x1={sourceX}
+          y1={sourceY}
+          x2={targetX}
+          y2={targetY}
+        >
+          <stop offset="0%" stopColor="#6b7cff" />
+          <stop offset="100%" stopColor="#ec4899" />
+        </linearGradient>
+      </defs>
+
       {/* Subtle glow effect */}
       <path
         d={path}
         fill="none"
-        stroke="url(#edgeGradient)"
+        stroke={`url(#${gradientId})`}
         strokeWidth={6}
-        strokeOpacity={0.15}
+        strokeOpacity={0.2}
         style={{ filter: 'blur(3px)' }}
       />
 
@@ -62,7 +79,7 @@ export function CanvasEdge({
         path={path}
         markerEnd={markerEnd}
         style={{
-          stroke: 'url(#edgeGradient)',
+          stroke: `url(#${gradientId})`,
           strokeWidth: 2,
           strokeLinecap: 'round',
         }}
@@ -76,14 +93,6 @@ export function CanvasEdge({
         strokeWidth={20}
         style={{ cursor: 'pointer' }}
       />
-
-      {/* Gradient definition */}
-      <defs>
-        <linearGradient id="edgeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#6b7cff" />
-          <stop offset="100%" stopColor="#ec4899" />
-        </linearGradient>
-      </defs>
 
       <EdgeLabelRenderer>
         <div

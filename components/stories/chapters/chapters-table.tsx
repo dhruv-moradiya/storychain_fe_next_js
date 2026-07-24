@@ -14,9 +14,27 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Users } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  Coins,
+  Eye,
+  Flag,
+  GitPullRequest,
+  Lock,
+  MessageSquare,
+  ThumbsDown,
+  ThumbsUp,
+  Unlock,
+  Users,
+} from 'lucide-react';
 
+import chapterBadge, { chapterStatusBadge } from '@/components/common/badge';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
@@ -34,7 +52,7 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
-import { buildChapterColumns } from './columns';
+import { buildChapterColumns, formatDate, formatNumber } from './columns';
 import type { IChapterTableRow, IChaptersTableContext } from './types';
 
 const ChapterUnlockDialog = dynamic(
@@ -47,6 +65,147 @@ interface ChaptersTableProps {
   context: IChaptersTableContext;
   pageSize?: number;
   className?: string;
+}
+
+function ChapterCard({
+  row,
+  context,
+  onCardClick,
+}: {
+  row: Row<IChapterTableRow>;
+  context: IChaptersTableContext;
+  onCardClick: (chapter: IChapterTableRow) => void;
+}) {
+  const chapter = row.original;
+  const isFree = chapter.coinPrice === 0;
+  const isUnlocked = isFree || chapter.isUnlock || context.isOwnerOrPrivileged;
+
+  return (
+    <Card
+      onClick={() => onCardClick(chapter)}
+      className={cn(
+        'group border-border/50 bg-card text-card-foreground hover:border-brand-pink-500/30 cursor-pointer p-4 transition-all duration-200 hover:shadow-md',
+        chapter.depth > 0 &&
+          'border-l-brand-pink-500/40 bg-muted/20 dark:bg-muted/10 ml-2 border-l-4 sm:ml-4'
+      )}
+    >
+      <div className="flex flex-col gap-3">
+        {/* Top: Title, Chapter #, Badges & Access */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1 space-y-1.5">
+            <div className="flex flex-wrap items-center gap-2">
+              {chapter.chapterNumber && (
+                <span className="text-text-secondary-50 shrink-0 font-mono text-xs font-semibold">
+                  #{chapter.chapterNumber}
+                </span>
+              )}
+              <h3 className="text-text-primary group-hover:text-brand-pink-500 line-clamp-1 text-sm font-semibold transition-colors">
+                {chapter.title}
+              </h3>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-1.5">
+              {chapterStatusBadge(chapter.status.toUpperCase(), {
+                size: 'sm',
+                className: 'uppercase',
+              })}
+              {chapter.depth > 0 && (
+                <Badge
+                  variant="outline"
+                  className="border-border/40 text-text-secondary-65 h-4 px-1.5 font-mono text-[10px]"
+                >
+                  L{chapter.depth} Branch
+                </Badge>
+              )}
+              {chapter.isEnding && (
+                <Badge
+                  variant="outline"
+                  className="border-brand-pink-500/30 text-brand-pink-500 bg-brand-pink-500/5 h-4 gap-0.5 px-1 text-[9px]"
+                >
+                  <Flag className="h-2 w-2" />
+                  Ending
+                </Badge>
+              )}
+              {chapter.pullRequest?.isPR && (
+                <Badge
+                  variant="outline"
+                  className="h-4 gap-0.5 border-orange-500/30 bg-orange-500/5 px-1 font-mono text-[9px] text-orange-500"
+                >
+                  <GitPullRequest className="h-2 w-2" />
+                  PR
+                </Badge>
+              )}
+            </div>
+          </div>
+
+          {/* Access / Coin badge */}
+          <div className="shrink-0">
+            {isUnlocked ? (
+              <Badge
+                variant="secondary"
+                className="gap-1 border-emerald-500/20 bg-emerald-500/10 text-[11px] font-medium text-emerald-600 dark:text-emerald-400"
+              >
+                <Unlock className="h-3 w-3 text-emerald-500" />
+                {isFree ? 'Free' : 'Unlocked'}
+              </Badge>
+            ) : (
+              <Badge
+                variant="secondary"
+                className="gap-1 border-amber-500/20 bg-amber-500/10 text-[11px] font-semibold text-amber-600 dark:text-amber-400"
+              >
+                <Lock className="h-3 w-3 text-amber-500" />
+                <Coins className="h-3 w-3 text-amber-400" />
+                {chapter.coinPrice}
+              </Badge>
+            )}
+          </div>
+        </div>
+
+        {/* Footer info: Author, Votes & Stats */}
+        <div className="border-border/40 text-text-secondary-65 flex items-center justify-between border-t pt-2.5 text-xs">
+          <span className="text-text-primary/80 max-w-[130px] truncate font-medium">
+            By {chapter.authorName}
+          </span>
+
+          <div className="text-text-secondary-65 flex shrink-0 items-center gap-3">
+            <span className="flex items-center gap-1">
+              <ThumbsUp className="h-3 w-3 text-emerald-500" />
+              {formatNumber(chapter.votes.upvotes)}
+            </span>
+            <span className="flex items-center gap-1">
+              <ThumbsDown className="h-3 w-3 text-red-400" />
+              {formatNumber(chapter.votes.downvotes)}
+            </span>
+            <span className="flex items-center gap-1">
+              <Eye className="h-3 w-3" />
+              {formatNumber(chapter.stats.reads)}
+            </span>
+            <span className="flex items-center gap-1">
+              <MessageSquare className="h-3 w-3" />
+              {formatNumber(chapter.stats.comments)}
+            </span>
+          </div>
+        </div>
+
+        {/* Owner / Privileged Info */}
+        {context.isOwnerOrPrivileged && (
+          <div className="border-border/30 text-text-secondary-50 flex items-center justify-between border-t pt-2 text-[10px]">
+            <span>
+              v{chapter.version} • {formatDate(chapter.updatedAt)}
+            </span>
+            <span
+              className={cn(
+                'font-semibold',
+                chapter.stats.engagementScore >= 80 ? 'text-emerald-500' : 'text-amber-500'
+              )}
+            >
+              Engagement: {chapter.stats.engagementScore}/100
+            </span>
+          </div>
+        )}
+      </div>
+    </Card>
+  );
 }
 
 export function ChaptersTable({ data, context, pageSize = 10, className }: ChaptersTableProps) {
@@ -119,68 +278,94 @@ export function ChaptersTable({ data, context, pageSize = 10, className }: Chapt
         </div>
       )}
 
-      <Table wrapperClassName="max-h-[calc(100vh-300px)] overflow-y-auto">
-        <TableHeader className="bg-muted/50 sticky top-0 z-10 backdrop-blur-sm">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="border-border/40 hover:bg-transparent">
-              {headerGroup.headers.map((header) => (
-                <TableHead
-                  key={header.id}
-                  className="text-text-secondary-50 h-11 px-4 text-[11px] font-semibold tracking-widest uppercase"
-                  style={{ width: header.getSize() }}
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-
-        <TableBody>
-          <AnimatePresence initial={false}>
-            {paginatedRows.length > 0 ? (
-              paginatedRows.map((row, index) => (
-                <motion.tr
-                  key={row.id}
-                  initial={{ opacity: 0, y: 4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.2, delay: index * 0.02, ease: 'easeOut' }}
-                  className={cn(
-                    'border-border/30 group cursor-pointer border-b transition-all duration-200 hover:shadow-xl',
-                    getRowDepthStyle(row)
-                  )}
-                  onClick={() => handleRowClick(row.original)}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="px-4 py-3">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </motion.tr>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="text-text-secondary-50 h-32 text-center text-sm"
-                >
-                  No chapters found.
-                </TableCell>
+      {/* DESKTOP TABLE VIEW (visible on desktop md+, hidden on small screens) */}
+      <div className="hidden md:block">
+        <Table wrapperClassName="max-h-[calc(100vh-300px)] overflow-y-auto">
+          <TableHeader className="bg-muted/50 sticky top-0 z-10 backdrop-blur-sm">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="border-border/40 hover:bg-transparent">
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="text-text-secondary-50 h-11 px-4 text-[11px] font-semibold tracking-widest uppercase"
+                    style={{ width: header.getSize() }}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
               </TableRow>
-            )}
-          </AnimatePresence>
-        </TableBody>
-      </Table>
+            ))}
+          </TableHeader>
+
+          <TableBody>
+            <AnimatePresence initial={false}>
+              {paginatedRows.length > 0 ? (
+                paginatedRows.map((row, index) => (
+                  <motion.tr
+                    key={row.id}
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.2, delay: index * 0.02, ease: 'easeOut' }}
+                    className={cn(
+                      'border-border/30 group cursor-pointer border-b transition-all duration-200 hover:shadow-xl',
+                      getRowDepthStyle(row)
+                    )}
+                    onClick={() => handleRowClick(row.original)}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="px-4 py-3">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </motion.tr>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="text-text-secondary-50 h-32 text-center text-sm"
+                  >
+                    No chapters found.
+                  </TableCell>
+                </TableRow>
+              )}
+            </AnimatePresence>
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* MOBILE CARD VIEW (visible on small screens, hidden on desktop md+) */}
+      <div className="block space-y-3 p-4 md:hidden">
+        <AnimatePresence initial={false}>
+          {paginatedRows.length > 0 ? (
+            paginatedRows.map((row, index) => (
+              <motion.div
+                key={row.id}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.2, delay: index * 0.03, ease: 'easeOut' }}
+              >
+                <ChapterCard row={row} context={context} onCardClick={handleRowClick} />
+              </motion.div>
+            ))
+          ) : (
+            <div className="text-text-secondary-50 py-12 text-center text-sm">
+              No chapters found.
+            </div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* Pagination */}
-      <div className="border-border/40 bg-muted/10 flex items-center justify-between border-t px-5 py-3">
+      <div className="border-border/40 bg-muted/10 flex flex-col gap-3 border-t px-5 py-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="text-text-secondary-50 hidden text-xs sm:block">
           {totalRows} row{totalRows !== 1 ? 's' : ''} total
         </div>
-        <div className="ml-auto flex items-center gap-5">
+        <div className="flex w-full flex-wrap items-center justify-between gap-4 sm:w-auto sm:justify-end">
           <div className="flex items-center gap-2">
             <p className="text-text-secondary-65 text-xs font-medium">Rows per page</p>
             <Select

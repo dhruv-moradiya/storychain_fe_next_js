@@ -47,34 +47,6 @@ export function ChaptersTableSection() {
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="border-border/30 bg-muted/20 flex flex-wrap items-center gap-4 rounded-xl border px-4 py-3">
-        <div className="flex items-center gap-2">
-          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/10">
-            <span className="text-[10px] text-emerald-500">✓</span>
-          </div>
-          <span className="text-text-secondary-65 text-xs">Unlocked / Free</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-500/10">
-            <span className="text-[10px] text-amber-500">🔒</span>
-          </div>
-          <span className="text-text-secondary-65 text-xs">Locked — costs coins</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="border-l-brand-pink-500/20 bg-muted/20 h-2 w-4 rounded border-l-2" />
-          <span className="text-text-secondary-65 text-xs">Child branch (depth 1)</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="border-l-brand-pink-500/30 bg-muted/30 h-2 w-4 rounded border-l-2" />
-          <span className="text-text-secondary-65 text-xs">Grandchild (depth 2+)</span>
-        </div>
-        <span className="text-text-secondary-50 ml-auto text-xs">
-          Click <kbd className="bg-muted border-border/50 rounded border px-1 text-[10px]">▶</kbd>{' '}
-          to expand branches
-        </span>
-      </div>
-
       {/* Table */}
       <ChaptersTable data={tableData} context={context} pageSize={10} />
     </div>

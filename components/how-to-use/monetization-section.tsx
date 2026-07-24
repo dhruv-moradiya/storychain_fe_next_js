@@ -116,7 +116,7 @@ export function MonetizationSection() {
             {readerSteps.map((step, i) => {
               const Icon = step.icon;
               return (
-                <li key={i} className="flex items-start gap-3">
+                <motion.li key={i} {...scrollReveal.list(i)} className="flex items-start gap-3">
                   <div className="bg-brand-blue/10 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg">
                     <Icon className="text-brand-blue h-3.5 w-3.5" />
                   </div>
@@ -124,7 +124,7 @@ export function MonetizationSection() {
                     <p className="text-text-primary mb-0.5 text-sm font-medium">{step.label}</p>
                     <p className="text-text-secondary-65 text-xs leading-relaxed">{step.desc}</p>
                   </div>
-                </li>
+                </motion.li>
               );
             })}
           </ol>
@@ -145,7 +145,7 @@ export function MonetizationSection() {
             {creatorSteps.map((step, i) => {
               const Icon = step.icon;
               return (
-                <li key={i} className="flex items-start gap-3">
+                <motion.li key={i} {...scrollReveal.list(i)} className="flex items-start gap-3">
                   <div className="bg-brand-orange/10 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg">
                     <Icon className="text-brand-orange h-3.5 w-3.5" />
                   </div>
@@ -153,7 +153,7 @@ export function MonetizationSection() {
                     <p className="text-text-primary mb-0.5 text-sm font-medium">{step.label}</p>
                     <p className="text-text-secondary-65 text-xs leading-relaxed">{step.desc}</p>
                   </div>
-                </li>
+                </motion.li>
               );
             })}
           </ol>
@@ -173,8 +173,9 @@ export function MonetizationSection() {
         </div>
         <div className="divide-border/20 divide-y">
           {coinPacks.map((pack, i) => (
-            <div
+            <motion.div
               key={i}
+              {...scrollReveal.list(i)}
               className={`flex items-center justify-between px-5 py-3.5 ${
                 pack.highlight ? 'bg-brand-orange/5' : ''
               }`}
@@ -200,7 +201,7 @@ export function MonetizationSection() {
                 </div>
               </div>
               <span className="text-text-primary text-sm font-semibold">{pack.price}</span>
-            </div>
+            </motion.div>
           ))}
         </div>
       </motion.div>

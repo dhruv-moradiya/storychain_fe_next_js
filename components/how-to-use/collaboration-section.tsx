@@ -1,9 +1,10 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { Check, CheckCircle2, Info, UserPlus, Users, X } from 'lucide-react';
 
 import { collaborationRoles } from '@/lib/data/how-to-use-data';
-import { cn } from '@/lib/utils';
+import { cn, scrollReveal } from '@/lib/utils';
 
 import { createBadge } from '../common/badge';
 
@@ -29,7 +30,7 @@ export function CollaborationSection() {
   return (
     <section id="collaboration" className="scroll-mt-6 py-12">
       {/* Section heading */}
-      <div className="mb-10">
+      <motion.div {...scrollReveal.paragraph} className="mb-10">
         <div className="border-brand-blue/20 bg-brand-blue/5 mb-4 flex w-fit rounded-full p-1 shadow-2xl">
           {createBadge({
             icon: Users,
@@ -46,17 +47,21 @@ export function CollaborationSection() {
           StoryChain supports collaborative storytelling with a role-based permission system. Each
           role has specific capabilities to keep your story organised and secure.
         </p>
-      </div>
+      </motion.div>
 
       {/* Role cards */}
-      <div className="mb-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <motion.div
+        {...scrollReveal.paragraph}
+        className="mb-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
+      >
         {collaborationRoles.map((role, index) => {
           const Icon = role.icon;
           return (
-            <div
+            <motion.div
               key={role.role}
+              {...scrollReveal.card(index)}
               className={cn(
-                'border-border/40 rounded-2xl border p-5 transition-all hover:shadow-sm',
+                'border-border/40 rounded-2xl border p-5 hover:shadow-sm',
                 'bg-cream-95/60'
               )}
             >
@@ -76,7 +81,11 @@ export function CollaborationSection() {
               </p>
               <div className="space-y-1.5">
                 {permissions.map((p) => (
-                  <div key={p.key} className="flex items-center gap-2">
+                  <motion.div
+                    key={p.key}
+                    {...scrollReveal.list(index)}
+                    className="flex items-center gap-2"
+                  >
                     {role[p.key] ? (
                       <Check className="h-3.5 w-3.5 shrink-0 text-green-500" />
                     ) : (
@@ -92,16 +101,19 @@ export function CollaborationSection() {
                     >
                       {p.label}
                     </span>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           );
         })}
-      </div>
+      </motion.div>
 
       {/* Permissions table (desktop-only supplement) */}
-      <div className="border-border/40 bg-cream-95/60 mb-10 hidden overflow-hidden rounded-2xl border md:block">
+      <motion.div
+        {...scrollReveal.paragraph}
+        className="border-border/40 bg-cream-95/60 mb-10 hidden overflow-hidden rounded-2xl border md:block"
+      >
         <div className="border-border/30 border-b px-5 py-4">
           <h3 className="text-text-primary text-sm font-semibold">Role Permissions at a Glance</h3>
         </div>
@@ -146,10 +158,13 @@ export function CollaborationSection() {
             </tbody>
           </table>
         </div>
-      </div>
+      </motion.div>
 
       {/* How to add a collaborator */}
-      <div className="border-brand-blue/20 bg-brand-blue/5 rounded-2xl border p-6">
+      <motion.div
+        {...scrollReveal.paragraph}
+        className="border-brand-blue/20 bg-brand-blue/5 rounded-2xl border p-6"
+      >
         <div className="mb-4 flex items-center gap-3">
           <div className="bg-brand-blue/10 flex h-9 w-9 items-center justify-center rounded-xl">
             <UserPlus className="text-brand-blue h-4.5 w-4.5" />
@@ -173,7 +188,7 @@ export function CollaborationSection() {
             co-authors and collaborators on a single story. There is no hard limit on team size.
           </p>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

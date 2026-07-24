@@ -39,7 +39,7 @@ export function WritingEditingSection() {
             <motion.div
               key={feature.title}
               {...scrollReveal.card(index)}
-              className="border-border/40 bg-cream-95/60 group rounded-2xl border p-6 transition-all hover:shadow-sm"
+              className="border-border/40 bg-cream-95/60 group rounded-2xl border p-6 hover:shadow-sm"
             >
               <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
                 {/* Left: Icon + title */}

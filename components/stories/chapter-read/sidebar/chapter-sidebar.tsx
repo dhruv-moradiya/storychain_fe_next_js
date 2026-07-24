@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
 import { IChapterDetailExtended, IChapterVoteNumberType } from '@/type';
@@ -17,6 +18,7 @@ interface ChapterSidebarProps {
 }
 
 export function ChapterSidebar({ chapterData }: ChapterSidebarProps) {
+  const router = useRouter();
   const reactToChapter = useReactToChapter();
   const {
     votes: { upvotes, downvotes, score },
@@ -132,6 +134,7 @@ export function ChapterSidebar({ chapterData }: ChapterSidebarProps) {
         <Button
           variant="outline-editorial"
           className="h-10 w-full cursor-pointer rounded-sm text-sm font-semibold"
+          onClick={() => router.push(`/stories/${chapterData.storySlug}/chapters`)}
         >
           <List className="size-4" />
           View All Chapters
@@ -264,6 +267,7 @@ export function ChapterSidebar({ chapterData }: ChapterSidebarProps) {
           <Button
             variant="outline-editorial"
             className="h-10 w-full cursor-pointer rounded-sm text-sm font-semibold"
+            onClick={() => router.push('/community-guidelines')}
           >
             Read full guidelines
           </Button>

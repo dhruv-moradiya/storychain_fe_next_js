@@ -39,7 +39,7 @@ export function ProfileSettingsSection() {
             <motion.div
               key={feature.title}
               {...scrollReveal.card(index)}
-              className="border-border/40 bg-cream-95/60 group rounded-2xl border p-6 transition-all hover:shadow-sm"
+              className="border-border/40 bg-cream-95/60 group rounded-2xl border p-6 hover:shadow-sm"
             >
               <div className="mb-4 flex items-center gap-3">
                 <div
