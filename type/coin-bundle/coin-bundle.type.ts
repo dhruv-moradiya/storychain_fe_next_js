@@ -39,7 +39,7 @@ export interface ICoinBundle {
   bonusCoins: number;
   totalCoins: number;
   inrPrice: number;
-  usdPrice?: number;
+  usdPrice: number;
   currencies: SupportedCurrency[];
   thumbnail: ICoinBundleThumbnail;
   isFeatured: boolean;

@@ -227,20 +227,22 @@ const PACK_PALETTE = [
   },
 ] as const;
 
-// Highlight the pack that sits just past the midpoint (best-value anchor).
-const HIGHLIGHT_INDEX = Math.floor(PACK_PALETTE.length / 2) - 1;
-
-function mapBundleToCoinPack(bundle: ICoinBundle, index: number): CoinPackUI {
+function mapBundleToCoinPack(
+  bundle: ICoinBundle,
+  index: number,
+  isHighlighted: boolean
+): CoinPackUI {
   const palette = PACK_PALETTE[index % PACK_PALETTE.length];
 
   return {
     id: bundle._id,
     slug: bundle.slug,
     coins: bundle.baseCoins,
-    priceINR: Math.round(bundle.inrPrice / 100), // API stores paise → convert to ₹
+    priceINR: Math.round(bundle.inrPrice / 100), // API stores in paise → convert to ₹
+    priceUSD: bundle.usdPrice / 100, // API stores in cents → convert to $
     bonus: bundle.bonusCoins > 0 ? bundle.bonusCoins : undefined,
     badge: bundle.bonusCoins > 0 ? `+${bundle.bonusCoins.toLocaleString()} Bonus` : undefined,
-    highlighted: index === HIGHLIGHT_INDEX,
+    highlighted: isHighlighted,
     icon: palette.icon,
     color: palette.color,
     bgColor: palette.bgColor,
@@ -252,6 +254,13 @@ function formatINR(amount: number) {
   return new Intl.NumberFormat('en-IN').format(amount);
 }
 
+function formatUSD(amount: number) {
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount);
+}
+
 const INFO_PILLS = [
   { label: 'No Expiry', desc: 'Coins never expire' },
   { label: 'Instant Credit', desc: 'Added to your wallet immediately' },
@@ -259,7 +268,15 @@ const INFO_PILLS = [
   { label: 'Stack Anytime', desc: 'Buy multiple packs' },
 ] as const;
 
-function CoinPackCard({ pack, index }: { pack: CoinPackUI; index: number }) {
+function CoinPackCard({
+  pack,
+  index,
+  currency,
+}: {
+  pack: CoinPackUI;
+  index: number;
+  currency: 'INR' | 'USD';
+}) {
   const { isSignedIn } = useAuth();
   const router = useRouter();
   const [paymentStatus, setPaymentStatus] = React.useState<PaymentStatus>('idle');
@@ -267,7 +284,12 @@ function CoinPackCard({ pack, index }: { pack: CoinPackUI; index: number }) {
 
   const Icon = pack.icon;
   const totalCoins = pack.coins + (pack.bonus ?? 0);
-  const valuePerRupee = totalCoins / pack.priceINR;
+  const isUSD = currency === 'USD';
+  const price = isUSD ? pack.priceUSD : pack.priceINR;
+  const currencySymbol = isUSD ? '$' : '₹';
+  const valuePerUnit = totalCoins / (price || 1);
+  const valueFormatted = isUSD ? valuePerUnit.toFixed(0) : valuePerUnit.toFixed(1);
+  const unitLabel = isUSD ? '$1' : '₹1';
 
   const { mutate: createCoinOrder } = useCreateCoinOrder();
   const { mutate: verifyPayment } = useCoinOrderVerifyPayment();
@@ -286,12 +308,10 @@ function CoinPackCard({ pack, index }: { pack: CoinPackUI; index: number }) {
         razorpaySignature: razorpay_signature,
       },
       {
-        onSuccess(response) {
-          console.log('Payment verified:', response);
+        onSuccess(_response) {
           setPaymentStatus('success');
         },
-        onError(error) {
-          console.error('Payment verification failed:', error);
+        onError(_error) {
           setPaymentStatus('error');
           toast.error('Could not verify payment. Please try again.');
         },
@@ -309,22 +329,19 @@ function CoinPackCard({ pack, index }: { pack: CoinPackUI; index: number }) {
     setDialogOpen(true);
 
     createCoinOrder(
-      { bundleSlug: pack.slug, currency: 'INR' },
+      { bundleSlug: pack.slug, currency },
       {
         onSuccess(response) {
           const orderData = response.data.data;
 
-          // Close dialog so it doesn't block the Razorpay checkout overlay
           setPaymentStatus('paying');
           setDialogOpen(false);
 
           const handleSuccess = (res: RazorpaySuccessResponse) => {
-            console.log('Payment success:', res);
             handleVerifyPayment({ ...res, orderId: orderData.coinOrderId });
           };
 
           const handleFailure = (res: RazorpayFailedResponse) => {
-            console.error('Payment failed:', res.error);
             setPaymentStatus('error');
             setDialogOpen(true);
             toast.error(
@@ -351,8 +368,7 @@ function CoinPackCard({ pack, index }: { pack: CoinPackUI; index: number }) {
             onDismiss: handleDismiss,
           });
         },
-        onError(error) {
-          console.error('Order creation failed:', error);
+        onError(_error) {
           setPaymentStatus('error');
           toast.error('Could not create order. Please try again.');
         },
@@ -378,10 +394,9 @@ function CoinPackCard({ pack, index }: { pack: CoinPackUI; index: number }) {
 
       <motion.div
         {...scrollReveal.card(index)}
-        whileHover={{ y: -4 }}
         transition={{ type: 'spring', stiffness: 400, damping: 20 }}
         className={cn(
-          'group relative flex flex-col rounded-2xl border p-6 transition-shadow duration-300',
+          'group relative flex h-full flex-col justify-between rounded-2xl border p-4 transition-shadow duration-300 sm:p-5',
           'bg-card',
           pack.highlighted
             ? 'border-primary/50 ring-primary/20 shadow-lg ring-2'
@@ -399,91 +414,88 @@ function CoinPackCard({ pack, index }: { pack: CoinPackUI; index: number }) {
 
         {/* Best Value badge */}
         {pack.highlighted && (
-          <Badge className="bg-primary text-primary-foreground absolute -top-3 left-1/2 -translate-x-1/2 gap-1 whitespace-nowrap shadow-sm">
+          <Badge className="bg-primary text-primary-foreground absolute -top-3 left-1/2 z-10 -translate-x-1/2 gap-1 whitespace-nowrap shadow-sm">
             <TrendingUp className="h-3 w-3" />
             Best Value
           </Badge>
         )}
 
-        {/* Bonus badge */}
-        {pack.badge && (
-          <span
-            className={cn(
-              'absolute top-3 right-3 rounded-full px-2.5 py-0.5 text-xs font-semibold',
-              pack.highlighted ? 'bg-primary/15 text-primary' : 'bg-accent/15 text-accent'
+        <div>
+          {/* Header Row: Icon + Bonus badge */}
+          <div className="mb-4 flex items-center justify-between gap-1.5">
+            <div
+              className={cn(
+                'relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-105',
+                pack.bgColor
+              )}
+            >
+              <Icon className={cn('h-5 w-5', pack.color)} />
+            </div>
+
+            {pack.badge && (
+              <span
+                className={cn(
+                  'rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide whitespace-nowrap sm:text-[11px]',
+                  pack.highlighted
+                    ? 'bg-primary/15 text-primary'
+                    : 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
+                )}
+              >
+                {pack.badge}
+              </span>
             )}
-          >
-            {pack.badge}
-          </span>
-        )}
-
-        {/* Icon */}
-        <div
-          className={cn(
-            'relative mb-4 flex h-12 w-12 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-105',
-            pack.bgColor
-          )}
-        >
-          <Icon className={cn('h-6 w-6', pack.color)} />
-        </div>
-
-        {/* Coin count */}
-        <div className="relative mb-1 flex items-end gap-1">
-          <span className={cn('font-libre-baskerville text-3xl font-bold', pack.color)}>
-            {formatINR(pack.coins)}
-          </span>
-          <span className="text-muted-foreground mb-0.5 text-sm">coins</span>
-        </div>
-
-        {/* Bonus line */}
-        <p
-          className={cn(
-            'relative mb-3 text-xs font-medium',
-            pack.bonus ? 'text-emerald-600 dark:text-emerald-400' : 'invisible'
-          )}
-        >
-          {pack.bonus ? `+ ${formatINR(pack.bonus)} bonus coins free!` : '-'}
-        </p>
-
-        {/* Price */}
-        <div className="relative mb-4">
-          <div className="flex items-baseline gap-0.5">
-            <span className="text-muted-foreground text-sm">₹</span>
-            <span className="text-foreground font-libre-baskerville text-2xl font-bold">
-              {formatINR(pack.priceINR)}
-            </span>
           </div>
-          <p className="text-muted-foreground mt-0.5 text-xs">
-            ≈ {valuePerRupee.toFixed(1)} coins per ₹1
-          </p>
+
+          {/* Coin count */}
+          <div className="relative mb-1 flex items-end gap-1">
+            <span className={cn('font-libre-baskerville text-3xl font-bold', pack.color)}>
+              {formatINR(pack.coins)}
+            </span>
+            <span className="text-muted-foreground mb-0.5 text-sm">coins</span>
+          </div>
+
+          {/* Price */}
+          <div className="relative mb-4">
+            <div className="flex items-baseline gap-1">
+              <span className="text-muted-foreground text-sm font-semibold">{currencySymbol}</span>
+              <span className="text-foreground font-libre-baskerville text-2xl font-bold">
+                {isUSD ? formatUSD(price) : formatINR(price)}
+              </span>
+            </div>
+            <p className="text-muted-foreground mt-0.5 text-xs">
+              ≈ {valueFormatted} coins per {unitLabel}
+            </p>
+          </div>
         </div>
 
-        {/* Divider */}
-        <div className="border-border/30 relative mb-4 border-t" />
+        <div>
+          {/* Divider */}
+          <div className="border-border/30 relative mb-4 border-t" />
 
-        {/* Total pill */}
-        <div className={cn('relative mb-5 rounded-xl px-3 py-2.5 text-center', pack.bgColor)}>
-          <p className="text-muted-foreground text-xs">You receive</p>
-          <p className={cn('font-libre-baskerville text-lg font-bold', pack.color)}>
-            {formatINR(totalCoins)} coins
-          </p>
+          {/* Total pill */}
+          <div className={cn('relative mb-5 rounded-xl px-3 py-2.5 text-center', pack.bgColor)}>
+            <p className="text-muted-foreground text-xs">You receive</p>
+            <p className={cn('font-libre-baskerville text-lg font-bold', pack.color)}>
+              {formatINR(totalCoins)} coins
+            </p>
+          </div>
+
+          {/* CTA */}
+          <Button
+            className={cn(
+              'relative w-full gap-2',
+              pack.highlighted
+                ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-md'
+                : 'border-border/60 text-foreground hover:border-primary/50 hover:bg-muted/30'
+            )}
+            variant={pack.highlighted ? 'default' : 'outline'}
+            onClick={handleBuyPack}
+            disabled={paymentStatus !== 'idle'}
+          >
+            <ShoppingCart className="h-4 w-4" />
+            Buy Pack
+          </Button>
         </div>
-
-        {/* CTA */}
-        <Button
-          className={cn(
-            'relative w-full gap-2',
-            pack.highlighted
-              ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-md'
-              : 'border-border/60 text-foreground hover:border-primary/50 hover:bg-muted/30'
-          )}
-          variant={pack.highlighted ? 'default' : 'outline'}
-          onClick={handleBuyPack}
-          disabled={paymentStatus !== 'idle'}
-        >
-          <ShoppingCart className="h-4 w-4" />
-          Buy Pack
-        </Button>
       </motion.div>
     </>
   );
@@ -500,7 +512,63 @@ function CoinPacksLoading() {
   );
 }
 
-function CoinPacksSectionHeader() {
+function CurrencyToggle({
+  currency,
+  onCurrencyChange,
+}: {
+  currency: 'INR' | 'USD';
+  onCurrencyChange: (c: 'INR' | 'USD') => void;
+}) {
+  return (
+    <div className="bg-muted/60 border-border/50 relative inline-flex items-center rounded-full border p-1 shadow-xs">
+      <button
+        type="button"
+        onClick={() => onCurrencyChange('INR')}
+        className={cn(
+          'relative z-10 flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold transition-colors duration-200',
+          currency === 'INR' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+        )}
+      >
+        {currency === 'INR' && (
+          <motion.span
+            layoutId="currency-pill"
+            className="bg-card border-border/40 absolute inset-0 -z-10 rounded-full border shadow-xs"
+            transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+          />
+        )}
+        <span className="font-bold text-emerald-600 dark:text-emerald-400">₹</span>
+        <span>INR (₹)</span>
+      </button>
+
+      <button
+        type="button"
+        onClick={() => onCurrencyChange('USD')}
+        className={cn(
+          'relative z-10 flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold transition-colors duration-200',
+          currency === 'USD' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+        )}
+      >
+        {currency === 'USD' && (
+          <motion.span
+            layoutId="currency-pill"
+            className="bg-card border-border/40 absolute inset-0 -z-10 rounded-full border shadow-xs"
+            transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+          />
+        )}
+        <span className="text-brand-blue font-bold">$</span>
+        <span>USD ($)</span>
+      </button>
+    </div>
+  );
+}
+
+function CoinPacksSectionHeader({
+  currency,
+  onCurrencyChange,
+}: {
+  currency: 'INR' | 'USD';
+  onCurrencyChange: (c: 'INR' | 'USD') => void;
+}) {
   return (
     <div className="mb-10 text-center">
       <motion.div
@@ -520,11 +588,15 @@ function CoinPacksSectionHeader() {
 
       <motion.p
         {...scrollReveal.paragraph}
-        className="text-muted-foreground mx-auto max-w-xl text-sm leading-relaxed"
+        className="text-muted-foreground mx-auto mb-6 max-w-xl text-sm leading-relaxed"
       >
         Coins are your in-app currency to unlock chapters, create stories, use AI features, and much
         more. Buy once, use anytime — no expiry.
       </motion.p>
+
+      <motion.div {...scrollReveal.paragraph}>
+        <CurrencyToggle currency={currency} onCurrencyChange={onCurrencyChange} />
+      </motion.div>
     </div>
   );
 }
@@ -547,25 +619,37 @@ function CoinPacksInfoBar() {
 }
 
 export function CoinPacksSection() {
+  const [currency, setCurrency] = React.useState<'INR' | 'USD'>('INR');
   const { data: bundlesResponse, isLoading } = useGetCoinBundles(
     { isActive: true, isDeleted: false, sortBy: 'displayOrder', sortOrder: 'asc' },
     { staleTime: 5 * 60 * 1000 }
   );
 
-  const packs: CoinPackUI[] = (bundlesResponse?.data ?? []).map(mapBundleToCoinPack);
+  const bundles = bundlesResponse?.data ?? [];
+
+  // Pick the single anchor pack (or explicit popular pack) to highlight as Best Value
+  const explicitPopularIndex = bundles.findIndex((b) => b.isPopular);
+  const bestValueIndex =
+    explicitPopularIndex >= 0
+      ? explicitPopularIndex
+      : Math.min(2, Math.max(0, Math.floor(bundles.length / 2) - 1));
+
+  const packs: CoinPackUI[] = bundles.map((bundle, index) =>
+    mapBundleToCoinPack(bundle, index, index === bestValueIndex)
+  );
 
   return (
     <section className="px-6 pb-20">
-      <div className="mx-auto max-w-6xl">
-        <CoinPacksSectionHeader />
+      <div className="mx-auto max-w-7xl">
+        <CoinPacksSectionHeader currency={currency} onCurrencyChange={setCurrency} />
         <CoinPacksInfoBar />
 
         {isLoading ? (
           <CoinPacksLoading />
         ) : (
-          <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6">
             {packs.map((pack, index) => (
-              <CoinPackCard key={pack.id} pack={pack} index={index} />
+              <CoinPackCard key={pack.id} pack={pack} index={index} currency={currency} />
             ))}
           </div>
         )}

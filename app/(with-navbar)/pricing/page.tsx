@@ -12,7 +12,7 @@ export default function PricingPage() {
 
       <CoinPacksSection />
 
-      <CoinUsageSection />
+      {/* <CoinUsageSection /> */}
 
       <RewardsSection />
 

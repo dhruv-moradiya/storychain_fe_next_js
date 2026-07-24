@@ -63,45 +63,47 @@ export function Overview({ initialData }: OverviewProps) {
         <StoryHero story={story} onBack={() => router.back()} />
       </FadeInView>
 
-      <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-5">
-        <TabsList
-          variant="line"
-          className="border-soft bg-background/60 h-auto! w-full justify-start rounded-[10px]! border px-3 py-2!"
-        >
-          <TabsTrigger value="overview" className={triggerClass}>
-            <BookOpen size={16} />
-            <span className="hidden sm:inline">Overview</span>
-          </TabsTrigger>
-          <TabsTrigger value="characters" className={triggerClass}>
-            <Users size={16} />
-            <span className="hidden sm:inline">Characters</span>
-          </TabsTrigger>
-          <TabsTrigger value="world" className={triggerClass}>
-            <Globe2 size={16} />
-            <span className="hidden sm:inline">World</span>
-          </TabsTrigger>
-          <TabsTrigger value="gallery" className={triggerClass}>
-            <GalleryHorizontal size={16} />
-            <span className="hidden sm:inline">Gallery</span>
-          </TabsTrigger>
-        </TabsList>
+      <FadeInView>
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-5">
+          <TabsList
+            variant="line"
+            className="border-soft bg-background/60 h-auto! w-full justify-start rounded-[10px]! border px-3 py-2!"
+          >
+            <TabsTrigger value="overview" className={triggerClass}>
+              <BookOpen size={16} />
+              <span className="hidden sm:inline">Overview</span>
+            </TabsTrigger>
+            <TabsTrigger value="characters" className={triggerClass}>
+              <Users size={16} />
+              <span className="hidden sm:inline">Characters</span>
+            </TabsTrigger>
+            <TabsTrigger value="world" className={triggerClass}>
+              <Globe2 size={16} />
+              <span className="hidden sm:inline">World</span>
+            </TabsTrigger>
+            <TabsTrigger value="gallery" className={triggerClass}>
+              <GalleryHorizontal size={16} />
+              <span className="hidden sm:inline">Gallery</span>
+            </TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="overview">
-          <OverviewTab story={story} />
-        </TabsContent>
+          <TabsContent value="overview">
+            <OverviewTab story={story} />
+          </TabsContent>
 
-        <TabsContent value="characters">
-          <CharacterTab slug={slug} />
-        </TabsContent>
+          <TabsContent value="characters">
+            <CharacterTab slug={slug} />
+          </TabsContent>
 
-        <TabsContent value="world">
-          <WorldTab story={story} />
-        </TabsContent>
+          <TabsContent value="world">
+            <WorldTab story={story} />
+          </TabsContent>
 
-        <TabsContent value="gallery">
-          <GalleryTab />
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="gallery">
+            <GalleryTab />
+          </TabsContent>
+        </Tabs>
+      </FadeInView>
     </div>
   );
 }

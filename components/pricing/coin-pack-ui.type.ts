@@ -13,6 +13,8 @@ export interface CoinPackUI {
   coins: number;
   /** Price in Indian Rupees (converted from paise) */
   priceINR: number;
+  /** Price in US Dollars (converted from cents) */
+  priceUSD: number;
   /** Bonus coins (if any) */
   bonus?: number;
   /** Badge label (e.g. "+100 Bonus") */

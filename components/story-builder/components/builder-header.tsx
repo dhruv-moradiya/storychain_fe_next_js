@@ -37,6 +37,7 @@ import {
   ResponsiveDialogTitle,
 } from '@/components/ui/responsive-dialog';
 import { TBuilderMode } from '@/hooks/use-builder-params';
+import { getErrorMessage } from '@/lib/error';
 import { useAutoSaveContent, useConvertAutoSave } from '@/services/auto-save/auto-save.mutation';
 
 import { ShortcutKeys } from '../types/shortcut-keys.enum';
@@ -129,7 +130,7 @@ function BuilderHeader({
 
   // Mutations
   const { mutate: autoSave, isPending: isSaving } = useAutoSaveContent();
-  const { mutate: convertAutoSave, isPending: isConverting } = useConvertAutoSave();
+  const { mutate: convertAutoSave, isPending: isConverting } = useConvertAutoSave(storySlug ?? '');
 
   const handleSave = () => {
     if (!title) {
@@ -161,13 +162,13 @@ function BuilderHeader({
           router.replace(`?${params.toString()}`);
         }
       },
-      onError: () => {
-        toast.error('Failed to save progress');
+      onError: (error) => {
+        toast.error(getErrorMessage(error));
       },
     });
   };
 
-  const handleConvertToDraft = () => {
+  const _handleConvertToDraft = () => {
     if (!autoSaveId) {
       toast.error('Please save your progress first');
       return;
@@ -197,11 +198,10 @@ function BuilderHeader({
       { autoSaveId, type: 'publish' },
       {
         onSuccess: () => {
-          toast.success('Published successfully!');
-          // router.push(`/stories/${storySlug}/chapters`);
+          router.push(`/stories/${storySlug}/chapters`);
         },
-        onError: () => {
-          toast.error('Failed to publish chapter');
+        onError: (error) => {
+          toast.error(getErrorMessage(error));
         },
       }
     );

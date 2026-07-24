@@ -4,8 +4,10 @@ import {
   TAutoSaveContentRequest,
 } from '@/type/auto-save';
 import { IBaseResponse } from '@/type/base-response.type';
-import { UseMutationOptions, useMutation } from '@tanstack/react-query';
+import { UseMutationOptions, useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+
+import { QueryKey } from '@/lib/query-keys';
 
 import { chapterAutoSaveApi } from './auto-save-api';
 
@@ -20,15 +22,22 @@ const useAutoSaveContent = (
 };
 
 const useConvertAutoSave = (
+  slug: string,
   options?: UseMutationOptions<
     IConvertAutoSaveResponse,
     AxiosError,
     { autoSaveId: string; type: 'draft' | 'publish' }
   >
 ) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ autoSaveId, type }) =>
       chapterAutoSaveApi.convertAutoSave(autoSaveId, type).then((res) => res.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: QueryKey.story.bySlug(slug),
+      });
+    },
     ...options,
   });
 };

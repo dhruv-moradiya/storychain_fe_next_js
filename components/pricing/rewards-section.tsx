@@ -5,24 +5,22 @@ import {
   ArrowRight,
   Banknote,
   BookOpenCheck,
+  Coins,
   Gift,
-  Percent,
-  PieChart,
+  SlidersHorizontal,
   Sparkles,
-  Users,
 } from 'lucide-react';
 
 import { storyRoles } from '@/lib/data/coins-data';
 import { cn, scrollReveal } from '@/lib/utils';
 
 export function RewardsSection() {
-  const appShare = 40;
-  const creatorShare = 60;
+  const platformFee = 20;
+  const storyPoolShare = 80;
 
   return (
     <section className="px-6 pb-20">
       <div className="mx-auto max-w-6xl">
-        {/* ── Section header ────────────────────────── */}
         <div className="mb-10 text-center">
           <motion.div
             {...scrollReveal.paragraph}
@@ -30,7 +28,7 @@ export function RewardsSection() {
           >
             <Gift className="h-4 w-4 text-emerald-500" />
             <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
-              Creator Rewards Program
+              Story Reward Pool
             </span>
           </motion.div>
 
@@ -38,25 +36,28 @@ export function RewardsSection() {
             {...scrollReveal.heading}
             className="font-libre-baskerville text-foreground mb-3 text-3xl tracking-tight sm:text-4xl"
           >
-            Earn from your stories
+            Owner-Designed Story Pools
           </motion.h2>
 
           <motion.p
             {...scrollReveal.paragraph}
             className="text-muted-foreground mx-auto max-w-xl text-sm leading-relaxed"
           >
-            Every time a reader unlocks a chapter in your story, the revenue is shared between the
-            platform and all contributors - automatically, transparently, via Razorpay Payouts.
+            When a reader unlocks a chapter,{' '}
+            <span className="text-foreground font-semibold">20%</span> covers platform fees while{' '}
+            <span className="font-semibold text-emerald-600 dark:text-emerald-400">80%</span> goes
+            directly into the Story Pool. The Story Owner then decides how to distribute coins to
+            contributors.
           </motion.p>
         </div>
 
-        {/* ── Revenue split - Donut visual ─────────────────────────── */}
+        {/* ── Revenue split card: 20% Platform Fee / 80% Story Pool ─────────────────────────── */}
         <motion.div
           {...scrollReveal.card(0)}
           className="border-border/50 bg-card mb-8 overflow-hidden rounded-2xl border p-6"
         >
           <p className="text-muted-foreground mb-6 text-center text-xs font-medium tracking-widest uppercase">
-            Chapter Unlock Revenue Split
+            Chapter Purchase Revenue Allocation
           </p>
 
           <div className="flex flex-col items-center gap-8 sm:flex-row sm:justify-center">
@@ -79,7 +80,7 @@ export function RewardsSection() {
                   strokeWidth="16"
                   strokeLinecap="round"
                   className="stroke-muted-foreground/40"
-                  strokeDasharray={`${(appShare / 100) * 314.16} 314.16`}
+                  strokeDasharray={`${(platformFee / 100) * 314.16} 314.16`}
                   initial={{ strokeDashoffset: 314.16 }}
                   whileInView={{ strokeDashoffset: 0 }}
                   viewport={{ once: true }}
@@ -92,80 +93,90 @@ export function RewardsSection() {
                   fill="none"
                   strokeWidth="16"
                   strokeLinecap="round"
-                  className="stroke-primary"
-                  strokeDasharray={`${(creatorShare / 100) * 314.16} 314.16`}
-                  strokeDashoffset={`-${(appShare / 100) * 314.16}`}
+                  className="stroke-emerald-500"
+                  strokeDasharray={`${(storyPoolShare / 100) * 314.16} 314.16`}
+                  strokeDashoffset={`-${(platformFee / 100) * 314.16}`}
                   initial={{ strokeDashoffset: 314.16 }}
-                  whileInView={{ strokeDashoffset: `-${(appShare / 100) * 314.16}` }}
+                  whileInView={{ strokeDashoffset: `-${(platformFee / 100) * 314.16}` }}
                   viewport={{ once: true }}
                   transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
                 />
               </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-foreground font-libre-baskerville text-2xl font-bold">
-                  {creatorShare}%
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                <span className="font-libre-baskerville text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                  80%
                 </span>
-                <span className="text-muted-foreground text-xs">Creators</span>
+                <span className="text-muted-foreground text-xs font-medium">Story Pool</span>
               </div>
             </div>
 
             {/* Split detail cards */}
             <div className="grid flex-1 gap-4 sm:grid-cols-2">
-              <div className="bg-muted/30 rounded-xl p-4">
+              <div className="bg-muted/30 border-border/40 rounded-xl border p-4">
                 <div className="mb-2 flex items-center gap-2">
                   <div className="bg-muted-foreground/10 flex h-8 w-8 items-center justify-center rounded-lg">
                     <Sparkles className="text-muted-foreground h-4 w-4" />
                   </div>
                   <div>
-                    <p className="text-foreground text-sm font-semibold">StoryChain Platform</p>
-                    <p className="text-muted-foreground text-xs">Infrastructure & Growth</p>
+                    <p className="text-foreground text-sm font-semibold">Platform Fee</p>
+                    <p className="text-muted-foreground text-xs">Infrastructure & AI</p>
                   </div>
                 </div>
                 <p className="font-libre-baskerville text-foreground text-3xl font-bold">
-                  {appShare}
-                  <span className="text-lg font-medium">%</span>
+                  20<span className="text-lg font-medium">%</span>
                 </p>
                 <p className="text-muted-foreground mt-1 text-xs">
-                  Covers servers, AI, payments, and platform development.
+                  Covers servers, hosting, AI models, security, and Razorpay payment operations.
                 </p>
               </div>
-              <div className="bg-primary/5 rounded-xl p-4">
+
+              <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
                 <div className="mb-2 flex items-center gap-2">
-                  <div className="bg-primary/12 flex h-8 w-8 items-center justify-center rounded-lg">
-                    <Users className="text-primary h-4 w-4" />
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/15">
+                    <Coins className="h-4 w-4 text-emerald-500" />
                   </div>
                   <div>
-                    <p className="text-foreground text-sm font-semibold">Story Contributors</p>
-                    <p className="text-primary text-xs">Distributed by role</p>
+                    <p className="text-foreground text-sm font-semibold">Story Pool</p>
+                    <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                      Distributed by Story Owner
+                    </p>
                   </div>
                 </div>
-                <p className="text-primary font-libre-baskerville text-3xl font-bold">
-                  {creatorShare}
-                  <span className="text-lg font-medium">%</span>
+                <p className="font-libre-baskerville text-3xl font-bold text-emerald-600 dark:text-emerald-400">
+                  80<span className="text-lg font-medium">%</span>
                 </p>
                 <p className="text-muted-foreground mt-1 text-xs">
-                  Split among all contributors based on their story role and contribution.
+                  Added to the story pool. Story Owner configures custom coin distribution for
+                  contributors.
                 </p>
               </div>
             </div>
           </div>
         </motion.div>
 
-        {/* ── Role reward breakdown ──────────────────── */}
         <motion.div
           {...scrollReveal.card(1)}
           className="border-border/50 bg-card mb-8 rounded-2xl border p-6"
         >
-          <div className="mb-2 flex items-center gap-2">
-            <Percent className="text-secondary h-5 w-5" />
-            <h3 className="text-foreground font-semibold">Role-Based Reward Distribution</h3>
+          <div className="mb-2 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <SlidersHorizontal className="text-secondary h-5 w-5" />
+              <h3 className="text-foreground font-semibold">Owner-Configured Role Distribution</h3>
+            </div>
+            <span className="bg-primary/10 text-primary rounded-full px-3 py-1 text-xs font-semibold">
+              Owner Decides Distribution
+            </span>
           </div>
           <p className="text-muted-foreground mb-6 text-sm">
-            The <span className="text-primary font-medium">{creatorShare}% creator share</span> is
-            split proportionally among contributors based on their role.
+            From the{' '}
+            <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+              80% Story Pool
+            </span>
+            , the Story Owner determines how many coins to reward each role in their Story
+            Dashboard.
           </p>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             {storyRoles.map((role, index) => {
               const Icon = role.icon;
               return (
@@ -176,49 +187,42 @@ export function RewardsSection() {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.07 }}
                   className={cn(
-                    'group flex items-center gap-4 rounded-xl border border-transparent p-3 transition-all duration-200',
-                    'hover:border-border/60 hover:bg-muted/30'
+                    'group border-border/40 bg-muted/20 flex flex-col gap-3 rounded-xl border p-4 duration-200 sm:flex-row sm:items-center sm:justify-between',
+                    'hover:border-primary/30 hover:bg-muted/30'
                   )}
                 >
-                  <div
-                    className={cn(
-                      'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-transform duration-200 group-hover:scale-105',
-                      role.bgColor
-                    )}
-                  >
-                    <Icon className={cn('h-5 w-5', role.color)} />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="mb-0.5 flex flex-wrap items-center gap-2">
-                      <p className="text-foreground text-sm font-semibold">{role.role}</p>
-                      <span
-                        className={cn(
-                          'rounded-full px-2 py-0.5 text-xs font-medium',
-                          role.bgColor,
-                          role.color
-                        )}
-                      >
-                        {role.rewardShare}% of creator pool
-                      </span>
+                  <div className="flex min-w-0 flex-1 items-center gap-3.5">
+                    <div
+                      className={cn(
+                        'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-transform duration-200 group-hover:scale-105',
+                        role.bgColor
+                      )}
+                    >
+                      <Icon className={cn('h-5 w-5', role.color)} />
                     </div>
-                    <p className="text-muted-foreground text-xs leading-relaxed">
-                      {role.description}
-                    </p>
-                  </div>
-                  <div className="hidden w-28 shrink-0 sm:block">
-                    <div className="border-border/30 bg-muted/30 h-1.5 overflow-hidden rounded-full border">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${(role.rewardShare / 40) * 100}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.65, delay: index * 0.07, ease: 'easeOut' }}
-                        className={cn('h-full rounded-full', role.bgColor)}
-                      />
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-0.5 flex flex-wrap items-center gap-2">
+                        <p className="text-foreground text-sm font-semibold">{role.role}</p>
+                        <span
+                          className={cn(
+                            'rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wide',
+                            role.bgColor,
+                            role.color
+                          )}
+                        >
+                          Owner Configured Rate
+                        </span>
+                      </div>
+                      <p className="text-muted-foreground text-xs leading-relaxed">
+                        {role.description}
+                      </p>
                     </div>
                   </div>
-                  <div className="flex shrink-0 items-center">
-                    <span className={cn('font-libre-baskerville text-sm font-bold', role.color)}>
-                      {role.rewardShare}%
+
+                  <div className="flex shrink-0 items-center gap-2 self-end sm:self-center">
+                    <span className="bg-background border-border/60 text-foreground inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold shadow-2xs">
+                      <Coins className="h-3.5 w-3.5 text-amber-500" />
+                      <span>Custom Coin Share</span>
                     </span>
                   </div>
                 </motion.div>
@@ -238,9 +242,11 @@ export function RewardsSection() {
             </div>
             <div>
               <h3 className="text-foreground font-libre-baskerville text-lg font-semibold">
-                How Payouts Work
+                How Story Pools Work
               </h3>
-              <p className="text-muted-foreground text-sm">Simple, transparent, and automatic</p>
+              <p className="text-muted-foreground text-sm">
+                Transparent 80/20 split & owner control
+              </p>
             </div>
           </div>
 
@@ -251,16 +257,16 @@ export function RewardsSection() {
                 step: 1,
                 icon: BookOpenCheck,
                 title: 'Reader Unlocks Chapter',
-                desc: 'A reader spends coins to unlock a premium chapter in your story. The transaction is instant and secure.',
+                desc: 'A reader purchases a chapter. 20% covers platform fee and 80% is added directly into the Story Pool.',
                 color: 'text-secondary',
                 bg: 'bg-secondary/10',
                 borderColor: 'border-secondary/20',
               },
               {
                 step: 2,
-                icon: PieChart,
-                title: 'Revenue is Split',
-                desc: '40% goes to StoryChain for infrastructure. 60% is automatically divided among story contributors based on role.',
+                icon: SlidersHorizontal,
+                title: 'Owner Configures Rates',
+                desc: 'The Story Owner specifies how many coins each role (Author, Co-author, Reviewer, etc.) receives.',
                 color: 'text-primary',
                 bg: 'bg-primary/10',
                 borderColor: 'border-primary/20',
@@ -268,8 +274,8 @@ export function RewardsSection() {
               {
                 step: 3,
                 icon: Banknote,
-                title: 'Earnings Deposited',
-                desc: 'Your share is transferred directly to your linked bank account via Razorpay Payouts. No manual action needed.',
+                title: 'Automatic Coin Payout',
+                desc: 'Coins are automatically credited from the 80% Story Pool directly to contributors’ wallets.',
                 color: 'text-emerald-500 dark:text-emerald-400',
                 bg: 'bg-emerald-500/10',
                 borderColor: 'border-emerald-500/20',
@@ -327,9 +333,9 @@ export function RewardsSection() {
           {/* Bottom highlight bar */}
           <div className="bg-muted/20 mt-6 flex flex-wrap items-center justify-center gap-6 rounded-xl px-6 py-4">
             {[
-              { label: 'Automatic', desc: 'No manual claims' },
-              { label: 'Transparent', desc: 'Track every payout' },
-              { label: 'Instant', desc: 'Via Razorpay' },
+              { label: '20% Platform Fee', desc: 'Infrastructure & AI' },
+              { label: '80% Story Pool', desc: 'Directly into pool' },
+              { label: 'Owner Decides', desc: 'Custom coin distribution' },
             ].map((item) => (
               <div key={item.label} className="flex items-center gap-2 text-sm">
                 <div className="bg-primary h-1.5 w-1.5 rounded-full" />

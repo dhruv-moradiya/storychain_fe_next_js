@@ -118,6 +118,7 @@ const UserCoins = () => {
 export default function Navbar() {
   const { signOut } = useClerk();
   const { isSignedIn, user } = useUser();
+  console.log('user :>> ', user?.id);
   const router = useRouter();
   const pathname = usePathname();
   const { data: notificationsData } = useGetNotifications({ enabled: !!isSignedIn });

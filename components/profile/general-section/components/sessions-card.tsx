@@ -7,6 +7,7 @@ import type { SessionWithActivitiesResource } from '@clerk/shared/types/index';
 import { formatDistanceToNow } from 'date-fns';
 import { Monitor, Smartphone, Tablet } from 'lucide-react';
 
+import toast from '@/components/shared/toast/toast';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,6 +18,29 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+
+function getClerkErrorMessage(error: unknown): string {
+  if (
+    error &&
+    typeof error === 'object' &&
+    'errors' in error &&
+    Array.isArray((error as { errors?: Array<{ longMessage?: string; message?: string }> }).errors)
+  ) {
+    const firstErr = (error as { errors: Array<{ longMessage?: string; message?: string }> })
+      .errors[0];
+    if (firstErr?.longMessage) return firstErr.longMessage;
+    if (firstErr?.message) return firstErr.message;
+  }
+  if (
+    error &&
+    typeof error === 'object' &&
+    'message' in error &&
+    typeof (error as { message?: string }).message === 'string'
+  ) {
+    return (error as { message: string }).message;
+  }
+  return 'Failed to revoke session. Additional verification may be required.';
+}
 
 const getDeviceIcon = (session: SessionWithActivitiesResource) => {
   const deviceType = session.latestActivity?.deviceType?.toLowerCase();
@@ -67,11 +91,12 @@ export function SessionsCard() {
       const sessionToRevoke = sessions.find((s) => s.id === id);
       if (sessionToRevoke) {
         await sessionToRevoke.revoke();
-        // Refresh the list
         setSessions((prev) => prev.filter((s) => s.id !== id));
+        toast.success('Session logged out successfully');
       }
     } catch (error) {
       console.error('Failed to revoke session:', error);
+      toast.error(getClerkErrorMessage(error));
     } finally {
       setRevokingSessionIds((prev) => prev.filter((item) => item !== id));
     }
@@ -82,11 +107,31 @@ export function SessionsCard() {
     setIsRevokingAll(true);
     try {
       const otherSessions = sessions.filter((s) => s.id !== sessionId);
-      await Promise.all(otherSessions.map((s) => s.revoke()));
-      // Refresh the list to only contain current session
-      setSessions((prev) => prev.filter((s) => s.id === sessionId));
+      const results = await Promise.allSettled(otherSessions.map((s) => s.revoke()));
+
+      const revokedIds: string[] = [];
+      let lastError: unknown = null;
+
+      results.forEach((res, idx) => {
+        if (res.status === 'fulfilled') {
+          revokedIds.push(otherSessions[idx].id);
+        } else {
+          lastError = res.reason;
+        }
+      });
+
+      if (revokedIds.length > 0) {
+        setSessions((prev) => prev.filter((s) => s.id === sessionId || !revokedIds.includes(s.id)));
+      }
+
+      if (lastError) {
+        toast.error(getClerkErrorMessage(lastError));
+      } else if (revokedIds.length > 0) {
+        toast.success('Logged out all other devices');
+      }
     } catch (error) {
       console.error('Failed to revoke all other sessions:', error);
+      toast.error(getClerkErrorMessage(error));
     } finally {
       setIsRevokingAll(false);
     }

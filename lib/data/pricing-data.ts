@@ -93,41 +93,41 @@ export const faqs: FAQ[] = [
   {
     question: 'What are coins and how do they work?',
     answer:
-      "Coins are StoryChain's in-app currency. You buy them once with real money (INR via Razorpay) and spend them across the platform - unlock premium chapters, create stories, use AI tools, boost visibility, and more. Coins never expire and are credited instantly to your wallet.",
+      "Coins are StoryChain's in-app currency. You can purchase them in USD ($) or INR (₹) and spend them across the platform — unlock premium chapters, create story pools, use AI tools, boost story visibility, and more. Coins never expire and are credited instantly to your wallet.",
   },
   {
-    question: 'How much does it cost to unlock a chapter?',
+    question: 'How does chapter purchase revenue & the Story Pool work?',
     answer:
-      'Unlocking a single premium chapter costs 10 coins. If you prefer to binge-read, you can grab an Unlimited Read Pass for 75 coins, which unlocks every chapter in a story for 7 days.',
+      'Whenever a reader purchases or unlocks a chapter, 20% covers platform fees (infrastructure, hosting, AI models & security) and 80% is added directly into the story pool. The Story Owner then determines how many coins to distribute from the pool to each contributor role.',
   },
   {
-    question: 'How do creators earn from their stories?',
+    question: 'Who designs how coins are distributed in a Story Pool?',
     answer:
-      'Every time a reader unlocks a chapter, 60% of the coin revenue goes to story contributors. The split is based on role - Authors get the largest share (40% of the creator pool), followed by Co-Authors, Collaborators, Reviewers, and Moderators. Payouts happen automatically via Razorpay.',
+      'The Story Owner holds full control: they design how many coins each role (Authors, Co-Authors, Collaborators, Reviewers, and Moderators) receives from the 80% Story Pool in their Story Dashboard.',
   },
   {
-    question: 'What coin packs are available?',
+    question: 'How do contributors earn coins from a story?',
     answer:
-      'We offer five packs: 100 coins (₹100), 500 coins + 25 bonus (₹500), 1,000 coins + 100 bonus (₹1,000 - best value), 5,000 coins + 750 bonus (₹5,000), and 10,000 coins + 2,000 bonus (₹10,000). The more you buy, the more bonus coins you receive.',
+      'Contributors (co-authors, reviewers, illustrators, and branch creators) earn coins directly from the 80% Story Pool according to the coin distribution rates configured by the Story Owner whenever chapters are published & unlocked.',
   },
   {
-    question: 'Do coins expire?',
+    question: 'Can Story Owners adjust coin distribution rates later?',
     answer:
-      'No. Coins never expire. Once purchased, they stay in your wallet until you spend them. You can also stack multiple packs at any time to top up your balance.',
+      'Yes! Story Owners can update their story pool allocation settings and role coin reward rates in the Story Dashboard at any time before publishing new chapters or milestones.',
   },
   {
-    question: 'What payment methods are supported?',
+    question: 'What payment methods and currencies are supported?',
     answer:
-      'We accept UPI, all major credit/debit cards (Visa, Mastercard, RuPay), net banking from 50+ banks, and popular wallets like Paytm, PhonePe, and Google Pay - all powered securely by Razorpay.',
+      'We support payments in both USD ($) and INR (₹). You can pay via credit/debit cards, UPI, net banking, Paytm, Google Pay, and international cards — powered securely by Razorpay.',
   },
   {
-    question: 'How does role-based reward distribution work?',
+    question: 'Do coins in the Story Pool or wallet expire?',
     answer:
-      'The 60% creator share is divided by role: Author receives 40% of the pool, Co-Author 25%, Collaborator 20%, Reviewer 10%, and Moderator 5%. Every role receives payouts automatically when readers unlock chapters.',
+      'No. Coins in user wallets and funded Story Pools never expire. They stay safely allocated until earned by contributors or spent on platform features.',
   },
   {
     question: 'Can I use AI features with coins?',
     answer:
-      'Yes. AI Voice Narration costs 5 coins per chapter, AI Writing Assist costs 20 coins per session, and AI Story Cover generation costs 40 coins per image. These are one-time charges - no subscriptions needed.',
+      'Yes. AI Voice Narration, AI Writing Assist, and AI Story Cover generation can be used with coins on a pay-per-use basis — no monthly subscription required.',
   },
 ];
