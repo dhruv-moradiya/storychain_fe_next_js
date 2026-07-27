@@ -1,6 +1,6 @@
-import { FileEdit, Plus, Trash2 } from 'lucide-react';
+import { FileEdit, Plus } from 'lucide-react';
 
-import { TPullRequestLabel, TPullRequestType } from './submit-request.schema';
+import { TPullRequestType } from './submit-request.schema';
 
 // ---------------------------------------------------------------------------
 // Submit Request type config (for the TypeStep cards)
@@ -17,41 +17,29 @@ export interface PullRequestTypeConfig {
 
 export const PULL_REQUEST_TYPES: PullRequestTypeConfig[] = [
   {
-    value: 'new_chapter',
-    label: 'New Chapter',
-    description: 'Add a new chapter to the story',
+    value: 'new_branch',
+    label: 'New Branch',
+    description: 'Add a new branch to the story',
     icon: Plus,
     colorClass: 'text-[#10b981]',
     bgClass: 'bg-[#10b981]/15',
   },
   {
-    value: 'edit_chapter',
+    value: 'continuation',
+    label: 'Continuation',
+    description: 'Continue the story flow',
+    icon: Plus,
+    colorClass: 'text-brand-purple',
+    bgClass: 'bg-brand-purple/15',
+  },
+  {
+    value: 'edit',
     label: 'Edit Chapter',
     description: 'Propose changes to an existing chapter',
     icon: FileEdit,
     colorClass: 'text-brand-blue',
     bgClass: 'bg-brand-blue/15',
   },
-  {
-    value: 'delete_chapter',
-    label: 'Delete Chapter',
-    description: 'Request removal of a chapter',
-    icon: Trash2,
-    colorClass: 'text-[#ef4444]',
-    bgClass: 'bg-[#ef4444]/15',
-  },
-];
-
-// ---------------------------------------------------------------------------
-// Label options
-// ---------------------------------------------------------------------------
-
-export const SR_LABEL_OPTIONS: { value: TPullRequestLabel; label: string }[] = [
-  { value: 'needs_review', label: 'Needs Review' },
-  { value: 'quality_issue', label: 'Quality Issue' },
-  { value: 'grammar', label: 'Grammar' },
-  { value: 'plot_hole', label: 'Plot Hole' },
-  { value: 'good_first_submission', label: 'Good First Submission' },
 ];
 
 // ---------------------------------------------------------------------------

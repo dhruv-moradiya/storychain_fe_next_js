@@ -1,14 +1,25 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useEffect, useMemo } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 
-import { ICreatePullRequestRequest } from '@/type/pull-reuqest/pull-request-request.type';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, GitPullRequestArrow, Loader2 } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
+import {
+  BookOpen,
+  CheckCircle2,
+  Clock,
+  FileText,
+  GitPullRequestArrow,
+  Layers,
+  Loader2,
+  Sparkles,
+} from 'lucide-react';
 
+import { toast } from '@/components/shared/toast/toast';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
@@ -17,25 +28,22 @@ import {
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
 } from '@/components/ui/responsive-dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useSearchAutoSaveDrafts } from '@/services/auto-save/auto-save.query';
-import { useSearchChapters } from '@/services/chapters/chapters.query';
-import { useCreatePullRequest } from '@/services/pull-requests/pull-requests.mutation';
+import { useCreatePullRequestFromAutoSave } from '@/services/pull-requests/pull-requests.mutation';
 import { useGetStoryBasic } from '@/services/stories/stories.query';
 
-import { ContentPreviewStep } from './steps/content-preview-step';
-import { DetailStep } from './steps/detail-step';
-import { ReviewStep } from './steps/review-step';
-import { SelectionStep } from './steps/selection/selection-step';
-import { STEPS, StepIndicator, StepName } from './steps/step-indicator';
-import { TypeStep } from './steps/type-step';
-import { ChapterOption, DraftOption, StoryOption } from './types/submit-request-dialog.types';
 import {
   SubmitRequestFormSchema,
   TPullRequestType,
   TSubmitRequestFormData,
 } from './types/submit-request.schema';
-
-// Removed mock data in favor of API integration
 
 // ---------------------------------------------------------------------------
 // Props
@@ -78,43 +86,81 @@ interface SubmitRequestDialogProps {
 // Helpers
 // ---------------------------------------------------------------------------
 
+function generateDetailedTitle({
+  chapterTitle,
+  storyTitle,
+  parentChapterTitle,
+  prType,
+}: {
+  chapterTitle?: string;
+  storyTitle?: string;
+  parentChapterTitle?: string;
+  prType?: string;
+}): string {
+  const cleanChapter = chapterTitle?.trim() || 'New Chapter';
+  const cleanStory = storyTitle?.trim() || 'Story Universe';
+  const prLabel =
+    prType === 'edit'
+      ? 'Edit Request'
+      : prType === 'continuation'
+        ? 'Continuation'
+        : 'New Branch Proposal';
+
+  if (parentChapterTitle && parentChapterTitle !== 'root') {
+    return `[PR] ${prLabel}: ${cleanChapter} (After: ${parentChapterTitle}) - ${cleanStory}`;
+  }
+
+  return `[PR] ${prLabel}: ${cleanChapter} - ${cleanStory}`;
+}
+
 function buildDefaultValues(props: SubmitRequestDialogProps): TSubmitRequestFormData {
+  const rawTitle = props.initialData?.title ?? props.draftTitle;
+  const initialTitle = props.initialData?.title
+    ? props.initialData.title
+    : rawTitle
+      ? generateDetailedTitle({
+          chapterTitle: rawTitle,
+          storyTitle: props.storyTitle,
+          parentChapterTitle: props.parentChapterTitle,
+          prType: props.PullRequestType ?? 'new_branch',
+        })
+      : '';
+
   return {
-    title: props.initialData?.title ?? '',
+    title: initialTitle,
     description: props.initialData?.description ?? '',
-    PullRequestType: props.initialData?.PullRequestType ?? props.PullRequestType ?? 'new_chapter',
+    PullRequestType: props.initialData?.PullRequestType ?? props.PullRequestType ?? 'new_branch',
     storySlug: props.initialData?.storySlug ?? props.storySlug ?? '',
     chapterSlug: props.initialData?.chapterSlug ?? props.chapterSlug ?? '',
     parentChapterSlug: props.initialData?.parentChapterSlug ?? props.parentChapterSlug ?? '',
     draftId: props.initialData?.draftId ?? props.draftId ?? '',
     proposedContent: props.initialData?.proposedContent ?? props.draftContent ?? '',
-    labels: props.initialData?.labels ?? [],
     isDraft: props.initialData?.isDraft ?? false,
     autoApproveEnabled: props.initialData?.autoApproveEnabled ?? true,
   };
 }
 
-/** Fields that must be valid before leaving each step */
-const STEP_VALIDATION_FIELDS: Record<StepName, (keyof TSubmitRequestFormData)[]> = {
-  Type: ['PullRequestType'],
-  Select: ['storySlug'],
-  Details: ['title', 'description'],
-  Preview: [],
-  Review: [],
-};
+function resolvePRType(
+  rawType?: string,
+  autoSaveType?: string,
+  chapterSlug?: string
+): 'new_branch' | 'continuation' | 'edit' {
+  if (rawType === 'new_branch' || rawType === 'continuation' || rawType === 'edit') {
+    return rawType;
+  }
+  if (rawType === 'edit_chapter' || autoSaveType === 'update_chapter' || Boolean(chapterSlug)) {
+    return 'edit';
+  }
+  return 'new_branch';
+}
 
 // ---------------------------------------------------------------------------
-// Component
+// Single-Step Component
 // ---------------------------------------------------------------------------
 
 export function SubmitRequestDialog(props: SubmitRequestDialogProps) {
   const { open, onOpenChange, onSubmit, storyTitle } = props;
 
-  /**
-   * hasContext: a story was provided via props, so the user doesn't need to
-   * pick one from scratch in the Select step.
-   */
-  const hasContext = Boolean(props.storySlug && props.storyTitle);
   const isEditMode = Boolean(props.initialData);
 
   const form = useForm<TSubmitRequestFormData>({
@@ -122,265 +168,362 @@ export function SubmitRequestDialog(props: SubmitRequestDialogProps) {
     defaultValues: buildDefaultValues(props),
   });
 
-  const { handleSubmit, watch, reset, trigger, getValues } = form;
-  const formData = watch();
+  const { handleSubmit, reset, setValue, control } = form;
+  const formData = useWatch({ control }) || form.getValues();
 
   // Reset the form whenever the dialog opens (or props change)
   useEffect(() => {
     if (open) {
       reset(buildDefaultValues(props));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+  }, [open, reset, props]);
 
-  // Step navigation state
-  const [currentStep, setCurrentStep] = useState(0);
-
-  // Reset step when dialog opens
-  useEffect(() => {
-    if (open) setCurrentStep(0);
-  }, [open]);
-
-  // ---------------------------------------------------------------------------
-  // API Queries
-  // ---------------------------------------------------------------------------
-
-  const { data: draftsData, isLoading: isLoadingDrafts } = useSearchAutoSaveDrafts(5, {
+  // Fetch autosave drafts
+  const { data: draftsData, isLoading: isLoadingDrafts } = useSearchAutoSaveDrafts(10, {
     enabled: open,
   });
 
-  const { draftsList, drafts } = useMemo(() => {
-    const list = draftsData?.data || [];
-    const mapped: DraftOption[] = list.map((d) => ({
-      id: d._id,
-      title: d.title,
-      content: props.draftContent ?? '',
-      updatedAt: d.lastSavedAt,
-      wordCount: d.wordCount,
-      storySlug: d.storySlug,
-    }));
-    return { draftsList: list, drafts: mapped };
-  }, [draftsData?.data, props.draftContent]);
+  const draftsList = useMemo(() => {
+    return draftsData?.data || [];
+  }, [draftsData?.data]);
 
-  const { data: storyData, isLoading: isLoadingStory } = useGetStoryBasic(formData.storySlug, {
-    enabled: open && !!formData.storySlug,
+  // Fetch story details if storySlug is known
+  const effectiveStorySlug = formData.storySlug || props.storySlug;
+  const { data: storyData } = useGetStoryBasic(effectiveStorySlug || '', {
+    enabled: open && !!effectiveStorySlug,
   });
   const fetchedStory = storyData?.data;
 
-  // We only get one story at a time from this API (the one associated with the selected context)
-  const stories: StoryOption[] = [];
-  if (fetchedStory) {
-    stories.push({
-      slug: fetchedStory.slug,
-      title: fetchedStory.title,
-      genre: '', // API doesn't provide these for the basic endpoint
-      chapterCount: 0,
+  // Currently selected draft details
+  const selectedDraft = useMemo(() => {
+    return draftsList.find((d) => d._id === formData.draftId);
+  }, [draftsList, formData.draftId]);
+
+  const displayStoryTitle =
+    storyTitle ||
+    fetchedStory?.title ||
+    selectedDraft?.storySlug ||
+    effectiveStorySlug ||
+    'Story Universe';
+
+  // Generate detailed title fallback (e.g. "[PR] New Branch Proposal: Chapter 4 — Story Title")
+  const autoGeneratedTitle = useMemo(() => {
+    const rawChapterTitle =
+      selectedDraft?.title?.trim() || props.draftTitle?.trim() || 'New Chapter';
+    const validPRType = resolvePRType(
+      formData.PullRequestType,
+      selectedDraft?.autoSaveType,
+      formData.chapterSlug || props.chapterSlug || selectedDraft?.chapterSlug || undefined
+    );
+
+    return generateDetailedTitle({
+      chapterTitle: rawChapterTitle,
+      storyTitle: displayStoryTitle,
+      parentChapterTitle: props.parentChapterTitle || props.parentChapterSlug,
+      prType: validPRType,
     });
-  } else if (props.storySlug && props.storyTitle) {
-    stories.push({
-      slug: props.storySlug,
-      title: props.storyTitle,
-      genre: '',
-      chapterCount: 0,
-    });
-  }
+  }, [
+    selectedDraft?.title,
+    selectedDraft?.autoSaveType,
+    selectedDraft?.chapterSlug,
+    props.draftTitle,
+    props.parentChapterTitle,
+    props.parentChapterSlug,
+    props.chapterSlug,
+    displayStoryTitle,
+    formData.PullRequestType,
+    formData.chapterSlug,
+  ]);
 
-  const { data: chaptersData, isLoading: isLoadingChapters } = useSearchChapters(
-    formData.storySlug,
-    {
-      enabled: open && !!formData.storySlug,
-    }
-  );
-
-  const chapters: ChapterOption[] = useMemo(() => {
-    const list = chaptersData?.data || [];
-    return list.map((c, i) => ({
-      slug: c.slug,
-      title: c.title,
-      order: i,
-    }));
-  }, [chaptersData?.data]);
-
-  // Auto-fill storySlug and parentChapterSlug/chapterSlug when draftId changes
+  // Auto-select draftId and pre-fill detailed title if not set
   useEffect(() => {
-    if (formData.draftId && draftsList.length > 0) {
-      const selectedDraft = draftsList.find((d) => d._id === formData.draftId);
-      if (selectedDraft) {
-        if (selectedDraft.storySlug && selectedDraft.storySlug !== formData.storySlug) {
-          form.setValue('storySlug', selectedDraft.storySlug, { shouldValidate: true });
+    if (open && draftsList.length > 0) {
+      const activeDraft = props.draftId
+        ? draftsList.find((d) => d._id === props.draftId) || draftsList[0]
+        : draftsList[0];
+
+      if (activeDraft && (!formData.draftId || formData.draftId !== activeDraft._id)) {
+        setValue('draftId', activeDraft._id, { shouldValidate: true });
+        if (activeDraft.storySlug) {
+          setValue('storySlug', activeDraft.storySlug, { shouldValidate: true });
         }
       }
     }
-  }, [formData.draftId, draftsList, formData.storySlug, form]);
+  }, [open, formData.draftId, draftsList, props.draftId, setValue]);
 
-  const handleNext = async () => {
-    const stepName = STEPS[currentStep];
-    const fields = [...STEP_VALIDATION_FIELDS[stepName]];
-
-    // Add chapter/draft validation to the Select step based on SR type
-    if (stepName === 'Select') {
-      const type = getValues('PullRequestType');
-      if (type === 'new_chapter') {
-        fields.push('draftId', 'parentChapterSlug');
-      } else if (type === 'edit_chapter') {
-        fields.push('draftId', 'chapterSlug');
-      } else {
-        // delete_chapter
-        fields.push('chapterSlug');
-      }
+  // Keep title updated with detailed title if user hasn't edited it manually
+  useEffect(() => {
+    if (open && (!formData.title || formData.title === props.draftTitle)) {
+      setValue('title', autoGeneratedTitle);
     }
+  }, [open, autoGeneratedTitle, formData.title, props.draftTitle, setValue]);
 
-    const isValid = await trigger(fields);
-    if (isValid && currentStep < STEPS.length - 1) {
-      setCurrentStep((prev) => prev + 1);
-    }
-  };
-
-  const handleBack = () => {
-    if (currentStep > 0) setCurrentStep((prev) => prev - 1);
-  };
-
-  const { mutate: createPullRequest, isPending: isSubmitting } = useCreatePullRequest();
+  const { mutate: createPullRequestFromAutoSave, isPending: isSubmitting } =
+    useCreatePullRequestFromAutoSave();
 
   const onFormSubmit = (data: TSubmitRequestFormData) => {
-    // Basic slugification for new chapters if chapterSlug is missing
-    let finalChapterSlug = data.chapterSlug;
-    if (data.PullRequestType === 'new_chapter' && !finalChapterSlug) {
-      finalChapterSlug = data.title
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '');
+    const targetStorySlug = data.storySlug || props.storySlug || selectedDraft?.storySlug;
+    const targetAutoSaveId = data.draftId || props.draftId || selectedDraft?._id;
+
+    if (!targetStorySlug) {
+      toast.error('Target story slug is required');
+      return;
+    }
+    if (!targetAutoSaveId) {
+      toast.error('Autosave draft ID is required');
+      return;
     }
 
-    const payload: ICreatePullRequestRequest = {
-      title: data.title,
-      description: data.description,
-      storySlug: data.storySlug,
-      prType: data.PullRequestType,
-      isDraft: data.isDraft,
-      chapterSlug: finalChapterSlug || '',
-      parentChapterSlug: data.parentChapterSlug || 'root',
-      changes: {
-        proposed: data.proposedContent,
-        original: chapters.find((c) => c.slug === data.chapterSlug)?.content,
-      },
-    };
+    const finalTitle = data.title?.trim() || autoGeneratedTitle;
+    const parentChapterSlug =
+      data.parentChapterSlug ||
+      props.parentChapterSlug ||
+      selectedDraft?.parentChapterSlug ||
+      'root';
 
-    createPullRequest(payload, {
-      onSuccess: (response) => {
-        if (response.data.success) {
-          onSubmit?.(data);
-          onOpenChange(false);
-          reset();
-          setCurrentStep(0);
-        }
+    const validPRType = resolvePRType(
+      data.PullRequestType,
+      selectedDraft?.autoSaveType,
+      data.chapterSlug || props.chapterSlug || selectedDraft?.chapterSlug || undefined
+    );
+
+    createPullRequestFromAutoSave(
+      {
+        storySlug: targetStorySlug,
+        payload: {
+          autoSaveId: targetAutoSaveId,
+          title: finalTitle,
+          description: data.description || '',
+          parentChapterSlug,
+          prType: validPRType,
+          isDraft: data.isDraft ?? false,
+        },
       },
-    });
+      {
+        onSuccess: (response) => {
+          if (response.data.success) {
+            onSubmit?.(data);
+            onOpenChange(false);
+            reset();
+          }
+        },
+      }
+    );
   };
 
-  const isLastStep = currentStep === STEPS.length - 1;
-  const isFirstStep = currentStep === 0;
-
-  const renderStep = () => {
-    const stepName = STEPS[currentStep];
-    switch (stepName) {
-      case 'Type':
-        return <TypeStep />;
-      case 'Select':
-        return (
-          <SelectionStep
-            stories={stories}
-            chapters={chapters}
-            drafts={drafts}
-            isLoadingStories={isLoadingStory}
-            isLoadingChapters={isLoadingChapters}
-            isLoadingDrafts={isLoadingDrafts}
-          />
-        );
-      case 'Details':
-        return <DetailStep hasContext={hasContext} chapters={chapters} stories={stories} />;
-      case 'Preview':
-        return <ContentPreviewStep chapters={chapters} drafts={drafts} />;
-      case 'Review':
-        return <ReviewStep stories={stories} chapters={chapters} />;
-    }
-  };
+  const previewHtml = props.draftContent || formData.proposedContent || '';
 
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
-      <ResponsiveDialogContent className="border-border bg-card overflow-y-auto p-0 max-xl:h-[calc(100vh-10rem)] sm:max-w-[600px] xl:max-w-[calc(100vw-70rem)]">
+      <ResponsiveDialogContent className="border-border bg-card max-h-[90vh] overflow-y-auto p-0 sm:max-w-[620px]">
         <div className="p-6">
-          <ResponsiveDialogHeader>
-            <ResponsiveDialogTitle className="text-text-primary flex items-center gap-2 font-serif text-xl">
-              <div className="bg-brand-pink-500/15 flex h-8 w-8 items-center justify-center rounded-lg">
-                <GitPullRequestArrow className="text-brand-pink-500 h-4 w-4" />
+          {/* Header */}
+          <ResponsiveDialogHeader className="border-b pb-4">
+            <ResponsiveDialogTitle className="text-foreground font-libre-baskerville flex items-center gap-2.5 text-xl font-bold">
+              <div className="bg-brand-pink-500/15 flex h-9 w-9 items-center justify-center rounded-xl shadow-xs">
+                <GitPullRequestArrow className="text-brand-pink-500 h-5 w-5" />
               </div>
               {isEditMode ? 'Edit Submit Request' : 'Create Submit Request'}
             </ResponsiveDialogTitle>
-            <ResponsiveDialogDescription className="text-text-secondary-70 mt-1 font-mono text-sm">
-              {hasContext ? (
-                <>
-                  Submit a change request for{' '}
-                  <span className="bg-brand-blue/15 text-brand-blue rounded px-1.5 py-0.5 font-medium">
-                    {storyTitle}
-                  </span>
-                </>
-              ) : (
-                'Select a story and chapter to submit a change request'
-              )}
+            <ResponsiveDialogDescription className="text-muted-foreground mt-1 text-sm">
+              Review details from your autosaved draft and submit your pull request to the story.
             </ResponsiveDialogDescription>
           </ResponsiveDialogHeader>
 
-          <StepIndicator steps={STEPS} currentStep={currentStep} />
+          {/* Single-Step Main Content */}
+          <div className="space-y-5 py-5">
+            {/* Story & Context Header Banner */}
+            <div className="from-brand-pink-500/10 via-brand-purple/10 to-brand-teal/10 relative overflow-hidden rounded-xl border bg-linear-to-r p-4 shadow-xs">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-2">
+                  <div className="bg-background/80 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border shadow-xs backdrop-blur-xs">
+                    <BookOpen size={16} className="text-brand-pink-500" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-muted-foreground text-[10px] font-medium tracking-wide uppercase">
+                      Target Story
+                    </p>
+                    <h4 className="font-libre-baskerville text-foreground truncate text-sm font-bold sm:text-base">
+                      {displayStoryTitle}
+                    </h4>
+                  </div>
+                </div>
 
-          <div className="min-h-[350px] py-6">
-            <AnimatePresence mode="wait">
-              <FormProvider {...form}>{renderStep()}</FormProvider>
-            </AnimatePresence>
+                <Badge
+                  variant="outline"
+                  className="bg-background/80 border-brand-pink-500/30 text-brand-pink-500 shrink-0 font-mono text-xs font-semibold backdrop-blur-xs"
+                >
+                  <Sparkles size={12} className="mr-1 inline-block" />
+                  Autosave Sync
+                </Badge>
+              </div>
+            </div>
+
+            {/* Title Input Field */}
+            <div className="space-y-1.5">
+              <label className="text-muted-foreground flex items-center justify-between text-xs font-semibold tracking-wider uppercase">
+                <span>Submit Request Title</span>
+                <span className="text-muted-foreground font-mono text-[10px]">
+                  {formData.title?.trim() ? 'Custom Title' : 'Auto-generated'}
+                </span>
+              </label>
+              <Input
+                value={formData.title}
+                onChange={(e) => setValue('title', e.target.value)}
+                placeholder={autoGeneratedTitle}
+                className="w-full rounded-lg border text-sm font-medium"
+              />
+            </div>
+
+            {/* Autosave Draft Selector (if multiple drafts exist) */}
+            {draftsList.length > 1 && (
+              <div className="space-y-1.5">
+                <label className="text-muted-foreground flex items-center justify-between text-xs font-medium tracking-wider uppercase">
+                  <span className="flex items-center gap-1.5">
+                    <Layers size={13} className="text-brand-teal" /> Select Autosave Record
+                  </span>
+                  <span className="text-muted-foreground text-[10px]">
+                    {draftsList.length} drafts found
+                  </span>
+                </label>
+
+                <Select
+                  value={formData.draftId || selectedDraft?._id}
+                  onValueChange={(val) => {
+                    setValue('draftId', val, { shouldValidate: true });
+                    const chosen = draftsList.find((d) => d._id === val);
+                    if (chosen?.storySlug) {
+                      setValue('storySlug', chosen.storySlug, { shouldValidate: true });
+                    }
+                    if (chosen?.title) {
+                      setValue('title', chosen.title, { shouldValidate: true });
+                    }
+                  }}
+                >
+                  <SelectTrigger className="w-full rounded-lg border font-medium">
+                    <SelectValue placeholder="Choose an autosaved draft" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {draftsList.map((d) => (
+                      <SelectItem key={d._id} value={d._id} className="cursor-pointer">
+                        <div className="flex w-full items-center justify-between gap-4">
+                          <span className="truncate font-medium">
+                            {d.title || 'Untitled Draft'}
+                          </span>
+                          <span className="text-muted-foreground text-[10px]">
+                            {d.wordCount || 0} words
+                          </span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
+            {/* Autosave Details Card */}
+            <div className="border-border bg-card space-y-3.5 rounded-xl border p-4 shadow-xs">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-3">
+                <div>
+                  <h4 className="font-libre-baskerville text-foreground text-base font-bold">
+                    {selectedDraft?.title || formData.title || props.draftTitle || 'Untitled Draft'}
+                  </h4>
+                  <p className="text-muted-foreground mt-0.5 text-xs">
+                    Ready to submit to branch universe
+                  </p>
+                </div>
+
+                <Badge className="border-emerald-500/30 bg-emerald-500/15 text-xs font-medium text-emerald-600">
+                  <CheckCircle2 size={12} className="mr-1 inline" /> Validated
+                </Badge>
+              </div>
+
+              {/* Metadata Pills */}
+              <div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-3">
+                <div className="bg-muted/50 border-border/60 flex items-center gap-2 rounded-lg border p-2.5">
+                  <Clock size={14} className="text-brand-teal shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-muted-foreground font-mono text-[9px] uppercase">
+                      Last Saved
+                    </p>
+                    <p className="text-foreground truncate font-medium">
+                      {selectedDraft?.lastSavedAt
+                        ? `${formatDistanceToNow(new Date(selectedDraft.lastSavedAt))} ago`
+                        : 'Just now'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-muted/50 border-border/60 flex items-center gap-2 rounded-lg border p-2.5">
+                  <FileText size={14} className="text-brand-pink-500 shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-muted-foreground font-mono text-[9px] uppercase">Length</p>
+                    <p className="text-foreground font-medium">
+                      {selectedDraft?.wordCount ??
+                        (formData.proposedContent?.split(/\s+/).length || 0)}{' '}
+                      words
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-muted/50 border-border/60 col-span-2 flex items-center gap-2 rounded-lg border p-2.5 sm:col-span-1">
+                  <Layers size={14} className="text-brand-purple shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-muted-foreground font-mono text-[9px] uppercase">Type</p>
+                    <p className="text-foreground truncate font-medium">
+                      {selectedDraft?.chapterSlug ? 'Chapter Update' : 'New Chapter Branch'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Draft Content Preview Box */}
+            <div className="border-border bg-card space-y-2 rounded-xl border p-4 shadow-xs">
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground flex items-center gap-1.5 text-xs font-semibold tracking-wider uppercase">
+                  <FileText size={13} className="text-brand-pink-500" /> Content Preview
+                </span>
+                <span className="text-muted-foreground font-mono text-[10px]">
+                  {isLoadingDrafts ? 'Loading...' : `${selectedDraft?.wordCount || 0} words`}
+                </span>
+              </div>
+
+              <div className="bg-muted/30 text-foreground/90 max-h-[180px] max-w-none overflow-y-auto rounded-lg border p-3.5 font-serif text-xs leading-relaxed [&>p]:mb-2">
+                {previewHtml ? (
+                  <div dangerouslySetInnerHTML={{ __html: previewHtml }} />
+                ) : (
+                  <span className="text-muted-foreground font-sans text-xs italic">
+                    Content preview loaded from auto-save record.
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
 
-          <ResponsiveDialogFooter className="mt-6 gap-2 sm:gap-0">
-            {!isFirstStep && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleBack}
-                className="border-border hover:bg-muted gap-1 font-mono"
-              >
-                <ChevronLeft className="h-4 w-4" />
-                Back
-              </Button>
-            )}
-            {isLastStep ? (
-              <Button
-                type="button"
-                onClick={handleSubmit(onFormSubmit)}
-                className="bg-brand-pink-500 hover:bg-brand-pink-400 gap-2 font-mono text-white"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <GitPullRequestArrow className="h-4 w-4" />
-                )}
-                {isSubmitting
-                  ? 'Submitting...'
-                  : formData.isDraft
-                    ? 'Save as Draft'
-                    : isEditMode
-                      ? 'Update SR'
-                      : 'Submit SR'}
-              </Button>
-            ) : (
-              <Button
-                type="button"
-                onClick={handleNext}
-                className="bg-brand-blue hover:bg-brand-blue-alt gap-1 font-mono text-white"
-              >
-                Next
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            )}
+          {/* Footer Actions */}
+          <ResponsiveDialogFooter className="flex flex-row items-center justify-end gap-3 border-t pt-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+              className="rounded-full px-5 text-xs font-medium"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              onClick={() => onFormSubmit(form.getValues())}
+              className="bg-brand-pink-500 hover:bg-brand-pink-600 gap-2 rounded-full px-6 text-xs font-semibold text-white shadow-md transition-all"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <GitPullRequestArrow className="h-4 w-4" />
+              )}
+              {isSubmitting ? 'Submitting PR...' : 'Submit Pull Request'}
+            </Button>
           </ResponsiveDialogFooter>
         </div>
       </ResponsiveDialogContent>

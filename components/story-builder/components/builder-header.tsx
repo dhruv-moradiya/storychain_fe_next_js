@@ -9,7 +9,6 @@ import {
   ArrowLeft,
   ChevronDown,
   Eye,
-  FileText,
   GitPullRequest,
   Loader2,
   Save,
@@ -419,7 +418,7 @@ function BuilderHeader({
         storyTitle={storyTitle}
         parentChapterSlug={parentChapterSlug}
         parentChapterTitle={parentChapterTitle}
-        draftId={draftId}
+        draftId={draftId || autoSaveId}
         draftTitle={title}
         draftContent={editor?.getHTML() || ''}
       />
@@ -428,4 +427,4 @@ function BuilderHeader({
 }
 
 export { BuilderHeader };
-export type { ChapterStatus, BuilderHeaderProps };
+export type { BuilderHeaderProps, ChapterStatus };

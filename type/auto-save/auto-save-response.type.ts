@@ -14,6 +14,7 @@ export interface IAutoSaveSearchItem {
   _id: string;
   title: string;
   chapterSlug: string | null;
+  parentChapterSlug?: string | null;
   storySlug: string;
   autoSaveType: string;
   wordCount: number;

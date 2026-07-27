@@ -1,10 +1,10 @@
 enum PullRequestType {
-  NEW_CHAPTER = 'new_chapter',
-  EDIT_CHAPTER = 'edit_chapter',
-  DELETE_CHAPTER = 'delete_chapter',
+  NEW_BRANCH = 'new_branch',
+  CONTINUATION = 'continuation',
+  EDIT = 'edit',
 }
 
-const PULL_REQUEST_TYPE = ['new_chapter', 'edit_chapter', 'delete_chapter'] as const;
+const PULL_REQUEST_TYPE = ['new_branch', 'continuation', 'edit'] as const;
 
 enum PRLabel {
   NEEDS_REVIEW = 'needs_review',

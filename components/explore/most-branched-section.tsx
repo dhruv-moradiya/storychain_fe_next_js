@@ -5,7 +5,6 @@ import { useRef } from 'react';
 
 import { ArrowDownToDot, ChevronLeft, ChevronRight, GitMerge, Users } from 'lucide-react';
 
-import { genreBadge } from '@/components/common/badge';
 import { Button } from '@/components/ui/button';
 
 const BRANCHED_STORIES = [
@@ -127,65 +126,66 @@ export function MostBranchedSection() {
       {/* Uniform card row — no scrollbar, nav by buttons */}
       <div
         ref={scrollRef}
-        className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0"
+        className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:gap-4 sm:px-0"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {BRANCHED_STORIES.map((story) => (
           <div
             key={story.title}
-            className="group relative flex w-[45vw] shrink-0 snap-start flex-col gap-3 overflow-hidden transition-all hover:shadow-md sm:w-48 lg:w-48"
+            className="group flex w-[130px] shrink-0 cursor-pointer snap-start flex-col gap-2 transition-transform sm:w-44 sm:gap-3 lg:w-48"
           >
-            {/* Rank Badge */}
-            <div className="bg-background/90 absolute top-3 left-3 z-10 flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold shadow-sm backdrop-blur-sm">
-              #{story.rank}
-            </div>
+            {/* Cover — 2:3 aspect ratio matching NewReleasesSection */}
+            <div className="border-primary/20 relative aspect-2/3 w-full overflow-hidden rounded-md border shadow-sm transition-shadow group-hover:shadow-md lg:rounded-lg">
+              {/* Rank Badge */}
+              <div className="bg-background/90 text-foreground border-border/50 absolute top-2 left-2 z-10 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold shadow-sm backdrop-blur-sm sm:h-6 sm:w-6 sm:text-xs">
+                #{story.rank}
+              </div>
 
-            {/* Cover — fixed height for uniformity */}
-            <div className="relative aspect-2/3 w-full shrink-0 overflow-hidden rounded-xl">
               <Image
                 src={story.image}
                 alt={story.title}
                 fill
+                sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 16vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
             </div>
 
             {/* Details */}
-            <div className="flex flex-1 flex-col justify-between">
-              <div className="mb-3 space-y-2">
-                {genreBadge(story.genre)}
-                <h3 className="font-libre-baskerville group-hover:text-brand-purple line-clamp-2 text-base leading-tight font-bold transition-colors">
-                  {story.title}
-                </h3>
+            <div className="space-y-1">
+              <span className="text-brand-teal truncate text-[9px] font-medium tracking-wide uppercase sm:text-[10px]">
+                {story.genre}
+              </span>
+
+              <h3 className="font-libre-baskerville group-hover:text-brand-pink-500 line-clamp-2 text-xs leading-tight font-bold transition-colors sm:text-sm lg:text-base">
+                {story.title}
+              </h3>
+
+              {/* Branch visualization bar */}
+              <div className="space-y-1 pt-0.5">
+                <div className="text-muted-foreground flex items-center justify-between text-[9px] font-medium sm:text-[10px]">
+                  <span className="flex items-center gap-1">
+                    <GitMerge className="text-brand-pink-500 h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                    <span className="text-foreground font-semibold">{story.branches}</span> Branches
+                  </span>
+                </div>
+                <div className="bg-muted h-1 w-full overflow-hidden rounded-full">
+                  <div
+                    className="from-brand-pink-400 to-brand-purple h-full rounded-full bg-linear-to-r"
+                    style={{ width: `${Math.min(100, (story.branches / 500) * 100)}%` }}
+                  />
+                </div>
               </div>
 
-              <div className="space-y-2.5">
-                {/* Branch visualization bar */}
-                <div className="space-y-1">
-                  <div className="text-foreground/80 flex items-center justify-between text-xs font-medium">
-                    <span className="flex items-center gap-1.5">
-                      <GitMerge size={12} className="text-brand-pink-500" /> {story.branches}{' '}
-                      Branches
-                    </span>
-                  </div>
-                  <div className="bg-muted h-1.5 w-full overflow-hidden rounded-full">
-                    <div
-                      className="from-brand-pink-400 to-brand-purple h-full rounded-full bg-linear-to-r"
-                      style={{ width: `${Math.min(100, (story.branches / 500) * 100)}%` }}
-                    />
-                  </div>
-                </div>
-
-                <div className="border-border/50 grid grid-cols-2 gap-2 border-t pt-2">
-                  <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
-                    <Users size={12} />
-                    <span>{story.contributors} writers</span>
-                  </div>
-                  <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
-                    <ArrowDownToDot size={12} />
-                    <span>Depth: {story.depth}</span>
-                  </div>
-                </div>
+              {/* Writers & Depth */}
+              <div className="text-muted-foreground flex items-center justify-between pt-0.5 text-[9px] sm:text-[10px]">
+                <span className="flex items-center gap-1 truncate">
+                  <Users className="h-2.5 w-2.5 shrink-0 sm:h-3 sm:w-3" />
+                  {story.contributors} writers
+                </span>
+                <span className="flex shrink-0 items-center gap-0.5">
+                  <ArrowDownToDot className="h-2.5 w-2.5 shrink-0 sm:h-3 sm:w-3" />
+                  Depth: {story.depth}
+                </span>
               </div>
             </div>
           </div>

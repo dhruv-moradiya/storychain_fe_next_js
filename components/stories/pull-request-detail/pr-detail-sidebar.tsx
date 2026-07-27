@@ -27,7 +27,7 @@ interface PRDetailSidebarProps {
 
 export default function PRDetailSidebar({ pullRequest }: PRDetailSidebarProps) {
   return (
-    <motion.div {...fadeIn(0.15)} className="space-y-4">
+    <motion.div {...fadeIn(0.15)} className="space-y-6">
       <VotingCard votes={pullRequest.votes} />
       <ApprovalCard approvalsStatus={pullRequest.approvalsStatus} />
       <LabelsSection labels={pullRequest.labels} />
@@ -45,31 +45,29 @@ interface LabelsSectionProps {
 
 function LabelsSection({ labels }: LabelsSectionProps) {
   return (
-    <div className="bg-card border-border/50 group hover:border-primary/30 overflow-hidden rounded-xl border p-4 transition-all hover:shadow-md">
-      <h3 className="text-foreground font-libre-baskerville mb-3 text-sm font-semibold">
-        Taxonomy Labels
-      </h3>
+    <div className="border-border/50 bg-card flex flex-col gap-4 rounded-sm border p-5 shadow-xs">
+      <h3 className="text-text-primary text-base font-semibold">Taxonomy Labels</h3>
       {labels.length > 0 ? (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {labels.map((label) => (
             <Badge
               key={label}
               variant="outline"
-              className="text-muted-foreground border-border/40 bg-muted/50 hover:bg-muted rounded-md px-2.5 py-1 text-xs font-medium capitalize transition-colors"
+              className="border-border/40 text-text-secondary-65 bg-muted/40 hover:bg-muted rounded-sm px-2.5 py-0.5 text-xs font-medium capitalize transition-colors"
             >
               {label.replace('_', ' ')}
             </Badge>
           ))}
         </div>
       ) : (
-        <p className="text-muted-foreground text-sm">Uncategorized lore...</p>
+        <p className="text-text-secondary-65 text-xs italic">Uncategorized lore...</p>
       )}
       <Button
-        variant="ghost"
+        variant="outline-editorial"
         size="sm"
-        className="border-border/40 hover:border-primary/30 hover:bg-primary/5 hover:text-primary mt-4 w-full gap-2 rounded-lg border border-dashed py-4 text-xs font-medium tracking-wide transition-all"
+        className="h-10 w-full cursor-pointer rounded-sm text-sm font-semibold"
       >
-        <Plus className="h-3.5 w-3.5" />
+        <Plus className="size-4" />
         Assign Label
       </Button>
     </div>
@@ -91,7 +89,7 @@ function MetadataSection({ pullRequest }: MetadataSectionProps) {
     {
       icon: Eye,
       label: 'Reader Count',
-      value: pullRequest.stats.views.toLocaleString(),
+      value: (pullRequest.stats?.views ?? 0).toLocaleString(),
     },
     {
       icon: GitBranch,
@@ -111,20 +109,19 @@ function MetadataSection({ pullRequest }: MetadataSectionProps) {
   ];
 
   return (
-    <div className="bg-card border-border/50 group hover:border-primary/30 overflow-hidden rounded-xl border p-4 transition-all hover:shadow-md">
-      <h3 className="text-foreground font-libre-baskerville mb-3 text-sm font-semibold">
-        Analytics &amp; Context
-      </h3>
-      <div className="space-y-3">
+    <div className="border-border/50 bg-card flex flex-col gap-4 rounded-sm border p-5 shadow-xs">
+      <h3 className="text-text-primary text-base font-semibold">Analytics &amp; Context</h3>
+      <div className="space-y-2.5">
         {metadataItems.map((item, id) => (
-          <div key={id} className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-2.5">
-              <div className="bg-muted/60 flex h-6 w-6 items-center justify-center rounded-md">
-                <item.icon className="text-muted-foreground h-3.5 w-3.5" />
-              </div>
-              <span className="text-muted-foreground font-medium">{item.label}</span>
+          <div
+            key={id}
+            className="border-border/50 flex items-center justify-between gap-1 rounded-sm border p-3 text-sm"
+          >
+            <div className="flex items-center gap-2">
+              <item.icon className="text-text-secondary-65 size-4" />
+              <span className="text-text-secondary-65 text-xs font-medium">{item.label}</span>
             </div>
-            <span className="text-foreground font-medium">{item.value}</span>
+            <span className="text-text-primary font-semibold">{item.value}</span>
           </div>
         ))}
       </div>
@@ -138,28 +135,28 @@ interface LifecycleActionsProps {
 
 function LifecycleActions({ canMerge }: LifecycleActionsProps) {
   return (
-    <div className="bg-card border-border/50 hover:border-primary/30 overflow-hidden rounded-xl border p-4 transition-all hover:shadow-md">
-      <h3 className="text-foreground font-libre-baskerville mb-3 text-sm font-semibold">Actions</h3>
+    <div className="border-border/50 bg-card flex flex-col gap-4 rounded-sm border p-5 shadow-xs">
+      <h3 className="text-text-primary text-base font-semibold">Lifecycle Actions</h3>
       <div className="space-y-3">
         {canMerge && (
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground x w-full gap-2.5 font-semibold shadow-sm transition-all hover:shadow-md">
-            <GitMerge className="h-4 w-4" />
+          <Button className="h-10 w-full cursor-pointer rounded-sm text-sm font-semibold shadow-xs">
+            <GitMerge className="size-4" />
             Commit to Branch
           </Button>
         )}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2.5">
           <Button
-            variant="outline"
-            className="border-destructive/20 text-destructive hover:bg-destructive/10 hover:text-destructive h-10 gap-2 text-xs font-medium"
+            variant="outline-editorial"
+            className="text-destructive hover:text-destructive hover:bg-destructive/10 h-10 cursor-pointer rounded-sm text-xs font-semibold"
           >
-            <X className="h-3.5 w-3.5" />
+            <X className="size-4" />
             Revoke
           </Button>
           <Button
-            variant="outline"
-            className="border-border/40 text-muted-foreground hover:bg-muted hover:text-foreground x h-10 gap-2 text-xs font-medium"
+            variant="outline-editorial"
+            className="h-10 cursor-pointer rounded-sm text-xs font-semibold"
           >
-            <GitPullRequestClosed className="h-3.5 w-3.5" />
+            <GitPullRequestClosed className="size-4" />
             Archive
           </Button>
         </div>

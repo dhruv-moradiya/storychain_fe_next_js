@@ -15,22 +15,22 @@ export default function CommentCard({ comment }: CommentCardProps) {
   const [showReplies, setShowReplies] = useState(true);
 
   return (
-    <motion.div className="bg-card border-border/50 group hover:border-primary/30 rounded-xl border transition-all hover:shadow-md">
+    <motion.div className="border-border/50 bg-card flex flex-col rounded-sm border shadow-xs">
       {/* Header */}
       <div className="border-border/50 flex items-center gap-3 border-b px-5 py-4">
-        <Avatar className="ring-card h-8 w-8 ring-2">
-          <AvatarImage src={comment.user?.avatar} />
-          <AvatarFallback className="bg-secondary/20 text-secondary font-playfair">
+        <Avatar className="ring-border/20 h-8 w-8 ring-1">
+          <AvatarImage src={comment.user?.avatar} alt={comment.user?.displayName} />
+          <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">
             {comment.user?.displayName?.charAt(0) || 'U'}
           </AvatarFallback>
         </Avatar>
         <div className="flex-1">
-          <h4 className="text-foreground font-medium">{comment.user?.displayName}</h4>
-          <span className="text-muted-foreground font-ibm-plex-mono ml-2 text-xs">
+          <h4 className="text-text-primary text-sm font-semibold">{comment.user?.displayName}</h4>
+          <span className="text-text-secondary-65 ml-2 font-mono text-xs">
             {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
           </span>
           {comment.isEdited && (
-            <span className="text-muted-foreground font-ibm-plex-mono ml-2 text-[10px] opacity-60">
+            <span className="text-text-secondary-65 ml-2 font-mono text-[10px] opacity-60">
               (edited)
             </span>
           )}

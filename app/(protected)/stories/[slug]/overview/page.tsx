@@ -1,23 +1,9 @@
 import type { Metadata } from 'next';
-import { Suspense, cache } from 'react';
+import { Suspense } from 'react';
 
-import type { IStoryOverview } from '@/type/story';
-
-import { buildStoryMeta } from '@/components/common';
+import { buildStoryMeta, getCachedStoryOverview } from '@/components/common';
 import { Overview } from '@/components/story-overview/overview';
 import OverviewSectionLoading from '@/components/story-overview/overview/overview-section-loading';
-import { getStoryOverviewQueryFn } from '@/services/stories/stories.query';
-
-// React.cache deduplicates this fetch so generateMetadata and the page
-// share a single network request per render cycle.
-const getStoryOverview = cache(async (slug: string) => {
-  try {
-    const res = await getStoryOverviewQueryFn(slug);
-    return res.data as IStoryOverview;
-  } catch {
-    return null;
-  }
-});
 
 export async function generateMetadata({
   params,
@@ -25,14 +11,18 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const story = await getStoryOverview(slug);
+  const story = await getCachedStoryOverview(slug);
 
   return buildStoryMeta({
     title: story?.title ?? slug,
     description: story?.description ?? '',
     rawDescription: story?.description,
     slug,
+    cardImageUrl: story?.cardImage?.url,
     coverImageUrl: story?.coverImage?.url,
+    author: story?.creator?.username,
+    genres: story?.settings?.genres || story?.genres,
+    stats: story?.stats,
     pageLabel: 'Overview',
   });
 }

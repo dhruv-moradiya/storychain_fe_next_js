@@ -59,40 +59,43 @@ export function ExperimentalSection() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-3 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-5">
         {EXPERIMENTS.map((exp) => (
-          <div
-            key={exp.title}
-            className="group bg-card relative flex cursor-pointer flex-col overflow-hidden rounded-xl border transition-all hover:-translate-y-1 hover:shadow-md"
-          >
-            <div className="absolute top-3 left-3 z-10">
-              {iconBadge('Challenge', Beaker, 'cyan', { className: 'border-none shadow-sm' })}
-            </div>
-
-            <div className="relative aspect-[2/3] w-full overflow-hidden">
+          <div key={exp.title} className="group flex cursor-pointer flex-col gap-2 sm:gap-3">
+            {/* Cover image matching NewReleasesSection standard */}
+            <div className="border-primary/20 relative aspect-2/3 w-full overflow-hidden rounded-md border shadow-sm transition-shadow group-hover:shadow-md lg:rounded-lg">
               <Image
                 src={exp.image}
                 alt={exp.title}
                 fill
-                className="object-cover opacity-80 grayscale transition-transform duration-500 group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0"
+                sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 16vw"
+                className="object-cover opacity-85 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100"
               />
-              <div className="from-background absolute inset-0 bg-gradient-to-t to-transparent" />
+              <div className="absolute top-2 left-2 z-10">
+                {iconBadge('Challenge', Beaker, 'cyan', {
+                  className: 'border-none shadow-sm text-[9px] sm:text-[10px]',
+                })}
+              </div>
             </div>
 
-            <div className="z-10 -mt-6 flex flex-1 flex-col justify-between p-4 pt-0">
-              <div>
-                <h3 className="font-libre-baskerville group-hover:text-brand-teal mb-1 text-lg leading-tight font-bold transition-colors">
-                  {exp.title}
-                </h3>
-                <p className="text-muted-foreground text-xs">by {exp.author}</p>
-              </div>
+            {/* Details below cover */}
+            <div className="space-y-0.5 sm:space-y-1">
+              <h3 className="font-libre-baskerville group-hover:text-brand-teal line-clamp-2 text-xs leading-tight font-bold transition-colors sm:text-sm lg:text-base">
+                {exp.title}
+              </h3>
 
-              <div className="mt-4 flex items-center justify-between border-t pt-3">
-                <div className="text-brand-orange flex items-center gap-1 text-sm font-bold">
-                  <ArrowBigUp size={18} className="fill-current" /> {exp.upvotes}
+              <p className="text-muted-foreground line-clamp-1 text-[10px] sm:text-xs">
+                by {exp.author}
+              </p>
+
+              <div className="text-muted-foreground flex items-center justify-between pt-0.5 sm:pt-1">
+                <div className="text-brand-orange flex items-center gap-0.5 text-[9px] font-bold sm:text-[10px]">
+                  <ArrowBigUp className="h-3 w-3 fill-current sm:h-3.5 sm:w-3.5" />
+                  <span>{exp.upvotes}</span>
                 </div>
-                <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
-                  <GitBranch size={14} /> {exp.branches} branches
+                <div className="flex items-center gap-1 text-[9px] sm:text-[10px]">
+                  <GitBranch className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                  <span>{exp.branches} branches</span>
                 </div>
               </div>
             </div>

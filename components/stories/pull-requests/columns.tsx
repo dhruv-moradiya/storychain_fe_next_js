@@ -2,7 +2,6 @@
 
 import { PRStatus, PRType } from '@/type/pull-request.type';
 import { IPullRequestListItem } from '@/type/pull-reuqest/pull-request-response.type';
-import { AvatarFallback } from '@radix-ui/react-avatar';
 import { ColumnDef } from '@tanstack/react-table';
 import { formatDistanceToNow } from 'date-fns';
 import {
@@ -14,17 +13,17 @@ import {
   GitMerge,
   GitPullRequest,
   GitPullRequestClosed,
-  Info,
   LucideIcon,
   MessageSquare,
   Plus,
+  ShieldAlert,
   ThumbsUp,
   Trash2,
 } from 'lucide-react';
 
 import type { BadgeColorKey } from '@/components/common/badge';
 import { createBadge as Badge } from '@/components/common/badge';
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -122,7 +121,13 @@ export const getColumns = (): ColumnDef<IPullRequestListItem>[] => [
             <span className="text-muted-foreground shrink-0 text-xs">#{pr._id.slice(-4)}</span>
           </div>
           <div className="text-muted-foreground line-clamp-1 flex items-center gap-1.5 text-xs">
-            <span className="">{pr.author?.username}</span>
+            <Avatar className="ring-border h-4 w-4 shrink-0 ring-1">
+              <AvatarImage src={pr.author?.avatarUrl} alt={pr.author?.username} />
+              <AvatarFallback className="bg-primary/10 text-primary text-[8px] font-bold">
+                {pr.author?.username?.[0]?.toUpperCase() || '?'}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-foreground font-medium">{pr.author?.username}</span>
             <span>•</span>
             <span className="text-foreground max-w-37.5 truncate font-medium">
               {pr.chapter?.title}
@@ -210,52 +215,81 @@ export const getColumns = (): ColumnDef<IPullRequestListItem>[] => [
     header: 'Reviews',
     cell: ({ row }) => {
       const pr = row.original;
+      const hasReviews = pr.approvers.length > 0 || pr.blockers.length > 0;
+
+      if (!hasReviews) {
+        return <span className="text-muted-foreground text-xs italic">No activity</span>;
+      }
+
       return (
         <TooltipProvider>
-          <div className="flex items-center">
-            {pr.approvers.length > 0 || pr.blockers.length > 0 ? (
-              <div className="flex items-center -space-x-3">
-                {/* Approvers */}
-                {pr.approvers.slice(0, 4).map((approver) => (
-                  <Tooltip key={approver.clerkId}>
-                    <TooltipTrigger asChild>
-                      <Avatar className="border-background h-8 w-8 border-2 shadow-sm">
-                        <AvatarImage src={approver.avatarUrl} />
-                        <AvatarFallback className="flex items-center justify-center text-xs font-medium">
-                          {approver.username?.[0]?.toUpperCase() || '?'}
-                        </AvatarFallback>
-                      </Avatar>
-                    </TooltipTrigger>
-                    <TooltipContent side="top">{approver.username}</TooltipContent>
-                  </Tooltip>
-                ))}
-
-                {/* Extra approvers */}
-                {pr.approvers.length > 4 && (
-                  <div className="bg-muted border-background flex h-8 w-8 items-center justify-center rounded-full border-2 text-xs font-medium">
-                    +{pr.approvers.length - 4}
+          <div className="flex items-center -space-x-2">
+            {/* Approvers */}
+            {pr.approvers.slice(0, 3).map((approver) => (
+              <Tooltip key={approver.clerkId || approver.username}>
+                <TooltipTrigger asChild>
+                  <Avatar className="border-background ring-background h-7 w-7 shrink-0 border-2 shadow-xs ring-2 transition-transform hover:z-20 hover:scale-110">
+                    <AvatarImage src={approver.avatarUrl} alt={approver.username} />
+                    <AvatarFallback className="bg-emerald-500/15 text-[10px] font-bold text-emerald-600 dark:bg-emerald-500/25 dark:text-emerald-400">
+                      {approver.username?.[0]?.toUpperCase() || '?'}
+                    </AvatarFallback>
+                  </Avatar>
+                </TooltipTrigger>
+                <TooltipContent side="top">
+                  <div className="flex items-center gap-1 text-xs">
+                    <span className="font-semibold text-emerald-400">✓</span>
+                    <span>Approved by {approver.username}</span>
                   </div>
-                )}
+                </TooltipContent>
+              </Tooltip>
+            ))}
 
-                {/* Blockers */}
-                {pr.blockers.length > 0 && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Avatar className="border-background h-8 w-8 border-2 bg-red-100 text-red-600">
-                        <AvatarFallback className="flex items-center justify-center">
-                          <Info className="h-4 w-4" />
+            {/* Extra approvers counter */}
+            {pr.approvers.length > 3 && (
+              <div className="bg-muted text-muted-foreground border-background ring-background flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 text-[10px] font-bold shadow-xs ring-2">
+                +{pr.approvers.length - 3}
+              </div>
+            )}
+
+            {/* Blockers / Blocking Review Icon */}
+            {pr.blockers.length > 0 && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="border-background relative flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 bg-red-500/15 text-red-600 shadow-xs ring-2 ring-red-500/40 transition-transform hover:z-20 hover:scale-110 dark:bg-red-500/25 dark:text-red-400">
+                    <ShieldAlert className="h-3.5 w-3.5 text-red-600 dark:text-red-400" />
+                    {pr.blockers.length > 1 && (
+                      <span className="ring-background absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-red-600 text-[8px] font-extrabold text-white ring-1">
+                        {pr.blockers.length}
+                      </span>
+                    )}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent
+                  side="top"
+                  className="border-red-500/30 bg-red-950 p-2.5 text-red-100"
+                >
+                  <div className="flex items-center gap-1.5 text-xs font-semibold text-red-400">
+                    <ShieldAlert className="h-3.5 w-3.5" />
+                    <span>
+                      {pr.blockers.length} Blocking Review{pr.blockers.length > 1 ? 's' : ''}
+                    </span>
+                  </div>
+                  {pr.blockers.map((blocker) => (
+                    <div
+                      key={blocker.clerkId || blocker.username}
+                      className="mt-1 flex items-center gap-1.5 text-[11px] text-red-200"
+                    >
+                      <Avatar className="h-4 w-4">
+                        <AvatarImage src={blocker.avatarUrl} />
+                        <AvatarFallback className="bg-red-900 text-[8px] text-red-200">
+                          {blocker.username?.[0]?.toUpperCase() || '?'}
                         </AvatarFallback>
                       </Avatar>
-                    </TooltipTrigger>
-                    <TooltipContent side="top">
-                      {pr.blockers.length} blocking review
-                      {pr.blockers.length > 1 ? 's' : ''}
-                    </TooltipContent>
-                  </Tooltip>
-                )}
-              </div>
-            ) : (
-              <span className="text-muted-foreground text-xs italic">No activity</span>
+                      <span>{blocker.username} (Changes Requested)</span>
+                    </div>
+                  ))}
+                </TooltipContent>
+              </Tooltip>
             )}
           </div>
         </TooltipProvider>

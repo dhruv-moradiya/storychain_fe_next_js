@@ -55,47 +55,60 @@ export function AuthorsSection() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-5">
         {AUTHORS.map((author) => (
           <div
             key={author.username}
-            className="group bg-card relative flex flex-col items-center rounded-2xl border p-6 text-center transition-all hover:shadow-md"
+            className="group bg-card relative flex flex-col items-center justify-between rounded-xl border p-4 text-center transition-shadow hover:shadow-md sm:p-5 lg:p-6"
           >
-            {author.isRising &&
-              iconBadge('Rising', TrendingUp, 'pink', {
-                className: 'absolute left-4 top-4 border-none shadow-sm',
-              })}
-
-            <Avatar className="border-muted mb-4 h-20 w-20 border-2 shadow-sm transition-transform group-hover:scale-105">
-              <AvatarImage src={author.image} alt={author.name} />
-              <AvatarFallback>{author.name.substring(0, 2).toUpperCase()}</AvatarFallback>
-            </Avatar>
-
-            <h3 className="font-libre-baskerville text-lg font-bold">{author.name}</h3>
-            <p className="text-muted-foreground mb-1 text-sm">{author.username}</p>
-            <p className="text-brand-teal mb-4 text-xs font-medium">{author.genre}</p>
-
-            <div className="mb-4 flex w-full justify-between border-t border-b py-3 text-sm">
-              <div className="flex w-1/2 flex-col items-center border-r">
-                <span className="flex items-center gap-1.5 font-bold">
-                  <BookText size={14} className="text-muted-foreground" /> {author.stories}
-                </span>
-                <span className="text-muted-foreground text-xs">Stories</span>
+            {author.isRising && (
+              <div className="absolute top-2 left-2 z-10 sm:top-3 sm:left-3">
+                {iconBadge('Rising', TrendingUp, 'pink', {
+                  className: 'border-none shadow-sm text-[9px] sm:text-[10px]',
+                })}
               </div>
-              <div className="flex w-1/2 flex-col items-center">
-                <span className="flex items-center gap-1.5 font-bold">
-                  <Users size={14} className="text-muted-foreground" /> {author.readers}
-                </span>
-                <span className="text-muted-foreground text-xs">Readers</span>
-              </div>
+            )}
+
+            <div className="flex flex-col items-center">
+              <Avatar className="border-muted mb-2.5 h-14 w-14 border-2 shadow-sm transition-transform group-hover:scale-105 sm:mb-3 sm:h-16 sm:w-16 lg:h-20 lg:w-20">
+                <AvatarImage src={author.image} alt={author.name} />
+                <AvatarFallback>{author.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+              </Avatar>
+
+              <h3 className="font-libre-baskerville line-clamp-1 text-xs font-bold sm:text-sm lg:text-base">
+                {author.name}
+              </h3>
+              <p className="text-muted-foreground line-clamp-1 text-[10px] sm:text-xs">
+                {author.username}
+              </p>
+              <p className="text-brand-teal mt-0.5 mb-2.5 line-clamp-1 text-[9px] font-medium tracking-wide uppercase sm:mb-3 sm:text-[10px]">
+                {author.genre}
+              </p>
             </div>
 
-            <Button
-              variant="outline"
-              className="group-hover:bg-foreground group-hover:text-background w-full rounded-full transition-colors"
-            >
-              Follow
-            </Button>
+            <div className="w-full">
+              <div className="border-border/60 mb-3 flex w-full justify-between border-y py-2 text-[10px] sm:py-2.5 sm:text-xs">
+                <div className="flex w-1/2 flex-col items-center border-r">
+                  <span className="text-foreground flex items-center gap-1 font-bold">
+                    <BookText className="text-muted-foreground h-3 w-3" /> {author.stories}
+                  </span>
+                  <span className="text-muted-foreground text-[9px] sm:text-[10px]">Stories</span>
+                </div>
+                <div className="flex w-1/2 flex-col items-center">
+                  <span className="text-foreground flex items-center gap-1 font-bold">
+                    <Users className="text-muted-foreground h-3 w-3" /> {author.readers}
+                  </span>
+                  <span className="text-muted-foreground text-[9px] sm:text-[10px]">Readers</span>
+                </div>
+              </div>
+
+              <Button
+                variant="outline"
+                className="group-hover:bg-foreground group-hover:text-background h-7.5 w-full rounded-full text-xs font-medium transition-colors sm:h-9"
+              >
+                Follow
+              </Button>
+            </div>
           </div>
         ))}
       </div>

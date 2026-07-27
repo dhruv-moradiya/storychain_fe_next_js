@@ -61,3 +61,12 @@ export {
   prTypeBadge,
   prTimelineActionBadge,
 } from './pr-badges';
+
+// Report & Appeal specific badges
+export {
+  reportStatusBadge,
+  reportReasonBadge,
+  reportTypeBadge,
+  appealStatusBadge,
+  appealPriorityBadge,
+} from './report-badges';

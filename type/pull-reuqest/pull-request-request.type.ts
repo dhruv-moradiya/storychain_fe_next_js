@@ -13,3 +13,12 @@ export interface ICreatePullRequestRequest {
     original?: string;
   };
 }
+
+export interface ICreatePRFromAutoSaveRequest {
+  autoSaveId: string;
+  title: string;
+  description?: string;
+  parentChapterSlug?: string;
+  prType?: string;
+  isDraft?: boolean;
+}

@@ -30,17 +30,17 @@ export default function PRDetailTabs({
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-4">
-      <TabsList className="bg-card border-border/50 h-auto flex-nowrap border p-1">
+      <TabsList className="bg-card border-border/50 h-auto flex-nowrap rounded-sm border p-1">
         {/* Conversation */}
         <TabsTrigger
           value="conversation"
-          className="flex items-center gap-2 data-[state=active]:bg-blue-500/10 data-[state=active]:text-blue-600"
+          className="flex items-center gap-2 rounded-sm font-semibold data-[state=active]:bg-blue-500/10 data-[state=active]:text-blue-600"
         >
-          <MessageSquare className="h-4 w-4" />
+          <MessageSquare className="size-4" />
           <span>Conversation</span>
           <Badge
             variant="secondary"
-            className="ml-auto flex h-5 min-w-5 items-center justify-center border-0 bg-blue-500/10 px-1.5 py-0 text-[10px] text-blue-600"
+            className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-sm border-0 bg-blue-500/10 px-1.5 py-0 text-[10px] text-blue-600"
           >
             {comments.length}
           </Badge>
@@ -49,22 +49,22 @@ export default function PRDetailTabs({
         {/* Changes */}
         <TabsTrigger
           value="changes"
-          className="flex items-center gap-2 data-[state=active]:bg-emerald-500/10 data-[state=active]:text-emerald-600"
+          className="flex items-center gap-2 rounded-sm font-semibold data-[state=active]:bg-emerald-500/10 data-[state=active]:text-emerald-600"
         >
-          <FileEdit className="h-4 w-4" />
+          <FileEdit className="size-4" />
           <span>Changes</span>
         </TabsTrigger>
 
         {/* Reviews */}
         <TabsTrigger
           value="reviews"
-          className="flex items-center gap-2 data-[state=active]:bg-green-500/10 data-[state=active]:text-green-600"
+          className="flex items-center gap-2 rounded-sm font-semibold data-[state=active]:bg-green-500/10 data-[state=active]:text-green-600"
         >
-          <CheckCircle className="h-4 w-4" />
+          <CheckCircle className="size-4" />
           <span>Reviews</span>
           <Badge
             variant="secondary"
-            className="ml-auto flex h-5 min-w-5 items-center justify-center border-0 bg-green-500/10 px-1.5 py-0 text-[10px] text-green-600"
+            className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-sm border-0 bg-green-500/10 px-1.5 py-0 text-[10px] text-green-600"
           >
             {reviews.length}
           </Badge>

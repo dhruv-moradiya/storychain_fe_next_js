@@ -51,42 +51,45 @@ export function CompletedStoriesSection() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-3 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-5">
         {COMPLETED_STORIES.map((story) => (
-          <div
-            key={story.title}
-            className="group bg-card cursor-pointer overflow-hidden rounded-xl border transition-all hover:shadow-md"
-          >
-            <div className="relative aspect-[2/3] w-full overflow-hidden">
+          <div key={story.title} className="group flex cursor-pointer flex-col gap-2 sm:gap-3">
+            {/* Cover — 2:3 aspect ratio matching NewReleasesSection */}
+            <div className="border-primary/20 relative aspect-2/3 w-full overflow-hidden rounded-md border shadow-sm transition-shadow group-hover:shadow-md lg:rounded-lg">
               <Image
                 src={story.image}
                 alt={story.title}
                 fill
+                sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 16vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-              <div className="absolute top-3 left-3">
+              <div className="absolute top-2 left-2 z-10">
                 {iconBadge('Complete', CheckCircle2, 'success', {
-                  className: 'border-none shadow-sm',
+                  className: 'border-none shadow-sm text-[9px] sm:text-[10px]',
                 })}
               </div>
-              <h3 className="font-libre-baskerville absolute right-3 bottom-3 left-3 line-clamp-1 text-lg font-bold text-white">
-                {story.title}
-              </h3>
             </div>
 
-            <div className="bg-card text-muted-foreground grid grid-cols-2 gap-x-2 gap-y-3 p-4 text-xs">
-              <div className="flex items-center gap-1.5">
-                <BookOpen size={14} className="text-foreground/70" />
-                <span>{story.chapters} Chapters</span>
+            {/* Details below cover */}
+            <div className="space-y-0.5 sm:space-y-1">
+              <h3 className="font-libre-baskerville group-hover:text-brand-pink-500 line-clamp-2 text-xs leading-tight font-bold transition-colors sm:text-sm lg:text-base">
+                {story.title}
+              </h3>
+
+              <div className="text-muted-foreground flex items-center justify-between pt-0.5 text-[9px] sm:text-[10px]">
+                <span className="flex items-center gap-1">
+                  <BookOpen className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                  {story.chapters} Chs
+                </span>
+                <span className="flex items-center gap-1">
+                  <GitMerge className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                  {story.branches} Branches
+                </span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <GitMerge size={14} className="text-foreground/70" />
-                <span>{story.branches} Branches</span>
-              </div>
-              <div className="col-span-2 flex items-center justify-between border-t pt-3">
+
+              <div className="text-muted-foreground flex items-center justify-between pt-0.5 text-[9px] sm:text-[10px]">
                 <span className="text-foreground font-medium">{story.readTime}</span>
-                <span>Finished {story.date}</span>
+                <span className="truncate">{story.date}</span>
               </div>
             </div>
           </div>

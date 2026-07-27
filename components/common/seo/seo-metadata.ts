@@ -1,4 +1,13 @@
 import type { Metadata } from 'next';
+// ─────────────────────────────────────────────────────────────────────────────
+// Story pages & cached fetcher
+// ─────────────────────────────────────────────────────────────────────────────
+
+import { cache } from 'react';
+
+import type { IStoryOverview } from '@/type/story';
+
+import { getStoryOverviewQueryFn } from '@/services/stories/stories.query';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Site-wide constants
@@ -51,9 +60,20 @@ const NO_INDEX_ROBOTS: Metadata['robots'] = {
   follow: false,
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Story pages
-// ─────────────────────────────────────────────────────────────────────────────
+/**
+ * React.cache deduplicates story fetches so generateMetadata and page components
+ * share a single request per render cycle on the server.
+ */
+export const getCachedStoryOverview = cache(
+  async (slug: string): Promise<IStoryOverview | null> => {
+    try {
+      const res = await getStoryOverviewQueryFn(slug);
+      return (res?.data as IStoryOverview) ?? null;
+    } catch {
+      return null;
+    }
+  }
+);
 
 export interface StoryMetaInput {
   title: string;
@@ -61,54 +81,66 @@ export interface StoryMetaInput {
   slug: string;
   /** Raw HTML description - will be stripped & truncated automatically */
   rawDescription?: string;
+  cardImageUrl?: string;
   coverImageUrl?: string;
   author?: string;
   genres?: string[];
   /** Sub-page label, e.g. "Overview", "Chapters", "Collaborators" */
   pageLabel?: string;
+  stats?: {
+    totalChapters?: number;
+    totalBranches?: number;
+    totalReads?: number;
+  };
 }
 
 /**
- * Build Next.js Metadata for any story sub-page.
- *
- * @example
- * // app/(protected)/stories/[slug]/overview/page.tsx
- * export async function generateMetadata({ params }): Promise<Metadata> {
- *   const { slug } = await params;
- *   const story = await getStoryOverview(slug);
- *   return buildStoryMeta({
- *     title: story.title,
- *     description: story.description,
- *     slug,
- *     rawDescription: story.description,
- *     coverImageUrl: story.coverImage?.url,
- *     pageLabel: 'Overview',
- *   });
- * }
+ * Build Next.js Metadata for any story page or sub-page (WhatsApp, Twitter/X, LinkedIn preview ready).
  */
 export function buildStoryMeta({
   title,
   description,
   slug,
   rawDescription,
+  cardImageUrl,
   coverImageUrl,
   author,
   genres = [],
   pageLabel,
+  stats,
 }: StoryMetaInput): Metadata {
-  const metaDescription = toMetaDescription(rawDescription ?? description);
-  const pageTitle = pageLabel ? `${title} - ${pageLabel}` : title;
+  const cleanDesc = toMetaDescription(rawDescription ?? description);
+
+  // Format metadata description with author and chapter info for social preview clarity
+  const authorCredit = author ? `By ${author}` : '';
+  const chaptersInfo =
+    stats?.totalChapters !== undefined
+      ? `${stats.totalChapters} ${stats.totalChapters === 1 ? 'Chapter' : 'Chapters'}`
+      : '';
+
+  const metaParts = [authorCredit, chaptersInfo, cleanDesc].filter(Boolean);
+  const metaDescription = metaParts.length > 0 ? metaParts.join(' • ') : cleanDesc;
+
+  const baseTitle = pageLabel ? `${title} (${pageLabel})` : title;
+  const displayTitle = author ? `${baseTitle} by ${author}` : baseTitle;
   const canonicalUrl = toCanonicalUrl(
     `/stories/${slug}${pageLabel ? `/${pageLabel.toLowerCase().replace(/\s+/g, '-')}` : ''}`
   );
 
-  const ogImage = coverImageUrl
-    ? { url: coverImageUrl, width: 1200, height: 630, alt: `${title} cover` }
-    : { url: SITE_CONFIG.defaultOgImage, width: 1200, height: 630, alt: title };
+  // Priority for image: cardImageUrl -> coverImageUrl -> SITE_CONFIG.defaultOgImage
+  const resolvedImageUrl = cardImageUrl || coverImageUrl || SITE_CONFIG.defaultOgImage;
+  const imageAlt = `${title} - Story Card Image`;
+
+  const ogImage = {
+    url: resolvedImageUrl,
+    width: 1200,
+    height: 630,
+    alt: imageAlt,
+  };
 
   const keywords = [
     title,
-    'story',
+    'StoryChain',
     'collaborative writing',
     'branching narrative',
     ...(author ? [author] : []),
@@ -116,14 +148,14 @@ export function buildStoryMeta({
   ];
 
   return {
-    title: pageTitle,
+    title: `${displayTitle} | ${SITE_CONFIG.name}`,
     description: metaDescription,
     keywords,
     authors: author ? [{ name: author }] : undefined,
     alternates: { canonical: canonicalUrl },
     openGraph: {
       type: 'article',
-      title: pageTitle,
+      title: `${displayTitle} | ${SITE_CONFIG.name}`,
       description: metaDescription,
       url: canonicalUrl,
       siteName: SITE_CONFIG.name,
@@ -132,7 +164,7 @@ export function buildStoryMeta({
     },
     twitter: {
       card: 'summary_large_image',
-      title: pageTitle,
+      title: `${displayTitle} | ${SITE_CONFIG.name}`,
       description: metaDescription,
       images: [ogImage.url],
       creator: SITE_CONFIG.twitterHandle,
@@ -150,8 +182,11 @@ export interface ChapterMetaInput {
   chapterTitle: string;
   chapterSlug: string;
   description?: string;
+  cardImageUrl?: string;
+  coverImageUrl?: string;
+  storyTitle?: string;
   author?: {
-    clerkId: string;
+    clerkId?: string;
     username: string;
     avatarUrl?: string;
     email?: string;
@@ -161,53 +196,44 @@ export interface ChapterMetaInput {
 
 /**
  * Build Next.js Metadata for a chapter read page.
- *
- * @example
- * // app/(protected)/stories/[slug]/chapter/[chapterSlug]/page.tsx
- * export async function generateMetadata({ params }): Promise<Metadata> {
- *   const { slug, chapterSlug } = await params;
- *   const response = await chapterApi.getCachedChapterBySlug(chapterSlug);
- *   const chapter = response.data;
- *   return buildChapterMeta({
- *     storySlug: slug,
- *     chapterTitle: chapter.title,
- *     chapterSlug,
- *     description: chapter.content,
- *     author: {
- *       clerkId: chapter.authorId,
- *       username: chapter.author?.username || 'unknown',
- *       avatarUrl: chapter.author?.avatarUrl,
- *     },
- *   });
- * }
  */
 export function buildChapterMeta({
   storySlug,
   chapterTitle,
   chapterSlug,
   description,
+  cardImageUrl,
+  coverImageUrl,
+  storyTitle,
   author,
 }: ChapterMetaInput): Metadata {
-  const pageTitle = chapterTitle;
-  const metaDescription =
-    description?.substring(0, 160) ?? `Read "${chapterTitle}" on ${SITE_CONFIG.name}.`;
+  const authorName = author?.displayName || author?.username;
+  const authorCredit = authorName ? `by ${authorName}` : '';
+  const pageTitle = storyTitle
+    ? `${chapterTitle} - ${storyTitle} ${authorCredit}`
+    : `${chapterTitle} ${authorCredit}`;
+
+  const cleanDesc = description ? toMetaDescription(description) : '';
+  const metaDescription = cleanDesc ? cleanDesc : `Read "${chapterTitle}" on ${SITE_CONFIG.name}.`;
+
   const canonicalUrl = toCanonicalUrl(`/stories/${storySlug}/chapter/${chapterSlug}`);
 
+  const resolvedImageUrl = cardImageUrl || coverImageUrl || SITE_CONFIG.defaultOgImage;
   const ogImage = {
-    url: SITE_CONFIG.defaultOgImage,
+    url: resolvedImageUrl,
     width: 1200,
     height: 630,
     alt: pageTitle,
   };
 
   return {
-    title: pageTitle,
+    title: `${pageTitle.trim()} | ${SITE_CONFIG.name}`,
     description: metaDescription,
-    authors: author ? [{ name: author.username }] : undefined,
+    authors: authorName ? [{ name: authorName }] : undefined,
     alternates: { canonical: canonicalUrl },
     openGraph: {
       type: 'article',
-      title: pageTitle,
+      title: `${pageTitle.trim()} | ${SITE_CONFIG.name}`,
       description: metaDescription,
       url: canonicalUrl,
       siteName: SITE_CONFIG.name,
@@ -216,7 +242,7 @@ export function buildChapterMeta({
     },
     twitter: {
       card: 'summary_large_image',
-      title: pageTitle,
+      title: `${pageTitle.trim()} | ${SITE_CONFIG.name}`,
       description: metaDescription,
       images: [ogImage.url],
       creator: SITE_CONFIG.twitterHandle,
@@ -306,7 +332,8 @@ export type StorySubPage =
   | 'Analytics'
   | 'History'
   | 'Settings'
-  | 'Tree';
+  | 'Tree'
+  | 'Reports';
 
 const SUB_PAGE_DESCRIPTIONS: Record<StorySubPage, (storyTitle: string) => string> = {
   Chapters: (t) => `Browse all chapters of "${t}" on ${SITE_CONFIG.name}.`,
@@ -316,6 +343,7 @@ const SUB_PAGE_DESCRIPTIONS: Record<StorySubPage, (storyTitle: string) => string
   History: (t) => `Full activity and version history for "${t}".`,
   Settings: (t) => `Story settings and configuration for "${t}".`,
   Tree: (t) => `Explore the branching narrative tree for "${t}".`,
+  Reports: (t) => `Review user reports and moderation appeals for "${t}".`,
 };
 
 /**

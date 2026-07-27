@@ -96,14 +96,13 @@ export function PRSubComponent({ row }: IPRSubComponentProps) {
                     <span className="text-muted-foreground mb-2 block text-xs">Approvers</span>
                     <div className="flex -space-x-2">
                       {row.original.approvers.map((approver) => (
-                        <Avatar key={approver.clerkId}>
-                          <AvatarImage
-                            src={approver.avatarUrl}
-                            alt={approver.username}
-                            className="grayscale"
-                          />
-                          <AvatarFallback>
-                            {approver.username.charAt(0).toUpperCase() || '?'}
+                        <Avatar
+                          key={approver.clerkId || approver.username}
+                          className="border-background ring-background h-7 w-7 border-2 ring-2"
+                        >
+                          <AvatarImage src={approver.avatarUrl} alt={approver.username} />
+                          <AvatarFallback className="bg-emerald-500/15 text-[10px] font-bold text-emerald-600 dark:bg-emerald-500/25 dark:text-emerald-400">
+                            {approver.username?.charAt(0).toUpperCase() || '?'}
                           </AvatarFallback>
                         </Avatar>
                       ))}
@@ -123,14 +122,13 @@ export function PRSubComponent({ row }: IPRSubComponentProps) {
             <div className="flex flex-col">
               <dt className="mb-1 text-xs">Author</dt>
               <dd className="text-foreground font-playfair flex items-center gap-2 font-medium">
-                <Avatar>
+                <Avatar className="ring-border h-6 w-6 ring-1">
                   <AvatarImage
-                    src={row.original.author.avatarUrl}
-                    alt={row.original.author.username}
-                    className="grayscale"
+                    src={row.original.author?.avatarUrl}
+                    alt={row.original.author?.username}
                   />
-                  <AvatarFallback>
-                    {row.original.author.username.charAt(0).toUpperCase() || '?'}
+                  <AvatarFallback className="bg-primary/10 text-primary text-[10px] font-bold">
+                    {row.original.author?.username?.charAt(0).toUpperCase() || '?'}
                   </AvatarFallback>
                 </Avatar>
                 <span className="truncate">{row.original.author?.username || 'Unknown'}</span>

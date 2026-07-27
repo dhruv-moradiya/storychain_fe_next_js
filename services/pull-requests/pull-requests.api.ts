@@ -1,4 +1,7 @@
-import { ICreatePullRequestRequest } from '@/type/pull-reuqest/pull-request-request.type';
+import {
+  ICreatePRFromAutoSaveRequest,
+  ICreatePullRequestRequest,
+} from '@/type/pull-reuqest/pull-request-request.type';
 import {
   ICreatePullRequestResponse,
   IPullRequestListResponse,
@@ -12,6 +15,16 @@ const PullRequestApi = {
     payload: ICreatePullRequestRequest
   ): Promise<AxiosResponse<ICreatePullRequestResponse>> => {
     return await apiClient.post<ICreatePullRequestResponse>('/pull-requests', payload);
+  },
+
+  createPullRequestFromAutoSave: async (
+    storySlug: string,
+    payload: ICreatePRFromAutoSaveRequest
+  ): Promise<AxiosResponse<ICreatePullRequestResponse>> => {
+    return await apiClient.post<ICreatePullRequestResponse>(
+      `/pull-requests/stories/${storySlug}/from-autosave`,
+      payload
+    );
   },
 
   listStoryPullRequests: async (

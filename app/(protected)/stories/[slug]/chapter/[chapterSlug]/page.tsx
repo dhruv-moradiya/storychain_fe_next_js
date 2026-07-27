@@ -4,7 +4,7 @@ import Link from 'next/link';
 import axios from 'axios';
 import { Lock } from 'lucide-react';
 
-import { buildChapterMeta } from '@/components/common';
+import { buildChapterMeta, getCachedStoryOverview } from '@/components/common';
 import { ContentLayout } from '@/components/dashboard';
 import { ChapterReadClient, ChapterSidebar } from '@/components/stories/chapter-read';
 import { Button } from '@/components/ui/button';
@@ -24,6 +24,7 @@ interface IChapterPageProps {
 
 export async function generateMetadata({ params }: IChapterPageProps): Promise<Metadata> {
   const { slug, chapterSlug } = await params;
+  const story = await getCachedStoryOverview(slug);
 
   try {
     const response = await chapterApi.getCachedChapterBySlug(chapterSlug);
@@ -34,6 +35,9 @@ export async function generateMetadata({ params }: IChapterPageProps): Promise<M
       chapterTitle: chapter.title,
       chapterSlug,
       description: chapter.content,
+      cardImageUrl: story?.cardImage?.url,
+      coverImageUrl: story?.coverImage?.url,
+      storyTitle: story?.title,
       author: {
         clerkId: chapter.authorId,
         username: chapter.author.username,
@@ -46,6 +50,9 @@ export async function generateMetadata({ params }: IChapterPageProps): Promise<M
       storySlug: slug,
       chapterTitle: chapterSlug,
       chapterSlug,
+      cardImageUrl: story?.cardImage?.url,
+      coverImageUrl: story?.coverImage?.url,
+      storyTitle: story?.title,
     });
   }
 }

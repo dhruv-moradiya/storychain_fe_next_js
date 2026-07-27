@@ -1,6 +1,7 @@
 'use client';
 
 import type { IPullRequest } from '@/type';
+import { BookOpen, Clock, FileText } from 'lucide-react';
 
 interface ChangesTabProps {
   pullRequest: IPullRequest;
@@ -8,18 +9,36 @@ interface ChangesTabProps {
 
 export default function ChangesTab({ pullRequest }: ChangesTabProps) {
   return (
-    <div className="mt-8">
-      <div className="border-border/50 bg-card/60 overflow-hidden overflow-x-auto rounded-2xl border shadow-sm transition-all duration-500">
-        <div className="divide-border/20 divide-y overflow-hidden">
-          <div className="group/line relative">
-            <div className="flex items-center gap-2 border-b border-emerald-500/5 bg-emerald-500/5 px-8 py-3 font-mono text-[10px] font-bold tracking-widest text-emerald-600/60">
-              <span className="h-2 w-2 rounded-full bg-emerald-500/40" />
-              PROPOSED IMPROVEMENTS
-            </div>
-            <div className="text-foreground border-l-4 border-emerald-500/30 bg-emerald-500/[0.02] p-8 font-mono text-[13px] leading-relaxed whitespace-pre-wrap italic">
-              {pullRequest.content.proposed}
-            </div>
+    <div className="space-y-6">
+      {/* Chapter Reader Container */}
+      <div className="border-border/50 bg-card flex flex-col rounded-sm border p-5 shadow-xs">
+        {/* Reader Header */}
+        <div className="border-border/50 flex flex-wrap items-center justify-between gap-3 border-b pb-4">
+          <div className="flex items-center gap-2">
+            <BookOpen className="text-brand-blue size-4" />
+            <h3 className="text-text-primary text-base font-semibold">Proposed Chapter Content</h3>
           </div>
+
+          <div className="text-text-secondary-65 flex items-center gap-3 text-xs font-semibold">
+            <span className="flex items-center gap-1">
+              <FileText className="size-3.5" />
+              {pullRequest.content?.wordCount || 0} words
+            </span>
+            <span>·</span>
+            <span className="flex items-center gap-1">
+              <Clock className="size-3.5" />
+              {pullRequest.content?.readingMinutes || 1} min read
+            </span>
+          </div>
+        </div>
+
+        {/* Reader Body */}
+        <div className="pt-5">
+          <article className="prose dark:prose-invert max-w-none">
+            <p className="text-text-primary font-serif text-base leading-relaxed whitespace-pre-wrap md:text-lg md:leading-loose">
+              {pullRequest.content?.proposed}
+            </p>
+          </article>
         </div>
       </div>
     </div>

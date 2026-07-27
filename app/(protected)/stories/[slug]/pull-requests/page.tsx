@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { buildStorySubPageMeta } from '@/components/common';
+import { buildStoryMeta, getCachedStoryOverview } from '@/components/common';
 import SubmitRequestsSection from '@/components/stories/pull-requests/submit-requests-section';
 import { PullRequestApi } from '@/services/pull-requests/pull-requests.api';
 
@@ -19,7 +19,20 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  return buildStorySubPageMeta(slug, 'Submit Requests');
+  const story = await getCachedStoryOverview(slug);
+
+  return buildStoryMeta({
+    title: story?.title ?? slug,
+    description: story?.description ?? '',
+    rawDescription: story?.description,
+    slug,
+    cardImageUrl: story?.cardImage?.url,
+    coverImageUrl: story?.coverImage?.url,
+    author: story?.creator?.username,
+    genres: story?.settings?.genres || story?.genres,
+    stats: story?.stats,
+    pageLabel: 'Submit Requests',
+  });
 }
 
 export default async function SubmitRequestsPage({

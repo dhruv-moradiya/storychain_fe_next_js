@@ -4,7 +4,6 @@ import type { IPullRequest, PRStatus, PRType } from '@/type/pull-request.type';
 import { formatDistanceToNow } from 'date-fns';
 import { motion } from 'framer-motion';
 import {
-  AlertCircle,
   ArrowRight,
   BookOpen,
   Check,
@@ -15,6 +14,7 @@ import {
   type LucideIcon,
   MessageSquare,
   Plus,
+  ShieldAlert,
   ThumbsDown,
   ThumbsUp,
   Trash2,
@@ -206,8 +206,8 @@ export function PRCard({ pullRequest, onClick }: PRCardProps) {
                   {pullRequest.approvalsStatus.blockers.length > 0 && (
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <div className="bg-bg-cream relative z-10 flex h-6 w-6 items-center justify-center rounded-full border-2 border-red-100 shadow-sm">
-                          <AlertCircle className="h-3.5 w-3.5 text-red-500" />
+                        <div className="border-background relative z-10 flex h-6 w-6 items-center justify-center rounded-full border-2 bg-red-500/15 text-red-600 shadow-xs ring-2 ring-red-500/40 dark:bg-red-500/25 dark:text-red-400">
+                          <ShieldAlert className="h-3 w-3 text-red-600 dark:text-red-400" />
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
