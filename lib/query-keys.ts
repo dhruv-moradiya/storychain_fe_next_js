@@ -85,4 +85,9 @@ export const QueryKey = {
       fresh: ['story', 'explore', 'fresh'] as const,
     },
   },
+
+  character: {
+    byStorySlug: (slug: string) => ['character', 'story', slug] as const,
+    signatureUrl: (slug: string) => ['character', 'story', slug, 'signature-url'] as const,
+  },
 };

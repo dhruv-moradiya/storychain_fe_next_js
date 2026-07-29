@@ -1,6 +1,7 @@
 import { cache } from 'react';
 
 import {
+  IAddCommentRequest,
   IChapterRecordReadingSessionRequest,
   IChapterStartReadingSessionRequest,
   IGetCommentsRequest,
@@ -8,6 +9,7 @@ import {
   IUnlockChapterRequest,
 } from '@/type/chapter/chapter-request.type';
 import {
+  IAddCommentResponse,
   IChapterDetailResponse,
   IChapterRecordReadingSessionResponse,
   IChapterSearchResponse,
@@ -84,6 +86,18 @@ const chapterApi = {
     const response: AxiosResponse<IGetCommentsResponse> = await apiClient.get<IGetCommentsResponse>(
       `/comments/chapter/${input.chapterSlug}`,
       { params }
+    );
+    return response.data;
+  },
+
+  addComment: async (input: IAddCommentRequest) => {
+    const response: AxiosResponse<IAddCommentResponse> = await apiClient.post<IAddCommentResponse>(
+      `/comments`,
+      {
+        chapterSlug: input.chapterSlug,
+        content: input.content,
+        parentCommentId: input.parentCommentId,
+      }
     );
     return response.data;
   },

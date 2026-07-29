@@ -1,7 +1,7 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { ChevronDown, ChevronUp, Coins, MoreVertical } from 'lucide-react';
+import { Coins, MoreVertical } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -47,32 +47,12 @@ export const columns: ColumnDef<UserStats>[] = [
     accessorKey: 'name',
     cell: ({ row }) => {
       const user = row.original;
-      const isExpanded = row.getIsExpanded();
-      const hasTransactions = user.transactions && user.transactions.length > 0;
 
       // Extract dynamic initials for avatar fallback
       const initials = getInitials(user.name);
 
       return (
         <div className="flex items-center gap-3">
-          {/* Collapse/Expand Toggle Chevron */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              row.toggleExpanded();
-            }}
-            disabled={!hasTransactions}
-            className={cn(
-              'flex h-7 w-7 cursor-pointer items-center justify-center rounded-sm transition-all duration-200 active:scale-90',
-              !hasTransactions && 'cursor-not-allowed opacity-30',
-              isExpanded
-                ? 'bg-primary/10! text-primary!'
-                : 'text-text-secondary-50 hover:bg-brand-warm-beige/30 hover:text-text-primary'
-            )}
-          >
-            {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-          </button>
-
           {/* User Avatar */}
           <Avatar className="border-border-soft h-9 w-9 border">
             {user.avatarUrl && <AvatarImage src={user.avatarUrl} alt={user.name} />}

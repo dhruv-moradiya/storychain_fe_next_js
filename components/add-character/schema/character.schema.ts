@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-// ---------------------------------------------------------------------------
 // Image Upload Schema
 // Supports both client-side File objects and URL strings (e.g. from DB)
 // ---------------------------------------------------------------------------
@@ -16,23 +15,14 @@ export const CharacterImageSchema = z
         (file) => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type),
         'Only JPG, PNG, and WebP formats are supported'
       ),
+    // If it's an uploaded Cloudinary asset object
+    z.object({
+      url: z.string(),
+      publicId: z.string(),
+    }),
   ])
   .optional()
   .nullable();
-
-// ---------------------------------------------------------------------------
-// Enums / Constants (for strict validation and select option values)
-// ---------------------------------------------------------------------------
-export const CHARACTER_ROLES = [
-  'Protagonist',
-  'Antagonist',
-  'Deuteragonist',
-  'Tertiary',
-  'Supporting',
-  'Other',
-] as const;
-
-export const CHARACTER_STATUSES = ['Alive', 'Deceased', 'Unknown'] as const;
 
 // Helper schema for attribute levels (must be a number between 1 and 10, or undefined)
 const AttributeLevelSchema = z
@@ -63,7 +53,7 @@ export const CharacterFormSchema = z.object({
     .optional()
     .or(z.literal('')),
 
-  role: z.string().min(1, 'Role in story is required'),
+  roleInStory: z.string().min(1, 'Role in story is required'),
 
   age: z.string().trim().max(50, 'Age cannot exceed 50 characters').optional().or(z.literal('')),
 

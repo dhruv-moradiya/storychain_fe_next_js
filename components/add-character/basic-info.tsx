@@ -4,6 +4,11 @@ import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import {
+  CHARACTER_GENDERS,
+  CHARACTER_ROLES,
+  CHARACTER_STATUSES,
+} from '@/type/character/character-enum';
 import { BookOpen, Upload } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
@@ -16,7 +21,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { CHARACTER_ROLES, CHARACTER_STATUSES, type TCharacterFormValues } from './schema';
+import { type TCharacterFormValues } from './schema';
 
 export function BasicInfoSection() {
   const {
@@ -108,7 +113,7 @@ export function BasicInfoSection() {
       <div className="grid grid-cols-1 gap-4">
         {/* Full Name */}
         <div className="space-y-2">
-          <Label htmlFor="fullName" className="text-text-secondary text-xs font-semibold">
+          <Label htmlFor="fullName" className="text-text-secondary font-semibold">
             Full Name <span className="text-brand-pink-500">*</span>
           </Label>
           <Input
@@ -124,7 +129,7 @@ export function BasicInfoSection() {
 
         {/* Title */}
         <div className="space-y-2">
-          <Label htmlFor="title" className="text-text-secondary text-xs font-semibold">
+          <Label htmlFor="title" className="text-text-secondary font-semibold">
             Title / Nickname
           </Label>
           <Input
@@ -140,11 +145,11 @@ export function BasicInfoSection() {
 
         {/* Role in Story */}
         <div className="space-y-2">
-          <Label htmlFor="role" className="text-text-secondary text-xs font-semibold">
+          <Label htmlFor="roleInStory" className="text-text-secondary font-semibold">
             Role in Story <span className="text-brand-pink-500">*</span>
           </Label>
           <Controller
-            name="role"
+            name="roleInStory"
             control={control}
             render={({ field }) => (
               <Select onValueChange={field.onChange} value={field.value || ''}>
@@ -153,23 +158,23 @@ export function BasicInfoSection() {
                 </SelectTrigger>
                 <SelectContent position="popper" className="bg-card border shadow-lg">
                   {CHARACTER_ROLES.map((role) => (
-                    <SelectItem key={role} value={role}>
-                      {role}
+                    <SelectItem key={role} value={role} className="capitalize">
+                      {role.replace('_', ' ')}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             )}
           />
-          {errors.role && (
-            <p className="text-destructive text-xs font-medium">{errors.role.message}</p>
+          {errors.roleInStory && (
+            <p className="text-destructive text-xs font-medium">{errors.roleInStory.message}</p>
           )}
         </div>
 
         {/* Age and Gender */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="age" className="text-text-secondary text-xs font-semibold">
+            <Label htmlFor="age" className="text-text-secondary font-semibold">
               Age
             </Label>
             <Input
@@ -184,7 +189,7 @@ export function BasicInfoSection() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="gender" className="text-text-secondary text-xs font-semibold">
+            <Label htmlFor="gender" className="text-text-secondary font-semibold">
               Gender
             </Label>
             <Controller
@@ -196,11 +201,11 @@ export function BasicInfoSection() {
                     <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
                   <SelectContent position="popper" className="bg-card border shadow-lg">
-                    <SelectItem value="Male">Male</SelectItem>
-                    <SelectItem value="Female">Female</SelectItem>
-                    <SelectItem value="Non-binary">Non-binary</SelectItem>
-                    <SelectItem value="Other">Other</SelectItem>
-                    <SelectItem value="Unknown">Unknown</SelectItem>
+                    {CHARACTER_GENDERS.map((gender) => (
+                      <SelectItem key={gender} value={gender} className="capitalize">
+                        {gender.replace('_', ' ')}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               )}
@@ -249,8 +254,8 @@ export function BasicInfoSection() {
                 </SelectTrigger>
                 <SelectContent position="popper" className="bg-card border shadow-lg">
                   {CHARACTER_STATUSES.map((status) => (
-                    <SelectItem key={status} value={status}>
-                      {status}
+                    <SelectItem key={status} value={status} className="capitalize">
+                      {status.replace('_', ' ')}
                     </SelectItem>
                   ))}
                 </SelectContent>

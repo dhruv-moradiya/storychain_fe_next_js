@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 
 import { IComment } from '@/type/chapter/chapter-response.type';
 
+import { useAddComment } from '@/services/chapters/chapters.mutation';
 import { useGetInfiniteComments } from '@/services/chapters/chapters.query';
 
 import CommentTree from '../common/comment-tree/comment-tree';
@@ -42,6 +43,8 @@ export function ChapterCommentsSection({ chapterSlug, totalCount }: ChapterComme
       limit: 10,
     });
 
+  const { mutateAsync: addComment } = useAddComment();
+
   // eslint-disable-next-line
   const nodes = useMemo<ICommentNode[]>(() => {
     if (!data?.pages) return [];
@@ -60,12 +63,17 @@ export function ChapterCommentsSection({ chapterSlug, totalCount }: ChapterComme
       onLoadMore={fetchNextPage}
       chapterSlug={chapterSlug}
       onSubmitComment={(content) => {
-        // TODO: wire up to API with chapterSlug
-        console.log('New comment:', content);
+        return addComment({
+          chapterSlug,
+          content,
+        });
       }}
       onSubmitReply={(parentId, content) => {
-        // TODO: wire up to API
-        console.log('Reply to', parentId, ':', content);
+        return addComment({
+          chapterSlug,
+          content,
+          parentCommentId: parentId,
+        });
       }}
     />
   );

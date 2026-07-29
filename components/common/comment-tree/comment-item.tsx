@@ -209,7 +209,7 @@ export function CommentItem({
                     commentId={comment.id}
                     authorName={comment.author.username ?? comment.author.displayName}
                     onSubmit={(content) => {
-                      onReply?.(comment.id, content);
+                      return onReply?.(comment.id, content);
                     }}
                     onCancel={() => setShowReply(false)}
                   />
@@ -382,7 +382,7 @@ export function CommentItem({
                   commentId={comment.id}
                   authorName={comment.author.username ?? comment.author.displayName}
                   onSubmit={(content) => {
-                    onReply?.(comment.id, content);
+                    return onReply?.(comment.id, content);
                   }}
                   onCancel={() => {}}
                 />

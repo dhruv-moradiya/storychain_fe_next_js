@@ -32,9 +32,9 @@ export interface CommentTreeProps {
   /** Max nesting depth before replies are collapsed into a "continue thread" link */
   maxDepth?: number;
   /** Called when the user submits a new top-level comment */
-  onSubmitComment?: (content: string) => void;
+  onSubmitComment?: (content: string) => Promise<unknown> | void;
   /** Called when the user submits a reply */
-  onSubmitReply?: (parentId: string, content: string) => void;
+  onSubmitReply?: (parentId: string, content: string) => Promise<unknown> | void;
   /** Called when the user upvotes a comment */
   onUpvote?: (commentId: string) => void;
   /** Called when the user downvotes a comment */
@@ -67,7 +67,7 @@ export interface CommentItemProps {
   chapterSlug?: string;
   /** Whether to show the reply button */
   showReplyButton?: boolean;
-  onReply?: (parentId: string, content: string) => void;
+  onReply?: (parentId: string, content: string) => Promise<unknown> | void;
   onUpvote?: (commentId: string) => void;
   onDownvote?: (commentId: string) => void;
 }

@@ -4,17 +4,15 @@ import React, { useState } from 'react';
 
 import {
   ColumnDef,
-  type ExpandedState,
   Row,
   SortingState,
   flexRender,
   getCoreRowModel,
-  getExpandedRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -40,7 +38,6 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   pageSize?: number;
   onRowClick?: (row: TData) => void;
-  renderSubComponent?: (props: { row: Row<TData> }) => React.ReactNode;
   className?: string;
 }
 
@@ -49,28 +46,22 @@ export function DataTable<TData, TValue>({
   data,
   pageSize = 10,
   onRowClick,
-  renderSubComponent,
   className,
 }: DataTableProps<TData, TValue>) {
-  const [expanded, setExpanded] = useState<ExpandedState>({});
-
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
     columns,
-    onExpandedChange: setExpanded,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onRowSelectionChange: setRowSelection,
-    getExpandedRowModel: getExpandedRowModel(),
     state: {
       sorting,
       rowSelection,
-      expanded,
     },
     initialState: {
       pagination: {
@@ -109,43 +100,25 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row, index) => (
-                <React.Fragment key={row.id}>
-                  <motion.tr
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.03, ease: 'easeOut' }}
-                    data-state={row.getIsSelected() && 'selected'}
-                    className={cn(
-                      'border-border/30 hover:bg-muted/20 transition-colors duration-150',
-                      onRowClick && 'cursor-pointer',
-                      'group'
-                    )}
-                    onClick={() => onRowClick?.(row.original)}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="px-4 py-3.5">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
-                  </motion.tr>
-                  <AnimatePresence>
-                    {row.getIsExpanded() && renderSubComponent && (
-                      <motion.tr
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.28, ease: 'easeInOut' }}
-                      >
-                        <TableCell
-                          colSpan={row.getVisibleCells().length}
-                          className="bg-muted/10 border-border/30 border-b p-0"
-                        >
-                          {renderSubComponent({ row })}
-                        </TableCell>
-                      </motion.tr>
-                    )}
-                  </AnimatePresence>
-                </React.Fragment>
+                <motion.tr
+                  key={row.id}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.03, ease: 'easeOut' }}
+                  data-state={row.getIsSelected() && 'selected'}
+                  className={cn(
+                    'border-border/30 hover:bg-muted/20 transition-colors duration-150',
+                    onRowClick && 'cursor-pointer',
+                    'group'
+                  )}
+                  onClick={() => onRowClick?.(row.original)}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="px-4 py-3.5">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </motion.tr>
               ))
             ) : (
               <TableRow>

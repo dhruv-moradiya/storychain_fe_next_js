@@ -30,6 +30,7 @@ export interface IPullRequestListItem {
   chapter: Chapter;
   approvers: IUserBasic[];
   blockers: IUserBasic[];
+  parentChapterSlug: string;
   createdAt: string;
   updatedAt: string;
 }

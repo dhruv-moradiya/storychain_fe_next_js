@@ -35,6 +35,12 @@ interface IGetCommentsRequest {
   parentCommentId?: string;
 }
 
+interface IAddCommentRequest {
+  chapterSlug: string;
+  content: string;
+  parentCommentId?: string;
+}
+
 interface IReactToChapterRequest {
   slug: string;
   type: TChapterReactionType;
@@ -54,4 +60,5 @@ export type {
   ICommentDeleteRequest,
   IReactToChapterRequest,
   IUnlockChapterRequest,
+  IAddCommentRequest,
 };

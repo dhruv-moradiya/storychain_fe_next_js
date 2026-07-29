@@ -1,11 +1,10 @@
-import { forwardRef } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 
 import { IChapterDetailExtended } from '@/type';
 import { formatDate } from 'date-fns';
 import { CalendarDays, Clock } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 
 import { ChapterStats } from './chapter-stats';
@@ -23,6 +22,7 @@ interface ChapterReaderProps {
   showStats?: boolean;
   variant?: 'full' | 'compact' | 'preview';
   className?: string;
+  isFullscreen?: boolean;
 }
 
 function calculateReadTime(wordCount: number): number {
@@ -35,16 +35,39 @@ function getWordCount(content: string): number {
 }
 
 const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
-  ({ chapter, showStats = true, variant = 'full', className }, ref) => {
+  (
+    {
+      chapter,
+      showHeader = true,
+      showStats = true,
+      variant = 'full',
+      className,
+      isFullscreen: propIsFullscreen,
+    },
+    ref
+  ) => {
+    const [isFullscreenState, setIsFullscreenState] = useState(false);
+
+    useEffect(() => {
+      const handleFullscreenChange = () => {
+        setIsFullscreenState(!!document.fullscreenElement);
+      };
+      document.addEventListener('fullscreenchange', handleFullscreenChange);
+      return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    }, []);
+
+    const isFullscreen = propIsFullscreen ?? isFullscreenState;
     const wordCount = getWordCount(chapter.content);
     const readTime = calculateReadTime(wordCount);
 
     const isCompact = variant === 'compact';
+    const shouldShowHeader = !isFullscreen && showHeader;
+    const shouldShowStats = !isFullscreen && showStats;
 
     return (
       <div ref={ref} className={cn('chapter-reader', className)}>
         {/* HEADER */}
-        {true && (
+        {shouldShowHeader && (
           <header className="mb-10 space-y-6">
             {/* TITLE */}
             <h1 className="text-2xl! font-bold sm:text-3xl!">{chapter.title}</h1>
@@ -94,16 +117,7 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
             'text-foreground/90 text-[16.5px]! leading-[1.85] tracking-[0.01em] sm:text-[19px] sm:leading-[1.9]',
 
             // Paragraphs — generous spacing, slight hyphens for justified text
-            '[&_p]:mb-6 [&_p]:text-justify [&_p]:hyphens-auto',
-
-            // First paragraph emphasis — slightly larger
-            // '[&_p:first-of-type]:text-[18px] [&_p:first-of-type]:leading-[1.8] sm:[&_p:first-of-type]:text-[20px]',
-
-            // Drop cap on the first letter of the first paragraph
-            // '[&_p:first-of-type]:first-letter:float-left [&_p:first-of-type]:first-letter:text-[3.4em]',
-            // '[&_p:first-of-type]:first-letter:font-libre-baskerville [&_p:first-of-type]:first-letter:leading-[0.85]',
-            // '[&_p:first-of-type]:first-letter:mr-2 [&_p:first-of-type]:first-letter:font-bold',
-            // '[&_p:first-of-type]:first-letter:text-brand-pink-500',
+            '[&_p]:mb-4 [&_p]:text-justify [&_p]:hyphens-auto',
 
             // Headings — Libre Baskerville for an editorial/literary feel
             '[&_h1]:font-libre-baskerville [&_h1]:text-foreground [&_h1]:mt-12 [&_h1]:mb-5 [&_h1]:text-[28px] [&_h1]:leading-tight [&_h1]:font-bold [&_h1]:tracking-[-0.02em] sm:[&_h1]:text-[32px]',
@@ -157,7 +171,7 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
         />
 
         {/* STATS FOOTER */}
-        {showStats && chapter.stats && !isCompact && <ChapterStats stats={chapter.stats} />}
+        {shouldShowStats && chapter.stats && !isCompact && <ChapterStats stats={chapter.stats} />}
       </div>
     );
   }

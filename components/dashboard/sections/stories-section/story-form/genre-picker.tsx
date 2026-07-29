@@ -113,7 +113,7 @@ export const GenrePicker = memo(
     return (
       <div className="space-y-2">
         {/* Selected Genres Display - Using Badge */}
-        <div className="flex min-h-[32px] flex-wrap gap-1.5">
+        <div className="flex min-h-8 flex-wrap gap-1.5">
           {selectedGenres.length > 0 ? (
             selectedGenres.map((genre) => {
               const categoryKey = genreCategoryMap[genre.value];
@@ -143,7 +143,7 @@ export const GenrePicker = memo(
               variant="outline"
               className={cn(
                 'h-9 w-full justify-between rounded-lg font-normal',
-                'border-black/10 bg-white/60 hover:bg-white/80',
+                'border-black/10',
                 'focus:border-brand-pink-500 focus:ring-0',
                 error && 'border-red-500'
               )}
@@ -157,7 +157,7 @@ export const GenrePicker = memo(
             </Button>
           </PopoverTrigger>
 
-          <PopoverContent className="w-[350px] p-0" align="center">
+          <PopoverContent className="w-87.5 p-0" align="center">
             {/* Search Input */}
             <div className="border-b border-black/10 p-3">
               <div className="relative">
@@ -176,7 +176,7 @@ export const GenrePicker = memo(
 
             {/* Categories & Genres - Fixed scroll with onWheelCapture */}
             <div
-              className="h-[300px] overflow-y-auto overscroll-contain"
+              className="h-75 overflow-y-auto overscroll-contain"
               onWheelCapture={(e) => e.stopPropagation()}
             >
               <div className="space-y-4 p-3">

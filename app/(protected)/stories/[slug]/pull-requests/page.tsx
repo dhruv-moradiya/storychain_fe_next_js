@@ -6,7 +6,7 @@ import { PullRequestApi } from '@/services/pull-requests/pull-requests.api';
 
 const listPullRequests = async () => {
   try {
-    const res = await PullRequestApi.listStoryPullRequests(1, 10);
+    const res = await PullRequestApi.listMyPullRequests(1, 10);
     return res.data;
   } catch {
     return null;

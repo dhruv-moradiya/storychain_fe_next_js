@@ -27,7 +27,7 @@ const PullRequestApi = {
     );
   },
 
-  listStoryPullRequests: async (
+  listMyPullRequests: async (
     page: number,
     limit: number
   ): Promise<AxiosResponse<IPullRequestListResponse>> => {

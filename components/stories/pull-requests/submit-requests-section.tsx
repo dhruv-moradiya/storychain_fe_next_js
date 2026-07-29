@@ -28,7 +28,6 @@ import { getColumns } from './columns';
 import { PRListEmpty, PRListError, PRListLoading } from './pr-states';
 import { PRStatsCards } from './pr-stats-cards';
 import { PRStatusTabs } from './pr-status-tabs';
-import { PRSubComponent } from './pr-sub-component';
 
 type TFilterStatus = TPRStatus | 'all';
 type TFilterType = TPullRequestType | 'all';
@@ -40,6 +39,7 @@ interface ISubmitRequestsSectionProps {
 
 export default function SubmitRequestsSection({ slug }: ISubmitRequestsSectionProps) {
   const { data, isLoading, error } = usePullRequests();
+  console.log('data :>> ', data);
 
   const router = useRouter();
 
@@ -51,7 +51,7 @@ export default function SubmitRequestsSection({ slug }: ISubmitRequestsSectionPr
   const [statusFilter, setStatusFilter] = useState<TFilterStatus>('all');
   const [typeFilter, setTypeFilter] = useState<TFilterType>('all');
 
-  const columns = useMemo(() => getColumns(), []);
+  const columns = useMemo(() => getColumns(slug), [slug]);
 
   // Filter pull requests
   const filteredPRs = useMemo(() => {
@@ -112,11 +112,6 @@ export default function SubmitRequestsSection({ slug }: ISubmitRequestsSectionPr
               </p>
             </div>
           </div>
-
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2 shadow-sm transition-all hover:shadow-md">
-            <Plus className="h-4 w-4" />
-            New Request
-          </Button>
         </div>
       </motion.div>
 
@@ -200,12 +195,7 @@ export default function SubmitRequestsSection({ slug }: ISubmitRequestsSectionPr
             }
           />
         ) : (
-          <DataTable
-            columns={columns}
-            data={filteredPRs}
-            onRowClick={handlePRClick}
-            renderSubComponent={({ row }) => <PRSubComponent row={row} />}
-          />
+          <DataTable columns={columns} data={filteredPRs} onRowClick={handlePRClick} />
         )}
       </motion.div>
     </div>

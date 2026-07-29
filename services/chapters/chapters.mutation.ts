@@ -49,3 +49,18 @@ export const useUnlockChapter = () => {
     },
   });
 };
+
+export const useAddComment = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: chapterApi.addComment,
+    onError: (error) => {
+      toast.error(getErrorMessage(error));
+    },
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ['chapter', 'comments', variables.chapterSlug],
+      });
+    },
+  });
+};

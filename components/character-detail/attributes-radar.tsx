@@ -38,7 +38,7 @@ export function CharacterAttributes() {
       <div className="grid grid-cols-1 items-center gap-6 sm:grid-cols-2">
         {/* Radar Chart */}
         <div className="flex w-full justify-center">
-          <ChartContainer config={chartConfig} className="aspect-square w-full max-w-[220px]">
+          <ChartContainer config={chartConfig} className="aspect-square w-full max-w-55">
             <RadarChart
               data={chartData}
               className="mx-auto"

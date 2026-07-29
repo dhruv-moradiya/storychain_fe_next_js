@@ -122,6 +122,8 @@ interface IPaginatedComments {
 
 interface IGetCommentsResponse extends IBaseResponse<IPaginatedComments> {}
 
+interface IAddCommentResponse extends IBaseResponse<null> {}
+
 interface IReactToChapterResponse extends IBaseResponse<null> {}
 
 // -------------------
@@ -148,4 +150,5 @@ export type {
   ICommentVoteType,
   IPaginatedComments,
   IGetCommentsResponse,
+  IAddCommentResponse,
 };

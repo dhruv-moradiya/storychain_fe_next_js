@@ -1,21 +1,9 @@
 'use client';
 
-import * as React from 'react';
-
 import { useQuery } from '@tanstack/react-query';
-import { Row } from '@tanstack/react-table';
-import { ArrowDownUp, Loader2, Receipt } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 import { DataTable } from '@/components/ui/data-table';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { cn } from '@/lib/utils';
 
 import { UserStats, columns } from './columns';
 
@@ -140,126 +128,6 @@ export const UsersTable = () => {
     queryFn: fetchMockUsers,
   });
 
-  const renderTransactionHistory = ({ row }: { row: Row<UserStats> }) => {
-    const user = row.original;
-
-    if (!user.transactions || user.transactions.length === 0) {
-      return (
-        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center">
-          <div className="bg-muted/40 flex h-9 w-9 items-center justify-center rounded-full">
-            <Receipt className="text-text-secondary-50 h-4 w-4" />
-          </div>
-          <p className="text-text-secondary-50 text-xs">No transactions recorded for this user.</p>
-        </div>
-      );
-    }
-
-    return (
-      <div className="border-border/30 bg-muted/5 w-full border-b">
-        {/* Inner panel header */}
-        <div className="border-border/20 flex items-center gap-2.5 border-b px-6 py-3">
-          <div className="bg-primary/10 flex h-6 w-6 items-center justify-center rounded-md">
-            <ArrowDownUp className="text-primary h-3 w-3" />
-          </div>
-          <h3 className="text-text-primary text-xs font-semibold tracking-tight">
-            Transaction History
-          </h3>
-          <span className="bg-muted/50 text-text-secondary-65 ml-1 rounded-full px-2 py-0.5 text-[10px] font-semibold">
-            {user.transactions.length}
-          </span>
-        </div>
-
-        {/* Inner scrollable table */}
-        <div className="overflow-x-auto px-6 py-4">
-          <div className="border-border/30 overflow-hidden rounded-xl border shadow-xs">
-            <Table className="w-full border-collapse text-left text-xs">
-              <TableHeader className="bg-muted/20">
-                <TableRow className="border-border/20 border-b hover:bg-transparent">
-                  <TableHead className="text-text-secondary-50 h-9 px-3 text-[10px] font-semibold tracking-widest uppercase">
-                    Date &amp; Time
-                  </TableHead>
-                  <TableHead className="text-text-secondary-50 h-9 px-3 text-[10px] font-semibold tracking-widest uppercase">
-                    Transaction ID
-                  </TableHead>
-                  <TableHead className="text-text-secondary-50 h-9 px-3 text-[10px] font-semibold tracking-widest uppercase">
-                    Type
-                  </TableHead>
-                  <TableHead className="text-text-secondary-50 h-9 px-3 text-[10px] font-semibold tracking-widest uppercase">
-                    Description
-                  </TableHead>
-                  <TableHead className="text-text-secondary-50 h-9 px-3 text-right text-[10px] font-semibold tracking-widest uppercase">
-                    Coins
-                  </TableHead>
-                  <TableHead className="text-text-secondary-50 h-9 px-3 text-right text-[10px] font-semibold tracking-widest uppercase">
-                    Amount
-                  </TableHead>
-                  <TableHead className="text-text-secondary-50 h-9 px-3 text-[10px] font-semibold tracking-widest uppercase">
-                    Payment
-                  </TableHead>
-                  <TableHead className="text-text-secondary-50 h-9 px-3 text-[10px] font-semibold tracking-widest uppercase">
-                    Status
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {user.transactions.map((txn, idx) => {
-                  const isPurchase = txn.type === 'Purchase';
-                  return (
-                    <TableRow
-                      key={idx}
-                      className="border-border/20 hover:bg-muted/10 border-b transition-colors duration-100 last:border-0"
-                    >
-                      <TableCell className="text-text-secondary-65 px-3 py-2.5 font-normal whitespace-nowrap">
-                        {txn.dateTime}
-                      </TableCell>
-                      <TableCell className="text-text-secondary-65 px-3 py-2.5 font-mono text-[11px]">
-                        {txn.transactionId}
-                      </TableCell>
-                      <TableCell className="px-3 py-2.5">
-                        <span
-                          className={cn(
-                            'rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-wider uppercase',
-                            isPurchase
-                              ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                              : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
-                          )}
-                        >
-                          {txn.type}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-text-primary px-3 py-2.5 font-medium">
-                        {txn.description}
-                      </TableCell>
-                      <TableCell
-                        className={cn(
-                          'px-3 py-2.5 text-right font-mono font-bold',
-                          isPurchase ? 'text-emerald-500' : 'text-rose-500'
-                        )}
-                      >
-                        {txn.coins}
-                      </TableCell>
-                      <TableCell className="text-text-primary px-3 py-2.5 text-right font-semibold">
-                        {txn.amount}
-                      </TableCell>
-                      <TableCell className="text-text-secondary-65 px-3 py-2.5">
-                        {txn.paymentMethod}
-                      </TableCell>
-                      <TableCell className="px-3 py-2.5">
-                        <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-emerald-600 uppercase dark:text-emerald-400">
-                          {txn.status}
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   if (isLoading) {
     return (
       <div className="text-text-secondary-65 flex h-48 w-full items-center justify-center gap-2 text-sm">
@@ -271,13 +139,7 @@ export const UsersTable = () => {
 
   return (
     <div className="w-full p-6 pt-0">
-      <DataTable
-        columns={columns}
-        data={users || []}
-        pageSize={10}
-        renderSubComponent={renderTransactionHistory}
-        className="bg-transparent"
-      />
+      <DataTable columns={columns} data={users || []} pageSize={10} className="bg-transparent" />
     </div>
   );
 };

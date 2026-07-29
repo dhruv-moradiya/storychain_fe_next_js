@@ -22,7 +22,7 @@ export const useGetPullRequests = (
   return useQuery({
     queryKey: pullKeys.all,
     queryFn: async () => {
-      const res = await PullRequestApi.listStoryPullRequests(1, 10);
+      const res = await PullRequestApi.listMyPullRequests(1, 10);
       return res.data;
     },
     ...options,
@@ -36,7 +36,7 @@ export const usePullRequests = () => {
     initialPageParam: 1,
 
     queryFn: async ({ pageParam }) => {
-      const res = await PullRequestApi.listStoryPullRequests(pageParam as number, 10);
+      const res = await PullRequestApi.listMyPullRequests(pageParam as number, 10);
       return res.data;
     },
 
