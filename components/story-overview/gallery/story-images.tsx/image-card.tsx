@@ -11,7 +11,7 @@ interface IImageCardProps {
 }
 
 export interface IImageItem {
-  id: number;
+  id: string | number;
   title: string;
   image: string;
   chapter: string;

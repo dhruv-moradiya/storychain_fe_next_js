@@ -12,6 +12,7 @@ import { ICommentNode } from '../common/comment-tree/comment-tree.types';
 
 interface ChapterCommentsSectionProps {
   chapterSlug: string;
+  storySlug?: string;
   totalCount?: number;
 }
 
@@ -36,7 +37,11 @@ function mapComment(c: IComment): ICommentNode {
   };
 }
 
-export function ChapterCommentsSection({ chapterSlug, totalCount }: ChapterCommentsSectionProps) {
+export function ChapterCommentsSection({
+  chapterSlug,
+  storySlug,
+  totalCount,
+}: ChapterCommentsSectionProps) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
     useGetInfiniteComments({
       chapterSlug,
@@ -62,6 +67,7 @@ export function ChapterCommentsSection({ chapterSlug, totalCount }: ChapterComme
       isFetchingNextPage={isFetchingNextPage}
       onLoadMore={fetchNextPage}
       chapterSlug={chapterSlug}
+      storySlug={storySlug}
       onSubmitComment={(content) => {
         return addComment({
           chapterSlug,

@@ -178,7 +178,11 @@ export default function ChapterReadClient({
           />
 
           <div id="comments-section" className="chapter-comments mt-12">
-            <ChapterCommentsSection chapterSlug={chapterSlug} totalCount={chapter.stats.comments} />
+            <ChapterCommentsSection
+              chapterSlug={chapterSlug}
+              storySlug={storySlug}
+              totalCount={chapter.stats.comments}
+            />
           </div>
         </>
       )}

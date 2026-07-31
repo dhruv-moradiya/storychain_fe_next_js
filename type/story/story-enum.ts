@@ -383,6 +383,8 @@ const STORY_COLLABORATOR_ROLE_CONFIG = {
       canBanFromStory: true,
       canViewStoryAnalytics: true,
       canDistributeCoins: true,
+      canResolveReports: true,
+      canReviewStoryAppeals: true,
     },
   },
   [StoryCollaboratorRole.CO_AUTHOR]: {
@@ -407,6 +409,8 @@ const STORY_COLLABORATOR_ROLE_CONFIG = {
       canBanFromStory: true,
       canViewStoryAnalytics: true,
       canDistributeCoins: false,
+      canResolveReports: true,
+      canReviewStoryAppeals: true,
     },
   },
   [StoryCollaboratorRole.MODERATOR]: {
@@ -431,6 +435,8 @@ const STORY_COLLABORATOR_ROLE_CONFIG = {
       canBanFromStory: true,
       canViewStoryAnalytics: false,
       canDistributeCoins: false,
+      canResolveReports: true,
+      canReviewStoryAppeals: false,
     },
   },
   [StoryCollaboratorRole.REVIEWER]: {
@@ -455,6 +461,8 @@ const STORY_COLLABORATOR_ROLE_CONFIG = {
       canBanFromStory: false,
       canViewStoryAnalytics: false,
       canDistributeCoins: false,
+      canResolveReports: false,
+      canReviewStoryAppeals: false,
     },
   },
   [StoryCollaboratorRole.CONTRIBUTOR]: {
@@ -479,6 +487,8 @@ const STORY_COLLABORATOR_ROLE_CONFIG = {
       canBanFromStory: false,
       canViewStoryAnalytics: false,
       canDistributeCoins: false,
+      canResolveReports: false,
+      canReviewStoryAppeals: false,
     },
   },
 } as const;

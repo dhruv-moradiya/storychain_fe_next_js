@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 
-import type { IReportItem, ReportStatus } from '@/type/report.type';
+import { IPopulatedReportDetails, ReportActionTaken, ReportStatus } from '@/type/reports';
 import { formatDistanceToNow } from 'date-fns';
-import { CheckCircle2, Shield } from 'lucide-react';
+import { CheckCircle2, Shield, UserX } from 'lucide-react';
 
 import { reportReasonBadge, reportStatusBadge, reportTypeBadge } from '@/components/common/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -17,30 +17,48 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
 interface ReportDetailDialogProps {
-  report: IReportItem | null;
+  report: IPopulatedReportDetails | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onStatusUpdate: (reportId: string, newStatus: ReportStatus, resolutionText?: string) => void;
+  onResolve: (
+    reportId: string,
+    status: ReportStatus.RESOLVED | ReportStatus.DISMISSED,
+    resolution: string,
+    actionTaken?: ReportActionTaken
+  ) => void;
+  isSubmitting?: boolean;
 }
 
 export function ReportDetailDialog({
   report,
   open,
   onOpenChange,
-  onStatusUpdate,
+  onResolve,
+  isSubmitting = false,
 }: ReportDetailDialogProps) {
   const [resolutionInput, setResolutionInput] = useState('');
+  const [selectedAction, setSelectedAction] = useState<ReportActionTaken>(ReportActionTaken.NONE);
 
   if (!report) return null;
 
-  const reporter = typeof report.reporterId === 'object' ? report.reporterId : null;
+  const reporter = report.reporter;
+  const isResolvedOrDismissed =
+    report.status === ReportStatus.RESOLVED || report.status === ReportStatus.DISMISSED;
 
-  const handleAction = (status: ReportStatus) => {
-    onStatusUpdate(report._id, status, resolutionInput);
+  const handleAction = (status: ReportStatus.RESOLVED | ReportStatus.DISMISSED) => {
+    onResolve(report._id, status, resolutionInput, selectedAction);
     setResolutionInput('');
+    setSelectedAction(ReportActionTaken.NONE);
     onOpenChange(false);
   };
 
@@ -54,12 +72,12 @@ export function ReportDetailDialog({
                 <Shield className="size-4 text-amber-500" />
               </div>
               <DialogTitle className="text-text-primary font-libreBaskerville text-lg font-bold">
-                Report Details (#{report._id.slice(-5)})
+                Report Details (#{report._id.slice(-6)})
               </DialogTitle>
             </div>
           </div>
           <DialogDescription className="text-text-secondary-65 text-xs">
-            Review reported content and take moderation actions for this story.
+            Review reported content and execute story moderation resolution.
           </DialogDescription>
         </DialogHeader>
 
@@ -88,30 +106,37 @@ export function ReportDetailDialog({
             </div>
           </div>
 
-          {/* Related Target Details */}
+          {/* Target Reference Details */}
           <div className="border-border/40 bg-muted/10 flex flex-col gap-2 rounded-xl border p-3.5 text-xs">
             <span className="text-text-secondary-65 text-[10px] font-semibold tracking-wide uppercase">
               Target Reference
             </span>
             <div className="text-text-primary space-y-1 font-mono text-xs font-medium">
-              {report.relatedChapterSlug && (
+              {report.chapter && (
                 <div>
-                  Chapter Slug: <span className="text-brand-blue">{report.relatedChapterSlug}</span>
+                  Chapter:{' '}
+                  <span className="text-brand-blue">
+                    {report.chapter.title || report.chapter.slug}
+                  </span>
                 </div>
               )}
-              {report.relatedCommentId && (
+              {report.comment && (
                 <div>
-                  Comment ID: <span className="text-brand-blue">{report.relatedCommentId}</span>
+                  Comment Content:{' '}
+                  <span className="text-text-secondary-65 italic">
+                    &quot;{report.comment.content}&quot;
+                  </span>
                 </div>
               )}
-              {report.relatedUserId && (
+              {report.story && (
                 <div>
-                  User ID: <span className="text-brand-blue">{report.relatedUserId}</span>
+                  Story Title: <span className="text-brand-blue">{report.story.title}</span>
                 </div>
               )}
-              {report.relatedStorySlug && (
+              {report.reportType === 'USER' && report.targetUser && (
                 <div>
-                  Story Slug: <span className="text-brand-blue">{report.relatedStorySlug}</span>
+                  Reported User:{' '}
+                  <span className="text-brand-blue">@{report.targetUser.username}</span>
                 </div>
               )}
             </div>
@@ -128,16 +153,20 @@ export function ReportDetailDialog({
               </Avatar>
               <div className="flex flex-col">
                 <span className="text-text-primary font-semibold">
-                  {reporter?.displayName || reporter?.username || 'Anonymous Reporter'}
+                  {reporter?.username || 'Anonymous Reporter'}
                 </span>
-                <span className="text-text-secondary-65 font-mono text-[10px]">
-                  @{reporter?.username || 'reporter'}
-                </span>
+                {reporter?.email && (
+                  <span className="text-text-secondary-65 font-mono text-[10px]">
+                    {reporter.email}
+                  </span>
+                )}
               </div>
             </div>
 
             <span className="text-text-secondary-65 font-mono text-[10px]">
-              {formatDistanceToNow(new Date(report.createdAt), { addSuffix: true })}
+              {report.createdAt
+                ? formatDistanceToNow(new Date(report.createdAt), { addSuffix: true })
+                : ''}
             </span>
           </div>
 
@@ -151,29 +180,60 @@ export function ReportDetailDialog({
             </div>
           </div>
 
-          {/* Existing Resolution Notes if resolved */}
+          {/* Previous Resolution details if resolved */}
           {report.resolution && (
             <div className="space-y-1 rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-xs">
               <div className="flex items-center gap-1.5 font-semibold text-emerald-600 dark:text-emerald-400">
                 <CheckCircle2 className="size-3.5" />
-                <span>Previous Resolution Notes</span>
+                <span>Resolution Note</span>
               </div>
               <p className="text-text-primary text-xs italic">{report.resolution}</p>
+              {report.actionTaken && (
+                <p className="text-text-secondary-65 mt-1 font-mono text-[11px]">
+                  Action Taken: <span className="font-semibold">{report.actionTaken}</span>
+                </p>
+              )}
             </div>
           )}
 
-          {/* Resolution Input Box */}
-          {report.status !== 'RESOLVED' && report.status !== 'DISMISSED' && (
-            <div className="space-y-1.5">
-              <span className="text-text-secondary-65 text-xs font-semibold tracking-wide uppercase">
-                Add Resolution / Note
-              </span>
-              <Textarea
-                placeholder="Specify action taken or reason for dismissal..."
-                value={resolutionInput}
-                onChange={(e) => setResolutionInput(e.target.value)}
-                className="border-border/50 bg-background/50 focus:bg-background min-h-[75px] resize-none rounded-xl text-xs"
-              />
+          {/* Resolution Input Box & Action Select for active reports */}
+          {!isResolvedOrDismissed && (
+            <div className="space-y-3">
+              <div className="space-y-1.5">
+                <span className="text-text-secondary-65 text-xs font-semibold tracking-wide uppercase">
+                  Moderation Action
+                </span>
+                <Select
+                  value={selectedAction}
+                  onValueChange={(val) => setSelectedAction(val as ReportActionTaken)}
+                >
+                  <SelectTrigger className="border-border/50 bg-background/50 h-9 rounded-xl text-xs">
+                    <SelectValue placeholder="Select Action" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-card border-border/50 rounded-xl text-xs shadow-md">
+                    <SelectItem value={ReportActionTaken.NONE}>No Content Action (None)</SelectItem>
+                    <SelectItem value={ReportActionTaken.DELETE_COMMENT}>Delete Comment</SelectItem>
+                    <SelectItem value={ReportActionTaken.FLAG_CHAPTER}>
+                      Flag / Hide Chapter
+                    </SelectItem>
+                    <SelectItem value={ReportActionTaken.BAN_FROM_STORY}>
+                      Ban User From Story
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1.5">
+                <span className="text-text-secondary-65 text-xs font-semibold tracking-wide uppercase">
+                  Resolution Note / Rationale
+                </span>
+                <Textarea
+                  placeholder="Describe your reasoning or action details..."
+                  value={resolutionInput}
+                  onChange={(e) => setResolutionInput(e.target.value)}
+                  className="border-border/50 bg-background/50 focus:bg-background min-h-[75px] resize-none rounded-xl text-xs"
+                />
+              </div>
             </div>
           )}
         </div>
@@ -183,24 +243,27 @@ export function ReportDetailDialog({
             variant="outline"
             size="sm"
             onClick={() => onOpenChange(false)}
+            disabled={isSubmitting}
             className="border-border/50 bg-card hover:bg-muted/60 h-9 rounded-xl text-xs font-semibold"
           >
             Cancel
           </Button>
 
-          {report.status !== 'RESOLVED' && report.status !== 'DISMISSED' && (
+          {!isResolvedOrDismissed && (
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => handleAction('DISMISSED')}
+                onClick={() => handleAction(ReportStatus.DISMISSED)}
+                disabled={isSubmitting}
                 className="border-border/50 bg-card hover:bg-muted/60 text-muted-foreground h-9 rounded-xl text-xs font-semibold"
               >
                 Dismiss Report
               </Button>
               <Button
                 size="sm"
-                onClick={() => handleAction('RESOLVED')}
+                onClick={() => handleAction(ReportStatus.RESOLVED)}
+                disabled={isSubmitting || !resolutionInput.trim()}
                 className="h-9 gap-1.5 rounded-xl text-xs font-semibold"
               >
                 <CheckCircle2 className="size-4" />

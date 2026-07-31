@@ -2,12 +2,13 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
+import { IAlbum } from '@/type/album/album.types';
+
 import { TipBanner } from '@/components/common/tip-banner';
 import { FadeInView } from '@/lib/animations';
 
-import { IAlbumItem } from './album/album-card';
 import { AlbumDetail } from './album/album-detail';
-import { Albums, albumItems } from './album/albums';
+import { Albums } from './album/albums';
 import { Moodboard } from './moodboard/moodboard';
 import { StoryImages } from './story-images.tsx/story-images';
 
@@ -17,11 +18,10 @@ export const GalleryTab = () => {
   const pathname = usePathname();
 
   const albumId = searchParams.get('album');
-  const activeAlbum = albumItems.find((item) => String(item.id) === albumId) || null;
 
-  const handleAlbumSelect = (album: IAlbumItem) => {
+  const handleAlbumSelect = (album: IAlbum) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set('album', String(album.id));
+    params.set('album', album._id);
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
@@ -31,10 +31,10 @@ export const GalleryTab = () => {
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
-  if (activeAlbum) {
+  if (albumId) {
     return (
       <FadeInView delay={0.1}>
-        <AlbumDetail album={activeAlbum} onBack={handleBack} />
+        <AlbumDetail album={{ _id: albumId } as IAlbum} onBack={handleBack} />
       </FadeInView>
     );
   }

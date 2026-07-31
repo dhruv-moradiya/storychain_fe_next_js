@@ -55,6 +55,8 @@ export interface CommentTreeProps {
   onLoadMore?: () => void;
   /** Chapter slug needed for fetching child replies */
   chapterSlug?: string;
+  /** Story slug optional context for reporting */
+  storySlug?: string;
   className?: string;
 }
 
@@ -65,6 +67,8 @@ export interface CommentItemProps {
   variant?: 'default' | 'flat';
   /** Chapter slug needed for fetching child replies */
   chapterSlug?: string;
+  /** Story slug optional context for reporting */
+  storySlug?: string;
   /** Whether to show the reply button */
   showReplyButton?: boolean;
   onReply?: (parentId: string, content: string) => Promise<unknown> | void;

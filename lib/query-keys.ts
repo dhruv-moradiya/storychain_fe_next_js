@@ -1,4 +1,6 @@
+import { IAlbumQueryFilters } from '@/type/album/album-request.types';
 import { ICoinBundleListFilters } from '@/type/coin-bundle/coin-bundle.type';
+import { IPaginatedReportQueryParams } from '@/type/reports';
 
 export const QueryKey = {
   coinBundle: {
@@ -89,5 +91,25 @@ export const QueryKey = {
   character: {
     byStorySlug: (slug: string) => ['character', 'story', slug] as const,
     signatureUrl: (slug: string) => ['character', 'story', slug, 'signature-url'] as const,
+  },
+
+  galleryImages: {
+    byStorySlug: (slug: string) => ['gallery-images', 'story', slug] as const,
+    signatureUrl: (slug: string) => ['gallery-images', 'story', slug, 'signature-url'] as const,
+  },
+
+  album: {
+    byStorySlug: (slug: string, filters?: IAlbumQueryFilters) =>
+      ['album', 'story', slug, filters ?? {}] as const,
+    byId: (albumId: string) => ['album', 'detail', albumId] as const,
+  },
+
+  report: {
+    my: (filters?: IPaginatedReportQueryParams) => ['report', 'my', filters ?? {}] as const,
+    myById: (reportId: string) => ['report', 'my', 'detail', reportId] as const,
+    story: (storySlug: string, filters?: IPaginatedReportQueryParams) =>
+      ['report', 'story', storySlug, filters ?? {}] as const,
+    admin: (filters?: IPaginatedReportQueryParams) => ['report', 'admin', filters ?? {}] as const,
+    adminById: (reportId: string) => ['report', 'admin', 'detail', reportId] as const,
   },
 };

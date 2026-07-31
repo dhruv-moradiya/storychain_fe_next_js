@@ -56,6 +56,7 @@ export function CommentItem({
   maxDepth,
   variant = 'default',
   chapterSlug,
+  storySlug,
   showReplyButton = true,
   onReply,
   onUpvote,
@@ -199,6 +200,9 @@ export function CommentItem({
                 canReply={showReplyButton && canNestDeeper}
                 onLike={handleLikeToggle}
                 onReplyToggle={() => setShowReply((p) => !p)}
+                commentId={comment.id}
+                chapterSlug={chapterSlug}
+                storySlug={storySlug}
               />
 
               {/* Reply box */}
@@ -266,6 +270,7 @@ export function CommentItem({
                         depth={depth + 1}
                         maxDepth={maxDepth}
                         chapterSlug={chapterSlug}
+                        storySlug={storySlug}
                         showReplyButton={showReplyButton}
                         onReply={onReply}
                         onUpvote={onUpvote}
@@ -352,6 +357,7 @@ export function CommentItem({
                     variant="flat"
                     maxDepth={maxDepth}
                     chapterSlug={chapterSlug}
+                    storySlug={storySlug}
                     showReplyButton={showReplyButton}
                     onReply={onReply}
                     onUpvote={onUpvote}

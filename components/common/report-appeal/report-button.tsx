@@ -1,52 +1,54 @@
+'use client';
+
 import { useState } from 'react';
 
-import { type CreateReportData, type ReportType } from '@/type/report.type';
+import { ReportReason, ReportType } from '@/type/reports';
 import { Flag } from 'lucide-react';
-import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useCreateReportMutation } from '@/services/reports';
 
 import { ReportDialog } from './report-dialog';
 
 interface ReportButtonProps {
   reportType: ReportType;
-  relatedId: string;
+  relatedChapterSlug?: string;
+  relatedCommentId?: string;
+  relatedUserId?: string;
+  relatedStorySlug?: string;
   relatedTitle?: string;
   variant?: 'default' | 'ghost' | 'outline' | 'secondary' | 'destructive' | 'link';
   size?: 'default' | 'sm' | 'lg' | 'icon';
   className?: string;
-  onReportSubmit?: (data: CreateReportData) => Promise<void>;
+  iconOnly?: boolean;
 }
 
 export function ReportButton({
   reportType,
-  relatedId,
+  relatedChapterSlug,
+  relatedCommentId,
+  relatedUserId,
+  relatedStorySlug,
   relatedTitle,
   variant = 'ghost',
   size = 'icon',
   className,
-  onReportSubmit,
+  iconOnly = true,
 }: ReportButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const createReportMutation = useCreateReportMutation();
 
-  const handleSubmit = async (data: CreateReportData) => {
-    setIsLoading(true);
-    try {
-      if (onReportSubmit) {
-        await onReportSubmit(data);
-      } else {
-        // TODO: Replace with actual API call
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-      }
-      toast.success('Our team will review your report shortly.');
-    } catch (error) {
-      toast.error('Failed to submit report. Please try again later.');
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
+  const handleSubmit = async (data: { reason: ReportReason; description: string }) => {
+    await createReportMutation.mutateAsync({
+      reportType,
+      relatedChapterSlug,
+      relatedCommentId,
+      relatedUserId,
+      relatedStorySlug,
+      reason: data.reason,
+      description: data.description,
+    });
   };
 
   const getLabel = () => {
@@ -73,13 +75,16 @@ export function ReportButton({
               variant={variant}
               size={size}
               className={className}
-              onClick={() => setIsOpen(true)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOpen(true);
+              }}
             >
-              <Flag className="h-4 w-4" />
-              {size !== 'icon' && <span className="ml-2">{getLabel()}</span>}
+              <Flag className="h-3.5 w-3.5" />
+              {!iconOnly && <span className="ml-1.5">{getLabel()}</span>}
             </Button>
           </TooltipTrigger>
-          <TooltipContent>
+          <TooltipContent className="text-xs">
             <p>{getLabel()}</p>
           </TooltipContent>
         </Tooltip>
@@ -90,10 +95,11 @@ export function ReportButton({
         onOpenChange={setIsOpen}
         onSubmit={handleSubmit}
         reportType={reportType}
-        relatedId={relatedId}
         relatedTitle={relatedTitle}
-        isLoading={isLoading}
+        isLoading={createReportMutation.isPending}
       />
     </>
   );
 }
+
+export default ReportButton;

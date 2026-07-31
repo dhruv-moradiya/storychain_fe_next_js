@@ -1,4 +1,7 @@
+import { ReportType } from '@/type/reports';
 import { CornerDownRight, MessageCircle } from 'lucide-react';
+
+import { ReportButton } from '@/components/common/report-appeal/report-button';
 
 import { LikeButton } from './like-button';
 
@@ -9,6 +12,9 @@ type Props = {
   canReply: boolean;
   onLike: () => void;
   onReplyToggle: () => void;
+  commentId?: string;
+  chapterSlug?: string;
+  storySlug?: string;
 };
 
 export function CommentActions({
@@ -18,6 +24,9 @@ export function CommentActions({
   canReply,
   onLike,
   onReplyToggle,
+  commentId,
+  chapterSlug,
+  storySlug,
 }: Props) {
   return (
     <div className="mt-2 flex items-center gap-2 sm:mt-3 sm:gap-2.5">
@@ -28,6 +37,19 @@ export function CommentActions({
           <MessageCircle size={11} className="sm:size-3" />
           {replyCount}
         </span>
+      )}
+
+      {commentId && (
+        <ReportButton
+          reportType={ReportType.COMMENT}
+          relatedCommentId={commentId}
+          relatedChapterSlug={chapterSlug}
+          relatedStorySlug={storySlug}
+          variant="ghost"
+          size="icon"
+          iconOnly={true}
+          className="text-text-secondary-65 h-6 w-6 rounded-full transition-all hover:bg-amber-500/10 hover:text-amber-600"
+        />
       )}
 
       {canReply && (

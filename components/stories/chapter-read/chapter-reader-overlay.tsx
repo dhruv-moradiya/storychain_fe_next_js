@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
 import { IChapterDetailExtended, IChapterVoteNumberType } from '@/type';
+import { ReportType } from '@/type/reports';
 import NumberFlow from '@number-flow/react';
 import {
   BookOpen,
@@ -24,6 +25,7 @@ import {
   ThumbsUp,
 } from 'lucide-react';
 
+import { ReportButton } from '@/components/common/report-appeal/report-button';
 import toast from '@/components/shared/toast/toast';
 import { cn } from '@/lib/utils';
 import { useReactToChapter } from '@/services/chapters/chapters.mutation';
@@ -239,13 +241,16 @@ export function ChapterReaderOverlay({
         </button>
 
         {/* Report / Flag */}
-        <button
-          onClick={() => toast.success('Report submitted to moderation')}
+        <ReportButton
+          reportType={ReportType.CHAPTER}
+          relatedChapterSlug={chapterData.slug}
+          relatedStorySlug={storySlug}
+          relatedTitle={chapterData.title}
+          variant="ghost"
+          size="icon"
+          iconOnly={true}
           className="hover:bg-accent hover:text-accent-foreground flex h-9 w-9 items-center justify-center rounded-xl transition-colors"
-          title="Report Chapter"
-        >
-          <Flag size={18} />
-        </button>
+        />
       </aside>
 
       <div

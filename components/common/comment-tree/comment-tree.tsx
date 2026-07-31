@@ -153,6 +153,7 @@ export function CommentTree({
   isFetchingNextPage = false,
   onLoadMore,
   chapterSlug,
+  storySlug,
   className,
 }: CommentTreeProps) {
   const topLevel = comments.filter((c) => !c.isDeleted || (c.replies ?? []).length > 0);
@@ -201,6 +202,7 @@ export function CommentTree({
                     depth={0}
                     maxDepth={maxDepth}
                     chapterSlug={chapterSlug}
+                    storySlug={storySlug}
                     showReplyButton={showReplyButton}
                     onReply={onSubmitReply}
                     onUpvote={onUpvote}

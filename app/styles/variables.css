@@ -357,7 +357,7 @@
   --bg-dark: oklch(0.105 0.02 266); /* deepest surface */
 
   /* Text Colors - Dark Mode */
-  --text-primary: oklch(0.917 0.022 286); /* #e8e6f0 */
+  --text-primary: oklch(0.93 0.02 250); /* #e8e6f0 */
   --text-secondary: oklch(0.793 0.038 286); /* #c4c2d6 */
   --text-tertiary: oklch(0.851 0.03 287); /* #d4d2e4 */
   --text-light: oklch(0.965 0.006 286); /* #f5f5f7 */

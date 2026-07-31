@@ -1,9 +1,11 @@
 import { forwardRef, useEffect, useState } from 'react';
 
 import { IChapterDetailExtended } from '@/type';
+import { ReportType } from '@/type/reports';
 import { formatDate } from 'date-fns';
 import { CalendarDays, Clock } from 'lucide-react';
 
+import { ReportButton } from '@/components/common/report-appeal/report-button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 
@@ -69,8 +71,20 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
         {/* HEADER */}
         {shouldShowHeader && (
           <header className="mb-10 space-y-6">
-            {/* TITLE */}
-            <h1 className="text-2xl! font-bold sm:text-3xl!">{chapter.title}</h1>
+            {/* TITLE & REPORT */}
+            <div className="flex items-center justify-between gap-4">
+              <h1 className="text-2xl! font-bold sm:text-3xl!">{chapter.title}</h1>
+              <ReportButton
+                reportType={ReportType.CHAPTER}
+                relatedChapterSlug={chapter.slug}
+                relatedStorySlug={chapter.storySlug}
+                relatedTitle={chapter.title}
+                variant="outline"
+                size="sm"
+                iconOnly={false}
+                className="border-border/50 bg-card h-8 shrink-0 gap-1.5 rounded-lg text-xs font-medium transition-all hover:bg-amber-500/10 hover:text-amber-600"
+              />
+            </div>
 
             {/* META */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -129,9 +143,10 @@ const ChapterReader = forwardRef<HTMLDivElement, ChapterReaderProps>(
 
             // Blockquote — branded accent, subtle background
             '[&_blockquote]:border-brand-pink-400 [&_blockquote]:my-8 [&_blockquote]:border-l-[3px]',
-            '[&_blockquote]:bg-brand-pink-50/50 [&_blockquote]:rounded-r-lg [&_blockquote]:px-6 [&_blockquote]:py-4',
+            '[&_blockquote]:bg-card [&_blockquote]:rounded-r-lg [&_blockquote]:px-6 [&_blockquote]:py-4',
             '[&_blockquote]:text-foreground/80 [&_blockquote]:font-serif [&_blockquote]:italic',
-            '[&_blockquote]:text-[17px] [&_blockquote]:leading-[1.75] sm:[&_blockquote]:text-[18px]',
+            '[&_blockquote]:leading-[1.75]',
+            '[&_blockquote_p]:mb-0',
 
             // Lists — proper reading spacing
             '[&_ul]:mb-6 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-7',

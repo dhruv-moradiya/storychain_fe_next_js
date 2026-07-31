@@ -26,3 +26,5 @@ export * from './report.type';
 export * from './story-canvas.type';
 export * from './notification';
 export * from './auth.types';
+export * from './gallery-images';
+export * from './album';

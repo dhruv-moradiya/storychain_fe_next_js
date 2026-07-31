@@ -1,5 +1,6 @@
 'use client';
 
+import { ReportType } from '@/type/reports';
 import {
   ArrowLeft,
   Bookmark,
@@ -10,6 +11,7 @@ import {
   Share2,
 } from 'lucide-react';
 
+import { ReportButton } from '@/components/common/report-appeal/report-button';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -26,6 +28,9 @@ interface IChapterHeaderProps {
   onBookmark: () => void;
   onEdit: () => void;
   onCreatePR: () => void;
+  storySlug?: string;
+  chapterSlug?: string;
+  chapterTitle?: string;
 }
 
 export function ChapterHeader({
@@ -35,6 +40,9 @@ export function ChapterHeader({
   onBookmark,
   onEdit,
   onCreatePR,
+  storySlug,
+  chapterSlug,
+  chapterTitle,
 }: IChapterHeaderProps) {
   return (
     <header className="border-border/50 bg-bg-cream sticky top-0 z-10 border-b">
@@ -44,23 +52,6 @@ export function ChapterHeader({
           <ArrowLeft className="h-4 w-4" />
           <span className="hidden sm:inline">Back</span>
         </Button>
-
-        {/* Center - Story Title
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-muted-foreground max-w-[150px] truncate sm:max-w-[250px]">
-            {chapter.storyTitle}
-          </span>
-          {chapter.chapterNumber && (
-            <>
-              <span className="text-muted-foreground">/</span>
-              {statusBadge(`Ch. ${chapter.chapterNumber}`, 'neutral', {
-                size: 'xs',
-                shape: 'pill',
-                style: 'soft',
-              })}
-            </>
-          )}
-        </div> */}
 
         {/* Right - Actions */}
         <div className="flex items-center gap-1">
@@ -88,6 +79,16 @@ export function ChapterHeader({
             </Tooltip>
           </TooltipProvider>
 
+          <ReportButton
+            reportType={ReportType.CHAPTER}
+            relatedChapterSlug={chapterSlug}
+            relatedStorySlug={storySlug}
+            relatedTitle={chapterTitle}
+            variant="ghost"
+            size="icon"
+            className="text-text-secondary-65 h-8 w-8 rounded-lg transition-all hover:bg-amber-500/10 hover:text-amber-600"
+          />
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -105,10 +106,10 @@ export function ChapterHeader({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          {/* <ReportButton reportType="CHAPTER" relatedIsd={chapter.id} relatedTitle={chapter.title} /> */}
         </div>
       </div>
     </header>
   );
 }
+
+export default ChapterHeader;
