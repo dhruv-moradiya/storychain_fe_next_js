@@ -1,5 +1,11 @@
 import { IBaseResponse } from '@/type/base-response.type';
-import { IMeResponse, TGetWalletResponse } from '@/type/user/user-response.type';
+import { IPaginatedUserQueryParams } from '@/type/user/user-request.type';
+import {
+  IBanUserResponse,
+  IMeResponse,
+  IPaginatedUserListResponse,
+  TGetWalletResponse,
+} from '@/type/user/user-response.type';
 
 import { api } from '@/lib/api-client';
 
@@ -23,6 +29,14 @@ const UserApi = {
 
   getWallet: async (): Promise<TGetWalletResponse> => {
     return await api.get<TGetWalletResponse>('/wallet/balance');
+  },
+
+  getUsersList: async (params?: IPaginatedUserQueryParams): Promise<IPaginatedUserListResponse> => {
+    return await api.get<IPaginatedUserListResponse>('/users/list', { params });
+  },
+
+  banUser: async () => {
+    return await api.post<IBanUserResponse>('/bans');
   },
 };
 

@@ -1,203 +1,328 @@
 'use client';
 
 import * as React from 'react';
+import { useState } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
-import { Loader2 } from 'lucide-react';
+import { COIN_TX_DIRECTIONS, COIN_TX_TYPES } from '@/type/transaction/transaction-enum';
+import { ITransaction } from '@/type/transaction/transaction-response';
+import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { ArrowDownLeft, ArrowUpRight, Filter, Receipt, RefreshCw, Search } from 'lucide-react';
 
-import { DataTable } from '@/components/ui/data-table';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { useGetAllTransactions } from '@/services/transactions/transactions.query';
 
-import { type Transaction, columns } from './columns';
-
-const mockTransactionsData: Transaction[] = [
-  {
-    id: 'TXN-2024-001245',
-    dateTime: 'May 16, 2024, 10:30 AM',
-    user: {
-      name: 'Arjun Mehta',
-      email: 'arjun.mehta@exemple.com',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-    },
-    type: 'Purchase',
-    description: 'Starter Pack',
-    coins: '+600',
-    amount: '₹199.00',
-    paymentMethod: 'UPI',
-    status: 'Completed',
-  },
-  {
-    id: 'TXN-2024-001244',
-    dateTime: 'May 16, 2024, 09:15 AM',
-    user: {
-      name: 'Priya Sharma',
-      email: 'priya.sharma@exemple.com',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-    },
-    type: 'Purchase',
-    description: 'The Hidden Cargo - Ch. 8',
-    coins: '-10',
-    amount: '₹0.00',
-    paymentMethod: 'Coins',
-    status: 'Completed',
-  },
-  {
-    id: 'TXN-2024-001243',
-    dateTime: 'May 16, 2024, 08:20 AM',
-    user: {
-      name: 'Rahul Verma',
-      email: 'rahul.verma@exemple.com',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
-    },
-    type: 'Purchase',
-    description: 'Mini Pack',
-    coins: '+250',
-    amount: '₹99.00',
-    paymentMethod: 'Card',
-    status: 'Completed',
-  },
-  {
-    id: 'TXN-2024-001242',
-    dateTime: 'May 15, 2024, 07:45 PM',
-    user: {
-      name: 'Sneha Iyer',
-      email: 'sneha.iyer@exemple.com',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&auto=format&fit=crop&q=80',
-    },
-    type: 'Purchase',
-    description: 'Pro Pack',
-    coins: '+1,500',
-    amount: '₹399.00',
-    paymentMethod: 'UPI',
-    status: 'Completed',
-  },
-  {
-    id: 'TXN-2024-001241',
-    dateTime: 'May 15, 2024, 06:10 PM',
-    user: {
-      name: 'Vikram Singh',
-      email: 'vikram.singh@exemple.com',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80',
-    },
-    type: 'Spend',
-    description: 'Whispers at Docks - Ch. 3',
-    coins: '-10',
-    amount: '₹0.00',
-    paymentMethod: 'Coins',
-    status: 'Completed',
-  },
-  {
-    id: 'TXN-2024-001240',
-    dateTime: 'May 15, 2024, 05:30 PM',
-    user: {
-      name: 'Ananya Patel',
-      email: 'ananya.patel@exemple.com',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
-    },
-    type: 'Purchase',
-    description: 'Mega Pack',
-    coins: '+3,000',
-    amount: '₹699.00',
-    paymentMethod: 'Card',
-    status: 'Completed',
-  },
-  {
-    id: 'TXN-2024-001239',
-    dateTime: 'May 14, 2024, 04:15 PM',
-    user: {
-      name: 'Rohit Mehra',
-      email: 'rohit.mehra@exemple.com',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&auto=format&fit=crop&q=80',
-    },
-    type: 'Refund',
-    description: 'Refund - Pro Pack',
-    coins: '-1,500',
-    amount: '₹399.00',
-    paymentMethod: 'UPI',
-    status: 'Refunded',
-  },
-  {
-    id: 'TXN-2024-001238',
-    dateTime: 'May 14, 2024, 03:05 PM',
-    user: {
-      name: 'Kavya Nair',
-      email: 'kavya.nair@exemple.com',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    },
-    type: 'Withdraw',
-    description: 'Withdrawal to Bank',
-    coins: '-2,000',
-    amount: '₹1,200.00',
-    paymentMethod: 'Bank Transfer',
-    status: 'Completed',
-  },
-  {
-    id: 'TXN-2024-001237',
-    dateTime: 'May 14, 2024, 02:20 PM',
-    user: {
-      name: 'Aditya Soni',
-      email: 'aditya.soni@exemple.com',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80',
-    },
-    type: 'Purchase',
-    description: 'Reader Pack',
-    coins: '+800',
-    amount: '₹249.00',
-    paymentMethod: 'UPI',
-    status: 'Completed',
-  },
-  {
-    id: 'TXN-2024-001236',
-    dateTime: 'May 13, 2024, 11:45 AM',
-    user: {
-      name: 'Meera Joshi',
-      email: 'meera.joshi@exemple.com',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
-    },
-    type: 'Spend',
-    description: 'The Crown of Eldoria - Ch. 5',
-    coins: '-10',
-    amount: '₹0.00',
-    paymentMethod: 'Coins',
-    status: 'Completed',
-  },
-];
-
-const fetchMockTransactions = async (): Promise<Transaction[]> => {
-  await new Promise((resolve) => setTimeout(resolve, 300));
-  return mockTransactionsData;
-};
+import { columns } from './columns';
+import { TransactionDetailDialog } from './transaction-detail-dialog';
 
 export const TransactionTable = () => {
-  const { data: transactions, isLoading } = useQuery<Transaction[]>({
-    queryKey: ['admin-dashboard-transactions'],
-    queryFn: fetchMockTransactions,
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [directionFilter, setDirectionFilter] = useState<string>('all');
+
+  const [selectedTransaction, setSelectedTransaction] = useState<ITransaction | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+
+  // Debounce search query
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  const queryParams = {
+    page,
+    limit,
+    ...(debouncedSearch.trim() && { search: debouncedSearch.trim() }),
+    ...(typeFilter !== 'all' && { type: typeFilter }),
+    ...(directionFilter !== 'all' && { direction: directionFilter }),
+  };
+
+  const { data: responseData, isLoading, isFetching, refetch } = useGetAllTransactions(queryParams);
+
+  const transactions = responseData?.data?.docs || [];
+  const totalDocs = responseData?.data?.totalDocs || 0;
+  const totalPages = responseData?.data?.totalPages || 1;
+
+  const handleSelectTransaction = (tx: ITransaction) => {
+    setSelectedTransaction(tx);
+    setIsDetailOpen(true);
+  };
+
+  const meta = {
+    handleSelectTransaction,
+  };
+
+  const table = useReactTable({
+    data: transactions,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    manualPagination: true,
+    pageCount: totalPages,
+    meta,
   });
 
-  if (isLoading) {
-    return (
-      <div className="text-text-secondary-65 flex h-48 w-full items-center justify-center gap-2 text-sm">
-        <Loader2 className="text-primary h-5 w-5 animate-spin" />
-        <span>Loading transactions...</span>
-      </div>
-    );
-  }
-
   return (
-    <DataTable
-      columns={columns}
-      data={transactions || []}
-      pageSize={10}
-      className="bg-transparent"
-    />
+    <div className="w-full space-y-5">
+      {/* Filters Bar */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="text-text-primary flex items-center gap-2.5 text-sm font-semibold">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-500/10 text-purple-500">
+            <Receipt className="size-4" />
+          </div>
+          <span>Platform Transactions</span>
+          <span className="rounded-full border border-purple-500/30 bg-purple-500/10 px-2 py-0.5 font-mono text-[11px] font-bold text-purple-600">
+            {totalDocs.toLocaleString()}
+          </span>
+        </div>
+
+        {/* Filter Controls */}
+        <div className="flex flex-wrap items-center gap-2.5">
+          {/* Search Input */}
+          <div className="relative min-w-48 flex-1 sm:w-64">
+            <Search className="text-text-secondary-65 absolute top-1/2 left-3 size-3.5 -translate-y-1/2" />
+            <Input
+              placeholder="Search user, note, story, chapter..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="border-border/50 bg-background/50 focus:bg-background h-9 rounded-xl pl-8 text-xs transition-all"
+            />
+          </div>
+
+          {/* Type Filter */}
+          <Select
+            value={typeFilter}
+            onValueChange={(val) => {
+              setTypeFilter(val);
+              setPage(1);
+            }}
+          >
+            <SelectTrigger className="border-border/50 bg-background/50 h-9 w-36 rounded-xl text-xs">
+              <Filter className="text-text-secondary-65 mr-1 size-3.5" />
+              <SelectValue placeholder="Type" />
+            </SelectTrigger>
+            <SelectContent className="bg-card border-border/50 rounded-xl text-xs shadow-md">
+              <SelectItem value="all">All Types</SelectItem>
+              {COIN_TX_TYPES.map((t) => (
+                <SelectItem key={t} value={t} className="capitalize">
+                  {t.replace(/_/g, ' ')}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* Direction Filter */}
+          <Select
+            value={directionFilter}
+            onValueChange={(val) => {
+              setDirectionFilter(val);
+              setPage(1);
+            }}
+          >
+            <SelectTrigger className="border-border/50 bg-background/50 h-9 w-32 rounded-xl text-xs">
+              <SelectValue placeholder="Direction" />
+            </SelectTrigger>
+            <SelectContent className="bg-card border-border/50 rounded-xl text-xs shadow-md">
+              <SelectItem value="all">All Directions</SelectItem>
+              <SelectItem value="credit">Credit (+)</SelectItem>
+              <SelectItem value="debit">Debit (-)</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {/* Page Limit */}
+          <Select
+            value={limit.toString()}
+            onValueChange={(val) => {
+              setLimit(Number(val));
+              setPage(1);
+            }}
+          >
+            <SelectTrigger className="border-border/50 bg-background/50 h-9 w-28 rounded-xl text-xs">
+              <SelectValue placeholder="Limit" />
+            </SelectTrigger>
+            <SelectContent
+              side="bottom"
+              className="bg-card border-border/50 rounded-xl text-xs shadow-md"
+            >
+              <SelectItem value="10">10 / page</SelectItem>
+              <SelectItem value="20">20 / page</SelectItem>
+              <SelectItem value="50">50 / page</SelectItem>
+              <SelectItem value="100">100 / page</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {/* Refresh Button */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => refetch()}
+            className="border-border/50 bg-card hover:bg-muted/60 h-9 w-9 cursor-pointer rounded-xl p-0"
+            title="Refresh transactions"
+          >
+            <RefreshCw className={`size-3.5 ${isFetching ? 'animate-spin' : ''}`} />
+          </Button>
+        </div>
+      </div>
+
+      {/* Table Content */}
+      <div className="border-border/50 overflow-hidden rounded-xl border">
+        <div className="relative w-full overflow-auto">
+          <Table className="bg-card">
+            <TableHeader className="bg-muted/30">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id} className="border-border/40 hover:bg-transparent">
+                  {headerGroup.headers.map((header) => (
+                    <TableHead
+                      key={header.id}
+                      className="text-text-secondary-50 h-10 px-4 text-[11px] font-semibold tracking-wider uppercase"
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(header.column.columnDef.header, header.getContext())}
+                    </TableHead>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {isLoading ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="text-text-secondary-65 h-36 text-center text-xs"
+                  >
+                    <div className="flex flex-col items-center justify-center gap-2">
+                      <RefreshCw className="text-primary size-5 animate-spin" />
+                      <span>Loading platform transactions...</span>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : transactions.length > 0 ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    onClick={() => handleSelectTransaction(row.original)}
+                    className="border-border/30 hover:bg-muted/30 cursor-pointer transition-colors"
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="px-4 py-3">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="text-text-secondary-50 h-32 text-center text-xs"
+                  >
+                    No matching transactions found.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="border-border/40 flex flex-col items-center justify-between gap-3 border-t pt-4 text-xs sm:flex-row">
+          <span className="text-text-secondary-65">
+            Page {page} of {totalPages} ({totalDocs} transactions total)
+          </span>
+          <Pagination className="mx-0 w-auto justify-center sm:justify-end">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (page > 1) setPage((p) => Math.max(1, p - 1));
+                  }}
+                  className={page <= 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                />
+              </PaginationItem>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1)
+                .filter((p) => p === 1 || p === totalPages || (p >= page - 1 && p <= page + 1))
+                .map((p, idx, arr) => {
+                  const prevPage = arr[idx - 1];
+                  const showEllipsis = prevPage && p - prevPage > 1;
+                  return (
+                    <React.Fragment key={p}>
+                      {showEllipsis && (
+                        <PaginationItem>
+                          <PaginationEllipsis />
+                        </PaginationItem>
+                      )}
+                      <PaginationItem>
+                        <PaginationLink
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setPage(p);
+                          }}
+                          isActive={p === page}
+                          className="cursor-pointer"
+                        >
+                          {p}
+                        </PaginationLink>
+                      </PaginationItem>
+                    </React.Fragment>
+                  );
+                })}
+
+              <PaginationItem>
+                <PaginationNext
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (page < totalPages) setPage((p) => Math.min(totalPages, p + 1));
+                  }}
+                  className={
+                    page >= totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
+
+      {/* Transaction Detail Dialog */}
+      <TransactionDetailDialog
+        transaction={selectedTransaction}
+        open={isDetailOpen}
+        onOpenChange={setIsDetailOpen}
+      />
+    </div>
   );
 };

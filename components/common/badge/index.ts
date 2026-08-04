@@ -70,3 +70,6 @@ export {
   appealStatusBadge,
   appealPriorityBadge,
 } from './report-badges';
+
+// Transaction-specific badges
+export { coinTxTypeBadge, coinTxDirectionBadge } from './transaction-badges';

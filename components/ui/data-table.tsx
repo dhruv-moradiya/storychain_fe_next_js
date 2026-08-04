@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import {
   ColumnDef,
-  Row,
   SortingState,
   flexRender,
   getCoreRowModel,

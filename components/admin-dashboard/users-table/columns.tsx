@@ -1,10 +1,26 @@
 'use client';
 
-import { ColumnDef } from '@tanstack/react-table';
-import { Coins, MoreVertical } from 'lucide-react';
+import Image from 'next/image';
+import { Fragment } from 'react';
 
+import { PlatformRole } from '@/type/user/user-enum';
+import { IPaginatedUserData, TAuthProvider } from '@/type/user/user-response.type';
+import { ColumnDef, RowData } from '@tanstack/react-table';
+import { format } from 'date-fns';
+import {
+  BookOpen,
+  CheckCircle2,
+  Layers,
+  Mail,
+  MoreVertical,
+  ShieldCheck,
+  ThumbsUp,
+  Zap,
+} from 'lucide-react';
+
+import { countBadge, iconBadge, statusBadge, textBadge } from '@/components/common/badge';
+import { CopyButton } from '@/components/copy-button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -14,59 +30,76 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { cn, getInitials } from '@/lib/utils';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { getInitials } from '@/lib/utils';
 
-export interface Transaction {
-  dateTime: string;
-  transactionId: string;
-  type: 'Purchase' | 'Spend';
-  description: string;
-  coins: string;
-  amount: string;
-  paymentMethod: string;
-  status: 'Completed';
+export interface IUserTableMeta {
+  handleViewProfile?: (id: string) => void;
+  handleBanUser?: (user: IPaginatedUserData) => void;
+  handleUnbanUser?: (user: IPaginatedUserData) => void;
 }
 
-export interface UserStats {
-  id: string;
-  name: string;
-  avatarUrl?: string;
-  email: string;
-  role: 'User' | 'Author' | 'Editor';
-  coinsBalance: string;
-  totalSpent: string;
-  joinedOn: string;
-  status: 'Active' | 'Inactive';
-  transactions: Transaction[];
+declare module '@tanstack/react-table' {
+  interface TableMeta<TData extends RowData> {
+    handleViewProfile?: (id: string) => void;
+    handleBanUser?: (user: IPaginatedUserData) => void;
+    handleUnbanUser?: (user: IPaginatedUserData) => void;
+  }
 }
 
-export const columns: ColumnDef<UserStats>[] = [
+const renderProviderIcon = (provider?: TAuthProvider | string, size = 16) => {
+  if (!provider) return <Mail className="text-text-secondary-65 size-3.5" />;
+  const providerLower = provider.toLowerCase();
+  const knownProviders = ['google', 'github', 'discord'];
+
+  if (knownProviders.includes(providerLower)) {
+    return (
+      <Image
+        src={`/providers/${providerLower}.png`}
+        alt={provider}
+        width={size}
+        height={size}
+        className="size-4 object-contain"
+      />
+    );
+  }
+  return <Mail className="text-text-secondary-65 size-3.5" />;
+};
+
+export const columns: ColumnDef<IPaginatedUserData>[] = [
   {
     id: 'user',
     header: 'User',
-    accessorKey: 'name',
+    accessorKey: 'username',
     cell: ({ row }) => {
       const user = row.original;
-
-      // Extract dynamic initials for avatar fallback
-      const initials = getInitials(user.name);
+      const initials = getInitials(user.username || user.email || 'User');
 
       return (
         <div className="flex items-center gap-3">
-          {/* User Avatar */}
-          <Avatar className="border-border-soft h-9 w-9 border">
-            {user.avatarUrl && <AvatarImage src={user.avatarUrl} alt={user.name} />}
-            <AvatarFallback className="bg-primary/5 text-primary text-xs font-semibold">
+          <Avatar className="ring-border/40 h-9 w-9 shrink-0 ring-1">
+            {user.avatarUrl && <AvatarImage src={user.avatarUrl} alt={user.username} />}
+            <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">
               {initials}
             </AvatarFallback>
           </Avatar>
 
-          {/* User Name and USR ID */}
-          <div className="flex flex-col">
-            <span className="text-text-primary text-sm leading-tight font-semibold tracking-tight">
-              {user.name}
-            </span>
-            <span className="text-text-secondary-50 mt-0.5 font-mono text-xs">{user.id}</span>
+          <div className="flex min-w-0 flex-col">
+            <div className="flex items-center gap-1.5">
+              <span className="text-text-primary max-w-35 truncate text-sm leading-tight font-semibold tracking-tight">
+                {user.username || 'Anonymous User'}
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <CopyButton
+                text={user.clerkId}
+                size="icon-xs"
+                className="text-text-secondary-50 bg-transparent text-xs hover:bg-transparent"
+              />
+              <span className="text-text-secondary-50 truncate font-mono text-[11px]">
+                {user.clerkId.slice(0, 20)}...
+              </span>
+            </div>
           </div>
         </div>
       );
@@ -74,111 +107,274 @@ export const columns: ColumnDef<UserStats>[] = [
   },
   {
     accessorKey: 'email',
-    header: 'Email',
-    cell: ({ getValue }) => (
-      <span className="text-text-secondary-65 text-sm">{getValue() as string}</span>
-    ),
+    header: 'Email & Auth',
+    cell: ({ row }) => {
+      const user = row.original;
+
+      return (
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-1.5">
+            <span className="text-text-secondary-65 max-w-45 truncate text-xs font-medium">
+              {user.email}
+            </span>
+            {user.emailVerified && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <CheckCircle2 className="size-3.5 shrink-0 text-emerald-500" />
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="text-[11px]">
+                    Verified Email
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+          </div>
+          <div className="text-text-secondary-50 flex items-center gap-1 text-[11px]">
+            <span className="text-[10px] font-semibold tracking-wider uppercase">Primary:</span>
+            <div className="flex items-center gap-1">
+              {renderProviderIcon(user.primaryAuthMethod, 14)}
+              <span className="capitalize">{user.primaryAuthMethod || 'email'}</span>
+            </div>
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'connectedAccounts',
+    header: 'Connected',
+    cell: ({ row }) => {
+      const user = row.original;
+      const accounts = user.connectedAccounts || [];
+
+      if (accounts.length === 0) {
+        return <span className="text-text-secondary-50 text-xs">-</span>;
+      }
+
+      return (
+        <TooltipProvider>
+          <div className="flex items-center gap-1.5">
+            {accounts.map((acc, index) => (
+              <Tooltip key={acc.providerAccountId || `${acc.provider}-${index}`}>
+                <TooltipTrigger asChild>
+                  <div className="border-border/40 bg-muted/40 hover:bg-muted/80 flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg border transition-all">
+                    {renderProviderIcon(acc.provider, 16)}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="space-y-0.5 text-xs">
+                  <p className="font-semibold capitalize">{acc.provider}</p>
+                  {acc.username && <p className="text-[11px]">@{acc.username}</p>}
+                  {acc.email && <p className="text-[11px]">{acc.email}</p>}
+                </TooltipContent>
+              </Tooltip>
+            ))}
+          </div>
+        </TooltipProvider>
+      );
+    },
   },
   {
     accessorKey: 'role',
     header: 'Role',
     cell: ({ getValue }) => {
-      const role = getValue() as string;
-      const roleClasses: Record<string, string> = {
-        User: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
-        Author: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
-        Editor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
+      const role = (getValue() as PlatformRole) || PlatformRole.USER;
+      const roleColors: Record<string, 'purple' | 'blue' | 'amber' | 'emerald'> = {
+        [PlatformRole.SUPER_ADMIN]: 'purple',
+        [PlatformRole.PLATFORM_MODERATOR]: 'blue',
+        [PlatformRole.APPEAL_MODERATOR]: 'amber',
+        [PlatformRole.USER]: 'emerald',
       };
 
+      const roleLabels: Record<string, string> = {
+        [PlatformRole.SUPER_ADMIN]: 'Super Admin',
+        [PlatformRole.PLATFORM_MODERATOR]: 'Platform Mod',
+        [PlatformRole.APPEAL_MODERATOR]: 'Appeal Mod',
+        [PlatformRole.USER]: 'User',
+      };
+
+      return textBadge(roleLabels[role] || role, roleColors[role] || 'gray', {
+        size: 'sm',
+        shape: 'pill',
+        style: 'soft',
+      });
+    },
+  },
+  {
+    id: 'levelXp',
+    header: 'Level & XP',
+    cell: ({ row }) => {
+      const user = row.original;
+      const level = user.level ?? 1;
+      const xp = user.xp ?? 0;
+
       return (
-        <Badge
-          className={cn(
-            'rounded-full border-none px-2.5 py-0.5 text-xs font-semibold tracking-wider uppercase shadow-none',
-            roleClasses[role] || 'bg-muted text-muted-foreground'
-          )}
-        >
-          {role}
-        </Badge>
+        <div className="flex items-center gap-2 text-xs font-medium">
+          {iconBadge(`Lvl ${level}`, Zap, 'amber', { size: 'xs', shape: 'pill', style: 'soft' })}
+          <span className="text-text-secondary-65 font-mono text-xs">
+            {(xp || 0).toLocaleString()} XP
+          </span>
+        </div>
       );
     },
   },
   {
-    accessorKey: 'coinsBalance',
-    header: 'Coins Balance',
-    cell: ({ getValue }) => (
-      <div className="text-text-primary flex items-center gap-1.5 text-sm font-semibold">
-        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-500/10 text-amber-500">
-          <Coins className="h-3 w-3 shrink-0" />
-        </div>
-        <span>{getValue() as string}</span>
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'totalSpent',
-    header: 'Total Spent',
-    cell: ({ getValue }) => (
-      <span className="text-text-primary text-sm font-semibold">{getValue() as string}</span>
-    ),
-  },
-  {
-    accessorKey: 'joinedOn',
-    header: 'Joined On',
-    cell: ({ getValue }) => (
-      <span className="text-text-secondary-65 text-sm">{getValue() as string}</span>
-    ),
-  },
-  {
-    accessorKey: 'status',
-    header: 'Status',
-    cell: ({ getValue }) => {
-      const status = getValue() as string;
-      const isCardActive = status === 'Active';
+    accessorKey: 'badges',
+    header: 'Badges',
+    cell: ({ row }) => {
+      const badges = row.original.badges || [];
+
+      if (badges.length === 0) {
+        return <span className="text-text-secondary-50 text-xs">-</span>;
+      }
 
       return (
-        <Badge
-          className={cn(
-            'rounded-full border-none px-2.5 py-0.5 text-xs font-semibold shadow-none',
-            isCardActive
-              ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-              : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
-          )}
-        >
-          {status}
-        </Badge>
+        <div className="flex max-w-32.5 flex-wrap items-center gap-1">
+          {badges.slice(0, 2).map((badge, idx) => (
+            <Fragment key={idx}>
+              {textBadge(badge, 'purple', { size: 'sm', shape: 'pill', style: 'soft' })}
+            </Fragment>
+          ))}
+          {badges.length > 2 &&
+            countBadge(badges.length - 2, 'gray', { size: 'sm', shape: 'pill' })}
+        </div>
       );
+    },
+  },
+  {
+    id: 'stats',
+    header: 'Activity Stats',
+    cell: ({ row }) => {
+      const stats = row.original.stats;
+      if (!stats) return <span className="text-text-secondary-50 text-xs">—</span>;
+
+      return (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="text-text-secondary-65 flex cursor-pointer items-center gap-2 text-xs">
+                <span className="flex items-center gap-1" title="Stories Created">
+                  <BookOpen className="size-3 text-indigo-500" />
+                  {stats.storiesCreated || 0}
+                </span>
+                <span className="flex items-center gap-1" title="Chapters Written">
+                  <Layers className="size-3 text-emerald-500" />
+                  {stats.chaptersWritten || 0}
+                </span>
+                <span className="flex items-center gap-1" title="Total Upvotes">
+                  <ThumbsUp className="size-3 text-amber-500" />
+                  {stats.totalUpvotes || 0}
+                </span>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="top" className="space-y-1 p-2.5 text-xs">
+              <p className="mb-1 border-b pb-1 font-semibold">User Activity Stats</p>
+              <p>
+                Stories Created: <span className="font-bold">{stats.storiesCreated || 0}</span>
+              </p>
+              <p>
+                Chapters Written: <span className="font-bold">{stats.chaptersWritten || 0}</span>
+              </p>
+              <p>
+                Branches Created: <span className="font-bold">{stats.branchesCreated || 0}</span>
+              </p>
+              <p>
+                Total Upvotes:{' '}
+                <span className="font-bold text-emerald-500">{stats.totalUpvotes || 0}</span>
+              </p>
+              <p>
+                Total Downvotes:{' '}
+                <span className="font-bold text-rose-500">{stats.totalDownvotes || 0}</span>
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
+    },
+  },
+  {
+    accessorKey: 'isActive',
+    header: 'Status',
+    cell: ({ row }) => {
+      const user = row.original;
+      const isActive = user.isActive ?? true;
+
+      if (!isActive) {
+        return statusBadge('Inactive', 'neutral', { size: 'sm', shape: 'pill' });
+      }
+
+      return iconBadge('Active', ShieldCheck, 'success', {
+        size: 'sm',
+        shape: 'pill',
+        style: 'soft',
+      });
+    },
+  },
+  {
+    accessorKey: 'createdAt',
+    header: 'Joined On',
+    cell: ({ getValue }) => {
+      const val = getValue() as string;
+      if (!val) return <span className="text-text-secondary-50 text-xs">—</span>;
+      try {
+        return (
+          <span className="text-text-secondary-65 font-mono text-xs">
+            {format(new Date(val), 'MMM dd, yyyy')}
+          </span>
+        );
+      } catch {
+        return <span className="text-text-secondary-65 font-mono text-xs">{val}</span>;
+      }
     },
   },
   {
     id: 'actions',
     header: 'Actions',
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-text-secondary-65 hover:text-text-primary hover:bg-brand-warm-beige/30 h-8 w-8 cursor-pointer rounded-lg"
-          >
-            <MoreVertical className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="border-border-soft bg-card w-40">
-          <DropdownMenuLabel className="text-text-secondary-65 px-2.5 py-1.5 text-xs font-semibold tracking-wider uppercase">
-            Actions
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator className="bg-border-soft" />
-          <DropdownMenuItem className="text-text-primary hover:bg-brand-warm-beige/30 cursor-pointer rounded-sm text-sm">
-            View details
-          </DropdownMenuItem>
-          <DropdownMenuItem className="text-text-primary hover:bg-brand-warm-beige/30 cursor-pointer rounded-sm text-sm">
-            Edit user
-          </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer rounded-sm text-sm text-rose-600 hover:bg-rose-500/10">
-            Suspend account
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+    cell: ({ row, table }) => {
+      const user = row.original;
+      const isActive = user.isActive ?? true;
+      const meta = table.options.meta;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-text-secondary-65 hover:text-text-primary hover:bg-muted/50 h-8 w-8 cursor-pointer rounded-lg"
+            >
+              <MoreVertical className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="border-border/50 bg-card w-44 shadow-md">
+            <DropdownMenuLabel className="text-text-secondary-50 px-2.5 py-1.5 text-[11px] font-semibold tracking-wider uppercase">
+              User Actions
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator className="bg-border/40" />
+            <DropdownMenuItem
+              onClick={() => meta?.handleViewProfile?.(user.clerkId)}
+              className="text-text-primary hover:bg-muted/50 cursor-pointer rounded-md text-xs font-medium"
+            >
+              View Profile
+            </DropdownMenuItem>
+            {isActive ? (
+              <DropdownMenuItem
+                onClick={() => meta?.handleBanUser?.(user)}
+                className="hover:bg-muted/50 cursor-pointer rounded-md text-xs font-medium text-rose-600"
+              >
+                Ban User
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem
+                onClick={() => meta?.handleUnbanUser?.(user)}
+                className="hover:bg-muted/50 cursor-pointer rounded-md text-xs font-medium text-emerald-600"
+              >
+                Unban User
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
   },
 ];

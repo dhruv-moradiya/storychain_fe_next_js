@@ -1,6 +1,36 @@
 import { IBaseResponse } from '@/type/base-response.type';
 
-import { PlatformRole } from './user-enum';
+import { AUTH_PROVIDER, BAN_TYPES, PlatformRole } from './user-enum';
+
+export type TAuthProvider = (typeof AUTH_PROVIDER)[number];
+
+export type TBanType = (typeof BAN_TYPES)[number];
+
+export interface IBanHistory {
+  _id: string;
+
+  userId: string; // Clerk ID of the banned user
+  bannedBy: string; // Clerk ID of the moderator who issued the ban
+
+  reason: string;
+  reportId?: string; // The report that led to this ban (optional)
+
+  banType: TBanType;
+  durationDays?: number; // undefined when banType === 'PERMANENT'
+  expiresAt?: Date; // undefined when banType === 'PERMANENT'
+
+  isActive: boolean;
+
+  liftedAt?: Date;
+  liftedBy?: string; // Clerk ID of user who lifted the ban
+  liftedReason?: string;
+
+  evidenceUrls: string[];
+  internalNotes?: string;
+
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export interface IUserBadge {
   name?: string;
@@ -9,15 +39,25 @@ export interface IUserBadge {
 }
 
 export interface IUserStats {
-  storiesPublished?: number;
-  chaptersPublished?: number;
-  totalReads?: number;
-  totalClaps?: number;
+  storiesCreated: number;
+  chaptersWritten: number;
+  totalUpvotes: number;
+  totalDownvotes: number;
+  branchesCreated: number;
 }
 
 export interface IUserPreferences {
   theme?: 'light' | 'dark' | 'system' | 'auto' | string;
   notificationsEnabled?: boolean;
+}
+
+interface IConnectedAccount {
+  provider: TAuthProvider;
+  providerAccountId: string;
+  email?: string;
+  username?: string;
+  avatarUrl?: string;
+  connectedAt: Date;
 }
 
 export interface IUser {
@@ -32,9 +72,6 @@ export interface IUser {
   stats: IUserStats;
   preferences: IUserPreferences;
   isActive: boolean;
-  isBanned: boolean;
-  banReason?: string;
-  bannedUntil?: string;
   lastActive: string;
   createdAt: string;
   updatedAt: string;
@@ -42,6 +79,32 @@ export interface IUser {
 }
 
 export type IMeResponse = IBaseResponse<IUser>;
+
+// -----------------
+// PAGINATED USER LIST
+// -----------------
+
+export interface IPaginatedUserData extends Omit<IUser, 'badges' | 'role'> {
+  badges: string[];
+  connectedAccounts: IConnectedAccount[];
+  primaryAuthMethod: TAuthProvider;
+  emailVerified: boolean;
+}
+
+export interface IPaginatedUserResponseData {
+  docs: IPaginatedUserData[];
+  totalDocs: number;
+  limit: number;
+  page: number;
+  totalPages: number;
+  pagingCounter: number;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
+  prevPage: number | null;
+  nextPage: number | null;
+}
+
+export type IPaginatedUserListResponse = IBaseResponse<IPaginatedUserResponseData>;
 
 // -----------------
 // WALLET
@@ -60,3 +123,5 @@ export interface IWallet {
 }
 
 export type TGetWalletResponse = IBaseResponse<IWallet>;
+
+export type IBanUserResponse = IBaseResponse<IBanHistory>;

@@ -122,6 +122,16 @@ export const ReportsApi = {
   ): Promise<AxiosResponse<IBaseResponse<{ success: boolean }>>> => {
     return await apiClient.post<IBaseResponse<{ success: boolean }>>(
       `/reports/admin/users/${userId}/ban`,
+      { ...payload, userId }
+    );
+  },
+
+  unbanUserGlobally: async (
+    userId: string,
+    payload: { reason?: string }
+  ): Promise<AxiosResponse<IBaseResponse<{ success: boolean }>>> => {
+    return await apiClient.post<IBaseResponse<{ success: boolean }>>(
+      `/reports/admin/users/${userId}/unban`,
       payload
     );
   },

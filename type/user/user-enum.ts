@@ -1,3 +1,18 @@
+export enum AuthProvider {
+  EMAIL = 'email',
+  GOOGLE = 'google',
+  GITHUB = 'github',
+  DISCORD = 'discord',
+}
+
+export const AUTH_PROVIDER = ['email', 'google', 'github', 'discord'] as const;
+
+export const CONNECTED_ACCOUNTS: readonly AuthProvider[] = [
+  AuthProvider.GOOGLE,
+  AuthProvider.GITHUB,
+  AuthProvider.DISCORD,
+] as const;
+
 enum PlatformRole {
   SUPER_ADMIN = 'SUPER_ADMIN',
   PLATFORM_MODERATOR = 'PLATFORM_MODERATOR',
@@ -81,5 +96,12 @@ export const PLATFORM_ROLES = {
     canManageFeaturedContent: false,
   },
 } as const;
+
+export enum BanType {
+  TEMPORARY = 'TEMPORARY',
+  PERMANENT = 'PERMANENT',
+}
+
+export const BAN_TYPES = [BanType.TEMPORARY, BanType.PERMANENT] as const;
 
 export { PlatformRole, PLATFORM_ROLE_HIERARCHY };

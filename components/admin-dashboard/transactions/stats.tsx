@@ -39,7 +39,7 @@ export const TransactionStats = ({ stats }: TransactionStatsProps) => {
         return (
           <div
             key={index}
-            className="border-border/50 bg-cream-95/80 dark:bg-card/50 group/card hover:border-primary/30 relative cursor-pointer overflow-hidden rounded-xl border p-5 shadow-2xs transition-all duration-300 hover:shadow-xs"
+            className="border-border/50 bg-card dark:bg-card/50 group/card hover:border-primary/30 relative cursor-pointer overflow-hidden rounded-xl border p-5 shadow-2xs transition-all duration-300 hover:shadow-xs"
           >
             {/* Background dynamic glow */}
             <div

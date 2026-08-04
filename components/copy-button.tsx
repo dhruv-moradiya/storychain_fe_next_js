@@ -46,6 +46,7 @@ export type CopyButtonProps = ComponentProps<typeof Button> & {
 
 export function CopyButton({
   className,
+  variant = 'ghost',
   size = 'icon',
   children,
   text,
@@ -64,9 +65,14 @@ export function CopyButton({
 
   return (
     <Button
-      className={cn('will-change-transform', className)}
+      variant={variant}
+      className={cn(
+        'bg-transparent shadow-none will-change-transform hover:bg-transparent',
+        className
+      )}
       size={size}
       onClick={(e) => {
+        e.stopPropagation();
         copy(text);
         onClick?.(e);
       }}

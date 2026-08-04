@@ -158,6 +158,7 @@ export const useBanUserGloballyMutation = () => {
     onSuccess: (response) => {
       if (response.data.success) {
         queryClient.invalidateQueries({ queryKey: ['report', 'admin'] });
+        queryClient.invalidateQueries({ queryKey: ['user', 'list'] });
         toast.success(response.data.message || 'User banned globally');
       } else {
         toast.error(response.data.message || 'Failed to ban user globally');
@@ -165,6 +166,27 @@ export const useBanUserGloballyMutation = () => {
     },
     onError: (error: unknown) => {
       toast.error(getErrorMessage(error, 'Failed to ban user globally'));
+    },
+  });
+};
+
+export const useUnbanUserGloballyMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ userId, payload }: { userId: string; payload: { reason?: string } }) =>
+      ReportsApi.unbanUserGlobally(userId, payload),
+    onSuccess: (response) => {
+      if (response.data.success) {
+        queryClient.invalidateQueries({ queryKey: ['report', 'admin'] });
+        queryClient.invalidateQueries({ queryKey: ['user', 'list'] });
+        toast.success(response.data.message || 'User unbanned globally');
+      } else {
+        toast.error(response.data.message || 'Failed to unban user globally');
+      }
+    },
+    onError: (error: unknown) => {
+      toast.error(getErrorMessage(error, 'Failed to unban user globally'));
     },
   });
 };

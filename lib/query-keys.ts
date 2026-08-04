@@ -1,6 +1,7 @@
 import { IAlbumQueryFilters } from '@/type/album/album-request.types';
 import { ICoinBundleListFilters } from '@/type/coin-bundle/coin-bundle.type';
 import { IPaginatedReportQueryParams } from '@/type/reports';
+import { IPaginatedUserQueryParams } from '@/type/user/user-request.type';
 
 export const QueryKey = {
   coinBundle: {
@@ -14,6 +15,7 @@ export const QueryKey = {
     me: ['user', 'me'] as const,
     searchByUsername: (username: string) => ['user', 'search', username] as const,
     getWallet: ['user', 'wallet'] as const,
+    list: (filters?: IPaginatedUserQueryParams) => ['user', 'list', filters ?? {}] as const,
   },
 
   notification: {

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 import { buildStoryMeta, getCachedStoryOverview } from '@/components/common';
 import { ContentLayout } from '@/components/dashboard';
-import { ReportsHeader, ReportsTableSection } from '@/components/stories/reports';
+import { ReportsTableSection } from '@/components/stories/reports';
 
 export async function generateMetadata({
   params,
@@ -28,14 +28,10 @@ export async function generateMetadata({
 
 export default async function ReportsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const story = await getCachedStoryOverview(slug);
 
   return (
-    <ContentLayout centered={true} maxWidth="6xl">
-      <div className="space-y-6 py-6">
-        <ReportsHeader slug={slug} storyTitle={story?.title} />
-        <ReportsTableSection slug={slug} />
-      </div>
+    <ContentLayout centered={true} maxWidth="9xl">
+      <ReportsTableSection slug={slug} />
     </ContentLayout>
   );
 }

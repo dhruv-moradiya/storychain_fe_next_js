@@ -1,3 +1,4 @@
+import { IPaginatedUserQueryParams } from '@/type/user/user-request.type';
 import { useAuth } from '@clerk/nextjs';
 import { useQuery } from '@tanstack/react-query';
 
@@ -31,6 +32,15 @@ export const useGetWallet = () => {
     select: (response) => response.data,
     gcTime: Infinity,
     staleTime: Infinity,
+    enabled: !!isSignedIn,
+  });
+};
+
+export const useGetUsersList = (params?: IPaginatedUserQueryParams) => {
+  const { isSignedIn } = useAuth();
+  return useQuery({
+    queryKey: QueryKey.user.list(params),
+    queryFn: () => UserApi.getUsersList(params),
     enabled: !!isSignedIn,
   });
 };
