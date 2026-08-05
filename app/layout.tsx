@@ -11,6 +11,7 @@ import {
 import Script from 'next/script';
 
 import { NavigationProgress } from '@/components/common/loader/navigation-progress';
+import { BannedUserGuard } from '@/components/providers/banned-user-guard';
 import { ClerkThemeProvider } from '@/components/providers/clerk-theme-provider';
 import { QueryProvider } from '@/components/providers/query-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
@@ -173,13 +174,15 @@ export default function RootLayout({
             afterSignUpUrl="/"
           >
             <QueryProvider>
-              <main>
-                <NavigationProgress />
-                <ToastProvider>
-                  {children}
-                  {/* <FooterSection /> */}
-                </ToastProvider>
-              </main>
+              <BannedUserGuard>
+                <main>
+                  <NavigationProgress />
+                  <ToastProvider>
+                    {children}
+                    {/* <FooterSection /> */}
+                  </ToastProvider>
+                </main>
+              </BannedUserGuard>
             </QueryProvider>
           </ClerkThemeProvider>
         </ThemeProvider>

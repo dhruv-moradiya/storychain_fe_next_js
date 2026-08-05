@@ -92,7 +92,7 @@ export function TransactionDetailDialog({
           </div>
 
           {/* Amount Card */}
-          <div className="border-border/50 from-background via-muted/10 to-background space-y-3 rounded-2xl border bg-gradient-to-br p-4">
+          <div className="border-border/50 from-background via-muted/10 to-background space-y-3 rounded-2xl border bg-linear-to-br p-4">
             <div className="flex items-center justify-between">
               <span className="text-text-secondary-65 text-xs font-semibold tracking-wider uppercase">
                 Transaction Value
@@ -165,7 +165,10 @@ export function TransactionDetailDialog({
                   <span className="text-text-secondary-65">Amount Paid:</span>
                   <span className="text-text-primary font-mono font-bold">
                     {order.currency === 'INR' ? '₹' : order.currency}{' '}
-                    {order.finalAmount?.toLocaleString()}
+                    {(order.finalAmount / 100).toLocaleString('en-IN', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">

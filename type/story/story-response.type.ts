@@ -153,6 +153,34 @@ interface IExploreStory {
 
 interface IExploreStoriesResponse extends IBaseResponse<IExploreStory[]> {}
 
+// ── Story Ban Check ────────────────────────────────────────────────────────────
+export interface IBannedBy {
+  clerkId: string;
+  username: string;
+  avatarUrl?: string;
+}
+
+export interface IStoryBanDetails {
+  _id: string;
+  userId: string;
+  storySlug: string;
+  bannedBy: IBannedBy;
+  bannedByRole: string;
+  createdAt: string;
+  expiresAt: string | null;
+  isActive: boolean;
+  reason: string;
+  reportId?: string;
+  updatedAt: string;
+}
+
+export interface ICheckStoryBanData {
+  isBanned: boolean;
+  banDetails: IStoryBanDetails | null;
+}
+
+export interface ICheckStoryBanResponse extends IBaseResponse<ICheckStoryBanData> {}
+
 export type {
   ICloudinarySignatureResponse,
   ICollaboratorActionData,

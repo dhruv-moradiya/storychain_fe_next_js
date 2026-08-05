@@ -1,5 +1,8 @@
 import { IBaseResponse } from '@/type/base-response.type';
-import { ITransaction } from '@/type/transaction/transaction-response';
+import {
+  ITransaction,
+  IUserTransactionsWithSummary,
+} from '@/type/transaction/transaction-response';
 
 import apiClient from '@/lib/api-client';
 
@@ -25,10 +28,28 @@ export interface IPaginatedTransactionResponseData {
   nextPage: number | null;
 }
 
+export interface IGetMyPurchasesParams {
+  page?: number;
+  limit?: number;
+}
+
 export const TransactionsApi = {
   getAllTransactions: async (params?: IGetAllTransactionsParams) => {
     return await apiClient.get<IBaseResponse<IPaginatedTransactionResponseData>>('/transactions', {
       params,
     });
+  },
+  getMyPurchases: async (params?: IGetMyPurchasesParams) => {
+    return await apiClient.get<IBaseResponse<IPaginatedTransactionResponseData>>(
+      '/transactions/my-purchases',
+      {
+        params,
+      }
+    );
+  },
+  getUserTransactions: async (userId: string) => {
+    return await apiClient.get<IBaseResponse<IUserTransactionsWithSummary>>(
+      `/transactions/${userId}`
+    );
   },
 };

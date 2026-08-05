@@ -110,7 +110,7 @@ export function PlanCard({ plan, billingInterval, currency, index = 0 }: PlanCar
 
   const handleGoToDashboard = () => {
     setIsModalOpen(false);
-    router.push('/profile/subscription');
+    router.push('/profile/wallet');
   };
 
   return (

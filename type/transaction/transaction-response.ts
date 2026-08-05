@@ -29,3 +29,19 @@ export interface ITransaction extends ICoinTransaction {
 }
 
 export interface ITransactionResponse extends IBaseResponse<ITransaction[]> {}
+
+export interface IWalletFinancialSummary {
+  currentCoinBalance: number;
+  totalCoinsPurchased: number;
+  totalCoinsSpent: number;
+  totalAmountSpent: number;
+  totalWithdrawn: number;
+  pendingWithdrawals: number;
+}
+
+export interface IUserTransactionsWithSummary {
+  summary: IWalletFinancialSummary;
+  transactions: ITransaction[];
+}
+
+export interface IUserTransactionsResponse extends IBaseResponse<IUserTransactionsWithSummary> {}

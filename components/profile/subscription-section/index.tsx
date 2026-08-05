@@ -3,19 +3,21 @@
 import { Coins } from 'lucide-react';
 
 import { mockUserPayoutInfo, mockUserPayouts } from '@/lib/data/payout-data';
-import { mockCoinTransactions, mockCoinWallet } from '@/lib/data/profile-subscription';
+import { mockCoinWallet } from '@/lib/data/profile-subscription';
+import { useGetMyPurchases } from '@/services/transactions/transactions.query';
 
-import { CoinSpendingCard } from './components/coin-spending-card';
 import { CoinTransactionHistory } from './components/coin-transaction-history';
 import { CoinWalletCard } from './components/coin-wallet-card';
 import { PayoutSection } from './components/payout-section';
 
 export function SubscriptionSection() {
-  // In real app, fetch these from API
+  const { data: myPurchasesData, isLoading: isPurchasesLoading } = useGetMyPurchases();
+
   const wallet = mockCoinWallet;
-  const transactions = mockCoinTransactions;
   const payoutInfo = mockUserPayoutInfo;
   const payouts = mockUserPayouts;
+
+  const transactions = myPurchasesData?.data?.docs || [];
 
   return (
     <section className="space-y-6">
@@ -42,14 +44,9 @@ export function SubscriptionSection() {
         availableEarnings={wallet.totalEarned}
       />
 
-      {/* Spending Breakdown + Transaction History side by side */}
-      <div className="grid gap-6 lg:grid-cols-5">
-        <div className="lg:col-span-2">
-          <CoinSpendingCard transactions={transactions} />
-        </div>
-        <div className="lg:col-span-3">
-          <CoinTransactionHistory transactions={transactions} />
-        </div>
+      {/* Transaction History */}
+      <div className="w-full">
+        <CoinTransactionHistory transactions={transactions} isLoading={isPurchasesLoading} />
       </div>
     </section>
   );

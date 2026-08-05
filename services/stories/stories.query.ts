@@ -166,8 +166,6 @@ export const useGetCollaborators = (
   });
 };
 
-// ── User Role ─────────────────────────────────────────────────────────────────
-
 export const getUserRoleQueryFn = async (slug: string) => {
   const response = await StoryApi.getUserRole(slug);
   return response.data;
@@ -202,5 +200,18 @@ export const useGetFreshStories = () => {
     queryFn: StoryApi.getExploreStories,
     staleTime: Infinity,
     select: (response) => response.data,
+  });
+};
+
+// ============STORY BANS==========
+
+export const useCheckUserStoryBan = (storySlug: string, userId?: string) => {
+  return useQuery({
+    queryKey: ['storyBans', 'check', storySlug, userId],
+    queryFn: async () => {
+      const response = await StoryApi.checkUserStoryBan(storySlug, userId!);
+      return response.data;
+    },
+    enabled: Boolean(storySlug && userId),
   });
 };

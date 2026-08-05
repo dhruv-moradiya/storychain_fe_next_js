@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { useState } from 'react';
 
@@ -45,6 +46,7 @@ import { columns } from './columns';
 import { UnbanUserAlert } from './unban-user-alert';
 
 export const UsersTable = () => {
+  const router = useRouter();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [searchQuery, setSearchQuery] = useState('');
@@ -78,12 +80,17 @@ export const UsersTable = () => {
   const totalPages = responseData?.data?.totalPages || 1;
 
   const meta = {
-    handleViewProfile: (id: string) => {},
-    handleBanUser: (user: IPaginatedUserData) => {
+    handleViewProfile: (event: React.MouseEvent<HTMLDivElement>, id: string) => {
+      event.stopPropagation();
+      router.push(`/dashboard/users/${id}`);
+    },
+    handleBanUser: (event: React.MouseEvent<HTMLDivElement>, user: IPaginatedUserData) => {
+      event.stopPropagation();
       setSelectedUser(user);
       setIsBanAlertOpen(true);
     },
-    handleUnbanUser: (user: IPaginatedUserData) => {
+    handleUnbanUser: (event: React.MouseEvent<HTMLDivElement>, user: IPaginatedUserData) => {
+      event.stopPropagation();
       setSelectedUser(user);
       setIsUnbanAlertOpen(true);
     },
@@ -216,7 +223,8 @@ export const UsersTable = () => {
                   table.getRowModel().rows.map((row) => (
                     <TableRow
                       key={row.id}
-                      className="border-border/30 hover:bg-muted/30 transition-colors"
+                      onClick={() => router.push(`/dashboard/users/${row.original.clerkId}`)}
+                      className="border-border/30 hover:bg-muted/30 cursor-pointer transition-colors"
                     >
                       {row.getVisibleCells().map((cell) => (
                         <TableCell key={cell.id} className="px-4 py-3">

@@ -262,8 +262,8 @@
      =========================================== */
 
   /* Page surfaces - deep navy-indigo for rich dark feel */
-  --background: oklch(0.145 0.025 270); /* deep navy-indigo #0d0f1a */
-  --foreground: oklch(0.925 0.018 280); /* #eae9f2 */
+  --background: oklch(0.17 0.01 255);
+  --foreground: oklch(0.97 0.005 255);
 
   /* Card / Popover - lifted slate-purple surface */
   --card: oklch(0.175 0.028 272); /* slate-purple #121425 */
@@ -357,16 +357,17 @@
   --bg-dark: oklch(0.105 0.02 266); /* deepest surface */
 
   /* Text Colors - Dark Mode */
-  --text-primary: oklch(0.93 0.02 250); /* #e8e6f0 */
+  --text-primary: oklch(0.95 0.006 255);
   --text-secondary: oklch(0.793 0.038 286); /* #c4c2d6 */
   --text-tertiary: oklch(0.851 0.03 287); /* #d4d2e4 */
   --text-light: oklch(0.965 0.006 286); /* #f5f5f7 */
   --text-dark-accent: oklch(0.829 0.143 76); /* #f6c36a */
-  --text-secondary-75: oklch(0.793 0.038 286 / 0.75);
-  --text-secondary-70: oklch(0.793 0.038 286 / 0.7);
-  --text-secondary-65: oklch(0.793 0.038 286 / 0.65);
-  --text-secondary-50: oklch(0.793 0.038 286 / 0.5);
-  --text-secondary-40: oklch(0.793 0.038 286 / 0.4);
+
+  --text-secondary-75: oklch(0.76 0.01 255 / 0.75);
+  --text-secondary-70: oklch(0.76 0.01 255 / 0.7);
+  --text-secondary-65: oklch(0.76 0.01 255 / 0.65);
+  --text-secondary-50: oklch(0.76 0.01 255 / 0.5);
+  --text-secondary-40: oklch(0.76 0.01 255 / 0.4);
 
   /* Brand Colors - Dark Mode (brightened for dark bg contrast) */
   --brand-pink-50: oklch(0.25 0.04 349); /* dark mode: deep muted pink */

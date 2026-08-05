@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import type { CoinTransaction } from '@/type/profile-subscription';
+import type { ITransaction } from '@/type/transaction/transaction-response';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 import {
@@ -21,16 +22,31 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 
+export interface NormalizedTransaction {
+  id: string;
+  date: Date;
+  category: 'PURCHASE' | 'SPEND' | 'EARN' | 'BONUS';
+  coins: number;
+  description: string;
+  status: string;
+  method?: string;
+  amountPaid?: number;
+  currency?: string;
+  invoiceUrl?: string;
+}
+
 interface CoinTransactionHistoryProps {
-  transactions: CoinTransaction[];
+  transactions?: (CoinTransaction | ITransaction)[];
+  isLoading?: boolean;
 }
 
 type TransactionFilter = 'all' | 'PURCHASE' | 'SPEND' | 'EARN' | 'BONUS';
 
 const typeConfig: Record<
-  CoinTransaction['type'],
+  NormalizedTransaction['category'],
   { icon: typeof Coins; color: string; bg: string; label: string; sign: string }
 > = {
   PURCHASE: {
@@ -78,7 +94,7 @@ const filters: { key: TransactionFilter; label: string }[] = [
   { key: 'BONUS', label: 'Bonus' },
 ];
 
-function formatAmount(amount: number, currency: 'INR' | 'USD'): string {
+function formatAmount(amount: number, currency: string): string {
   const value = amount / 100;
   if (currency === 'INR') {
     return `₹${new Intl.NumberFormat('en-IN').format(value)}`;
@@ -90,25 +106,97 @@ function formatCoins(amount: number): string {
   return new Intl.NumberFormat('en-IN').format(amount);
 }
 
-export function CoinTransactionHistory({ transactions }: CoinTransactionHistoryProps) {
+function normalizeTransaction(t: CoinTransaction | ITransaction): NormalizedTransaction {
+  if ('date' in t && t.date instanceof Date) {
+    return {
+      id: t.id,
+      date: t.date,
+      category: t.type,
+      coins: t.coins,
+      description: t.description,
+      status: t.status,
+      method: t.method,
+      amountPaid: t.amountPaid,
+      currency: t.currency,
+      invoiceUrl: t.invoiceUrl,
+    };
+  }
+
+  const apiTx = t as ITransaction;
+  let category: NormalizedTransaction['category'] = 'PURCHASE';
+  const typeStr = String(apiTx.type || '').toLowerCase();
+  const dirStr = String(apiTx.direction || '').toLowerCase();
+
+  if (typeStr === 'purchase') {
+    category = 'PURCHASE';
+  } else if (
+    typeStr === 'bonus' ||
+    typeStr === 'referral_reward' ||
+    typeStr === 'daily_reward' ||
+    typeStr === 'admin_credit'
+  ) {
+    category = 'BONUS';
+  } else if (
+    dirStr === 'debit' ||
+    typeStr === 'chapter_unlock' ||
+    typeStr === 'withdrawal' ||
+    typeStr === 'admin_debit'
+  ) {
+    category = 'SPEND';
+  } else if (
+    dirStr === 'credit' ||
+    typeStr === 'chapter_earn' ||
+    typeStr === 'earnings_distribution'
+  ) {
+    category = 'EARN';
+  }
+
+  let description = apiTx.note || '';
+  if (!description && apiTx.order) {
+    description = `${formatCoins(apiTx.order.totalCoins || apiTx.amount)} Coins Purchase`;
+  }
+  if (!description) {
+    description = `${category} Transaction`;
+  }
+
+  const rawDate = apiTx.createdAt ? new Date(apiTx.createdAt) : new Date();
+
+  return {
+    id: apiTx._id,
+    date: rawDate,
+    category,
+    coins: apiTx.amount ?? 0,
+    description,
+    status: apiTx.order?.status || 'SUCCESS',
+    method: apiTx.order ? 'CARD' : undefined,
+    amountPaid: apiTx.order?.finalAmount,
+    currency: apiTx.order?.currency || 'INR',
+  };
+}
+
+export function CoinTransactionHistory({
+  transactions = [],
+  isLoading = false,
+}: CoinTransactionHistoryProps) {
   const [filter, setFilter] = useState<TransactionFilter>('all');
 
-  const sorted = [...transactions].sort((a, b) => b.date.getTime() - a.date.getTime());
-  const filtered = filter === 'all' ? sorted : sorted.filter((t) => t.type === filter);
+  const normalized = transactions.map(normalizeTransaction);
+  const sorted = [...normalized].sort((a, b) => b.date.getTime() - a.date.getTime());
+  const filtered = filter === 'all' ? sorted : sorted.filter((t) => t.category === filter);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.2 }}
-      className="border-border/50 bg-card rounded-2xl border p-6"
+      className="border-border/50 bg-card w-full rounded-2xl border p-6"
     >
       {/* Header */}
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           <h3 className="text-foreground font-semibold">Transaction History</h3>
           <span className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs font-medium">
-            {transactions.length}
+            {isLoading ? '...' : normalized.length}
           </span>
         </div>
       </div>
@@ -131,8 +219,24 @@ export function CoinTransactionHistory({ transactions }: CoinTransactionHistoryP
         ))}
       </div>
 
-      {/* Transactions list */}
-      {filtered.length === 0 ? (
+      {/* Loading state */}
+      {isLoading ? (
+        <div className="space-y-3 py-2">
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="border-border/40 flex items-center gap-3 rounded-xl border p-3.5"
+            >
+              <Skeleton className="h-10 w-10 rounded-xl" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-4 w-1/3" />
+                <Skeleton className="h-3 w-1/4" />
+              </div>
+              <Skeleton className="h-4 w-16" />
+            </div>
+          ))}
+        </div>
+      ) : filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-10 text-center">
           <div className="bg-muted/30 mb-3 rounded-full p-4">
             <Receipt className="text-muted-foreground h-6 w-6" />
@@ -148,7 +252,7 @@ export function CoinTransactionHistory({ transactions }: CoinTransactionHistoryP
         <ScrollArea className="h-[360px]">
           <div className="space-y-2 pr-4">
             {filtered.map((txn, index) => {
-              const config = typeConfig[txn.type];
+              const config = typeConfig[txn.category];
               const TypeIcon = config.icon;
 
               return (

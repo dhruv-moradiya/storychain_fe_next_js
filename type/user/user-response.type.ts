@@ -1,10 +1,9 @@
 import { IBaseResponse } from '@/type/base-response.type';
 
 import { AUTH_PROVIDER, BAN_TYPES, PlatformRole } from './user-enum';
+import { TBanType } from './user-request.type';
 
 export type TAuthProvider = (typeof AUTH_PROVIDER)[number];
-
-export type TBanType = (typeof BAN_TYPES)[number];
 
 export interface IBanHistory {
   _id: string;
@@ -51,7 +50,13 @@ export interface IUserPreferences {
   notificationsEnabled?: boolean;
 }
 
-interface IConnectedAccount {
+export interface IPublicUserResponse {
+  clerkId: string;
+  username: string;
+  avatarUrl: string;
+}
+
+export interface IConnectedAccount {
   provider: TAuthProvider;
   providerAccountId: string;
   email?: string;
@@ -60,7 +65,16 @@ interface IConnectedAccount {
   connectedAt: Date;
 }
 
-export interface IUser {
+export interface IBanDetails {
+  banType: TBanType;
+  bannedBy: IPublicUserResponse;
+  createdAt: string;
+  durationDays: number;
+  expiresAt: string;
+  reason: string;
+}
+
+export interface IBaseUser {
   clerkId: string;
   username: string;
   email: string;
@@ -71,12 +85,24 @@ export interface IUser {
   badges: IUserBadge[];
   stats: IUserStats;
   preferences: IUserPreferences;
-  isActive: boolean;
   lastActive: string;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
   role: PlatformRole;
 }
+
+export interface IActiveUser extends IBaseUser {
+  isBanned: false;
+  banDetails?: never;
+}
+
+export interface IBannedUser extends IBaseUser {
+  isBanned: true;
+  banDetails: IBanDetails;
+}
+
+export type IUser = IActiveUser | IBannedUser;
 
 export type IMeResponse = IBaseResponse<IUser>;
 

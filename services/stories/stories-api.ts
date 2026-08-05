@@ -1,4 +1,5 @@
 import {
+  ICheckStoryBanResponse,
   ICloudinarySignatureResponse,
   ICollaboratorListResponse,
   ICreateStoryResponse,
@@ -118,6 +119,15 @@ const StoryApi = {
 
   getExploreStories: async (): Promise<AxiosResponse<IExploreStoriesResponse>> => {
     return await apiClient.get<IExploreStoriesResponse>(`/stories/fresh-stories`);
+  },
+
+  // ============STORY BANS==========
+
+  checkUserStoryBan: async (
+    storySlug: string,
+    userId: string
+  ): Promise<AxiosResponse<ICheckStoryBanResponse>> => {
+    return await apiClient.get<ICheckStoryBanResponse>(`/story-bans/check/${storySlug}/${userId}`);
   },
 };
 

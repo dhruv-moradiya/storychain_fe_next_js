@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Fragment } from 'react';
+import { Fragment, MouseEvent } from 'react';
 
 import { PlatformRole } from '@/type/user/user-enum';
 import { IPaginatedUserData, TAuthProvider } from '@/type/user/user-response.type';
@@ -34,16 +34,16 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { getInitials } from '@/lib/utils';
 
 export interface IUserTableMeta {
-  handleViewProfile?: (id: string) => void;
-  handleBanUser?: (user: IPaginatedUserData) => void;
-  handleUnbanUser?: (user: IPaginatedUserData) => void;
+  handleViewProfile?: (event: React.MouseEvent<HTMLDivElement>, id: string) => void;
+  handleBanUser?: (event: React.MouseEvent<HTMLDivElement>, user: IPaginatedUserData) => void;
+  handleUnbanUser?: (event: React.MouseEvent<HTMLDivElement>, user: IPaginatedUserData) => void;
 }
 
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
-    handleViewProfile?: (id: string) => void;
-    handleBanUser?: (user: IPaginatedUserData) => void;
-    handleUnbanUser?: (user: IPaginatedUserData) => void;
+    handleViewProfile?: (event: React.MouseEvent<HTMLDivElement>, id: string) => void;
+    handleBanUser?: (event: React.MouseEvent<HTMLDivElement>, user: IPaginatedUserData) => void;
+    handleUnbanUser?: (event: React.MouseEvent<HTMLDivElement>, user: IPaginatedUserData) => void;
   }
 }
 
@@ -53,6 +53,26 @@ const renderProviderIcon = (provider?: TAuthProvider | string, size = 16) => {
   const knownProviders = ['google', 'github', 'discord'];
 
   if (knownProviders.includes(providerLower)) {
+    if (providerLower === 'github') {
+      return (
+        <>
+          <Image
+            src={`/providers/github.png`}
+            alt={provider}
+            width={size}
+            height={size}
+            className="size-4 object-contain dark:hidden"
+          />
+          <Image
+            src={`/providers/dark-mode-github.png`}
+            alt={provider}
+            width={size}
+            height={size}
+            className="hidden size-4 object-contain dark:block"
+          />
+        </>
+      );
+    }
     return (
       <Image
         src={`/providers/${providerLower}.png`}
@@ -90,7 +110,7 @@ export const columns: ColumnDef<IPaginatedUserData>[] = [
                 {user.username || 'Anonymous User'}
               </span>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
               <CopyButton
                 text={user.clerkId}
                 size="icon-xs"
@@ -341,6 +361,7 @@ export const columns: ColumnDef<IPaginatedUserData>[] = [
             <Button
               variant="ghost"
               size="icon"
+              onClick={(e) => e.stopPropagation()}
               className="text-text-secondary-65 hover:text-text-primary hover:bg-muted/50 h-8 w-8 cursor-pointer rounded-lg"
             >
               <MoreVertical className="h-4 w-4" />
@@ -352,21 +373,21 @@ export const columns: ColumnDef<IPaginatedUserData>[] = [
             </DropdownMenuLabel>
             <DropdownMenuSeparator className="bg-border/40" />
             <DropdownMenuItem
-              onClick={() => meta?.handleViewProfile?.(user.clerkId)}
+              onClick={(event) => meta?.handleViewProfile?.(event, user.clerkId)}
               className="text-text-primary hover:bg-muted/50 cursor-pointer rounded-md text-xs font-medium"
             >
               View Profile
             </DropdownMenuItem>
             {isActive ? (
               <DropdownMenuItem
-                onClick={() => meta?.handleBanUser?.(user)}
+                onClick={(event) => meta?.handleBanUser?.(event, user)}
                 className="hover:bg-muted/50 cursor-pointer rounded-md text-xs font-medium text-rose-600"
               >
                 Ban User
               </DropdownMenuItem>
             ) : (
               <DropdownMenuItem
-                onClick={() => meta?.handleUnbanUser?.(user)}
+                onClick={(event) => meta?.handleUnbanUser?.(event, user)}
                 className="hover:bg-muted/50 cursor-pointer rounded-md text-xs font-medium text-emerald-600"
               >
                 Unban User

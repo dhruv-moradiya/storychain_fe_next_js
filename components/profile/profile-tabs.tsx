@@ -14,6 +14,7 @@ import {
   Settings,
   Shield,
   User,
+  Wallet,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -32,7 +33,7 @@ const baseTabs = [
   { key: 'badges', label: 'Badges', path: 'badges', icon: Award },
   { key: 'bookmarks', label: 'Bookmarks', path: 'bookmarks', icon: Bookmark },
   { key: 'my-reports', label: 'My Reports', path: 'my-reports', icon: FileWarning },
-  { key: 'subscription', label: 'Subscription', path: 'subscription', icon: CreditCard },
+  { key: 'wallet', label: 'Wallet', path: 'wallet', icon: Wallet },
   { key: 'settings', label: 'Settings', path: 'settings', icon: Settings },
   { key: 'admin', label: 'Admin', path: 'admin', icon: Shield },
 ];

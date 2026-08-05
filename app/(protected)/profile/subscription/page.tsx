@@ -1,5 +1,5 @@
-import SubscriptionSection from '@/components/profile/subscription-section';
+import { redirect } from 'next/navigation';
 
 export default function SubscriptionPage() {
-  return <SubscriptionSection />;
+  redirect('/profile/wallet');
 }
