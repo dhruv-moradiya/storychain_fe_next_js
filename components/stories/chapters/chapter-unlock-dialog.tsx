@@ -1,3 +1,5 @@
+import posthog from 'posthog-js';
+
 import toast from '@/components/shared/toast/toast';
 import { Button } from '@/components/ui/button';
 import {
@@ -27,6 +29,7 @@ export const ChapterUnlockDialog = ({ slug, storySlug, onClose }: ChapterUnlockD
       },
       {
         onSuccess: () => {
+          posthog.capture('chapter_unlocked');
           toast.success('Chapter unlocked successfully');
           onClose();
         },

@@ -1,10 +1,11 @@
 'use client';
 
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import { ClerkProvider } from '@clerk/nextjs';
+import { ClerkProvider, useUser } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
+import posthog from 'posthog-js';
 
 interface ClerkThemeProviderProps {
   children: React.ReactNode;
@@ -12,6 +13,41 @@ interface ClerkThemeProviderProps {
   signUpUrl?: string;
   afterSignInUrl?: string;
   afterSignUpUrl?: string;
+}
+
+function PostHogIdentity({ children }: { children: React.ReactNode }) {
+  const { isLoaded, isSignedIn, user } = useUser();
+  const identifiedUserId = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    if (!isSignedIn || !user) {
+      if (identifiedUserId.current) {
+        posthog.reset();
+        identifiedUserId.current = null;
+      }
+      return;
+    }
+
+    if (identifiedUserId.current === user.id) return;
+
+    if (identifiedUserId.current) {
+      posthog.reset();
+    }
+
+    const personProperties: Record<string, string> = {};
+    const email = user.primaryEmailAddress?.emailAddress;
+
+    if (email) personProperties.$email = email;
+    if (user.fullName) personProperties.$name = user.fullName;
+    if (user.username) personProperties.username = user.username;
+
+    posthog.identify(user.id, personProperties);
+    identifiedUserId.current = user.id;
+  }, [isLoaded, isSignedIn, user]);
+
+  return children;
 }
 
 export function ClerkThemeProvider({
@@ -42,7 +78,7 @@ export function ClerkThemeProvider({
         baseTheme: isDark ? dark : undefined,
       }}
     >
-      {children}
+      <PostHogIdentity>{children}</PostHogIdentity>
     </ClerkProvider>
   );
 }
