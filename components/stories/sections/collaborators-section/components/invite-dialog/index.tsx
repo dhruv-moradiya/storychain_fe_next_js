@@ -5,6 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 
 import { IBaseResponse } from '@/type/base-response.type';
 import axios from 'axios';
+import posthog from 'posthog-js';
 
 import { toast } from '@/components/shared/toast/toast';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -94,6 +95,7 @@ function InviteDialog({ open, onOpenChange, slug }: InviteDialogProps) {
       },
       {
         onSuccess: () => {
+          posthog.capture('collaborator_invited', { role: data.role });
           setInvited((prev) => prev + 1);
           setValue('selectedUser', null);
           setValue('message', '');

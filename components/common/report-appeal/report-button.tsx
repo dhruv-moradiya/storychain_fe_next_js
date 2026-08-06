@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { ReportReason, ReportType } from '@/type/reports';
 import { Flag } from 'lucide-react';
+import posthog from 'posthog-js';
 
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -48,6 +49,10 @@ export function ReportButton({
       relatedStorySlug,
       reason: data.reason,
       description: data.description,
+    });
+    posthog.capture('content_reported', {
+      report_reason: data.reason,
+      report_type: reportType,
     });
   };
 

@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { IChapterDetail } from '@/type/chapter/chapter-detail.type';
 import { ThumbsDown, ThumbsUp } from 'lucide-react';
+import posthog from 'posthog-js';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -29,6 +30,7 @@ export function ChapterVotePanel({ chapter }: ChapterVotePanelProps) {
         downvotes: userVote === 'down' ? v.downvotes - 1 : v.downvotes,
       }));
       setUserVote('up');
+      posthog.capture('chapter_upvoted');
     }
   }
 
@@ -42,6 +44,7 @@ export function ChapterVotePanel({ chapter }: ChapterVotePanelProps) {
         upvotes: userVote === 'up' ? v.upvotes - 1 : v.upvotes,
       }));
       setUserVote('down');
+      posthog.capture('chapter_downvoted');
     }
   }
 
