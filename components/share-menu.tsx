@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { AnalyticsEvent, trackEvent } from '@/lib/analytics';
 
 export type ShareMenuProps = {
   /** Title passed to the native share sheet. */
@@ -26,6 +27,14 @@ export function ShareMenu({ title, url }: ShareMenuProps) {
       : url;
 
   const urlEncoded = encodeURIComponent(absoluteUrl);
+
+  const handleShare = (method: string) => {
+    trackEvent(AnalyticsEvent.STORY_SHARED, {
+      title,
+      url: absoluteUrl,
+      method,
+    });
+  };
 
   return (
     <DropdownMenu>
@@ -45,6 +54,7 @@ export function ShareMenu({ title, url }: ShareMenuProps) {
         <DropdownMenuItem
           onClick={() => {
             copyText(absoluteUrl);
+            handleShare('copy_link');
             toast.success('Link copied');
           }}
         >
@@ -53,7 +63,12 @@ export function ShareMenu({ title, url }: ShareMenuProps) {
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <a href={`https://x.com/intent/tweet?url=${urlEncoded}`} target="_blank" rel="noopener">
+          <a
+            href={`https://x.com/intent/tweet?url=${urlEncoded}`}
+            target="_blank"
+            rel="noopener"
+            onClick={() => handleShare('x_twitter')}
+          >
             <XIcon />
             Share on X
           </a>
@@ -64,6 +79,7 @@ export function ShareMenu({ title, url }: ShareMenuProps) {
             href={`https://www.linkedin.com/sharing/share-offsite?url=${urlEncoded}`}
             target="_blank"
             rel="noopener"
+            onClick={() => handleShare('linkedin')}
           >
             <LinkedInIcon />
             Share on LinkedIn
@@ -74,6 +90,7 @@ export function ShareMenu({ title, url }: ShareMenuProps) {
           <DropdownMenuItem
             onClick={(e) => {
               e.preventDefault(); // Prevent the menu from closing
+              handleShare('native_share');
               navigator.share({ title, url: absoluteUrl }).catch(() => {});
             }}
           >

@@ -14,7 +14,11 @@ export const StoryFormSchema = z.object({
 
   slug: z.string().trim().toLowerCase().min(3, 'Slug must be at least 3 characters long'),
 
-  description: z.string().trim().max(2000, 'Description cannot exceed 2000 characters'),
+  description: z
+    .string()
+    .trim()
+    .min(10, 'Description must be at least 10 characters long')
+    .max(2000, 'Description cannot exceed 2000 characters'),
 
   coverImage: z
     .object({

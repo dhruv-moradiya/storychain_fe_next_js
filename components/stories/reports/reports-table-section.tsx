@@ -126,13 +126,13 @@ export function ReportsTableSection({ slug }: ReportsTableSectionProps) {
 
         {/* Filter Inputs */}
         <div className="flex flex-wrap items-center gap-2.5">
-          <div className="relative min-w-[200px] flex-1 sm:w-64">
+          <div className="relative min-w-50 flex-1 sm:w-64">
             <Search className="text-text-secondary-65 absolute top-1/2 left-3 size-3.5 -translate-y-1/2" />
             <Input
               placeholder="Search description, reason, user..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="border-border/50 bg-background/50 focus:bg-background h-9 rounded-xl pl-8 text-xs transition-all"
+              className="border-border/50 bg-background/50 focus:bg-background h-9 rounded-md pl-8 text-xs transition-all"
             />
           </div>
 
@@ -143,7 +143,7 @@ export function ReportsTableSection({ slug }: ReportsTableSectionProps) {
               setPage(1);
             }}
           >
-            <SelectTrigger className="border-border/50 bg-background/50 h-9 w-36 rounded-xl text-xs">
+            <SelectTrigger className="border-border/50 bg-background/50 h-9 w-36 rounded-md text-xs">
               <Filter className="text-text-secondary-65 mr-1 size-3.5" />
               <SelectValue placeholder="Status" />
             </SelectTrigger>
@@ -164,7 +164,7 @@ export function ReportsTableSection({ slug }: ReportsTableSectionProps) {
               setPage(1);
             }}
           >
-            <SelectTrigger className="border-border/50 bg-background/50 h-9 w-36 rounded-xl text-xs">
+            <SelectTrigger className="border-border/50 bg-background/50 h-9 w-36 rounded-md text-xs">
               <SelectValue placeholder="Type" />
             </SelectTrigger>
             <SelectContent className="bg-card border-border/50 rounded-xl text-xs shadow-md">
@@ -180,7 +180,7 @@ export function ReportsTableSection({ slug }: ReportsTableSectionProps) {
             variant="outline"
             size="sm"
             onClick={() => refetch()}
-            className="border-border/50 bg-card hover:bg-muted/60 h-9 w-9 rounded-xl p-0"
+            className="border-border/50 bg-card hover:bg-muted/60 h-9 w-9 rounded-md p-0"
             title="Refresh reports"
           >
             <RefreshCw className={`size-3.5 ${isFetching ? 'animate-spin' : ''}`} />
@@ -189,7 +189,7 @@ export function ReportsTableSection({ slug }: ReportsTableSectionProps) {
       </div>
 
       {/* REPORTS LIST TABLE CONTAINER */}
-      <div className="border-border/50 bg-card space-y-4 rounded-2xl border p-5 shadow-2xs">
+      <div className="border-border/50 bg-card/50 space-y-4 rounded-2xl border p-5 shadow-2xs">
         {isLoading ? (
           <div className="border-border/40 bg-muted/10 flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center text-xs">
             <RefreshCw className="mb-2 size-6 animate-spin text-amber-500" />
@@ -207,7 +207,7 @@ export function ReportsTableSection({ slug }: ReportsTableSectionProps) {
                     setSelectedReport(report);
                     setIsReportDialogOpen(true);
                   }}
-                  className="border-border/40 bg-card hover:bg-muted/30 hover:border-border/80 flex cursor-pointer flex-col gap-3 rounded-xl border p-4 shadow-2xs transition-all sm:flex-row sm:items-center sm:justify-between"
+                  className="border-border/40 bg-card/50 hover:bg-muted/30 hover:border-border/80 flex cursor-pointer flex-col gap-3 rounded-xl border p-4 shadow-2xs transition-all sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div className="min-w-0 flex-1 space-y-2">
                     <div className="flex flex-wrap items-center gap-2">
@@ -260,7 +260,7 @@ export function ReportsTableSection({ slug }: ReportsTableSectionProps) {
                         setSelectedReport(report);
                         setIsReportDialogOpen(true);
                       }}
-                      className="border-border/50 bg-card hover:bg-muted/60 h-8 rounded-lg text-xs font-medium shadow-2xs transition-all"
+                      className="border-border/50 bg-card hover:bg-muted/60 h-8 rounded-md text-xs font-medium shadow-2xs transition-all"
                     >
                       Inspect
                     </Button>

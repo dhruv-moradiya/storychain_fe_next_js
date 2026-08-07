@@ -5,11 +5,11 @@ import { Controller, useForm } from 'react-hook-form';
 
 import { IBaseResponse } from '@/type/base-response.type';
 import axios from 'axios';
-import posthog from 'posthog-js';
 
 import { toast } from '@/components/shared/toast/toast';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useDebounce } from '@/hooks/use-debounce';
+import { AnalyticsEvent, trackEvent } from '@/lib/analytics';
 import { useSendInvitation } from '@/services/stories/stories.mutation';
 import { useSearchUsers } from '@/services/users/user.query';
 
@@ -95,7 +95,10 @@ function InviteDialog({ open, onOpenChange, slug }: InviteDialogProps) {
       },
       {
         onSuccess: () => {
-          posthog.capture('collaborator_invited', { role: data.role });
+          trackEvent(AnalyticsEvent.COLLABORATOR_INVITED, {
+            role: data.role,
+            invited_username: data.selectedUser?.username,
+          });
           setInvited((prev) => prev + 1);
           setValue('selectedUser', null);
           setValue('message', '');

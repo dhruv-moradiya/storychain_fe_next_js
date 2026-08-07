@@ -6,7 +6,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeft, ArrowRight, BookOpen, Send } from 'lucide-react';
 import { Loader2 } from 'lucide-react';
-import posthog from 'posthog-js';
 
 import { toast } from '@/components/shared/toast/toast';
 import { Button } from '@/components/ui/button';
@@ -18,6 +17,7 @@ import {
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
 } from '@/components/ui/responsive-dialog';
+import { AnalyticsEvent, trackEvent } from '@/lib/analytics';
 import { getErrorMessage, getFieldErrorMap } from '@/lib/error';
 import { StoryFormSchema, type TStoryFormValues } from '@/lib/schemas/story.schema';
 import { useCreateStory } from '@/services/stories/stories.mutation';
@@ -78,7 +78,7 @@ export function CreateStoryDialog({ open, onOpenChange }: CreateStoryDialogProps
     createStory(data, {
       onSuccess: (res) => {
         if (res.data.success) {
-          posthog.capture('story_created', {
+          trackEvent(AnalyticsEvent.STORY_CREATED, {
             content_rating: data.settings.contentRating,
             is_public: data.settings.isPublic,
             status: data.status,

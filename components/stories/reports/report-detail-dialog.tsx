@@ -85,7 +85,7 @@ export function ReportDetailDialog({
           {/* Metadata Row */}
           <div className="grid grid-cols-3 gap-3 text-xs">
             <div className="border-border/40 bg-muted/20 flex flex-col gap-1.5 rounded-xl border p-3">
-              <span className="text-text-secondary-65 text-[10px] font-medium tracking-wide uppercase">
+              <span className="text-text-secondary-65 text-[10px] tracking-wide uppercase">
                 Target Type
               </span>
               <div>{reportTypeBadge(report.reportType)}</div>
@@ -244,7 +244,7 @@ export function ReportDetailDialog({
             size="sm"
             onClick={() => onOpenChange(false)}
             disabled={isSubmitting}
-            className="border-border/50 bg-card hover:bg-muted/60 h-9 rounded-xl text-xs font-semibold"
+            className="border-border/50 bg-card hover:bg-muted/60 h-9 rounded-md text-xs font-semibold"
           >
             Cancel
           </Button>

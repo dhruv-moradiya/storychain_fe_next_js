@@ -31,7 +31,7 @@ export interface IPopulatedCommentRef {
   chapterSlug: string;
   isDeleted: boolean;
   createdAt: Date;
-  author?: IPopulatedUserRef;
+  author: IPopulatedUserRef;
 }
 
 export interface IBasePopulatedReport {

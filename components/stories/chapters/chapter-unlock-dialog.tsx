@@ -1,5 +1,3 @@
-import posthog from 'posthog-js';
-
 import toast from '@/components/shared/toast/toast';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,7 +7,8 @@ import {
   ResponsiveDialogHeader,
 } from '@/components/ui/responsive-dialog';
 import { Spinner } from '@/components/ui/spinner';
-import { getApiError, getErrorMessage } from '@/lib/error';
+import { AnalyticsEvent, trackEvent } from '@/lib/analytics';
+import { getErrorMessage } from '@/lib/error';
 import { useUnlockChapter } from '@/services/chapters/chapters.mutation';
 
 interface ChapterUnlockDialogProps {
@@ -29,7 +28,10 @@ export const ChapterUnlockDialog = ({ slug, storySlug, onClose }: ChapterUnlockD
       },
       {
         onSuccess: () => {
-          posthog.capture('chapter_unlocked');
+          trackEvent(AnalyticsEvent.CHAPTER_UNLOCKED, {
+            chapter_slug: slug,
+            story_slug: storySlug,
+          });
           toast.success('Chapter unlocked successfully');
           onClose();
         },

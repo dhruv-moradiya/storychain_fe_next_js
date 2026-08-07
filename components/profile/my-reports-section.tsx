@@ -6,30 +6,18 @@ import { useState } from 'react';
 import { IPopulatedReportDetails, ReportReason, ReportStatus, ReportType } from '@/type/reports';
 import { formatDistanceToNow } from 'date-fns';
 import {
-  BookOpen,
   CheckCircle,
   Clock,
-  ExternalLink,
-  Eye,
-  FileText,
   FileWarning,
   Flag,
   Info,
-  MessageSquare,
   RefreshCw,
   Scale,
   Shield,
-  Users,
-  XCircle,
 } from 'lucide-react';
 
 import AppealDialog from '@/components/common/appeal-dialog';
-import {
-  countBadge,
-  reportReasonBadge,
-  reportStatusBadge,
-  reportTypeBadge,
-} from '@/components/common/badge';
+import { reportReasonBadge, reportStatusBadge, reportTypeBadge } from '@/components/common/badge';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -58,7 +46,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn } from '@/lib/utils';
 import { useGetMyReports } from '@/services/reports';
 
 export function MyReportsSection() {

@@ -4,10 +4,10 @@ import { useState } from 'react';
 
 import { ReportReason, ReportType } from '@/type/reports';
 import { Flag } from 'lucide-react';
-import posthog from 'posthog-js';
 
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { AnalyticsEvent, trackEvent } from '@/lib/analytics';
 import { useCreateReportMutation } from '@/services/reports';
 
 import { ReportDialog } from './report-dialog';
@@ -50,7 +50,7 @@ export function ReportButton({
       reason: data.reason,
       description: data.description,
     });
-    posthog.capture('content_reported', {
+    trackEvent(AnalyticsEvent.CONTENT_REPORTED, {
       report_reason: data.reason,
       report_type: reportType,
     });

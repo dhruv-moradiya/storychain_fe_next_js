@@ -5,7 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 
 import { ClerkProvider, useUser } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
-import posthog from 'posthog-js';
+
+import { identifyUser, resetUser } from '@/lib/analytics';
 
 interface ClerkThemeProviderProps {
   children: React.ReactNode;
@@ -24,7 +25,7 @@ function PostHogIdentity({ children }: { children: React.ReactNode }) {
 
     if (!isSignedIn || !user) {
       if (identifiedUserId.current) {
-        posthog.reset();
+        resetUser();
         identifiedUserId.current = null;
       }
       return;
@@ -33,7 +34,7 @@ function PostHogIdentity({ children }: { children: React.ReactNode }) {
     if (identifiedUserId.current === user.id) return;
 
     if (identifiedUserId.current) {
-      posthog.reset();
+      resetUser();
     }
 
     const personProperties: Record<string, string> = {};
@@ -43,7 +44,7 @@ function PostHogIdentity({ children }: { children: React.ReactNode }) {
     if (user.fullName) personProperties.$name = user.fullName;
     if (user.username) personProperties.username = user.username;
 
-    posthog.identify(user.id, personProperties);
+    identifyUser(user.id, personProperties);
     identifiedUserId.current = user.id;
   }, [isLoaded, isSignedIn, user]);
 
