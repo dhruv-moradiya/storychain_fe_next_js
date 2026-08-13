@@ -14,6 +14,17 @@ const isPublicRoute = createRouteMatcher([
   '/api/webhooks(.*)', // Webhooks (if any)
   '/pricing(.*)', // Pricing page
   '/how-to-use(.*)', // How to use page
+  '/explore(.*)', // Explore page
+  '/writing-tips(.*)', // Writing tips page
+  '/community-guidelines(.*)', // Community guidelines page
+
+  // Story routes — publicly accessible for SEO / social sharing.
+  // The page UI still checks auth client-side; only the SSR metadata needs
+  // to be reachable by social media crawlers (WhatsApp, Facebook, etc.)
+  // without a Clerk session.
+  '/stories/:slug', // Root story URL (redirects to /overview)
+  '/stories/:slug/overview', // Story overview — main shareable page
+  '/stories/:slug/chapter/:chapterSlug', // Individual chapter read pages
 ]);
 
 // Role-protected routes and their allowed roles
