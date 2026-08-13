@@ -194,9 +194,11 @@ export function buildStoryMeta({
 
   const ogImage = {
     url: resolvedImageUrl,
+    secureUrl: resolvedImageUrl,
     width: 1200,
     height: 630,
     alt: imageAlt,
+    type: resolvedImageUrl.endsWith('.png') ? 'image/png' : 'image/jpeg',
   };
 
   const keywords = [
@@ -209,7 +211,9 @@ export function buildStoryMeta({
   ];
 
   return {
-    title: `${displayTitle} | ${SITE_CONFIG.name}`,
+    // Use {absolute} to bypass the root layout's title template ('%s | StoryChain')
+    // which would otherwise produce "... | StoryChain | StoryChain"
+    title: { absolute: `${displayTitle} | ${SITE_CONFIG.name}` },
     description: metaDescription,
     keywords,
     authors: author ? [{ name: author }] : undefined,
@@ -282,13 +286,16 @@ export function buildChapterMeta({
   const resolvedImageUrl = cardImageUrl || coverImageUrl || SITE_CONFIG.defaultOgImage;
   const ogImage = {
     url: resolvedImageUrl,
+    secureUrl: resolvedImageUrl,
     width: 1200,
     height: 630,
     alt: pageTitle,
+    type: resolvedImageUrl.endsWith('.png') ? 'image/png' : 'image/jpeg',
   };
 
   return {
-    title: `${pageTitle.trim()} | ${SITE_CONFIG.name}`,
+    // Use {absolute} to bypass the root layout's title template
+    title: { absolute: `${pageTitle.trim()} | ${SITE_CONFIG.name}` },
     description: metaDescription,
     authors: authorName ? [{ name: authorName }] : undefined,
     alternates: { canonical: canonicalUrl },
@@ -355,8 +362,22 @@ export function buildProfileMeta({
   const canonicalUrl = toCanonicalUrl(`/profile/${username}`);
 
   const ogImage = avatarUrl
-    ? { url: avatarUrl, width: 400, height: 400, alt: `${name}'s avatar` }
-    : { url: SITE_CONFIG.defaultOgImage, width: 1200, height: 630, alt: pageTitle };
+    ? {
+        url: avatarUrl,
+        secureUrl: avatarUrl,
+        width: 400,
+        height: 400,
+        alt: `${name}'s avatar`,
+        type: avatarUrl.endsWith('.png') ? 'image/png' : 'image/jpeg',
+      }
+    : {
+        url: SITE_CONFIG.defaultOgImage,
+        secureUrl: SITE_CONFIG.defaultOgImage,
+        width: 1200,
+        height: 630,
+        alt: pageTitle,
+        type: 'image/png',
+      };
 
   return {
     title: pageTitle,
@@ -498,7 +519,16 @@ export function buildStaticPageMeta({
       url: canonicalUrl,
       siteName: SITE_CONFIG.name,
       locale: SITE_CONFIG.locale,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+      images: [
+        {
+          url: ogImage,
+          secureUrl: ogImage,
+          width: 1200,
+          height: 630,
+          alt: title,
+          type: ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg',
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
