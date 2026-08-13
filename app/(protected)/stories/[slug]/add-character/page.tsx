@@ -1,8 +1,16 @@
+import type { Metadata } from 'next';
+
 import { AddCharacterForm } from '@/components/add-character/add-character-form';
+import { buildStorySubPageMeta } from '@/components/common';
 import { FadeInView } from '@/lib/animations';
 
 interface AddCharacterPageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: AddCharacterPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  return buildStorySubPageMeta(slug, 'Collaborators'); // Reuses Collaborators label — no dedicated sub-page type needed
 }
 
 export default async function AddCharacterPage({ params }: AddCharacterPageProps) {

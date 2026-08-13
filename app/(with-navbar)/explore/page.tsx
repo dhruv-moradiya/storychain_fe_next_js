@@ -1,3 +1,4 @@
+import { buildStaticPageMeta } from '@/components/common';
 import { AuthorsSection } from '@/components/explore/authors-section';
 import { CompletedStoriesSection } from '@/components/explore/completed-stories-section';
 import { ExperimentalSection } from '@/components/explore/experimental-section';
@@ -9,6 +10,21 @@ import { PersonalizedSection } from '@/components/explore/personalized-section';
 import { RecentlyUpdatedSection } from '@/components/explore/recently-updated-section';
 import { TagsSection } from '@/components/explore/tags-section';
 import { TrendingSection } from '@/components/explore/trending-section';
+
+export const metadata = buildStaticPageMeta({
+  title: 'Explore Stories',
+  description:
+    'Discover trending, new, and community-picked branching stories on StoryChain. Explore by genre, tags, and authors.',
+  path: '/explore',
+  keywords: [
+    'explore stories',
+    'trending stories',
+    'branching narratives',
+    'new releases',
+    'collaborative fiction',
+    'genres',
+  ],
+});
 
 export default function ExplorePage() {
   // In a real implementation, you would check auth state here

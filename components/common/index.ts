@@ -10,6 +10,7 @@ export {
   buildStaticPageMeta,
   buildAppPageMeta,
   getCachedStoryOverview,
+  getCachedPublicUserProfile,
   toMetaDescription,
   toCanonicalUrl,
   SITE_CONFIG,

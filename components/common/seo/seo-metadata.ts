@@ -7,7 +7,9 @@ import { cache } from 'react';
 
 import type { IStoryOverview } from '@/type/story';
 
+import { getPublicStoryMeta } from '@/services/stories/stories-public-api';
 import { getStoryOverviewQueryFn } from '@/services/stories/stories.query';
+import { type IPublicUserMeta, getPublicUserMeta } from '@/services/users/user-public-api';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Site-wide constants
@@ -63,15 +65,74 @@ const NO_INDEX_ROBOTS: Metadata['robots'] = {
 /**
  * React.cache deduplicates story fetches so generateMetadata and page components
  * share a single request per render cycle on the server.
+ *
+ * Strategy:
+ * 1. Try the public (no-auth) endpoint first — works for anonymous social crawlers.
+ * 2. Fall back to the authenticated endpoint — works for logged-in users.
+ * 3. Return null on total failure — caller should provide safe defaults.
  */
 export const getCachedStoryOverview = cache(
   async (slug: string): Promise<IStoryOverview | null> => {
+    // 1. Try public endpoint (no auth required — works for WhatsApp/Facebook/etc.)
+    try {
+      const publicData = await getPublicStoryMeta(slug);
+      if (publicData) {
+        // Shape the public response to match IStoryOverview so callers stay unchanged
+        return {
+          title: publicData.title,
+          slug: publicData.slug,
+          description: publicData.description,
+          status: publicData.status as IStoryOverview['status'],
+          cardImage: publicData.cardImage,
+          coverImage: publicData.coverImage,
+          creator: {
+            clerkId: publicData.creator.clerkId,
+            username: publicData.creator.username,
+            // Fields below are not in the public response; use safe defaults
+            email: '',
+            avatar: '',
+            displayName: publicData.creator.username,
+          },
+          settings: {
+            ...({} as IStoryOverview['settings']),
+            genres: publicData.settings.genres,
+          },
+          stats: {
+            ...({} as IStoryOverview['stats']),
+            totalChapters: publicData.stats.totalChapters,
+          },
+          // Non-SEO fields — safe empty defaults
+          collaborators: [],
+          latestChapters: [],
+          tags: [],
+          genres: publicData.settings.genres,
+          contentRating: 'general' as IStoryOverview['contentRating'],
+          trendingScore: 0,
+          lastActivityAt: new Date(),
+          publishedAt: new Date(),
+        } as unknown as IStoryOverview;
+      }
+    } catch {
+      // Public endpoint unavailable or not yet deployed — fall through
+    }
+
+    // 2. Fall back to authenticated endpoint (works for logged-in users)
     try {
       const res = await getStoryOverviewQueryFn(slug);
       return (res?.data as IStoryOverview) ?? null;
     } catch {
       return null;
     }
+  }
+);
+
+/**
+ * React.cache-wrapped fetch for public user profile metadata.
+ * Tries the public endpoint first (no auth), always returns null on failure.
+ */
+export const getCachedPublicUserProfile = cache(
+  async (userId: string): Promise<IPublicUserMeta | null> => {
+    return await getPublicUserMeta(userId);
   }
 );
 
