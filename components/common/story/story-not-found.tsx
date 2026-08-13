@@ -9,7 +9,7 @@ interface StoryNotFoundProps {
 
 export default function StoryNotFound({ onCreate }: StoryNotFoundProps) {
   return (
-    <div className="from-background/80 via-muted/25 to-muted/60 relative mx-auto max-w-lg overflow-hidden rounded-xl border bg-gradient-to-b px-6 py-14 shadow-xl">
+    <div className="from-background/80 via-muted/25 to-muted/60 relative mx-auto max-w-lg overflow-hidden rounded-xl bg-linear-to-b px-6 py-14">
       {/* Glow Background */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.10),transparent_70%)]" />
 

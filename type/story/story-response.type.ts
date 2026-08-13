@@ -72,6 +72,8 @@ interface IStoryTreeResponse extends IBaseResponse<{ chapters: IChapterTreeItem[
 
 interface IStorySettingsResponse extends IBaseResponse<{
   settings: IStorySettings;
+  status?: TStoryStatus;
+  monetizationEnabled?: boolean;
   coverImage?: IImageAsset;
   cardImage?: IImageAsset;
 }> {}
@@ -120,7 +122,6 @@ interface ISendInvitationBody {
   invitedUserName: string;
 }
 
-// ── Images ────────────────────────────────────────────────────────────────────
 interface ICloudinarySignatureResponse extends IBaseResponse<{
   uploadURL: string;
 }> {}
@@ -134,6 +135,10 @@ interface ICreateStoryResponse extends IBaseResponse<{
   status: TStoryStatus;
   createdAt: string;
 }> {}
+
+interface IPublishStoryResponse extends IBaseResponse<{}> {}
+
+interface IChangeStoryStatusResponse extends IBaseResponse<{}> {}
 
 /** GET /stories/slug/:slug/user-role */
 interface IUserStoryRoleResponse extends IBaseResponse<{
@@ -182,6 +187,8 @@ export interface ICheckStoryBanData {
 export interface ICheckStoryBanResponse extends IBaseResponse<ICheckStoryBanData> {}
 
 export type {
+  IPublishStoryResponse,
+  IChangeStoryStatusResponse,
   ICloudinarySignatureResponse,
   ICollaboratorActionData,
   ICollaboratorListResponse,

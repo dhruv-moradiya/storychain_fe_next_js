@@ -11,21 +11,22 @@ import {
   ReportType,
 } from '@/type/reports';
 import { formatDistanceToNow } from 'date-fns';
-import { AlertTriangle, Filter, RefreshCw, Search, Shield } from 'lucide-react';
+import {
+  AlertTriangle,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  Filter,
+  RefreshCw,
+  Search,
+  Shield,
+} from 'lucide-react';
 
 import { reportReasonBadge, reportStatusBadge, reportTypeBadge } from '@/components/common/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
 import {
   Select,
   SelectContent,
@@ -36,6 +37,7 @@ import {
 import { useGetStoryReports, useResolveStoryReportMutation } from '@/services/reports';
 
 import ReportDetailDialog from './report-detail-dialog';
+import { ReportsStats } from './reports-stats';
 
 interface ReportsTableSectionProps {
   slug: string;
@@ -44,6 +46,7 @@ interface ReportsTableSectionProps {
 export function ReportsTableSection({ slug }: ReportsTableSectionProps) {
   // Query Filters State
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [typeFilter, setTypeFilter] = useState<string>('all');
@@ -51,7 +54,7 @@ export function ReportsTableSection({ slug }: ReportsTableSectionProps) {
   // React Query integration
   const queryParams = {
     page,
-    limit: 10,
+    limit,
     ...(statusFilter !== 'all' && { status: statusFilter as ReportStatus }),
     ...(typeFilter !== 'all' && { reportType: typeFilter as ReportType }),
   };
@@ -188,6 +191,14 @@ export function ReportsTableSection({ slug }: ReportsTableSectionProps) {
         </div>
       </div>
 
+      {/* Reports Overview Stats Cards */}
+      <ReportsStats
+        totalReports={totalDocs || 0}
+        pendingReports={4}
+        resolvedReports={7}
+        totalAppeals={1}
+      />
+
       {/* REPORTS LIST TABLE CONTAINER */}
       <div className="border-border/50 bg-card/50 space-y-4 rounded-2xl border p-5 shadow-2xs">
         {isLoading ? (
@@ -281,67 +292,78 @@ export function ReportsTableSection({ slug }: ReportsTableSectionProps) {
           </div>
         )}
 
-        {/* Pagination Component */}
-        {totalPages > 1 && (
-          <div className="border-border/40 flex flex-col items-center justify-between gap-3 border-t pt-4 text-xs sm:flex-row">
-            <span className="text-text-secondary-65">
-              Page {page} of {totalPages} ({totalDocs} reports total)
-            </span>
-            <Pagination className="mx-0 w-auto justify-center sm:justify-end">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (page > 1) setPage((p) => Math.max(1, p - 1));
-                    }}
-                    className={page <= 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                  />
-                </PaginationItem>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1)
-                  .filter((p) => p === 1 || p === totalPages || (p >= page - 1 && p <= page + 1))
-                  .map((p, idx, arr) => {
-                    const prevPage = arr[idx - 1];
-                    const showEllipsis = prevPage && p - prevPage > 1;
-                    return (
-                      <React.Fragment key={p}>
-                        {showEllipsis && (
-                          <PaginationItem>
-                            <PaginationEllipsis />
-                          </PaginationItem>
-                        )}
-                        <PaginationItem>
-                          <PaginationLink
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setPage(p);
-                            }}
-                            isActive={p === page}
-                            className="cursor-pointer"
-                          >
-                            {p}
-                          </PaginationLink>
-                        </PaginationItem>
-                      </React.Fragment>
-                    );
-                  })}
-
-                <PaginationItem>
-                  <PaginationNext
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (page < totalPages) setPage((p) => Math.min(totalPages, p + 1));
-                    }}
-                    className={
-                      page >= totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'
-                    }
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+        {/* Pagination Component - Matching Chapters Page UI */}
+        <div className="border-border/40 bg-muted/10 flex flex-col gap-3 rounded-xl border-t px-5 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="text-text-secondary-50 hidden text-xs sm:block">
+            {totalDocs} report{totalDocs !== 1 ? 's' : ''} total
           </div>
-        )}
+          <div className="flex w-full flex-wrap items-center justify-between gap-4 sm:w-auto sm:justify-end">
+            <div className="flex items-center gap-2">
+              <p className="text-text-secondary-65 text-xs font-medium">Rows per page</p>
+              <Select
+                value={`${limit}`}
+                onValueChange={(value) => {
+                  setLimit(Number(value));
+                  setPage(1);
+                }}
+              >
+                <SelectTrigger className="border-border/40 bg-card text-text-primary h-8 w-[68px] text-xs">
+                  <SelectValue placeholder={limit} />
+                </SelectTrigger>
+                <SelectContent side="top">
+                  {[5, 10, 20, 50].map((size) => (
+                    <SelectItem key={size} value={`${size}`}>
+                      {size}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="text-text-secondary-65 flex items-center justify-center text-xs font-medium">
+              Page {page} of {Math.max(1, totalPages)}
+            </div>
+
+            <div className="flex items-center gap-1">
+              <Button
+                variant="outline"
+                className="border-border/40 text-text-secondary-65 hover:text-text-primary hover:bg-muted/30 hidden h-8 w-8 cursor-pointer p-0 lg:flex"
+                onClick={() => setPage(1)}
+                disabled={page <= 1}
+              >
+                <span className="sr-only">Go to first page</span>
+                <ChevronsLeft className="h-3.5 w-3.5" />
+              </Button>
+              <Button
+                variant="outline"
+                className="border-border/40 text-text-secondary-65 hover:text-text-primary hover:bg-muted/30 h-8 w-8 cursor-pointer p-0"
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page <= 1}
+              >
+                <span className="sr-only">Go to previous page</span>
+                <ChevronLeft className="h-3.5 w-3.5" />
+              </Button>
+              <Button
+                variant="outline"
+                className="border-border/40 text-text-secondary-65 hover:text-text-primary hover:bg-muted/30 h-8 w-8 cursor-pointer p-0"
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={page >= totalPages}
+              >
+                <span className="sr-only">Go to next page</span>
+                <ChevronRight className="h-3.5 w-3.5" />
+              </Button>
+              <Button
+                variant="outline"
+                className="border-border/40 text-text-secondary-65 hover:text-text-primary hover:bg-muted/30 hidden h-8 w-8 cursor-pointer p-0 lg:flex"
+                onClick={() => setPage(totalPages)}
+                disabled={page >= totalPages}
+              >
+                <span className="sr-only">Go to last page</span>
+                <ChevronsRight className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Detail Dialog */}

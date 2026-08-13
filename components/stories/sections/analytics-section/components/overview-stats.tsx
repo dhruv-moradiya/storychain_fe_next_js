@@ -2,13 +2,14 @@
 
 import { motion } from 'framer-motion';
 import {
+  BookOpen,
+  Bookmark,
+  Coins,
   Eye,
   MessageSquare,
-  Star,
   ThumbsUp,
   TrendingDown,
   TrendingUp,
-  UserPlus,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -21,8 +22,17 @@ interface OverviewStatsProps {
 
 const statConfig = [
   {
+    key: 'totalChapters',
+    label: 'Total Chapters',
+    icon: BookOpen,
+    color: 'text-emerald-500',
+    bgColor: 'bg-emerald-500/10',
+    changeKey: 'chaptersChange',
+    format: (v: number) => v.toString(),
+  },
+  {
     key: 'totalReads',
-    label: 'Reads',
+    label: 'Total Reads',
     icon: Eye,
     color: 'text-brand-pink-500',
     bgColor: 'bg-brand-pink-500/10',
@@ -30,12 +40,12 @@ const statConfig = [
     format: (v: number) => (v >= 1000 ? `${(v / 1000).toFixed(1)}K` : v.toString()),
   },
   {
-    key: 'totalVotes',
-    label: 'Votes',
+    key: 'totalUpvotes',
+    label: 'Upvotes',
     icon: ThumbsUp,
     color: 'text-brand-blue',
     bgColor: 'bg-brand-blue/10',
-    changeKey: 'votesChange',
+    changeKey: 'upvotesChange',
     format: (v: number) => (v >= 1000 ? `${(v / 1000).toFixed(1)}K` : v.toString()),
   },
   {
@@ -45,25 +55,24 @@ const statConfig = [
     color: 'text-brand-orange',
     bgColor: 'bg-brand-orange/10',
     changeKey: 'commentsChange',
+    format: (v: number) => (v >= 1000 ? `${(v / 1000).toFixed(1)}K` : v.toString()),
+  },
+  {
+    key: 'totalBookmarks',
+    label: 'Bookmarks',
+    icon: Bookmark,
+    color: 'text-purple-500',
+    bgColor: 'bg-purple-500/10',
+    changeKey: 'bookmarksChange',
     format: (v: number) => v.toString(),
   },
   {
-    key: 'rating',
-    label: 'Rating',
-    icon: Star,
+    key: 'coinUnlocks',
+    label: 'Chapter Unlocks',
+    icon: Coins,
     color: 'text-amber-500',
     bgColor: 'bg-amber-500/10',
-    changeKey: 'ratingChange',
-    format: (v: number) => v.toFixed(1),
-    isRating: true,
-  },
-  {
-    key: 'newSubscribers',
-    label: 'New Subs',
-    icon: UserPlus,
-    color: 'text-green-500',
-    bgColor: 'bg-green-500/10',
-    changeKey: 'subscribersChange',
+    changeKey: 'unlocksChange',
     format: (v: number) => v.toString(),
   },
 ] as const;
@@ -76,12 +85,23 @@ export function OverviewStats({ data }: OverviewStatsProps) {
       transition={{ duration: 0.4 }}
       className="border-border/50 bg-cream-95 rounded-xl border p-4"
     >
-      <h3 className="text-text-primary mb-4 flex items-center gap-2 text-sm font-semibold tracking-wide uppercase">
-        <div className="bg-brand-pink-500 h-1 w-1 rounded-full" />
-        Overview
-      </h3>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+        <h3 className="text-text-primary flex items-center gap-2 text-sm font-semibold tracking-wide uppercase">
+          <div className="bg-brand-pink-500 h-1 w-1 rounded-full" />
+          Performance Overview
+        </h3>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 rounded-full bg-amber-500/10 px-2.5 py-0.5 text-xs font-semibold text-amber-600">
+            <Coins className="h-3 w-3" />
+            <span>{data.unlockedUsersCount} Unlocked Readers</span>
+          </div>
+          <div className="bg-brand-blue/10 text-brand-blue flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold">
+            <span>{data.upvoteRatio}% Positive</span>
+          </div>
+        </div>
+      </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         {statConfig.map((config, index) => {
           const Icon = config.icon;
           const value = data[config.key as keyof typeof data] as number;
@@ -93,7 +113,7 @@ export function OverviewStats({ data }: OverviewStatsProps) {
               key={config.key}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
+              transition={{ duration: 0.3, delay: index * 0.04 }}
               className="group border-border/50 bg-cream-90/50 hover:border-brand-pink-500/30 hover:bg-cream-90 rounded-lg border p-3 transition-all hover:shadow-sm"
             >
               <div className="mb-2 flex items-center justify-between">

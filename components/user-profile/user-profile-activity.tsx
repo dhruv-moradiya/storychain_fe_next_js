@@ -3,8 +3,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { IUserChapterWrittenItem } from '@/type/user/user-response.type';
 import { motion } from 'framer-motion';
-import { ArrowRight, Award, BookOpen, Eye, FileText, Heart, type LucideIcon } from 'lucide-react';
+import { Award, BookOpen, Eye, Feather, Heart, type LucideIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
@@ -14,120 +15,147 @@ interface Activity {
   subtitle: string;
   date: string;
   imageUrl?: string;
+  url?: string;
 }
 
 interface UserProfileActivityProps {
-  activities: Activity[];
+  activities?: Activity[];
+  chaptersWritten?: IUserChapterWrittenItem[];
 }
 
 const activityConfig: Record<string, { icon: LucideIcon; color: string; bg: string }> = {
   chapter: {
-    icon: FileText,
-    color: 'text-brand-pink-500',
-    bg: 'bg-brand-pink-500/10',
+    icon: Feather,
+    color: 'text-primary',
+    bg: 'bg-primary/10 border-primary/20',
   },
   story: {
     icon: BookOpen,
-    color: 'text-brand-orange',
-    bg: 'bg-brand-orange/10',
+    color: 'text-chart-2',
+    bg: 'bg-chart-2/10 border-chart-2/20',
   },
   reads: {
     icon: Eye,
-    color: 'text-blue-500',
-    bg: 'bg-blue-500/10',
+    color: 'text-chart-4',
+    bg: 'bg-chart-4/10 border-chart-4/20',
   },
   badge: {
     icon: Award,
-    color: 'text-yellow-500',
-    bg: 'bg-yellow-500/10',
+    color: 'text-amber-500',
+    bg: 'bg-amber-500/10 border-amber-500/20',
   },
   like: {
     icon: Heart,
-    color: 'text-red-500',
-    bg: 'bg-red-500/10',
+    color: 'text-destructive',
+    bg: 'bg-destructive/10 border-destructive/20',
   },
 };
 
-function UserProfileActivity({ activities }: UserProfileActivityProps) {
+function formatDate(dateVal?: Date | string): string {
+  if (!dateVal) return '';
+  const d = new Date(dateVal);
+  if (isNaN(d.getTime())) return '';
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function UserProfileActivity({ activities, chaptersWritten }: UserProfileActivityProps) {
+  const items: Activity[] = [];
+
+  if (chaptersWritten && chaptersWritten.length > 0) {
+    chaptersWritten.forEach((ch) => {
+      items.push({
+        type: 'chapter',
+        title: ch.title || `Chapter #${ch.chapterNumber ?? 1}`,
+        subtitle: ch.storyTitle ? `From: ${ch.storyTitle}` : `Story: ${ch.storySlug}`,
+        date: formatDate(ch.createdAt),
+        url: `/stories/${ch.storySlug}/chapter/${ch.slug}`,
+      });
+    });
+  } else if (activities && activities.length > 0) {
+    items.push(...activities);
+  }
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
-      className="border-border/50 bg-cream-95 rounded-xl border p-5"
+      className="border-border bg-card text-card-foreground rounded-xl border p-5 shadow-sm"
     >
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-text-primary font-semibold">Recent Activity</h3>
-        <Link
-          href="/activity"
-          className="text-brand-pink-500 flex items-center gap-1 text-xs hover:underline"
-        >
-          View all activity
-          <ArrowRight className="h-3 w-3" />
-        </Link>
+        <h3 className="text-foreground font-bold">Written Chapters</h3>
       </div>
 
-      <div className="space-y-3">
-        {activities.map((activity, index) => {
-          const config = activityConfig[activity.type] ?? activityConfig.story;
-          const Icon = config.icon;
+      {items.length > 0 ? (
+        <div className="space-y-2.5">
+          {items.map((activity, index) => {
+            const config = activityConfig[activity.type] ?? activityConfig.chapter;
+            const Icon = config.icon;
 
-          return (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.25 + index * 0.07 }}
-              className="flex items-center gap-3"
-            >
-              {/* Icon or thumbnail */}
-              {activity.imageUrl ? (
-                <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg">
-                  <Image
-                    src={activity.imageUrl}
-                    alt={activity.title}
-                    fill
-                    className="object-cover"
-                    sizes="48px"
-                  />
+            const content = (
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 + index * 0.04 }}
+                className="group border-border bg-muted/30 hover:border-primary/40 hover:bg-accent/40 flex items-center gap-3.5 rounded-xl border p-3.5 shadow-sm transition-all"
+              >
+                {/* Icon or thumbnail */}
+                {activity.imageUrl ? (
+                  <div className="border-border relative h-11 w-11 shrink-0 overflow-hidden rounded-lg border">
+                    <Image
+                      src={activity.imageUrl}
+                      alt={activity.title}
+                      fill
+                      className="object-cover"
+                      sizes="44px"
+                      unoptimized
+                    />
+                  </div>
+                ) : (
                   <div
                     className={cn(
-                      'absolute right-0 bottom-0 flex h-5 w-5 items-center justify-center rounded-tl-lg',
+                      'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border',
                       config.bg
                     )}
                   >
-                    <Icon className={cn('h-3 w-3', config.color)} />
+                    <Icon className={cn('h-4 w-4', config.color)} />
                   </div>
+                )}
+
+                {/* Text */}
+                <div className="min-w-0 flex-1">
+                  <p className="text-foreground group-hover:text-primary line-clamp-1 text-sm font-bold transition-colors">
+                    {activity.title}
+                  </p>
+                  <p className="text-muted-foreground mt-0.5 line-clamp-1 text-xs font-medium">
+                    {activity.subtitle}
+                  </p>
                 </div>
-              ) : (
-                <div
-                  className={cn(
-                    'flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl',
-                    config.bg
-                  )}
-                >
-                  <Icon className={cn('h-5 w-5', config.color)} />
-                </div>
-              )}
 
-              {/* Text */}
-              <div className="min-w-0 flex-1">
-                <p className="text-text-primary text-sm leading-tight font-semibold">
-                  {activity.title}
-                </p>
-                <p className="text-text-secondary-65 line-clamp-1 text-xs">{activity.subtitle}</p>
-              </div>
+                {/* Date */}
+                {activity.date && (
+                  <span className="text-muted-foreground shrink-0 font-mono text-xs">
+                    {activity.date}
+                  </span>
+                )}
+              </motion.div>
+            );
 
-              {/* Date */}
-              <span className="text-text-secondary-65 flex-shrink-0 text-xs">{activity.date}</span>
-            </motion.div>
-          );
-        })}
-      </div>
+            if (activity.url) {
+              return (
+                <Link key={index} href={activity.url} className="block">
+                  {content}
+                </Link>
+              );
+            }
 
-      {activities.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-6 text-center">
-          <p className="text-text-secondary-65 text-sm">No recent activity</p>
+            return <div key={index}>{content}</div>;
+          })}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-8 text-center">
+          <Feather className="text-muted-foreground/40 mb-2 h-10 w-10" />
+          <p className="text-muted-foreground text-sm">No chapters written yet</p>
         </div>
       )}
     </motion.div>

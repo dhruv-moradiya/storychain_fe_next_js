@@ -102,7 +102,7 @@ export function NewReleasesSection() {
       </div>
 
       <div className="grid grid-cols-3 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-5">
-        {data.data.length > 0 ? (
+        {data.data.length > 0 && (
           <>
             {data.data.map((story) => (
               <div
@@ -150,27 +150,29 @@ export function NewReleasesSection() {
               </div>
             ))}
           </>
-        ) : (
-          <Empty className="relative mx-auto my-8 max-w-lg overflow-hidden rounded-xl py-14 shadow-xl">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12),transparent_70%)]" />
-            <EmptyHeader>
-              <div className="relative flex items-center justify-center">
-                <div className="bg-primary/20 absolute h-24 w-24 animate-pulse rounded-full blur-2xl" />
-                <EmptyMedia variant="icon" className="text-primary drop-shadow-md">
-                  <BookOpen size={46} strokeWidth={1.4} />
-                </EmptyMedia>
-              </div>
-              <EmptyTitle className="text-xl font-semibold tracking-tight">
-                No Fresh Stories Yet
-              </EmptyTitle>
-              <EmptyDescription className="mx-auto max-w-md leading-relaxed text-balance">
-                It seems there are no brand new stories at the moment. Check back later or start
-                writing your own!
-              </EmptyDescription>
-            </EmptyHeader>
-          </Empty>
         )}
       </div>
+
+      {data.data.length === 0 && (
+        <Empty className="relative mx-auto my-8 max-w-lg overflow-hidden rounded-xl py-14">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12),transparent_70%)]" />
+          <EmptyHeader>
+            <div className="relative flex items-center justify-center">
+              <div className="bg-primary/20 absolute h-24 w-24 animate-pulse rounded-full blur-2xl" />
+              <EmptyMedia variant="icon" className="text-primary drop-shadow-md">
+                <BookOpen size={46} strokeWidth={1.4} />
+              </EmptyMedia>
+            </div>
+            <EmptyTitle className="text-xl font-semibold tracking-tight">
+              No Fresh Stories Yet
+            </EmptyTitle>
+            <EmptyDescription className="mx-auto max-w-md leading-relaxed text-balance">
+              It seems there are no brand new stories at the moment. Check back later or start
+              writing your own!
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      )}
     </section>
   );
 }

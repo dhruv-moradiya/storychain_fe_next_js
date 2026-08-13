@@ -9,7 +9,6 @@ import {
   Bookmark,
   Check,
   ChevronDown,
-  CreditCard,
   FileWarning,
   Settings,
   Shield,

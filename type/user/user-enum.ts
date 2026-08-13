@@ -27,6 +27,8 @@ const PLATFORM_ROLE_HIERARCHY: PlatformRole[] = [
   PlatformRole.SUPER_ADMIN,
 ];
 
+export type TPlatformRoleType = `${PlatformRole}`;
+
 export const PLATFORM_ROLES = {
   SUPER_ADMIN: {
     canBanUsers: true,

@@ -73,3 +73,6 @@ export {
 
 // Transaction-specific badges
 export { coinTxTypeBadge, coinTxDirectionBadge } from './transaction-badges';
+
+// User & Role specific badges
+export { PLATFORM_ROLE_COLORS, PLATFORM_ROLE_LABELS, platformRoleBadge } from './user-badges';

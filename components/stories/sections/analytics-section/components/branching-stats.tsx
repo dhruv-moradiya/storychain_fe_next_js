@@ -66,35 +66,6 @@ export const BranchingStats = ({ data }: BranchingStatsProps) => {
               </div>
             </div>
           </div>
-
-          {/* Top Branches List */}
-          <div className="mt-8">
-            <h3 className="text-text-primary mb-4 text-sm font-semibold">Most Popular Branches</h3>
-            <div className="bg-bg-cream-dark/30 divide-border/40 border-border/40 divide-y overflow-hidden rounded-xl border">
-              {data.topBranches.map((branch, index) => (
-                <div
-                  key={index}
-                  className="hover:bg-bg-cream-dark/50 flex items-center justify-between p-4 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="bg-brand-pink-500/10 text-brand-pink-500 flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold">
-                      {index + 1}
-                    </span>
-                    <span className="text-text-primary font-medium">{branch.name}</span>
-                  </div>
-                  <div className="flex items-center gap-6">
-                    <div className="flex items-center gap-2 text-xs">
-                      <span className="text-text-secondary-65">Depth:</span>
-                      <SecondaryBadge label={`${branch.depth} Levels`} size="sm" />
-                    </div>
-                    <div className="text-text-secondary-65 text-sm font-medium">
-                      {branch.reads.toLocaleString()} reads
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </CardContent>
       </Card>
     </div>

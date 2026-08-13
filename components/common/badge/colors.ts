@@ -5,11 +5,8 @@ import {
   Eye,
   Handshake,
   type LucideIcon,
-  MoreHorizontal,
   PenTool,
   Shield,
-  Trash2,
-  UserCog,
   XCircle,
 } from 'lucide-react';
 

@@ -125,7 +125,12 @@ const SettingSection = ({ slug }: SettingSectionProps) => {
           </motion.div>
 
           <TabsContent value="general" className="mt-0">
-            <GeneralTab settings={settings.settings} onSettingUpdate={handleSettingUpdate} />
+            <GeneralTab
+              slug={slug}
+              status={settings.status}
+              settings={settings.settings}
+              onSettingUpdate={handleSettingUpdate}
+            />
           </TabsContent>
 
           <TabsContent value="appearance" className="mt-0">

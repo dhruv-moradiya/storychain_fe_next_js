@@ -12,6 +12,8 @@ export interface ReadData {
   date: string;
   reads: number;
   uniqueVisitors: number;
+  upvotes: number;
+  unlocks: number;
 }
 
 export interface TopChapter {
@@ -19,19 +21,32 @@ export interface TopChapter {
   title: string;
   chapterNumber: number;
   reads: number;
+  unlocks: number;
+  upvotes: number;
+  isLocked: boolean;
   change: number;
 }
 
-export interface FunnelStep {
-  label: string;
-  value: number;
-  percentage: number;
+export interface ChapterRetentionData {
+  chapterNumber: number;
+  title: string;
+  readers: number;
+  retentionPercentage: number;
 }
 
-export interface ReadingProgressData {
-  label: string;
-  value: number;
-  [key: string]: string | number;
+export interface ContributionStats {
+  totalPRs: number;
+  mergedPRs: number;
+  pendingPRs: number;
+  acceptanceRate: number;
+  activeContributors: number;
+  recentPRs: {
+    id: string;
+    title: string;
+    author: string;
+    status: 'merged' | 'pending' | 'rejected';
+    date: string;
+  }[];
 }
 
 export interface BranchStats {
@@ -39,30 +54,30 @@ export interface BranchStats {
   activeBranches: number;
   maxDepth: number;
   avgReadsPerBranch: number;
-  topBranches: {
-    name: string;
-    reads: number;
-    depth: number;
-  }[];
 }
 
 export interface AnalyticsData {
   overview: {
+    totalChapters: number;
     totalReads: number;
-    totalVotes: number;
+    totalUpvotes: number;
+    upvoteRatio: number;
     totalComments: number;
-    rating: number;
-    newSubscribers: number;
+    totalBookmarks: number;
+    coinUnlocks: number;
+    unlockedUsersCount: number;
+    chaptersChange: number;
     readsChange: number;
-    votesChange: number;
+    upvotesChange: number;
     commentsChange: number;
-    ratingChange: number;
-    subscribersChange: number;
+    bookmarksChange: number;
+    unlocksChange: number;
   };
   readsOverTime: ReadData[];
   topChapters: TopChapter[];
-  readingProgress: ReadingProgressData[];
+  chapterRetention: ChapterRetentionData[];
   branchingStats: BranchStats;
+  contributionStats: ContributionStats;
 }
 
 export type DateRange = '7d' | '30d' | '90d' | '1y' | 'all';

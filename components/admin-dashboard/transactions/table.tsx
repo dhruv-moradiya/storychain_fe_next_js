@@ -3,10 +3,10 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { COIN_TX_DIRECTIONS, COIN_TX_TYPES } from '@/type/transaction/transaction-enum';
+import { COIN_TX_TYPES } from '@/type/transaction/transaction-enum';
 import { ITransaction } from '@/type/transaction/transaction-response';
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { ArrowDownLeft, ArrowUpRight, Filter, Receipt, RefreshCw, Search } from 'lucide-react';
+import { Filter, Receipt, RefreshCw, Search } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

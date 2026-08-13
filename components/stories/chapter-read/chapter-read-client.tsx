@@ -36,7 +36,6 @@ export default function ChapterReadClient({
   initialData,
   storySlug,
   chapterSlug,
-  chapterData,
 }: ChapterReadClientProps) {
   const {
     isVisible: isOverlayVisible,
@@ -104,17 +103,21 @@ export default function ChapterReadClient({
     events.forEach((event) => window.addEventListener(event, updateInteraction));
 
     const interval = setInterval(() => {
-      const isVisible = document.visibilityState === 'visible';
-      const hasInteraction = Date.now() - lastInteractionTime < 35000;
+      recordSession({
+        storySlug,
+        chapterSlug,
+        sessionId,
+        duration: 30,
+      });
 
-      if (isVisible && hasInteraction) {
-        recordSession({
-          storySlug,
-          chapterSlug,
-          sessionId,
-          duration: 30,
-        });
-      }
+      // if (isVisible && hasInteraction) {
+      //   recordSession({
+      //     storySlug,
+      //     chapterSlug,
+      //     sessionId,
+      //     duration: 30,
+      //   });
+      // }
     }, 30000);
 
     return () => {

@@ -1,6 +1,7 @@
 import { IAlbumQueryFilters } from '@/type/album/album-request.types';
 import { ICoinBundleListFilters } from '@/type/coin-bundle/coin-bundle.type';
 import { IPaginatedReportQueryParams } from '@/type/reports';
+import { IAdminStoriesQueryParams } from '@/type/story/admin-story.type';
 import { IPaginatedUserQueryParams } from '@/type/user/user-request.type';
 
 export const QueryKey = {
@@ -16,6 +17,7 @@ export const QueryKey = {
     searchByUsername: (username: string) => ['user', 'search', username] as const,
     getWallet: ['user', 'wallet'] as const,
     list: (filters?: IPaginatedUserQueryParams) => ['user', 'list', filters ?? {}] as const,
+    detailByClerkId: (clerkId: string) => ['user', 'detail', clerkId] as const,
   },
 
   notification: {
@@ -40,6 +42,8 @@ export const QueryKey = {
     // STORY ROUTES
     // ----------------
     list: ['story', 'list'] as const,
+    adminList: (filters?: IAdminStoriesQueryParams) =>
+      ['story', 'adminList', filters ?? {}] as const,
     new: ['story', 'new'] as const,
     my: ['story', 'my'] as const,
 

@@ -1,6 +1,10 @@
 import { IBaseResponse } from '@/type/base-response.type';
+// -----------------
+// USER DETAIL PAGE
+// -----------------
+import { IStory } from '@/type/story/story.types';
 
-import { AUTH_PROVIDER, BAN_TYPES, PlatformRole } from './user-enum';
+import { AUTH_PROVIDER, PlatformRole, TPlatformRoleType } from './user-enum';
 import { TBanType } from './user-request.type';
 
 export type TAuthProvider = (typeof AUTH_PROVIDER)[number];
@@ -115,6 +119,7 @@ export interface IPaginatedUserData extends Omit<IUser, 'badges' | 'role'> {
   connectedAccounts: IConnectedAccount[];
   primaryAuthMethod: TAuthProvider;
   emailVerified: boolean;
+  role: TPlatformRoleType;
 }
 
 export interface IPaginatedUserResponseData {
@@ -151,3 +156,65 @@ export interface IWallet {
 export type TGetWalletResponse = IBaseResponse<IWallet>;
 
 export type IBanUserResponse = IBaseResponse<IBanHistory>;
+
+export interface IUserBadgeDetail {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  isUnlocked: boolean;
+}
+
+export interface IUserAchievementsResponse {
+  badges: IUserBadgeDetail[];
+  level: number;
+  levelTitle: string;
+  xp: number;
+  nextLevelXp: number;
+}
+
+export interface IUserChapterWrittenItem {
+  _id: string;
+  title: string;
+  slug: string;
+  storySlug: string;
+  storyTitle?: string;
+  chapterNumber?: number;
+  depth: number;
+  status: string;
+  votes?: {
+    upvotes: number;
+    downvotes: number;
+    score: number;
+  };
+  stats?: {
+    reads: number;
+    comments: number;
+    childBranches: number;
+  };
+  createdAt: Date | string;
+  updatedAt: Date | string;
+}
+
+export interface IUserDetailPageData {
+  user: {
+    clerkId: string;
+    username: string;
+    email: string;
+    bio?: string;
+    avatarUrl?: string;
+    level: number;
+    levelTitle: string;
+    xp: number;
+    nextLevelXp: number;
+    stats: IUserStats;
+    isActive: boolean;
+    lastActive: Date | string;
+    createdAt: Date | string;
+  };
+  stories: IStory[];
+  achievements: IUserAchievementsResponse;
+  chaptersWritten: IUserChapterWrittenItem[];
+}
+
+export type IUserDetailPageResponse = IBaseResponse<IUserDetailPageData>;

@@ -60,7 +60,6 @@ function DatePickerField({
   value,
   onChange,
   placeholder = 'Pick a date',
-  error,
 }: DatePickerFieldProps) {
   const selected = parseDateString(value);
 

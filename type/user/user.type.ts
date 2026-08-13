@@ -17,7 +17,7 @@ type UserRole = TPlatformRoleKey;
 interface IUserPreviewWithEmail {
   clerkId: string;
   username: string;
-  avatar: string;
+  avatarUrl: string;
   email: string;
 }
 

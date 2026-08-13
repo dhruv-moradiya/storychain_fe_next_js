@@ -1,3 +1,8 @@
+import { IBaseResponse } from '@/type/base-response.type';
+import {
+  IAdminStoriesPaginatedResponse,
+  IAdminStoriesQueryParams,
+} from '@/type/story/admin-story.type';
 import {
   ICollaboratorListResponse,
   IStoryBasicResponse,
@@ -18,6 +23,11 @@ import { StoryApi } from './stories-api';
 
 export const getUserStoriesQueryFn = async () => {
   const response = await StoryApi.getUserStories();
+  return response.data;
+};
+
+export const getAdminStoriesQueryFn = async (params?: IAdminStoriesQueryParams) => {
+  const response = await StoryApi.getAdminStories(params);
   return response.data;
 };
 
@@ -62,6 +72,25 @@ export const useGetUserStories = (
   return useQuery({
     queryKey: QueryKey.story.my,
     queryFn: getUserStoriesQueryFn,
+    ...options,
+  });
+};
+
+export const useGetAdminStories = (
+  params?: IAdminStoriesQueryParams,
+  options?: Omit<
+    UseQueryOptions<
+      IBaseResponse<IAdminStoriesPaginatedResponse>,
+      AxiosError,
+      IBaseResponse<IAdminStoriesPaginatedResponse>,
+      ReturnType<typeof QueryKey.story.adminList>
+    >,
+    'queryKey' | 'queryFn'
+  >
+) => {
+  return useQuery({
+    queryKey: QueryKey.story.adminList(params),
+    queryFn: () => getAdminStoriesQueryFn(params),
     ...options,
   });
 };

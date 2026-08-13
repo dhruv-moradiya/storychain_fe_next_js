@@ -93,8 +93,6 @@ export const DashboardSidebar = () => {
   const pathname = usePathname();
   const { signOut } = useClerk();
   const { theme, setTheme } = useTheme();
-  const { data: userResponse } = useMe();
-  const user = userResponse?.data;
 
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => {
@@ -102,20 +100,6 @@ export const DashboardSidebar = () => {
   }, []);
 
   const currentTheme = mounted ? theme : 'system';
-
-  // const initials = getInitials(user?.username, 'AD');
-  // const displayName = user?.username || 'Admin';
-
-  // Format role string nicely (e.g. SUPER_ADMIN -> Super Admin)
-  const formatRole = (role?: string) => {
-    if (!role) return 'Super Admin';
-    return role
-      .split('_')
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-      .join(' ');
-  };
-
-  // const displayRole = user?.role ? formatRole(user.role) : 'Super Admin';
 
   return (
     <Sidebar className="border-border-soft **:data-[sidebar=sidebar]:bg-background! border-r bg-transparent">

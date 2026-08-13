@@ -31,7 +31,7 @@ import {
   Users,
 } from 'lucide-react';
 
-import chapterBadge, { chapterStatusBadge } from '@/components/common/badge';
+import { chapterStatusBadge } from '@/components/common/badge';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';

@@ -13,6 +13,7 @@ import { useUser } from '@clerk/nextjs';
 import { format } from 'date-fns';
 import { ShieldAlert } from 'lucide-react';
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -28,6 +29,7 @@ import {
   hasMinRole,
   hasPermission,
 } from '@/lib/story-role-utils';
+import { getInitials } from '@/lib/utils';
 import { useCheckUserStoryBan, useGetUserRole } from '@/services/stories/stories.query';
 
 interface StoryRoleContextValue {
@@ -107,15 +109,17 @@ export function StoryRoleProvider({ children }: { children: React.ReactNode }) {
                       Banned By
                     </span>
                     <div className="mt-1 flex items-center gap-1.5">
-                      {banDetails.bannedBy?.avatarUrl && (
-                        <img
-                          src={banDetails.bannedBy.avatarUrl}
-                          alt={banDetails.bannedBy.username}
-                          className="size-4 rounded-full object-cover"
+                      <Avatar className="size-4">
+                        <AvatarImage
+                          src={banDetails.bannedBy?.avatarUrl}
+                          alt={banDetails.bannedBy?.username || 'Moderator'}
                         />
-                      )}
+                        <AvatarFallback className="text-[9px]">
+                          {getInitials(banDetails.bannedBy?.username || 'M')}
+                        </AvatarFallback>
+                      </Avatar>
                       <span className="text-text-primary font-medium">
-                        @{banDetails.bannedBy.username || 'Moderator'}
+                        @{banDetails.bannedBy?.username || 'Moderator'}
                       </span>
                     </div>
                   </div>

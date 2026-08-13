@@ -112,7 +112,7 @@ function ChapterCard({ chapter }: IChapterCardProps) {
         <div className="relative h-8 w-8">
           <Image
             src={
-              author.avatar ||
+              author.avatarUrl ||
               'https://i.pinimg.com/736x/ab/41/40/ab4140adebd1a3420ef2969ab775664f.jpg'
             }
             alt={author.username}

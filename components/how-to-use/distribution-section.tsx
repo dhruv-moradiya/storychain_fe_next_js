@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { AlertCircle, CheckCircle2, Clock, Coins, Info, TrendingUp, Wallet } from 'lucide-react';
+import { AlertCircle, Clock, Coins, Info, TrendingUp, Wallet } from 'lucide-react';
 
 import { scrollReveal } from '@/lib/utils';
 

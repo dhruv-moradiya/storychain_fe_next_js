@@ -3,36 +3,19 @@
 import { useRef } from 'react';
 
 import { motion, useInView } from 'framer-motion';
-import { BookOpen } from 'lucide-react';
-import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
+import { Filter } from 'lucide-react';
 
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { Progress } from '@/components/ui/progress';
 
-import type { ReadingProgressData } from '../analytics.types';
+import type { ChapterRetentionData } from '../analytics.types';
 
 interface ReadingProgressProps {
-  data: ReadingProgressData[];
+  data: ChapterRetentionData[];
 }
-
-const COLORS = [
-  'var(--brand-pink-500)',
-  'var(--brand-blue)',
-  'var(--brand-orange)',
-  'var(--chart-4)',
-  'var(--chart-5)',
-];
-
-const chartConfig = {
-  readers: {
-    label: 'Readers',
-  },
-};
 
 export function ReadingProgress({ data }: ReadingProgressProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
-
-  const total = data.reduce((sum, item) => sum + item.value, 0);
 
   return (
     <motion.div
@@ -42,66 +25,52 @@ export function ReadingProgress({ data }: ReadingProgressProps) {
       transition={{ duration: 0.4, delay: 0.25 }}
       className="border-border/50 bg-cream-95 rounded-xl border p-4"
     >
-      <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-text-primary flex items-center gap-2 text-sm font-semibold tracking-wide uppercase">
-          <div className="bg-brand-pink-500 h-1 w-1 rounded-full" />
-          Reading Progress
-        </h3>
-        <BookOpen className="text-text-secondary-65 h-4 w-4" />
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <h3 className="text-text-primary flex items-center gap-2 text-sm font-semibold tracking-wide uppercase">
+            <div className="bg-brand-pink-500 h-1 w-1 rounded-full" />
+            Chapter Retention Funnel
+          </h3>
+          <p className="text-text-secondary-65 text-xs">
+            Percentage of readers continuing through consecutive chapters
+          </p>
+        </div>
+        <Filter className="text-text-secondary-65 h-4 w-4" />
       </div>
 
-      <div className="flex items-center gap-4">
-        {/* Pie Chart */}
-        <ChartContainer config={chartConfig} className="h-[140px] w-[140px] flex-shrink-0">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={data}
-                cx="50%"
-                cy="50%"
-                innerRadius={35}
-                outerRadius={55}
-                paddingAngle={3}
-                dataKey="value"
-                strokeWidth={0}
-              >
-                {data.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-            </PieChart>
-          </ResponsiveContainer>
-        </ChartContainer>
-
-        {/* Legend */}
-        <div className="flex-1 space-y-1">
-          {data.map((item, index) => (
+      <div className="space-y-3">
+        {data.map((item, index) => {
+          return (
             <motion.div
-              key={item.label}
+              key={item.chapterNumber}
               initial={{ opacity: 0, x: 10 }}
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 10 }}
-              transition={{ duration: 0.3, delay: 0.2 + index * 0.05 }}
-              className="flex items-center justify-between"
+              transition={{ duration: 0.3, delay: index * 0.05 }}
+              className="space-y-1.5"
             >
-              <div className="flex items-center gap-2">
-                <div
-                  className="h-2.5 w-2.5 rounded-full"
-                  style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                />
-                <span className="text-text-primary text-xs font-medium">{item.label}</span>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-text-primary max-w-[220px] truncate font-medium">
+                  Ch. {item.chapterNumber}: {item.title}
+                </span>
+                <div className="flex items-center gap-2 font-semibold">
+                  <span className="text-text-primary">{item.readers.toLocaleString()} readers</span>
+                  <span className="text-brand-pink-500 text-[11px] font-bold">
+                    ({item.retentionPercentage}%)
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-text-primary text-xs font-semibold">
-                  {item.value.toLocaleString()}
-                </span>
-                <span className="text-text-secondary-65 text-[10px]">
-                  ({Math.round((item.value / total) * 100)}%)
-                </span>
+
+              <div className="bg-cream-90 relative h-2 w-full overflow-hidden rounded-full">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={isInView ? { width: `${item.retentionPercentage}%` } : { width: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 + index * 0.05 }}
+                  className="from-brand-pink-500 to-brand-blue h-full rounded-full bg-gradient-to-r"
+                />
               </div>
             </motion.div>
-          ))}
-        </div>
+          );
+        })}
       </div>
     </motion.div>
   );

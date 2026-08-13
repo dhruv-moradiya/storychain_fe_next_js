@@ -13,7 +13,6 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronUp,
-  Flag,
   Home,
   Keyboard,
   List,

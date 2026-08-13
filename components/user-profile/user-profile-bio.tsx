@@ -7,9 +7,10 @@ import { cn } from '@/lib/utils';
 
 interface UserProfileBioProps {
   user: {
-    bio: string;
+    bio?: string;
+    email?: string;
     location?: string;
-    joinedAt: Date;
+    joinedAt?: Date | string;
     socialLinks?: {
       twitter?: string;
       instagram?: string;
@@ -35,35 +36,40 @@ function UserProfileBio({ user }: UserProfileBioProps) {
     },
   ].filter((link) => link.href);
 
+  const formattedJoinedDate = user.joinedAt
+    ? new Date(user.joinedAt).toLocaleDateString('en-US', {
+        month: 'long',
+        year: 'numeric',
+      })
+    : null;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 }}
-      className="border-border/50 bg-cream-95 rounded-xl border p-5"
+      className="border-border bg-card text-card-foreground rounded-xl border p-5 shadow-sm"
     >
-      <h3 className="text-text-primary mb-3 font-semibold">About</h3>
+      <h3 className="text-foreground mb-3 font-bold">About</h3>
 
-      <p className="text-text-secondary text-sm leading-relaxed">{user.bio}</p>
+      <p className="text-muted-foreground text-sm leading-relaxed">
+        {user.bio || 'No bio provided.'}
+      </p>
 
       {/* Details */}
-      <div className="mt-4 space-y-2.5">
+      <div className="mt-4 space-y-2">
         {user.location && (
-          <div className="text-text-secondary-65 flex items-center gap-2 text-sm">
-            <MapPin className="text-brand-pink-500/70 h-4 w-4 flex-shrink-0" />
+          <div className="text-muted-foreground flex items-center gap-2 text-xs font-medium">
+            <MapPin className="text-primary h-4 w-4 flex-shrink-0" />
             <span>{user.location}</span>
           </div>
         )}
-        <div className="text-text-secondary-65 flex items-center gap-2 text-sm">
-          <Calendar className="text-brand-pink-500/70 h-4 w-4 flex-shrink-0" />
-          <span>
-            Joined{' '}
-            {new Date(user.joinedAt).toLocaleDateString('en-US', {
-              month: 'long',
-              year: 'numeric',
-            })}
-          </span>
-        </div>
+        {formattedJoinedDate && (
+          <div className="text-muted-foreground flex items-center gap-2 text-xs font-medium">
+            <Calendar className="text-primary h-4 w-4 flex-shrink-0" />
+            <span>Joined {formattedJoinedDate}</span>
+          </div>
+        )}
       </div>
 
       {/* Social Links */}
@@ -78,12 +84,12 @@ function UserProfileBio({ user }: UserProfileBioProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(
-                  'flex items-center gap-1.5 rounded-lg px-3 py-1.5',
-                  'border-border/50 bg-muted/30 text-text-secondary-65 border text-sm',
-                  'hover:border-brand-pink-500/50 hover:bg-brand-pink-500/10 hover:text-brand-pink-500 transition-all'
+                  'flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs',
+                  'border-border bg-muted/50 text-muted-foreground border',
+                  'hover:border-primary/40 hover:bg-accent hover:text-accent-foreground transition-colors'
                 )}
               >
-                <Icon className="h-4 w-4" />
+                <Icon className="h-3.5 w-3.5" />
                 <span>{link.label}</span>
               </a>
             );

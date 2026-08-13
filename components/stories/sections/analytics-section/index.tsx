@@ -17,6 +17,7 @@ import { mockAnalyticsData } from './analytics.data';
 import type { DateRange } from './analytics.types';
 import {
   BranchingStats,
+  ContributionStatsSection,
   OverviewStats,
   ReadingProgress,
   ReadsChart,
@@ -38,12 +39,51 @@ interface AnalyticsSectionProps {
 const AnalyticsSection = ({ slug }: AnalyticsSectionProps) => {
   const [dateRange, setDateRange] = useState<DateRange>('7d');
 
-  // In a real app, this would fetch data based on dateRange
   const data = mockAnalyticsData;
 
   const handleExport = () => {
-    // Export analytics data (mock)
-    console.log('Exporting analytics for:', slug, dateRange);
+    const csvLines = [
+      'Story Analytics Export',
+      `Story Slug,${slug}`,
+      `Time Range,${dateRange}`,
+      `Exported At,${new Date().toISOString()}`,
+      '',
+      'Overview Metrics,Value,Change (%)',
+      `Total Reads,${data.overview.totalReads},${data.overview.readsChange}%`,
+      `Total Upvotes,${data.overview.totalUpvotes},${data.overview.upvotesChange}%`,
+      `Upvote Ratio,${data.overview.upvoteRatio}%,N/A`,
+      `Total Comments,${data.overview.totalComments},${data.overview.commentsChange}%`,
+      `Total Bookmarks,${data.overview.totalBookmarks},${data.overview.bookmarksChange}%`,
+      `Coin Unlocks,${data.overview.coinUnlocks},${data.overview.unlocksChange}%`,
+      '',
+      'Top Chapters,Reads,Change (%)',
+      ...data.topChapters.map(
+        (ch) =>
+          `"Ch. ${ch.chapterNumber}: ${ch.title.replace(/"/g, '""')}",${ch.reads},${ch.change}%`
+      ),
+      '',
+      'Branching Overview,Count',
+      `Total Branches,${data.branchingStats.totalBranches}`,
+      `Active Branches,${data.branchingStats.activeBranches}`,
+      `Max Depth,${data.branchingStats.maxDepth} levels`,
+      `Avg Reads Per Branch,${data.branchingStats.avgReadsPerBranch}`,
+      '',
+      'Pull Requests,Count',
+      `Total PRs,${data.contributionStats.totalPRs}`,
+      `Merged PRs,${data.contributionStats.mergedPRs}`,
+      `Pending PRs,${data.contributionStats.pendingPRs}`,
+      `Acceptance Rate,${data.contributionStats.acceptanceRate}%`,
+    ];
+
+    const blob = new Blob([csvLines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${slug}-analytics-${dateRange}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const selectedDateRange = dateRangeOptions.find((opt) => opt.value === dateRange);
@@ -62,8 +102,10 @@ const AnalyticsSection = ({ slug }: AnalyticsSectionProps) => {
             <BarChart3 className="text-brand-pink-500 h-5 w-5" />
           </div>
           <div>
-            <h1 className="text-text-primary text-xl font-semibold">Analytics</h1>
-            <p className="text-text-secondary-65 text-sm">Track your story's performance</p>
+            <h1 className="text-text-primary text-xl font-semibold">Story Analytics</h1>
+            <p className="text-text-secondary-65 text-sm">
+              Comprehensive reader engagement, branch metrics, and collaboration activity
+            </p>
           </div>
         </div>
 
@@ -104,7 +146,7 @@ const AnalyticsSection = ({ slug }: AnalyticsSectionProps) => {
             onClick={handleExport}
           >
             <Download className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Export</span>
+            <span className="hidden sm:inline">Export CSV</span>
           </Button>
         </div>
       </div>
@@ -112,14 +154,17 @@ const AnalyticsSection = ({ slug }: AnalyticsSectionProps) => {
       {/* Overview Stats */}
       <OverviewStats data={data.overview} />
 
-      {/* Reads Over Time Chart */}
+      {/* Reads & Engagement Over Time Chart */}
       <ReadsChart data={data.readsOverTime} />
 
-      {/* Two Column Layout: Top Chapters & Reading Progress */}
+      {/* Two Column Layout: Top Chapters & Reader Retention Funnel */}
       <div className="grid gap-5 lg:grid-cols-2 lg:items-start">
         <TopChapters chapters={data.topChapters} slug={slug} />
-        <ReadingProgress data={data.readingProgress} />
+        <ReadingProgress data={data.chapterRetention} />
       </div>
+
+      {/* Pull Requests & Collaborators */}
+      <ContributionStatsSection data={data.contributionStats} />
 
       {/* Branching Statistics */}
       <BranchingStats data={data.branchingStats} />

@@ -10,7 +10,6 @@ export function ChaptersList() {
   const { data, isLoading } = useGetUserChapters({
     staleTime: STALE_TIME.LONG,
   });
-  console.log('data', data);
 
   const chapters = data?.data || [];
 

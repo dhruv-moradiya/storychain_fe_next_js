@@ -1,5 +1,5 @@
 import { ISendInvitationBody } from '@/type/story/story-response.type';
-import { IStorySettings } from '@/type/story/story.types';
+import { IStorySettings, TStoryStatus } from '@/type/story/story.types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
@@ -9,8 +9,6 @@ import { QueryKey } from '@/lib/query-keys';
 import { TStoryFormValues } from '@/lib/schemas/story.schema';
 
 import { StoryApi } from './stories-api';
-
-// ── Story Creation ────────────────────────────────────────────────────────────
 
 export const useCreateStory = () => {
   const queryClient = useQueryClient();
@@ -31,7 +29,48 @@ export const useCreateStory = () => {
   });
 };
 
-// ── Settings ──────────────────────────────────────────────────────────────────
+export const usePublishStory = () => {
+  // const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (slug: string) => StoryApi.publishStory(slug),
+    onSuccess: (response) => {
+      if (response.data.success) {
+        // queryClient.invalidateQueries({ queryKey: QueryKey.story.stats(slug) });
+        toast.success(response.data.message || 'Story published successfully');
+      } else {
+        toast.error(response.data.message || 'Failed to publish story');
+      }
+    },
+    onError: (error: unknown) => {
+      toast.error(getErrorMessage(error));
+    },
+  });
+};
+
+export const useUpdateStoryStatus = (slug: string, status?: TStoryStatus) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (newStatus?: TStoryStatus) => {
+      const targetStatus = newStatus || status;
+      if (!targetStatus) throw new Error('Status is required');
+      return StoryApi.updateStatus(slug, targetStatus);
+    },
+    onSuccess: (response) => {
+      if (response.data.success) {
+        queryClient.invalidateQueries({ queryKey: QueryKey.story.bySlug(slug) });
+        queryClient.invalidateQueries({ queryKey: QueryKey.story.settingsBySlug(slug) });
+        toast.success(response.data.message || 'Story status updated successfully');
+      } else {
+        toast.error(response.data.message || 'Failed to update story status');
+      }
+    },
+    onError: (error: unknown) => {
+      toast.error(getErrorMessage(error));
+    },
+  });
+};
 
 export const useUpdateStorySettings = (slug: string) => {
   const queryClient = useQueryClient();
@@ -60,12 +99,6 @@ export const useUpdateStorySettings = (slug: string) => {
   });
 };
 
-// ── Collaborator Mutations ────────────────────────────────────────────────────
-
-/**
- * Send a collaborator invitation.
- * POST /slug/:slug/collaborators
- */
 export const useSendInvitation = (slug: string) => {
   const queryClient = useQueryClient();
 
@@ -85,10 +118,6 @@ export const useSendInvitation = (slug: string) => {
   });
 };
 
-/**
- * Accept a pending collaboration invitation for the current user.
- * POST /slug/:slug/collaborators/accept-invitation
- */
 export const useAcceptInvitation = (slug: string) => {
   const queryClient = useQueryClient();
 
@@ -108,10 +137,6 @@ export const useAcceptInvitation = (slug: string) => {
   });
 };
 
-/**
- * Decline a pending collaboration invitation for the current user.
- * POST /slug/:slug/collaborators/decline-invitation
- */
 export const useDeclineInvitation = (slug: string) => {
   const queryClient = useQueryClient();
 
@@ -131,14 +156,6 @@ export const useDeclineInvitation = (slug: string) => {
   });
 };
 
-// ── Image Upload Mutations ────────────────────────────────────────────────────
-
-/**
- * Handle whole upload flow:
- * 1. fetch signature URL
- * 2. Upload to Cloudinary
- * 3. Update story record
- */
 export const useUploadStoryImage = (slug: string) => {
   const queryClient = useQueryClient();
 
@@ -186,17 +203,27 @@ export const useUploadStoryImage = (slug: string) => {
       }
 
       const cloudinaryData = await cloudinaryResponse.json();
-      const imagePayload = {
-        url: cloudinaryData.secure_url,
-        publicId: cloudinaryData.public_id,
-      };
 
       // 3. Update story data
       let updateResponse;
       if (type === 'cover') {
-        updateResponse = await StoryApi.updateStoryCoverImage(slug, imagePayload);
+        const coverPayload = {
+          url: cloudinaryData.secure_url,
+          publicId: cloudinaryData.public_id,
+        };
+        updateResponse = await StoryApi.updateStoryCoverImage(slug, coverPayload);
       } else {
-        updateResponse = await StoryApi.updateStoryCardImage(slug, imagePayload);
+        const thumbnailUrl =
+          cloudinaryData.eager && cloudinaryData.eager.length > 0
+            ? cloudinaryData.eager[0].secure_url
+            : cloudinaryData.secure_url;
+
+        const cardPayload = {
+          url: cloudinaryData.secure_url,
+          publicId: cloudinaryData.public_id,
+          thumbnailUrl,
+        };
+        updateResponse = await StoryApi.updateStoryCardImage(slug, cardPayload);
       }
 
       return updateResponse.data;

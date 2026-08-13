@@ -4,6 +4,7 @@ import {
   IBanUserResponse,
   IMeResponse,
   IPaginatedUserListResponse,
+  IUserDetailPageResponse,
   TGetWalletResponse,
 } from '@/type/user/user-response.type';
 
@@ -25,6 +26,10 @@ const UserApi = {
 
   getMe: async (): Promise<IMeResponse> => {
     return await api.get<IMeResponse>('/users/me');
+  },
+
+  getUserDetailByClerkId: async (clerkId: string): Promise<IUserDetailPageResponse> => {
+    return await api.get<IUserDetailPageResponse>(`/users/clerk/${clerkId}`);
   },
 
   getWallet: async (): Promise<TGetWalletResponse> => {

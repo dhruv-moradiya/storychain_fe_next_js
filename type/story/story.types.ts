@@ -45,6 +45,7 @@ interface IStorySettings {
   allowVoting: boolean;
   genres: TStoryGenres[];
   contentRating: TStoryContentRating;
+  monetizationEnabled?: boolean;
 }
 
 interface IStoryStats {
@@ -76,6 +77,8 @@ interface IStoryCollaboratorPreview {
 
 type ICollaboratorUser = Omit<IStoryCollaboratorPreview, 'role'>;
 
+type ICardImage = IImageAsset & { thumbnailUrl: string };
+
 interface IStory {
   _id: string;
   title: string;
@@ -83,7 +86,7 @@ interface IStory {
   description: string;
 
   coverImage?: IImageAsset;
-  cardImage?: IImageAsset;
+  cardImage?: ICardImage;
 
   creatorId: string;
 

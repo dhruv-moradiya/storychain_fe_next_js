@@ -1,5 +1,4 @@
 import { CoinPacksSection } from '@/components/pricing/coin-packs-section';
-import { CoinUsageSection } from '@/components/pricing/coin-usage-section';
 import { PricingFAQ } from '@/components/pricing/pricing-faq';
 import { PricingHero } from '@/components/pricing/pricing-hero';
 import { RewardsSection } from '@/components/pricing/rewards-section';

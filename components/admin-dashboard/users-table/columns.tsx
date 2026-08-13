@@ -18,7 +18,13 @@ import {
   Zap,
 } from 'lucide-react';
 
-import { countBadge, iconBadge, statusBadge, textBadge } from '@/components/common/badge';
+import {
+  countBadge,
+  iconBadge,
+  platformRoleBadge,
+  statusBadge,
+  textBadge,
+} from '@/components/common/badge';
 import { CopyButton } from '@/components/copy-button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -199,25 +205,7 @@ export const columns: ColumnDef<IPaginatedUserData>[] = [
     header: 'Role',
     cell: ({ getValue }) => {
       const role = (getValue() as PlatformRole) || PlatformRole.USER;
-      const roleColors: Record<string, 'purple' | 'blue' | 'amber' | 'emerald'> = {
-        [PlatformRole.SUPER_ADMIN]: 'purple',
-        [PlatformRole.PLATFORM_MODERATOR]: 'blue',
-        [PlatformRole.APPEAL_MODERATOR]: 'amber',
-        [PlatformRole.USER]: 'emerald',
-      };
-
-      const roleLabels: Record<string, string> = {
-        [PlatformRole.SUPER_ADMIN]: 'Super Admin',
-        [PlatformRole.PLATFORM_MODERATOR]: 'Platform Mod',
-        [PlatformRole.APPEAL_MODERATOR]: 'Appeal Mod',
-        [PlatformRole.USER]: 'User',
-      };
-
-      return textBadge(roleLabels[role] || role, roleColors[role] || 'gray', {
-        size: 'sm',
-        shape: 'pill',
-        style: 'soft',
-      });
+      return platformRoleBadge(role);
     },
   },
   {

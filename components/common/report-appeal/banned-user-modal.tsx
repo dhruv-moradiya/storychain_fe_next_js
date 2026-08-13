@@ -1,19 +1,10 @@
 'use client';
 
-import * as React from 'react';
 import { useState } from 'react';
 
 import { IBanHistoryData } from '@/type/reports/ban-history.types';
 import { format, formatDistanceToNow } from 'date-fns';
-import {
-  AlertTriangle,
-  Calendar,
-  Clock,
-  HelpCircle,
-  Scale,
-  ShieldAlert,
-  UserX,
-} from 'lucide-react';
+import { AlertTriangle, Calendar, Clock, HelpCircle, Scale, ShieldAlert } from 'lucide-react';
 
 import AppealDialog from '@/components/common/appeal-dialog';
 import { Badge } from '@/components/ui/badge';
@@ -23,7 +14,6 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
-  DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
 

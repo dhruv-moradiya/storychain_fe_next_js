@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { COIN_TX_TYPES } from '@/type/transaction/transaction-enum';
 import { ITransaction } from '@/type/transaction/transaction-response';
 import { format } from 'date-fns';
-import { ArrowLeft, Filter, Receipt, RefreshCw, Search } from 'lucide-react';
+import { ArrowLeft, Filter, RefreshCw, Search } from 'lucide-react';
 
 import { TransactionDetailDialog } from '@/components/admin-dashboard/transactions/transaction-detail-dialog';
 import { coinTxDirectionBadge, coinTxTypeBadge } from '@/components/common/badge';

@@ -1,212 +1,177 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useState } from 'react';
 
+import { useUser } from '@clerk/nextjs';
+import {
+  AlertCircle,
+  BookOpen,
+  FileText,
+  LayoutDashboard,
+  Loader2,
+  RefreshCw,
+  Trophy,
+} from 'lucide-react';
+
+import { ContentLayout } from '@/components/dashboard/layout/content-layout';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   UserProfileAchievements,
   UserProfileActivity,
   UserProfileBio,
-  UserProfileGenres,
   UserProfileHeader,
-  UserProfileNewsletter,
-  UserProfileReviews,
-  UserProfileSpotlight,
   UserProfileStats,
   UserProfileStories,
 } from '@/components/user-profile';
+import { FadeInView } from '@/lib/animations';
+import { cn } from '@/lib/utils';
+import { useGetUserDetailByClerkId, useMe } from '@/services/users/user.query';
 
-import { ContentLayout } from '../dashboard';
+const triggerClass = cn(
+  'data-[state=active]:text-primary [&:after]:bg-primary h-auto! flex-none gap-2 rounded-none px-3 text-xs sm:px-5 sm:text-sm font-medium'
+);
 
-// Static mock user data
-const mockUser = {
-  id: 'user_123',
-  username: 'fantasy_writer',
-  fullName: 'Elena Martinez',
-  email: 'elena.martinez@example.com',
-  avatarUrl: 'https://i.pinimg.com/736x/4c/ab/77/4cab77de6b83b7e3149ce03867194ea5.jpg',
-  coverUrl: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200',
-  bio: 'Passionate storyteller crafting epic fantasy worlds. Creator of the Chronicles of Eldoria series. Always looking for fellow writers to collaborate with on new adventures.',
-  location: 'San Francisco, CA',
-  joinedAt: new Date('2023-06-15'),
-  isVerified: true,
-  isPro: true,
-  stats: {
-    stories: 12,
-    chapters: 156,
-    words: 485000,
-    followers: 2847,
-    following: 189,
-    totalReads: 125000,
-    totalLikes: 8934,
-    avgRating: 4.7,
-  },
-  badges: [
-    { id: '1', name: 'Story Legend', rarity: 'legendary' as const },
-    { id: '2', name: 'On Fire', rarity: 'epic' as const },
-    { id: '3', name: 'Wordsmith', rarity: 'rare' as const },
-    { id: '4', name: 'First Story', rarity: 'common' as const },
-  ],
-  stories: [
-    {
-      id: '1',
-      title: 'Chronicles of Eldoria',
-      slug: 'chronicles-of-eldoria',
-      coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400',
-      genre: 'Fantasy',
-      rating: 4.8,
-      reads: 45000,
-      chapters: 47,
-      description: 'A realm in shadows, a hero rises, and an ancient prophecy awakens.',
-    },
-    {
-      id: '2',
-      title: 'The Shadow Realm',
-      slug: 'the-shadow-realm',
-      coverUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400',
-      genre: 'Dark Fantasy',
-      rating: 4.6,
-      reads: 32000,
-      chapters: 35,
-      description: 'When darkness whispers, legends are born.',
-    },
-    {
-      id: '3',
-      title: 'Starfall Academy',
-      slug: 'starfall-academy',
-      coverUrl: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=400',
-      genre: 'Sci-Fi',
-      rating: 4.5,
-      reads: 28000,
-      chapters: 28,
-      description: 'In a galaxy of endless possibilities, some destinies are written in starlight.',
-    },
-  ],
-  socialLinks: {
-    twitter: 'fantasy_elena',
-    instagram: 'elenawritesfantasy',
-  },
-};
+export default function UserProfileView({ userId }: { userId: string }) {
+  const [activeTab, setActiveTab] = useState('overview');
+  const { user: currentClerkUser } = useUser();
+  const { data: meData } = useMe();
+  const { data, isLoading, isError, error, refetch } = useGetUserDetailByClerkId(userId);
 
-const mockActivities = [
-  {
-    type: 'chapter' as const,
-    title: 'Chronicles of Eldoria · Chapter 24',
-    subtitle: 'The battle for Eldoria begins.',
-    date: '2 days ago',
-    imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=96',
-  },
-  {
-    type: 'reads' as const,
-    title: 'Starfall Academy',
-    subtitle: 'Thank you to all my readers! 🚀',
-    date: '1 week ago',
-    imageUrl: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=96',
-  },
-  {
-    type: 'story' as const,
-    title: 'The Shadow Realm',
-    subtitle: 'A dark fantasy adventure awaits.',
-    date: '2 weeks ago',
-    imageUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=96',
-  },
-  {
-    type: 'badge' as const,
-    title: 'On Fire',
-    subtitle: 'Published 5 chapters in 30 days',
-    date: '3 weeks ago',
-    imageUrl: undefined,
-  },
-];
+  const loggedInClerkId = currentClerkUser?.id || meData?.data?.clerkId;
+  const isOwnProfile = !!loggedInClerkId && loggedInClerkId === userId;
 
-const mockGenres = [
-  { name: 'Fantasy', percentage: 68, color: '#7c3aed' },
-  { name: 'Dark Fantasy', percentage: 18, color: '#10b981' },
-  { name: 'Sci-Fi', percentage: 9, color: '#3b82f6' },
-  { name: 'Adventure', percentage: 5, color: '#f59e0b' },
-];
+  if (isLoading) {
+    return (
+      <ContentLayout maxWidth="7xl" paddingSize="lg">
+        <div className="flex flex-col items-center justify-center py-24">
+          <Loader2 className="text-primary mb-4 h-10 w-10 animate-spin" />
+          <p className="text-muted-foreground text-sm font-medium">Loading user profile...</p>
+        </div>
+      </ContentLayout>
+    );
+  }
 
-const mockSpotlight = {
-  quote: 'Elena has a gift for weaving magic into every word.',
-  author: 'Fantasy Fan',
-};
-
-const mockReviews = [
-  {
-    id: '1',
-    author: 'LunaStar',
-    avatarUrl: 'https://i.pravatar.cc/36?img=1',
-    date: '2 days ago',
-    rating: 5,
-    comment:
-      'Absolutely captivating! The world-building is incredible and the characters feel so real.',
-  },
-  {
-    id: '2',
-    author: 'BookWanderer',
-    avatarUrl: 'https://i.pravatar.cc/36?img=2',
-    date: '1 week ago',
-    rating: 5,
-    comment: 'Every chapter leaves me wanting more. Elena is a true wordsmith!',
-  },
-  {
-    id: '3',
-    author: 'DreamChaser',
-    avatarUrl: 'https://i.pravatar.cc/36?img=3',
-    date: '2 weeks ago',
-    rating: 5,
-    comment: 'The Chronicles of Eldoria is my new favorite series. Highly recommend!',
-  },
-];
-
-export default function UserProfileView({}: { userId: string }) {
-  // In real implementation, fetch user by userId
-  const user = mockUser;
-
-  return (
-    <ContentLayout maxWidth="7xl">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pb-16">
-        {/* Header card with avatar, name, bio, social links */}
-        <UserProfileHeader user={user} />
-
-        {/* Main content */}
-        <div className="mx-auto mt-6 max-w-5xl px-4 sm:px-6">
-          {/* Stats Row */}
-          <UserProfileStats stats={user.stats} />
-
-          {/* Two Column Layout */}
-          <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12">
-            {/* Left column */}
-            <div className="space-y-6 lg:col-span-4">
-              {/* About */}
-              <UserProfileBio user={user} />
-
-              {/* Achievements */}
-              <UserProfileAchievements badges={user.badges} />
-            </div>
-
-            {/* Right column */}
-            <div className="space-y-6 lg:col-span-8">
-              {/* Featured Stories */}
-              <UserProfileStories stories={user.stories} username={user.username} />
-
-              {/* Recent Activity */}
-              <UserProfileActivity activities={mockActivities} />
-            </div>
-          </div>
-
-          {/* Bottom section: Genres | Newsletter | Spotlight */}
-          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <UserProfileGenres genres={mockGenres} />
-            <UserProfileNewsletter />
-            <UserProfileSpotlight spotlight={mockSpotlight} />
-          </div>
-
-          {/* Reader Reviews */}
-          <div className="mt-6">
-            <UserProfileReviews reviews={mockReviews} />
+  if (isError || !data || !data.user) {
+    return (
+      <ContentLayout maxWidth="7xl" paddingSize="lg">
+        <div className="border-destructive/30 bg-destructive/5 mx-auto my-12 max-w-md rounded-2xl border p-8 text-center shadow-lg">
+          <AlertCircle className="text-destructive mx-auto mb-3 h-12 w-12" />
+          <h2 className="text-foreground text-xl font-bold">User Not Found</h2>
+          <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+            {error instanceof Error ? error.message : 'Unable to load profile for this user.'}
+          </p>
+          <div className="mt-6 flex justify-center gap-3">
+            <Button variant="outline" onClick={() => refetch()} className="border-border gap-2">
+              <RefreshCw className="h-4 w-4" /> Try Again
+            </Button>
           </div>
         </div>
-      </motion.div>
+      </ContentLayout>
+    );
+  }
+
+  const { user, stories, achievements, chaptersWritten } = data;
+
+  return (
+    <ContentLayout maxWidth="7xl" paddingSize="md" spacingSize="lg">
+      <div className="space-y-6 pb-16">
+        {/* Profile Header */}
+        <FadeInView>
+          <UserProfileHeader
+            user={{
+              clerkId: user.clerkId,
+              username: user.username,
+              email: user.email,
+              avatarUrl: user.avatarUrl,
+              bio: user.bio,
+              joinedAt: user.createdAt,
+              level: user.level,
+              levelTitle: user.levelTitle,
+              xp: user.xp,
+              nextLevelXp: user.nextLevelXp,
+              role:
+                (user as { role?: string }).role || (isOwnProfile ? meData?.data?.role : undefined),
+            }}
+            isOwnProfile={isOwnProfile}
+          />
+        </FadeInView>
+
+        {/* Stats Row */}
+        <FadeInView delay={0.05}>
+          <UserProfileStats stats={user.stats} />
+        </FadeInView>
+
+        {/* Tabbed Navigation (referencing Story Overview routes) */}
+        <FadeInView delay={0.1}>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+            <TabsList
+              variant="line"
+              className="border-border/50 bg-background/60 h-auto! w-full justify-start rounded-[10px]! border px-3 py-2!"
+            >
+              <TabsTrigger value="overview" className={triggerClass}>
+                <LayoutDashboard size={16} />
+                <span>Overview</span>
+              </TabsTrigger>
+              <TabsTrigger value="stories" className={triggerClass}>
+                <BookOpen size={16} />
+                <span>Stories ({stories.length})</span>
+              </TabsTrigger>
+              <TabsTrigger value="chapters" className={triggerClass}>
+                <FileText size={16} />
+                <span>Written Chapters ({chaptersWritten.length})</span>
+              </TabsTrigger>
+              <TabsTrigger value="achievements" className={triggerClass}>
+                <Trophy size={16} />
+                <span>Achievements</span>
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Overview Tab Content */}
+            <TabsContent value="overview">
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+                {/* Left Column (About & Achievements Summary) */}
+                <div className="space-y-6 lg:col-span-4">
+                  <UserProfileBio
+                    user={{
+                      bio: user.bio,
+                      email: user.email,
+                      joinedAt: user.createdAt,
+                    }}
+                  />
+
+                  <UserProfileAchievements
+                    badges={achievements?.badges}
+                    achievements={achievements}
+                  />
+                </div>
+
+                {/* Right Column (Featured Stories & Activity) */}
+                <div className="space-y-6 lg:col-span-8">
+                  <UserProfileStories stories={stories} username={user.username} />
+
+                  <UserProfileActivity chaptersWritten={chaptersWritten} />
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Stories Tab Content */}
+            <TabsContent value="stories">
+              <UserProfileStories stories={stories} username={user.username} />
+            </TabsContent>
+
+            {/* Chapters Tab Content */}
+            <TabsContent value="chapters">
+              <UserProfileActivity chaptersWritten={chaptersWritten} />
+            </TabsContent>
+
+            {/* Achievements Tab Content */}
+            <TabsContent value="achievements">
+              <UserProfileAchievements badges={achievements?.badges} achievements={achievements} />
+            </TabsContent>
+          </Tabs>
+        </FadeInView>
+      </div>
     </ContentLayout>
   );
 }

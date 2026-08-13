@@ -7,7 +7,6 @@ import {
   IUpdateAdminReportStatusPayload,
 } from '@/type/reports/report-request.types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 
 import { toast } from '@/components/shared/toast/toast';
 import { getErrorMessage } from '@/lib/error';

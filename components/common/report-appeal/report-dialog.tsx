@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { ICreateReportPayload, ReportReason, ReportType } from '@/type/reports';
+import { ReportReason, ReportType } from '@/type/reports';
 import { AlertTriangle, Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';

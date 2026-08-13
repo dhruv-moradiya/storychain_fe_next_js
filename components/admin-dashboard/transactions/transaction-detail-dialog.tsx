@@ -2,24 +2,11 @@
 
 import { ITransaction } from '@/type/transaction/transaction-response';
 import { format } from 'date-fns';
-import {
-  ArrowDownLeft,
-  ArrowUpRight,
-  BookOpen,
-  Building,
-  CheckCircle2,
-  Coins,
-  Copy,
-  Layers,
-  Receipt,
-  User,
-  Wallet,
-} from 'lucide-react';
+import { ArrowDownLeft, ArrowUpRight, BookOpen, Coins, Layers } from 'lucide-react';
 
 import { coinTxDirectionBadge, coinTxTypeBadge } from '@/components/common/badge';
 import { CopyButton } from '@/components/copy-button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,

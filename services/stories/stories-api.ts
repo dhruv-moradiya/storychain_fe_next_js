@@ -1,10 +1,17 @@
+import { IBaseResponse } from '@/type/base-response.type';
 import {
+  IAdminStoriesPaginatedResponse,
+  IAdminStoriesQueryParams,
+} from '@/type/story/admin-story.type';
+import {
+  IChangeStoryStatusResponse,
   ICheckStoryBanResponse,
   ICloudinarySignatureResponse,
   ICollaboratorListResponse,
   ICreateStoryResponse,
   IExploreStoriesResponse,
   IInvitationActionResponse,
+  IPublishStoryResponse,
   ISendInvitationBody,
   IStoryBasicResponse,
   IStoryImageUpdateResponse,
@@ -14,7 +21,7 @@ import {
   IUserStoriesResponse,
   IUserStoryRoleResponse,
 } from '@/type/story/story-response.type';
-import { IStorySettings } from '@/type/story/story.types';
+import { IStorySettings, TStoryStatus } from '@/type/story/story.types';
 import { AxiosResponse } from 'axios';
 
 import apiClient from '@/lib/api-client';
@@ -25,8 +32,28 @@ const StoryApi = {
     return await apiClient.post<ICreateStoryResponse>('/stories', payload);
   },
 
+  publishStory: async (slug: string): Promise<AxiosResponse<IPublishStoryResponse>> => {
+    return await apiClient.post(`/stories/slug/${slug}/publish`);
+  },
+
+  updateStatus: async (
+    slug: string,
+    status: TStoryStatus
+  ): Promise<AxiosResponse<IChangeStoryStatusResponse>> => {
+    return await apiClient.patch(`/stories/slug/${slug}/status`, { status });
+  },
+
   getUserStories: async (): Promise<AxiosResponse<IUserStoriesResponse>> => {
     return await apiClient.get<IUserStoriesResponse>('/stories/my');
+  },
+
+  getAdminStories: async (
+    params?: IAdminStoriesQueryParams
+  ): Promise<AxiosResponse<IBaseResponse<IAdminStoriesPaginatedResponse>>> => {
+    return await apiClient.get<IBaseResponse<IAdminStoriesPaginatedResponse>>(
+      '/stories/admin/stories',
+      { params }
+    );
   },
 
   getStoryBasic: async (slug: string): Promise<AxiosResponse<IStoryBasicResponse>> => {
@@ -74,7 +101,7 @@ const StoryApi = {
 
   updateStoryCardImage: async (
     slug: string,
-    image: { url: string; publicId: string }
+    image: { url: string; publicId: string; thumbnailUrl: string }
   ): Promise<AxiosResponse<IStoryImageUpdateResponse>> => {
     return await apiClient.patch<IStoryImageUpdateResponse>(`/stories/slug/${slug}/card-image`, {
       cardImage: image,

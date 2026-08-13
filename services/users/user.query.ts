@@ -44,3 +44,13 @@ export const useGetUsersList = (params?: IPaginatedUserQueryParams) => {
     enabled: !!isSignedIn,
   });
 };
+
+export const useGetUserDetailByClerkId = (clerkId: string) => {
+  return useQuery({
+    queryKey: QueryKey.user.detailByClerkId(clerkId),
+    queryFn: () => UserApi.getUserDetailByClerkId(clerkId),
+    select: (response) => response.data,
+    enabled: !!clerkId,
+    staleTime: 2 * 60 * 1000,
+  });
+};
