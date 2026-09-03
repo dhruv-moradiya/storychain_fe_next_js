@@ -24,6 +24,10 @@ export interface OpenRazorpayOptions {
   description?: string;
   /** Customer prefill details */
   prefill?: RazorpayOptions['prefill'];
+  /** Optional custom theme configuration */
+  theme?: RazorpayOptions['theme'];
+  /** Optional custom modal configuration */
+  modal?: RazorpayOptions['modal'];
   /** Called when payment is authorised */
   onSuccess?: (response: RazorpaySuccessResponse) => void;
   /** Called when payment fails */
@@ -57,10 +61,16 @@ export function openRazorpayCheckout(options: OpenRazorpayOptions): void {
     description: options.description ?? 'Coin Pack Purchase',
     order_id: options.razorpayOrderId,
     prefill: options.prefill,
-    theme: { color: 'hsl(var(--primary))' },
+    theme: {
+      color: options.theme?.color ?? '#ec4899',
+      backdrop_color: options.theme?.backdrop_color ?? '#000000',
+      hide_topbar: options.theme?.hide_topbar,
+    },
     modal: {
       ondismiss: options.onDismiss,
       confirm_close: true,
+      backdropclose: true,
+      ...options.modal,
     },
     handler: options.onSuccess,
   };

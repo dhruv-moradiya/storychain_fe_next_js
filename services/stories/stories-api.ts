@@ -17,6 +17,7 @@ import {
   IStoryImageUpdateResponse,
   IStoryOverviewResponse,
   IStorySettingsResponse,
+  IStoryTimelineResponse,
   IStoryTreeResponse,
   IUserStoriesResponse,
   IUserStoryRoleResponse,
@@ -134,6 +135,17 @@ const StoryApi = {
     return await apiClient.post<IInvitationActionResponse>(
       `/stories/slug/${slug}/collaborators/decline-invitation`
     );
+  },
+
+  // ============TIMELINE==========
+
+  getStoryTimeline: async (
+    slug: string,
+    params?: { limit?: number; skip?: number }
+  ): Promise<AxiosResponse<IStoryTimelineResponse>> => {
+    return await apiClient.get<IStoryTimelineResponse>(`/stories/slug/${slug}/timeline`, {
+      params,
+    });
   },
 
   // ============USER ROLE============

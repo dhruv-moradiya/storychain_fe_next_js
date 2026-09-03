@@ -533,3 +533,21 @@
 .dark .ct-show-replies-btn:hover {
   background: oklch(0.641 0.199 349 / 0.08) !important;
 }
+
+/* ===========================================
+   Razorpay Checkout Overlay Transparency
+   =========================================== */
+.razorpay-container {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+.razorpay-backdrop {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+iframe.razorpay-checkout-frame {
+  background-color: transparent !important;
+  background: transparent !important;
+}

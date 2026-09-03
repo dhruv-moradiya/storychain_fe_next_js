@@ -35,6 +35,16 @@ const PullRequestApi = {
       `/pull-requests/me?page=${page}&limit=${limit}`
     );
   },
+
+  listStoryPullRequests: async (
+    storySlug: string,
+    page: number,
+    limit: number
+  ): Promise<AxiosResponse<IPullRequestListResponse>> => {
+    return await apiClient.get<IPullRequestListResponse>(
+      `/pull-requests/stories/${storySlug}?page=${page}&limit=${limit}`
+    );
+  },
 };
 
 export { PullRequestApi };

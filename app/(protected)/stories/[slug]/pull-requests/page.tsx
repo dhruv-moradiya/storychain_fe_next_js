@@ -4,9 +4,9 @@ import { buildStoryMeta, getCachedStoryOverview } from '@/components/common';
 import SubmitRequestsSection from '@/components/stories/pull-requests/submit-requests-section';
 import { PullRequestApi } from '@/services/pull-requests/pull-requests.api';
 
-const listPullRequests = async () => {
+const listPullRequests = async (slug: string) => {
   try {
-    const res = await PullRequestApi.listMyPullRequests(1, 10);
+    const res = await PullRequestApi.listStoryPullRequests(slug, 1, 10);
     return res.data;
   } catch {
     return null;
@@ -41,7 +41,7 @@ export default async function SubmitRequestsPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const list = await listPullRequests(); // Prefetch pull request data if needed for metadata
+  const list = await listPullRequests(slug); // Prefetch pull request data if needed for metadata
 
   return (
     <div className="container mx-auto py-8">

@@ -274,7 +274,7 @@ function SheetContent({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className={cn('fixed inset-0 z-50', overlayClassName)}
+                className={cn('fixed inset-0 z-50 bg-black/50', overlayClassName)}
               />
             </DialogPrimitive.Overlay>
 

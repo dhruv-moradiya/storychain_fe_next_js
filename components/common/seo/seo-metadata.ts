@@ -180,7 +180,8 @@ export function buildStoryMeta({
       : '';
 
   const metaParts = [authorCredit, chaptersInfo, cleanDesc].filter(Boolean);
-  const metaDescription = metaParts.length > 0 ? metaParts.join(' • ') : cleanDesc;
+  const metaDescription =
+    (metaParts.length > 0 ? metaParts.join(' • ') : cleanDesc) || SITE_CONFIG.description;
 
   const baseTitle = pageLabel ? `${title} (${pageLabel})` : title;
   const displayTitle = author ? `${baseTitle} by ${author}` : baseTitle;

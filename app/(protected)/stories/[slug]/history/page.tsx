@@ -25,6 +25,7 @@ export async function generateMetadata({
   });
 }
 
-export default function HistoryPage() {
-  return <HistoryPageClient />;
+export default async function HistoryPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  return <HistoryPageClient slug={slug} />;
 }

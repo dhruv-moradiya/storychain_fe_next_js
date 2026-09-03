@@ -8,11 +8,18 @@ import {
   IStoryBasicResponse,
   IStoryOverviewResponse,
   IStorySettingsResponse,
+  IStoryTimelineResponse,
   IStoryTreeResponse,
   IUserStoriesResponse,
   IUserStoryRoleResponse,
 } from '@/type/story/story-response.type';
-import { UseQueryOptions, useQuery } from '@tanstack/react-query';
+import {
+  InfiniteData,
+  UseInfiniteQueryOptions,
+  UseQueryOptions,
+  useInfiniteQuery,
+  useQuery,
+} from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 import { QueryKey } from '@/lib/query-keys';
@@ -53,6 +60,14 @@ export const getStoryOverviewQueryFn = async (slug: string) => {
 
 export const getCollaboratorsQueryFn = async (slug: string) => {
   const response = await StoryApi.getCollaborators(slug);
+  return response.data;
+};
+
+export const getStoryTimelineQueryFn = async (
+  slug: string,
+  params?: { limit?: number; skip?: number }
+) => {
+  const response = await StoryApi.getStoryTimeline(slug, params);
   return response.data;
 };
 
@@ -217,6 +232,56 @@ export const useGetUserRole = (
     queryFn: () => getUserRoleQueryFn(slug),
     enabled: !!slug,
     staleTime: 5 * 60 * 1000, // role rarely changes mid-session
+    ...options,
+  });
+};
+
+export const useGetStoryTimeline = (
+  slug: string,
+  params?: { limit?: number; skip?: number },
+  options?: Omit<
+    UseQueryOptions<
+      IStoryTimelineResponse,
+      AxiosError,
+      IStoryTimelineResponse,
+      ReturnType<typeof QueryKey.story.timeline>
+    >,
+    'queryKey' | 'queryFn'
+  >
+) => {
+  return useQuery({
+    queryKey: QueryKey.story.timeline(slug, params),
+    queryFn: () => getStoryTimelineQueryFn(slug, params),
+    enabled: !!slug,
+    ...options,
+  });
+};
+
+export const useGetInfiniteStoryTimeline = (
+  slug: string,
+  limit = 20,
+  options?: Omit<
+    UseInfiniteQueryOptions<
+      IStoryTimelineResponse,
+      AxiosError,
+      InfiniteData<IStoryTimelineResponse>,
+      ReturnType<typeof QueryKey.story.timelineInfinite>,
+      number
+    >,
+    'queryKey' | 'queryFn' | 'initialPageParam' | 'getNextPageParam'
+  >
+) => {
+  return useInfiniteQuery({
+    queryKey: QueryKey.story.timelineInfinite(slug, limit),
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) =>
+      getStoryTimelineQueryFn(slug, { limit, skip: pageParam as number }),
+    getNextPageParam: (lastPage) => {
+      const { skip, limit: pageLimit, total } = lastPage.data;
+      const nextSkip = skip + pageLimit;
+      return nextSkip < total ? nextSkip : undefined;
+    },
+    enabled: !!slug,
     ...options,
   });
 };

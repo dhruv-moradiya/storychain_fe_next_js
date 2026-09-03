@@ -12,6 +12,7 @@ export interface RazorpayPrefill {
 
 export interface RazorpayTheme {
   color?: string;
+  backdrop_color?: string;
   hide_topbar?: boolean;
 }
 
@@ -20,6 +21,7 @@ export interface RazorpayModal {
   confirm_close?: boolean;
   escape?: boolean;
   backdropclose?: boolean;
+  animation?: boolean;
 }
 
 export interface RazorpayOptions {

@@ -363,6 +363,10 @@ function CoinPackCard({
             currency: orderData.currency,
             name: 'StoryChain',
             description: `${orderData.bundle.name} – ${orderData.bundle.totalCoins.toLocaleString()} coins`,
+            theme: {
+              color: '#ec4899',
+              backdrop_color: '#000000',
+            },
             onSuccess: handleSuccess,
             onFailure: handleFailure,
             onDismiss: handleDismiss,

@@ -493,6 +493,89 @@ const STORY_COLLABORATOR_ROLE_CONFIG = {
   },
 } as const;
 
+enum StoryTimelineAction {
+  // Story lifecycle
+  STORY_CREATED = 'story_created',
+  STORY_PUBLISHED = 'story_published',
+  STORY_ARCHIVED = 'story_archived',
+  STORY_DELETED = 'story_deleted',
+
+  // Content events
+  CHAPTER_ADDED = 'chapter_added',
+  CHAPTER_UPDATED = 'chapter_updated',
+  CHAPTER_DELETED = 'chapter_deleted',
+  CHAPTER_MARKED_ENDING = 'chapter_marked_ending',
+
+  // Pull Request events
+  PR_SUBMITTED = 'pr_submitted',
+  PR_APPROVED = 'pr_approved',
+  PR_MERGED = 'pr_merged',
+  PR_REJECTED = 'pr_rejected',
+  PR_CLOSED = 'pr_closed',
+
+  // Collaborator events
+  COLLABORATOR_ADDED = 'collaborator_added',
+  COLLABORATOR_REMOVED = 'collaborator_removed',
+  COLLABORATOR_ROLE_CHANGED = 'collaborator_role_changed',
+  COLLABORATOR_INVITED = 'collaborator_invited',
+  COLLABORATOR_INVITATION_ACCEPTED = 'collaborator_invitation_accepted',
+  COLLABORATOR_INVITATION_REJECTED = 'collaborator_invitation_rejected',
+
+  // Settings events
+  SETTINGS_UPDATED = 'settings_updated',
+  COVER_IMAGE_UPDATED = 'cover_image_updated',
+  CARD_IMAGE_UPDATED = 'card_image_updated',
+
+  // Moderation events
+  STORY_FLAGGED = 'story_flagged',
+  STORY_UNFLAGGED = 'story_unflagged',
+
+  // Gallery Image events
+  GALLERY_IMAGE_ADDED = 'gallery_image_added',
+  GALLERY_IMAGE_UPDATED = 'gallery_image_updated',
+  GALLERY_IMAGE_DELETED = 'gallery_image_deleted',
+
+  // Album events
+  ALBUM_CREATED = 'album_created',
+  ALBUM_UPDATED = 'album_updated',
+  ALBUM_DELETED = 'album_deleted',
+  IMAGES_ADDED_TO_ALBUM = 'images_added_to_album',
+}
+
+const STORY_TIMELINE_ACTIONS = [
+  'story_created',
+  'story_published',
+  'story_archived',
+  'story_deleted',
+  'chapter_added',
+  'chapter_updated',
+  'chapter_deleted',
+  'chapter_marked_ending',
+  'pr_submitted',
+  'pr_approved',
+  'pr_merged',
+  'pr_rejected',
+  'pr_closed',
+  'collaborator_added',
+  'collaborator_removed',
+  'collaborator_role_changed',
+  'collaborator_invited',
+  'collaborator_invitation_accepted',
+  'collaborator_invitation_rejected',
+  'settings_updated',
+  'cover_image_updated',
+  'card_image_updated',
+  'story_flagged',
+  'story_unflagged',
+  'gallery_image_added',
+  'gallery_image_updated',
+  'gallery_image_deleted',
+  'album_created',
+  'album_updated',
+  'album_deleted',
+  'images_added_to_album',
+] as const;
+
 export {
   STORY_GENRES,
   STORY_CONTENT_RATINGS,
@@ -506,4 +589,6 @@ export {
   STORY_COLLABORATOR_ROLE_CONFIG,
   StoryCollaboratorRole,
   StoryCollaboratorStatus,
+  StoryTimelineAction,
+  STORY_TIMELINE_ACTIONS,
 };

@@ -8,6 +8,7 @@ import type {
   STORY_CONTENT_RATINGS,
   STORY_GENRES,
   STORY_STATUSES,
+  STORY_TIMELINE_ACTIONS,
 } from './story-enum';
 
 type TStoryStatus = (typeof STORY_STATUSES)[number];
@@ -15,6 +16,7 @@ type TStoryCollaboratorRole = (typeof STORY_COLLABORATOR_ROLES)[number];
 type TStoryCollaboratorStatus = (typeof STORY_COLLABORATOR_STATUSES)[number];
 type TStoryGenres = (typeof STORY_GENRES)[number];
 type TStoryContentRating = (typeof STORY_CONTENT_RATINGS)[number];
+type TStoryTimelineAction = (typeof STORY_TIMELINE_ACTIONS)[number];
 
 /** All individual permission keys (e.g. 'canEditStorySettings', 'canDeleteStory', …) */
 type TStoryCollaboratorPermission =
@@ -154,6 +156,43 @@ interface IChapterTree extends IChapter {
   children: IChapterNodeData[];
 }
 
+interface IStoryTimelineEvent {
+  _id: string;
+  story?: {
+    title?: string;
+    slug?: string;
+  };
+  action: TStoryTimelineAction;
+  performedBy: {
+    username?: string;
+    avatarUrl?: string;
+    clerkId?: string;
+  } | null;
+  performedAt: string;
+  metadata?: {
+    chapter?: {
+      title?: string;
+      slug?: string;
+    };
+    chapterTitle?: string;
+    chapterSlug?: string;
+    targetUser?: {
+      username?: string;
+      avatarUrl?: string;
+      clerkId?: string;
+    };
+    targetUserId?: string;
+    role?: string;
+    oldRole?: string;
+    newRole?: string;
+    prId?: string;
+    prTitle?: string;
+    reason?: string;
+    changedFields?: string[];
+    [key: string]: unknown;
+  };
+}
+
 export type {
   IChapterTree,
   ICollaboratorUser,
@@ -167,6 +206,7 @@ export type {
   IStorySettings,
   IStoryStats,
   IStoryCollaboratorRoleConfig,
+  IStoryTimelineEvent,
   TStoryCollaboratorRole,
   TStoryCollaboratorRoleOrReader,
   TStoryCollaboratorPermission,
@@ -175,6 +215,7 @@ export type {
   TStoryStatus,
   TStoryGenres,
   TStoryContentRating,
+  TStoryTimelineAction,
 };
 
 // Re-export common types so story-specific consumers can get them from one place

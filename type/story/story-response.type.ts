@@ -186,6 +186,16 @@ export interface ICheckStoryBanData {
 
 export interface ICheckStoryBanResponse extends IBaseResponse<ICheckStoryBanData> {}
 
+// ── Story Timeline ────────────────────────────────────────────────────────────
+interface IStoryTimelineData {
+  events: import('.').IStoryTimelineEvent[];
+  total: number;
+  limit: number;
+  skip: number;
+}
+
+interface IStoryTimelineResponse extends IBaseResponse<IStoryTimelineData> {}
+
 export type {
   IPublishStoryResponse,
   IChangeStoryStatusResponse,
@@ -208,4 +218,6 @@ export type {
   IUserStoryRoleResponse,
   IExploreStory,
   IExploreStoriesResponse,
+  IStoryTimelineData,
+  IStoryTimelineResponse,
 };

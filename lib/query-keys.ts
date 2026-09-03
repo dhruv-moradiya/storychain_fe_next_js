@@ -56,6 +56,10 @@ export const QueryKey = {
     collaborators: (slug: string) => ['story', slug, 'collaborators'] as const,
     signatureUrl: (slug: string) => ['story', slug, 'signature-url'] as const,
     userRole: (slug: string) => ['story', slug, 'user-role'] as const,
+    timeline: (slug: string, params?: { limit?: number; skip?: number }) =>
+      ['story', slug, 'timeline', params ?? {}] as const,
+    timelineInfinite: (slug: string, limit?: number) =>
+      ['story', slug, 'timeline', 'infinite', { limit }] as const,
 
     // ----------------
     // CHAPTER ROUTES
@@ -117,5 +121,20 @@ export const QueryKey = {
       ['report', 'story', storySlug, filters ?? {}] as const,
     admin: (filters?: IPaginatedReportQueryParams) => ['report', 'admin', filters ?? {}] as const,
     adminById: (reportId: string) => ['report', 'admin', 'detail', reportId] as const,
+  },
+
+  pullRequest: {
+    all: ['pull-requests'] as const,
+    my: (limit?: number) =>
+      limit !== undefined
+        ? (['pull-requests', 'my', { limit }] as const)
+        : (['pull-requests', 'my'] as const),
+    myList: (page?: number, limit?: number) => ['pull-requests', 'my', { page, limit }] as const,
+    story: (storySlug: string, limit?: number) =>
+      limit !== undefined
+        ? (['pull-requests', 'story', storySlug, { limit }] as const)
+        : (['pull-requests', 'story', storySlug] as const),
+    storyList: (storySlug: string, page?: number, limit?: number) =>
+      ['pull-requests', 'story', storySlug, { page, limit }] as const,
   },
 };

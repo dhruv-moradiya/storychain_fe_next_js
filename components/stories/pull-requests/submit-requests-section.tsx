@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { fadeIn } from '@/lib/utils';
-import { usePullRequests } from '@/services/pull-requests/pull-request.query';
+import { useStoryPullRequests } from '@/services/pull-requests/pull-request.query';
 
 import { getColumns } from './columns';
 import { PRListEmpty, PRListError, PRListLoading } from './pr-states';
@@ -37,9 +37,22 @@ interface ISubmitRequestsSectionProps {
   list?: IPullRequestList;
 }
 
-export default function SubmitRequestsSection({ slug }: ISubmitRequestsSectionProps) {
-  const { data, isLoading, error } = usePullRequests();
-  console.log('data :>> ', data);
+export default function SubmitRequestsSection({ slug, list }: ISubmitRequestsSectionProps) {
+  const { data, isLoading, error } = useStoryPullRequests(slug, 10, {
+    initialData: list
+      ? {
+          pages: [
+            {
+              data: list,
+              message: '',
+              success: true,
+              code: '200',
+            },
+          ],
+          pageParams: [1],
+        }
+      : undefined,
+  });
 
   const router = useRouter();
 
